@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
 import { Actions } from 'react-native-router-flux';
+
+import { userService } from '../services';
 //import styles from './styles';
 
 class Authentication extends Component {
@@ -13,9 +15,6 @@ class Authentication extends Component {
   }
 
   async saveItem(item, selectedValue) {
-    console.log(item)
-    console.log(selectedValue)
-
     try {
       await AsyncStorage.setItem(item, selectedValue);
     } catch (error) {
@@ -46,26 +45,20 @@ class Authentication extends Component {
   }
 
   userLogin() {
-      if (!this.state.username || !this.state.password) return;
-          // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          fetch('https://ezonsellerbackend.herokuapp.com/login/', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              username: this.state.username,
-              password: this.state.password,
-            })
+      if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
+          userService.login(this.state.username, this.state.password)
+          .then(response => {
+            if (response) {
+                if (response && response.Token) {
+                    this.saveItem('id_token', response.Token);
+                    Actions.HomePage();
+                }
+            }
           })
-          .then((response) => response.json())
-          .then((responseData) => {
-            console.log(responseData);
-            this.saveItem('id_token', responseData.Token),
-            Actions.HomePage();
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      .done();
+          .catch(error => {
+            console.log(error);
+            Alert.alert('Login Fail');
+          });
   }
 
   render() {
