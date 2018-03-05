@@ -61,7 +61,7 @@ class RegisterPage extends Component {
             placeholder='First Name'
             ref='first_name'
             returnKeyType='next'
-            value={this.state.user.first_name}
+            value={this.state.first_name}
           />
 
 
