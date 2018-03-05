@@ -60,8 +60,8 @@ class App extends Component {
         </Stack>
       </Router>
     )
-    
-  } 
+
+  }
 }
 
 export default App;

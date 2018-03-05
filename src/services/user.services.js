@@ -9,6 +9,8 @@ export const userService = {
 };
 
 const URL = "https://ezonsellerbackend.herokuapp.com/";
+//const URL = "http://127.0.0.1:8000/";
+
 
 function login(username, password) {
     const requestOptions = {
