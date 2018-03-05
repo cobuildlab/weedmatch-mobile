@@ -47,7 +47,8 @@ class RegisterPage extends Component {
   }
 
   registerCancel() {
-    Actions.Authentication();
+    Actions.pop();
+    // Actions.Authentication();
   }
 
   render() {
