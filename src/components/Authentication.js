@@ -33,17 +33,6 @@ class Authentication extends Component {
     }*/
   }
 
-  userRegisters() {
-    Actions.HomePage();
-    /*try {
-      AsyncStorage.removeItem('id_token');
-      Alert.alert('Logout Success!');
-      Actions.Authentication();
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }*/
-  }
-
   userLogin() {
       if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
           userService.login(this.state.username, this.state.password)
@@ -89,10 +78,6 @@ class Authentication extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity  onPress={this.userRegister.bind(this)}>
-            <Text > Register </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity  onPress={this.userRegisters.bind(this)}>
             <Text > Register </Text>
           </TouchableOpacity>
         </View>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, Picker} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 //import styles from './styles';
 
@@ -8,38 +8,42 @@ class RegisterPage extends Component {
   constructor() {
     super();
     this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      username: '',
-      password: ''
-        
+        first_name: '',
+        last_name: '',
+        email: '',
+        address: '',
+        country_id: '',
+        username: '',
+        password: '',
+        latitude: '',
+        longitude: ''
     };
-    const URL = 'https://ezonsellerbackend.herokuapp.com';
+  }
 
+  componentWillMount() {
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+              this.setState({
+                latitud: position.latitude,
+                longitud: position.longitude
+              })
+              console.log(position);
+          },
+          (error) => {
+              console.log(error)
+          },
+          {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
+        );
   }
 
   registerUser() {
-    Alert.alert(this.state.user),
-    Actions.Authentication();
-    
-    //Alert.alert(this.state.user);
-/*      if (!this.state.username || !this.state.password) return;
+      if (!this.state.first_name || !this.state.last_name || !this.state.email || !this.state.address || !this.state.country_id || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
           // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          fetch('https://ezonsellerbackend.herokuapp.com/login/', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              username: this.state.username,
-              password: this.state.password,
-            })
-          })
-          .then((response) => response.json())
-          .then((responseData) => {
-            this.saveItem('id_token', responseData.id_token),
+          console.log(this.state.latitude);
+          console.log(this.state.longitude);
+          console.log(this.state.first_name);
 
-          })
-      .done();*/
+     // .done();
   }
 
   registerCancel() {
@@ -57,7 +61,7 @@ class RegisterPage extends Component {
             placeholder='First Name'
             ref='first_name'
             returnKeyType='next'
-            value={this.state.first_name}
+            value={this.state.user.first_name}
           />
 
 
@@ -80,6 +84,30 @@ class RegisterPage extends Component {
             value={this.state.email}
           />
 
+        <TextInput
+            editable={true}
+            onChangeText={(address) => this.setState({address})}
+            placeholder='Address'
+            ref='address'
+            returnKeyType='next'
+            value={this.state.address}
+        />
+
+        <Picker
+          selectedValue={this.state.country_id}
+          onValueChange={(itemValue, itemIndex) => this.setState({country_id: itemValue})}>
+          <Picker.Item label="Chile" value="42" />
+          <Picker.Item label="Venezuela" value="222" />
+        </Picker>
+
+        <TextInput
+            editable={true}
+            onChangeText={(country_id) => this.setState({country_id})}
+            placeholder='Country'
+            ref='country'
+            returnKeyType='next'
+            value={this.state.country_id}
+        />
 
           <TextInput
             editable={true}
