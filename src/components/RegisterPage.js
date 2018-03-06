@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, Picker} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { SwitchNavigator } from 'react-navigation';
 //import styles from './styles';
 
 class RegisterPage extends Component {
@@ -47,7 +47,7 @@ class RegisterPage extends Component {
   }
 
   registerCancel() {
-    Actions.pop();
+    this.props.navigation.navigate.goBack();
   }
 
   render() {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../services';
 //import styles from './styles';
@@ -23,7 +23,7 @@ class Authentication extends Component {
   }
 
   userRegister() {
-    Actions.RegisterPage();
+    this.props.navigation.navigate('Register');
     /*try {
       AsyncStorage.removeItem('id_token');
       Alert.alert('Logout Success!');
@@ -40,8 +40,8 @@ class Authentication extends Component {
             if (response) {
                 if (response && response.Token) {
                     this.saveItem('id_token', response.Token);
-                    Actions.HomePage();
-                }
+                    this.props.navigation.navigate('App');
+                  }
             }
           })
           .catch(error => {

@@ -103,6 +103,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		2434CF10204EE3FD00A28E74 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = weedmatch;
+		};
 		24C019A0204DA0DE00C3197E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -671,6 +678,7 @@
 			);
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
+				2434CF11204EE3FD00A28E74 /* PBXTargetDependency */,
 			);
 			name = "weedmatch-tvOSTests";
 			productName = "weedmatch-tvOSTests";
@@ -707,7 +715,7 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = W2U7ETVQ2D;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 2D02E47A1E0B4A5D006451C7;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 				};
 			};
@@ -1152,6 +1160,11 @@
 			target = 13B07F861A680F5B00A75B9A /* weedmatch */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		2434CF11204EE3FD00A28E74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* weedmatch */;
+			targetProxy = 2434CF10204EE3FD00A28E74 /* PBXContainerItemProxy */;
+		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* weedmatch-tvOS */;
@@ -1317,7 +1330,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.weedmatch-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/weedmatch-tvOS.app/weedmatch-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/weedmatch.app/weedmatch";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
@@ -1339,7 +1352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.weedmatch-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/weedmatch-tvOS.app/weedmatch-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/weedmatch.app/weedmatch";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;

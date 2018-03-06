@@ -1,5 +1,4 @@
 //import { authHeader } from '../helpers';
-import { Actions } from 'react-native-router-flux';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
 
 

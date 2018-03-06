@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import { StackNavigator, SwitchNavigator } from 'react-navigation';
 
 class HomePage extends Component {
 
@@ -8,12 +8,15 @@ class HomePage extends Component {
     Alert.alert('We will print a Chuck Norris quote')
   }
 
+  static navigationOptions = {
+    title: 'Home Page',
+  };
 
-  async userLogout() {
+  userLogout() {
     try {
-      await AsyncStorage.removeItem('id_token');
+      AsyncStorage.removeItem('id_token');
+      this.props.navigation.navigate('SignIn');
       Alert.alert('Logout Success!');
-      Actions.Authentication();
     } catch (error) {
       console.log('AsyncStorage error: ' + error.message);
     }

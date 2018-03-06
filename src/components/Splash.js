@@ -1,20 +1,28 @@
 import React, {Component} from 'react';
 import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import { StackNavigator } from 'react-navigation';
 
 class Splash extends Component {
     constructor(){
         super();
     }
 
-
   componentDidMount(){
-    AsyncStorage.getItem('id_token').then((token) => {
+    this.props.navigation.navigate('Auth');
+
+    AsyncStorage.getItem('id_token')
+        .then((token) => {
         if(token)
-            Actions.main()
+            this.props.navigation.navigate('App');
+            // Actions.main()
         else
-            Actions.auth()
+            this.props.navigation.navigate('Auth');
+            // Actions.auth()
       })
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error);
+     });
   }
 
   render() {
