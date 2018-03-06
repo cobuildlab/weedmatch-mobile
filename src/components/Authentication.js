@@ -37,6 +37,7 @@ class Authentication extends Component {
       if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
           userService.login(this.state.username, this.state.password)
           .then(response => {
+            console.log(response);
             if (response) {
                 if (response && response.Token) {
                     this.saveItem('id_token', response.Token);

@@ -3,9 +3,10 @@ import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage} from 'react-na
 import { StackNavigator, SwitchNavigator } from 'react-navigation';
 
 class HomePage extends Component {
+  constructor(props){
+    super(props)
 
-  getProtectedQuote() {
-    Alert.alert('We will print a Chuck Norris quote')
+    this.userLogout = this.userLogout.bind(this)
   }
 
   static navigationOptions = {
@@ -13,11 +14,13 @@ class HomePage extends Component {
   };
 
   userLogout() {
+    const { navigate } = this.props.navigation;
     try {
       AsyncStorage.removeItem('id_token');
-      this.props.navigation.navigate('SignIn');
-      Alert.alert('Logout Success!');
+      navigate('Auth');
+     Alert.alert('Logout Success!');
     } catch (error) {
+      console.log(error);
       console.log('AsyncStorage error: ' + error.message);
     }
   }
@@ -37,5 +40,7 @@ class HomePage extends Component {
     );
   }
 }
+
+
 
 export default HomePage;

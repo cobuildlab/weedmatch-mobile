@@ -8,7 +8,7 @@ export const userService = {
 };
 
 const URL = "https://ezonsellerbackend.herokuapp.com/";
-//const URL = "http://127.0.0.1:8000/";
+//const URL = "https://weedmatch.herokuapp.com/";
 
 
 function login(username, password) {

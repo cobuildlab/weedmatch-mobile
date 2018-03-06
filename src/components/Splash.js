@@ -8,8 +8,8 @@ class Splash extends Component {
     }
 
   componentDidMount(){
-    this.props.navigation.navigate('Auth');
-
+    //this.props.navigation.navigate('Auth');
+    console.log('Splash')
     AsyncStorage.getItem('id_token')
         .then((token) => {
         if(token)

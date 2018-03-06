@@ -42,10 +42,10 @@ class App extends Component {
   }
 }
 
-const AppStack = StackNavigator({ Home: HomePage });
+const AppStack  = StackNavigator({ Home: HomePage });
 const AuthStack = StackNavigator({ SignIn: Authentication, Register: RegisterPage });
 
-export default SwitchNavigator (
+export default SwitchNavigator(
   {
     AuthLoading: Splash,
     App: AppStack,
