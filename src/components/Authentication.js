@@ -33,6 +33,17 @@ class Authentication extends Component {
     }*/
   }
 
+  userLogin() {
+    Actions.LoginPage();
+    /*try {
+      AsyncStorage.removeItem('id_token');
+      Alert.alert('Logout Success!');
+      Actions.Authentication();
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }*/
+  }
+
   userRegisters() {
     Actions.HomePage();
     /*try {
@@ -116,6 +127,9 @@ class Authentication extends Component {
             </TouchableOpacity>
 
             <TouchableOpacity  onPress={this.userRegisters.bind(this)}>
+              <Text > Register </Text>
+            </TouchableOpacity>
+            <TouchableOpacity  onPress={this.userLoginPage.bind(this)}>
               <Text > Register </Text>
             </TouchableOpacity>
         </View>

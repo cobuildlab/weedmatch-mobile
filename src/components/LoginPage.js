@@ -203,4 +203,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Authentication;
+export default LoginPage;
