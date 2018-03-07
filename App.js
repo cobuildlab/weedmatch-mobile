@@ -4,8 +4,10 @@ import {ActivityIndicator, AsyncStorage} from 'react-native';
 
 import Splash from './src/components/Splash';
 import Authentication  from './src/components/Authentication';
+import LoginPage  from './src/components/LoginPage';
 import RegisterPage  from './src/components/RegisterPage';
 import HomePage  from './src/components/HomePage';
+
 
 
 class App extends Component {
@@ -39,6 +41,12 @@ class App extends Component {
             hideNavBar={true}
             key='Authentication'
             title='Authentication'
+          />
+          <Scene
+            component={LoginPage}
+            hideNavBar={true}
+            key='LoginPage'
+            title='Login'
           />
           <Scene
             component={RegisterPage}

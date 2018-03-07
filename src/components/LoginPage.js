@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { userService } from '../services';
 //import styles from './styles';
 
-class Authentication extends Component {
+class LoginPage extends Component {
 
   constructor() {
     super();
