@@ -4,6 +4,8 @@ import App from '../App';
 
 // Note: test renderer must be required after react-native.
 
-it('renders correctlys', () => {
-
+describe('Testing ReassignLocationMenu component', () => {
+  it('renders as expected', () => {
+    console.log('render')
+  });
 });

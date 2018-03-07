@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, Picker} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, Picker, ActivityIndicator, StyleSheet} from 'react-native';
 import { SwitchNavigator } from 'react-navigation';
+import { userService } from '../services';
+
 //import styles from './styles';
 
 class RegisterPage extends Component {
@@ -16,7 +18,9 @@ class RegisterPage extends Component {
         username: '',
         password: '',
         latitude: '',
-        longitude: ''
+        longitude: '',
+        countrys: [],
+        isLoaded: false
     };
   }
 
@@ -33,7 +37,16 @@ class RegisterPage extends Component {
               console.log(error)
           },
           {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
-        );
+      );
+
+      userService.getCountry()
+        .then(response => {
+            this.setState({countrys: response, isLoaded: true});
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
   }
 
   registerUser() {
@@ -51,10 +64,22 @@ class RegisterPage extends Component {
   }
 
   render() {
+    console.log('----------');
+    const { countrys } = this.state;
+    console.log(this.state)
+
+    if (!this.state.isLoaded) {
+          return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+          )
+    } else {
+
     return (
+
       <ScrollView style={{padding: 20}}>
         <View>
-
         <TextInput
             editable={true}
             onChangeText={(first_name) => this.setState({first_name})}
@@ -63,7 +88,6 @@ class RegisterPage extends Component {
             returnKeyType='next'
             value={this.state.first_name}
           />
-
 
         <TextInput
             editable={true}
@@ -74,7 +98,7 @@ class RegisterPage extends Component {
             value={this.state.last_name}
           />
 
-       
+
         <TextInput
             editable={true}
             onChangeText={(email) => this.setState({email})}
@@ -93,13 +117,6 @@ class RegisterPage extends Component {
             value={this.state.address}
         />
 
-        <Picker
-          selectedValue={this.state.country_id}
-          onValueChange={(itemValue, itemIndex) => this.setState({country_id: itemValue})}>
-          <Picker.Item label="Chile" value="42" />
-          <Picker.Item label="Venezuela" value="222" />
-        </Picker>
-
         <TextInput
             editable={true}
             onChangeText={(country_id) => this.setState({country_id})}
@@ -108,6 +125,14 @@ class RegisterPage extends Component {
             returnKeyType='next'
             value={this.state.country_id}
         />
+
+        <Picker
+            selectedValue={this.state.country_id}
+            onValueChange={itemValue => this.setState({ country_id: itemValue })}>
+            {countrys.map((i, index) => (
+                <Picker.Item key={index} label={i.name} value={i.id} />
+            ))}
+        </Picker>
 
           <TextInput
             editable={true}
@@ -139,7 +164,20 @@ class RegisterPage extends Component {
         </View>
       </ScrollView>
     );
+    }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
+})
 
 export default RegisterPage;

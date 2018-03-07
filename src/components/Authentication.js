@@ -10,8 +10,6 @@ class Authentication extends Component {
   constructor() {
     super();
     this.state = { username: null, password: null };
-    const URL = 'https://ezonsellerbackend.herokuapp.com';
-
   }
 
   async saveItem(item, selectedValue) {
@@ -39,8 +37,8 @@ class Authentication extends Component {
           .then(response => {
             console.log(response);
             if (response) {
-                if (response && response.Token) {
-                    this.saveItem('id_token', response.Token);
+                if (response && response.token) {
+                    this.saveItem('id_token', response.token);
                     this.props.navigation.navigate('App');
                   }
             }

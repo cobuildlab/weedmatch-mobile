@@ -1,7 +1,8 @@
+import { AsyncStorage } from 'react-native';
 export function authHeader() {
     // return authorization header with jwt token
-    let id_token = JSON.parse(localStorage.getItem('id_token'));
-    if (user && user.Token) {
+    let id_token = AsyncStorage.getItem('id_token');;
+    if (id_token && id_token.Token) {
         return { 'Authorization': 'Token ' + id_token };
     } else {
         return {};

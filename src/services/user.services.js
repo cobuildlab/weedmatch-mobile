@@ -1,13 +1,11 @@
-//import { authHeader } from '../helpers';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
-
-
+import { authHeader } from '../helpers';
 export const userService = {
     login,
     logout,
+    getCountry,
 };
 
-const URL = "https://ezonsellerbackend.herokuapp.com/";
+const URL = "https://weedmatch.herokuapp.com/";
 //const URL = "https://weedmatch.herokuapp.com/";
 
 
@@ -24,6 +22,16 @@ function login(username, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+}
+
+
+function getCountry(username, password) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(URL + 'countrys/', requestOptions).then(handleResponse);
 }
 
 
