@@ -33,7 +33,7 @@ class Authentication extends Component {
     }*/
   }
 
-  userLogin() {
+  userLoginPage() {
     Actions.LoginPage();
     /*try {
       AsyncStorage.removeItem('id_token');
@@ -92,46 +92,28 @@ class Authentication extends Component {
           <Text style={styles.textBold}>
             COGOLLO
           </Text>
-          <TextInput
-            style={styles.inputStyle}
-            editable={true}
-            onChangeText={(username) => this.setState({username})}
-            placeholder='Username'
-            ref='username'
-            returnKeyType='next'
-            value={this.state.username}
-          />
-
-          <TextInput
-            style={styles.inputStyle}
-            editable={true}
-            onChangeText={(password) => this.setState({password})}
-            placeholder='Password'
-            ref='password'
-            returnKeyType='next'
-            secureTextEntry={true}
-            value={this.state.password}
-          />
-
+          <TouchableOpacity
+            style={styles.buttomLoginIntagramStyle}
+            onPress={this.userLogin.bind(this)}>
+          <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttomFacebookStyle}
+            onPress={this.userLogin.bind(this)}>
+          <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
+          </TouchableOpacity>
         <TouchableOpacity
             style={styles.buttomLoginStyle}
-            onPress={this.userLogin.bind(this)}>
+            onPress={this.userLoginPage.bind(this)}>
             <Text style={styles.buttonText}>Inicia Sesión</Text>
           </TouchableOpacity>
-
-
+          <View>
             <TouchableOpacity
-                style={styles.buttomFacebookStyle}
+                style={styles.buttomRegister}
                 onPress={this.userRegister.bind(this)}>
-              <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
+              <Text style={styles.buttomTextRegister}>¿No tienes cuenta? ¡Únete!</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity  onPress={this.userRegisters.bind(this)}>
-              <Text > Register </Text>
-            </TouchableOpacity>
-            <TouchableOpacity  onPress={this.userLoginPage.bind(this)}>
-              <Text > Register </Text>
-            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     );
@@ -175,44 +157,57 @@ const styles = StyleSheet.create({
     color: '#9605CC',
     marginBottom: 40,
   },
-  inputStyle:{
-    backgroundColor: '#f5f5f5',
-    height: 40,
-    width: 250,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginBottom: 10,
-  },
-  buttomLoginStyle:{
+
+  buttomLoginIntagramStyle:{
     marginTop: 5,
     marginBottom: 10,
     width: 300,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 14,
+    paddingBottom: 14,
     borderRadius: 50,
-    borderColor: '#9605CC',
-    borderWidth: 1,
     alignItems: 'center',
-    backgroundColor: 'transparent',
-
+    backgroundColor: '#9605CC',
+  },
+  buttonInstagramText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttomRegister:{
+    marginTop: 20,
+  },
+  buttonTextRegister: {
+    color: '#333333',
+    fontSize: 16,
   },
   buttonText: {
-    color: '#9605CC',
+    color: '#FFFFFF',
     fontSize: 16,
   },
   buttomFacebookStyle:{
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 10,
-    width: 250,
-    paddingTop: 10,
-    paddingBottom: 10,
+    width: 280,
+    paddingTop: 14,
+    paddingBottom: 14,
     borderRadius: 50,
     alignItems: 'center',
-    backgroundColor: '#3b5998',
+    backgroundColor: '#b22abf',
   },
   buttonTextFacebook: {
     color: 'white',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  buttomLoginStyle:{
+    marginTop: 5,
+    marginBottom: 10,
+    width: 260,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 50,
+    alignItems: 'center',
+    backgroundColor: '#c646b6',
   },
 
 });

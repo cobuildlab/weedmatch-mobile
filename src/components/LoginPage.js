@@ -33,6 +33,17 @@ class LoginPage extends Component {
     }*/
   }
 
+  userAuthentication() {
+    Actions.Authentication();
+    /*try {
+      AsyncStorage.removeItem('id_token');
+      Alert.alert('Logout Success!');
+      Actions.Authentication();
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }*/
+  }
+
   userRegisters() {
     Actions.HomePage();
     /*try {
@@ -106,18 +117,10 @@ class LoginPage extends Component {
             style={styles.buttomLoginStyle}
             onPress={this.userLogin.bind(this)}>
             <Text style={styles.buttonText}>Inicia Sesión</Text>
-          </TouchableOpacity>
-
-
-            <TouchableOpacity
-                style={styles.buttomFacebookStyle}
-                onPress={this.userRegister.bind(this)}>
-              <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity  onPress={this.userRegisters.bind(this)}>
-              <Text > Register </Text>
-            </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity  style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
+          <Text > Iniciar Sesión con Redes Sociales </Text>
+        </TouchableOpacity>
         </View>
       </ScrollView>
     );
@@ -162,43 +165,34 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   inputStyle:{
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
     height: 40,
     width: 250,
-    paddingLeft: 10,
+    borderColor: '#ccc',
+    borderRadius: 50,
+    borderWidth: 1,
+    paddingLeft: 20,
     paddingRight: 10,
     marginBottom: 10,
   },
   buttomLoginStyle:{
-    marginTop: 5,
+    marginTop: 20,
     marginBottom: 10,
-    width: 300,
-    paddingTop: 10,
-    paddingBottom: 10,
+    width: 250,
+    paddingTop: 14,
+    paddingBottom: 14,
     borderRadius: 50,
-    borderColor: '#9605CC',
-    borderWidth: 1,
     alignItems: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: '#9605CC',
 
   },
   buttonText: {
-    color: '#9605CC',
+    color: '#ffffff',
     fontSize: 16,
+    fontWeight: '500'
   },
-  buttomFacebookStyle:{
-    marginTop: 10,
-    marginBottom: 10,
-    width: 250,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 50,
-    alignItems: 'center',
-    backgroundColor: '#3b5998',
-  },
-  buttonTextFacebook: {
-    color: 'white',
-    fontSize: 16,
+  buttomBackLogin:{
+    marginTop: 30,
   },
 
 });
