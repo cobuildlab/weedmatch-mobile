@@ -3,6 +3,7 @@ export const userService = {
     login,
     logout,
     getCountry,
+    postRegister,
 };
 
 const URL = "https://weedmatch.herokuapp.com/";
@@ -34,12 +35,25 @@ function getCountry(username, password) {
     return fetch(URL + 'countrys/', requestOptions).then(handleResponse);
 }
 
+function postRegister(data) {
+    console.log(data)
+    const requestOptions = {
+        method: 'POST',
+        body: data
+    };
+
+    return fetch(URL + 'register/', requestOptions).then(handleResponse);
+}
+
 
 function handleResponse(response) {
+    console.log(typeof response)
+    console.log('--------')
+    console.log(response)
     if (!response.ok) {
         return Promise.reject(response.json());
     }
-    return response.json();
+    return Promise.reject(response.json());
 }
 
 

@@ -13,13 +13,14 @@ class RegisterPage extends Component {
         first_name: '',
         last_name: '',
         email: '',
-        address: '',
-        country_id: '',
+        direction: '',
+        country: '',
         username: '',
         password: '',
         latitude: '',
         longitude: '',
         countrys: [],
+        age: '',
         isLoaded: false
     };
   }
@@ -39,43 +40,50 @@ class RegisterPage extends Component {
           {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
       );
 
-      userService.getCountry()
-        .then(response => {
-            this.setState({countrys: response, isLoaded: true});
-        })
-        .catch(error => {
-            console.log(error);
-        });
-
+      AsyncStorage.getItem('countrys')
+          .then((response) => {
+             this.setState({countrys: JSON.parse(response)})
+          })
+          .catch((error) => {
+              console.log(error);
+          });
   }
 
   registerUser() {
-      if (!this.state.first_name || !this.state.last_name || !this.state.email || !this.state.address || !this.state.country_id || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
+      //if (!this.state.first_name || !this.state.last_name || !this.state.email || !this.state.direction || !this.state.country_id || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
           // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          console.log(this.state.latitude);
-          console.log(this.state.longitude);
-          console.log(this.state.first_name);
+          //console.log(JSON.parse(this.state));
 
-     // .done();
+
+          this.setState({country: JSON.stringify(this.state.country), latitude: '37.421998', longitude: '-122.084000', age: '1984-09-30', countrys: [] })
+          let valueUser = {'first_name': this.state.first_name, 'last_name': this.state.last_name, 'email': this.state.email, 'country': JSON.stringify(this.state.country), 'direction': this.state.direction, 'username': this.state.username, 'password': this.state.password, 'latitud': 37.421998, 'longitud': -122.084000,  'age': '1984-09-30' }
+          userService.postRegister(JSON.stringify(valueUser))
+              .then(response => {
+                  console.log(response);
+
+                  this.props.navigation.navigate('Auth');
+              })
+               .catch((error) => {
+                  console.log('-------');
+                  console.log(JSON.parse(error));
+               });
+     // .done();@
   }
 
   registerCancel() {
-    this.props.navigation.navigate.goBack();
+    //this.props.navigation.navigate.goBack();
   }
 
   render() {
-    console.log('----------');
     const { countrys } = this.state;
-    console.log(this.state)
-
-    if (!this.state.isLoaded) {
+  /*  if (!this.state.isLoaded) {
           return (
             <View style={[styles.container, styles.horizontal]}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </View>
           )
     } else {
-
+*/
     return (
 
       <ScrollView style={{padding: 20}}>
@@ -110,25 +118,16 @@ class RegisterPage extends Component {
 
         <TextInput
             editable={true}
-            onChangeText={(address) => this.setState({address})}
+            onChangeText={(direction) => this.setState({direction})}
             placeholder='Address'
-            ref='address'
+            ref='direction'
             returnKeyType='next'
-            value={this.state.address}
-        />
-
-        <TextInput
-            editable={true}
-            onChangeText={(country_id) => this.setState({country_id})}
-            placeholder='Country'
-            ref='country'
-            returnKeyType='next'
-            value={this.state.country_id}
+            value={this.state.direction}
         />
 
         <Picker
-            selectedValue={this.state.country_id}
-            onValueChange={itemValue => this.setState({ country_id: itemValue })}>
+            selectedValue={this.state.country}
+            onValueChange={itemValue => this.setState({ country: itemValue })}>
             {countrys.map((i, index) => (
                 <Picker.Item key={index} label={i.name} value={i.id} />
             ))}
@@ -165,7 +164,7 @@ class RegisterPage extends Component {
       </ScrollView>
     );
     }
-  }
+  //}
 }
 
 const styles = StyleSheet.create({

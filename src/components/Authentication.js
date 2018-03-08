@@ -20,6 +20,10 @@ class Authentication extends Component {
     }
   }
 
+  componentDidmount(){
+
+  }
+
   userRegister() {
     this.props.navigation.navigate('Register');
     /*try {

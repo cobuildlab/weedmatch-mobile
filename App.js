@@ -20,6 +20,7 @@ class App extends Component {
   }
 
   componentDidMount(){
+    console.log('App')
     AsyncStorage.getItem('id_token')
         .then((token) => {
         if(token)
