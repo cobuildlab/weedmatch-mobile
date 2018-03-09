@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, Picker, ActivityIndicator, StyleSheet} from 'react-native';
-import { SwitchNavigator } from 'react-navigation';
-import { userService } from '../services';
-
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 //import styles from './styles';
+
+import { userService } from '../services';
 
 class RegisterPage extends Component {
 
@@ -25,7 +24,9 @@ class RegisterPage extends Component {
     };
   }
 
-  componentWillMount() {
+  static navigationOptions = { header: null };
+
+ componentWillMount() {
       navigator.geolocation.getCurrentPosition(
           (position) => {
               this.setState({
@@ -55,8 +56,8 @@ class RegisterPage extends Component {
           //console.log(JSON.parse(this.state));
 
 
-          this.setState({country: JSON.stringify(this.state.country), latitude: '37.421998', longitude: '-122.084000', age: '1984-09-30', countrys: [] })
-          let valueUser = {'first_name': this.state.first_name, 'last_name': this.state.last_name, 'email': this.state.email, 'country': JSON.stringify(this.state.country), 'direction': this.state.direction, 'username': this.state.username, 'password': this.state.password, 'latitud': 37.421998, 'longitud': -122.084000,  'age': '1984-09-30' }
+          this.setState({country: JSON.stringify(this.state.country), latitud: '37.421998', longitude: '-122.084000', age: '1984-09-30', countrys: [] })
+          let valueUser = {'first_name': this.state.first_name, 'last_name': this.state.last_name, 'email': this.state.email, 'country': JSON.stringify(this.state.country), 'direction': this.state.direction, 'username': this.state.username, 'password': this.state.password, 'latitud': this.state.latitud, 'longitud': this.state.longitud,  'age': '1984-09-30' }
           userService.postRegister(JSON.stringify(valueUser))
               .then(response => {
                   console.log(response);
@@ -75,26 +76,14 @@ class RegisterPage extends Component {
   }
 
   render() {
-    const { countrys } = this.state;
-  /*  if (!this.state.isLoaded) {
-          return (
-            <View style={[styles.container, styles.horizontal]}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-          )
-    } else {
-*/
     return (
-
-      <ScrollView style={{padding: 20}}>
-        <View>
       <ScrollView style={{backgroundColor: '#fff'}}>
         <View style={styles.headerLogin}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             <View style={styles.imageStyle}>
               <Image
                 style={styles.container}
-                source={require('./logo-login.png')}
+                source={require('../assets/img/logo-login.png')}
                  />
             </View>
           </View>
@@ -167,14 +156,13 @@ class RegisterPage extends Component {
         </View>
       </ScrollView>
     );
-    }
-  //}
+  }
 }
 
 const styles = StyleSheet.create({
   headerLogin: {
     backgroundColor: '#9605CC',
-    height: 40,
+    height: 200,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -187,7 +175,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   imageStyle: {
-    height: 300,
+    height: 200,
     flex: 3,
     width: null,
   },
@@ -196,7 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 250,
+    marginTop: 25,
   },
   inputStyle:{
     backgroundColor: '#ffffff',

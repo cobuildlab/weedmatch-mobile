@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, ActivityIndicator} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 import { userService } from '../services';
@@ -9,71 +9,78 @@ class LoginPage extends Component {
 
   constructor() {
     super();
-    this.state = { username: null, password: null };
-    const URL = 'https://ezonsellerbackend.herokuapp.com';
-
+    this.state = { username: null, password: null, isLoading: false };
   }
+
+  static navigationOptions = { header: null };
 
   async saveItem(item, selectedValue) {
-    try {
-      await AsyncStorage.setItem(item, selectedValue);
-    } catch (error) {
-      console.error('AsyncStorage error: ' + error.message);
-    }
-  }
-
-  userRegister() {
-    Actions.RegisterPage();
-    /*try {
-      AsyncStorage.removeItem('id_token');
-      Alert.alert('Logout Success!');
-      Actions.Authentication();
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }*/
+      try {
+        await AsyncStorage.setItem(item, selectedValue);
+      } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+      }
   }
 
   userAuthentication() {
-    Actions.Authentication();
-    /*try {
-      AsyncStorage.removeItem('id_token');
-      Alert.alert('Logout Success!');
-      Actions.Authentication();
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }*/
+    this.props.navigation.navigate('SignIn');
   }
 
-  userRegisters() {
-    Actions.HomePage();
-    /*try {
-      AsyncStorage.removeItem('id_token');
-      Alert.alert('Logout Success!');
-      Actions.Authentication();
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }*/
-  }
 
   userLogin() {
       if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
+          this.setState({ isLoading: true})
           userService.login(this.state.username, this.state.password)
           .then(response => {
             if (response) {
-                if (response && response.Token) {
-                    this.saveItem('id_token', response.Token);
-                    Actions.HomePage();
+                if (response && response.token) {
+                    this.saveItem('id_token', response.token);
+                    this.props.navigation.navigate('App');
                 }
             }
           })
           .catch(error => {
             console.log(error);
-            Alert.alert('Login Fail');
           });
   }
 
   render() {
+    const { isLoading } = this.state;
+
+    if (isLoading){
     return (
+        <ScrollView style={{backgroundColor: '#fff'}}>
+            <View style={styles.headerLogin}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <View style={styles.imageStyle}>
+                    <Image
+                      style={styles.container}
+                      source={require('./logo-login.png')}
+                       />
+                  </View>
+                </View>
+              </View>
+                <View style={styles.contentLogin}>
+                  <Text style={styles.textLight}>
+                    ENCUENTRA TU MEDIO
+                  </Text>
+                  <Text style={styles.textBold}>
+                    COGOLLO
+                  </Text>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                <TouchableOpacity
+                    style={styles.buttomLoginStyle}
+                    onPress={this.userLogin.bind(this)}>
+                    <Text style={styles.buttonText}>Inicia Sesión</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
+                  <Text > Iniciar Sesión con Redes Sociales </Text>
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
+        )
+    }else{
+        return (
       <ScrollView style={{backgroundColor: '#fff'}}>
       <View style={styles.headerLogin}>
         <View style={{flex: 1, flexDirection: 'row'}}>
@@ -124,13 +131,13 @@ class LoginPage extends Component {
         </View>
       </ScrollView>
     );
+    }
   }
 }
 
 const styles = StyleSheet.create({
   headerLogin: {
     backgroundColor: '#9605CC',
-    height: 50,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 250,
+    marginTop: 25,
   },
   textLight:{
     fontSize: 20,

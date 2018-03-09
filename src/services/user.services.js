@@ -47,13 +47,10 @@ function postRegister(data) {
 
 
 function handleResponse(response) {
-    console.log(typeof response)
-    console.log('--------')
-    console.log(response)
     if (!response.ok) {
         return Promise.reject(response.json());
     }
-    return Promise.reject(response.json());
+    return response.json();
 }
 
 

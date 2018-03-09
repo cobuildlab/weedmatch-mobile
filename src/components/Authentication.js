@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../services';
@@ -11,6 +11,8 @@ class Authentication extends Component {
     super();
     this.state = { username: null, password: null };
   }
+
+  static navigationOptions = { header: null };
 
   async saveItem(item, selectedValue) {
     try {
@@ -35,6 +37,17 @@ class Authentication extends Component {
     }*/
   }
 
+    userLoginPage() {
+      this.props.navigation.navigate('Login');
+      /*try {
+        AsyncStorage.removeItem('id_token');
+        Alert.alert('Logout Success!');
+        Actions.Authentication();
+      } catch (error) {
+        console.log('AsyncStorage error: ' + error.message);
+      }*/
+    }
+
   userLogin() {
       if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
           userService.login(this.state.username, this.state.password)
@@ -56,12 +69,14 @@ class Authentication extends Component {
   render() {
     return (
       <ScrollView style={{backgroundColor: '#fff'}}>
+
       <View style={styles.headerLogin}>
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={styles.imageStyle}>
             <Image
               style={styles.container}
-              source={require('./logo-login.png')}
+              source={require('./img/logo-login.png')}
+              style={[{ width: null, height: 300}]}
                />
           </View>
         </View>
@@ -104,7 +119,6 @@ class Authentication extends Component {
 const styles = StyleSheet.create({
   headerLogin: {
     backgroundColor: '#9605CC',
-    height: 50,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -126,7 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 250,
+    marginTop: 25,
   },
   textLight:{
     fontSize: 20,

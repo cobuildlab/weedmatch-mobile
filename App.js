@@ -45,7 +45,7 @@ class App extends Component {
 }
 
 const AppStack  = StackNavigator({ Home: HomePage });
-const AuthStack = StackNavigator({ SignIn: Authentication, Register: RegisterPage });
+const AuthStack = StackNavigator({ SignIn: Authentication, Register: RegisterPage, Login: LoginPage });
 
 export default SwitchNavigator(
   {
