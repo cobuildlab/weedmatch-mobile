@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, Picker, ActivityIndicator, StyleSheet} from 'react-native';
+import { SwitchNavigator } from 'react-navigation';
+import { userService } from '../services';
+
 //import styles from './styles';
 
 class RegisterPage extends Component {
@@ -8,46 +10,84 @@ class RegisterPage extends Component {
   constructor() {
     super();
     this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      username: '',
-      password: ''
-
+        first_name: '',
+        last_name: '',
+        email: '',
+        direction: '',
+        country: '',
+        username: '',
+        password: '',
+        latitude: '',
+        longitude: '',
+        countrys: [],
+        age: '',
+        isLoaded: false
     };
-    const URL = 'https://ezonsellerbackend.herokuapp.com';
+  }
 
+  componentWillMount() {
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+              this.setState({
+                latitud: position.latitude,
+                longitud: position.longitude
+              })
+              console.log(position);
+          },
+          (error) => {
+              console.log(error)
+          },
+          {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
+      );
+
+      AsyncStorage.getItem('countrys')
+          .then((response) => {
+             this.setState({countrys: JSON.parse(response)})
+          })
+          .catch((error) => {
+              console.log(error);
+          });
   }
 
   registerUser() {
-    Alert.alert(this.state.user),
-    Actions.Authentication();
-
-    //Alert.alert(this.state.user);
-/*      if (!this.state.username || !this.state.password) return;
+      //if (!this.state.first_name || !this.state.last_name || !this.state.email || !this.state.direction || !this.state.country_id || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
           // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          fetch('https://ezonsellerbackend.herokuapp.com/login/', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              username: this.state.username,
-              password: this.state.password,
-            })
-          })
-          .then((response) => response.json())
-          .then((responseData) => {
-            this.saveItem('id_token', responseData.id_token),
+          //console.log(JSON.parse(this.state));
 
-          })
-      .done();*/
+
+          this.setState({country: JSON.stringify(this.state.country), latitude: '37.421998', longitude: '-122.084000', age: '1984-09-30', countrys: [] })
+          let valueUser = {'first_name': this.state.first_name, 'last_name': this.state.last_name, 'email': this.state.email, 'country': JSON.stringify(this.state.country), 'direction': this.state.direction, 'username': this.state.username, 'password': this.state.password, 'latitud': 37.421998, 'longitud': -122.084000,  'age': '1984-09-30' }
+          userService.postRegister(JSON.stringify(valueUser))
+              .then(response => {
+                  console.log(response);
+
+                  this.props.navigation.navigate('Auth');
+              })
+               .catch((error) => {
+                  console.log('-------');
+                  console.log(JSON.parse(error));
+               });
+     // .done();@
   }
 
   registerCancel() {
-    Actions.Authentication();
+    //this.props.navigation.navigate.goBack();
   }
 
   render() {
+    const { countrys } = this.state;
+  /*  if (!this.state.isLoaded) {
+          return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+          )
+    } else {
+*/
     return (
+
+      <ScrollView style={{padding: 20}}>
+        <View>
       <ScrollView style={{backgroundColor: '#fff'}}>
         <View style={styles.headerLogin}>
           <View style={{flex: 1, flexDirection: 'row'}}>
@@ -127,7 +167,8 @@ class RegisterPage extends Component {
         </View>
       </ScrollView>
     );
-  }
+    }
+  //}
 }
 
 const styles = StyleSheet.create({

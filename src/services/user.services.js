@@ -1,15 +1,13 @@
-//import { authHeader } from '../helpers';
-import { Actions } from 'react-native-router-flux';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
-
-
+import { authHeader } from '../helpers';
 export const userService = {
     login,
     logout,
+    getCountry,
+    postRegister,
 };
 
-const URL = "https://ezonsellerbackend.herokuapp.com/";
-//const URL = "http://127.0.0.1:8000/";
+const URL = "https://weedmatch.herokuapp.com/";
+//const URL = "https://weedmatch.herokuapp.com/";
 
 
 function login(username, password) {
@@ -28,11 +26,34 @@ function logout() {
 }
 
 
+function getCountry(username, password) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(URL + 'countrys/', requestOptions).then(handleResponse);
+}
+
+function postRegister(data) {
+    console.log(data)
+    const requestOptions = {
+        method: 'POST',
+        body: data
+    };
+
+    return fetch(URL + 'register/', requestOptions).then(handleResponse);
+}
+
+
 function handleResponse(response) {
+    console.log(typeof response)
+    console.log('--------')
+    console.log(response)
     if (!response.ok) {
         return Promise.reject(response.json());
     }
-    return response.json();
+    return Promise.reject(response.json());
 }
 
 

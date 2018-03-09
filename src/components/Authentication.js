@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView} from 'react-native';
+import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../services';
 //import styles from './styles';
@@ -10,8 +10,6 @@ class Authentication extends Component {
   constructor() {
     super();
     this.state = { username: null, password: null };
-    const URL = 'https://ezonsellerbackend.herokuapp.com';
-
   }
 
   async saveItem(item, selectedValue) {
@@ -22,30 +20,12 @@ class Authentication extends Component {
     }
   }
 
+  componentDidmount(){
+
+  }
+
   userRegister() {
-    Actions.RegisterPage();
-    /*try {
-      AsyncStorage.removeItem('id_token');
-      Alert.alert('Logout Success!');
-      Actions.Authentication();
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }*/
-  }
-
-  userLoginPage() {
-    Actions.LoginPage();
-    /*try {
-      AsyncStorage.removeItem('id_token');
-      Alert.alert('Logout Success!');
-      Actions.Authentication();
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }*/
-  }
-
-  userRegisters() {
-    Actions.HomePage();
+    this.props.navigation.navigate('Register');
     /*try {
       AsyncStorage.removeItem('id_token');
       Alert.alert('Logout Success!');
@@ -59,11 +39,12 @@ class Authentication extends Component {
       if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
           userService.login(this.state.username, this.state.password)
           .then(response => {
+            console.log(response);
             if (response) {
-                if (response && response.Token) {
-                    this.saveItem('id_token', response.Token);
-                    Actions.HomePage();
-                }
+                if (response && response.token) {
+                    this.saveItem('id_token', response.token);
+                    this.props.navigation.navigate('App');
+                  }
             }
           })
           .catch(error => {
