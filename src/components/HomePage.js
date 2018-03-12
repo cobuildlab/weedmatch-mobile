@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import AlbumList from './src/components/AlbumList';
-import Album from './src/components/Album';
-import AlbumStack from './src/components/Router';
-import SampleText from './src/components/SampleText';
+import AlbumList from './AlbumList';
+import Album from './Album';
+import AlbumStack from './Router';
+import SampleText from './SampleText';
 import {
     Button,
     Platform,
