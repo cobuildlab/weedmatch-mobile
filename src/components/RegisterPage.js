@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, Picker} from 'react-native';
 //import styles from './styles';
+import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../services';
 
 class RegisterPage extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
         first_name: '',
         last_name: '',
@@ -16,24 +17,24 @@ class RegisterPage extends Component {
         country: '',
         username: '',
         password: '',
-        latitude: '',
-        longitude: '',
+        latitud: '',
+        longitud: '',
         countrys: [],
         age: '',
         isLoaded: false
     };
   }
 
-  static navigationOptions = { header: null };
+    static navigationOptions = { header: null };
 
- componentWillMount() {
+    componentWillMount() {
       navigator.geolocation.getCurrentPosition(
           (position) => {
               this.setState({
-                latitud: position.latitude,
-                longitud: position.longitude
+                latitud: position.coords.latitude,
+                longitud: position.coords.longitude
               })
-              console.log(position);
+              console.log(this.state);
           },
           (error) => {
               console.log(error)
@@ -48,34 +49,53 @@ class RegisterPage extends Component {
           .catch((error) => {
               console.log(error);
           });
-  }
+    }
 
   registerUser() {
+      console.log(this.props)
       //if (!this.state.first_name || !this.state.last_name || !this.state.email || !this.state.direction || !this.state.country_id || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
           // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          //console.log(JSON.parse(this.state));
-
-
-          this.setState({country: JSON.stringify(this.state.country), latitud: '37.421998', longitude: '-122.084000', age: '1984-09-30', countrys: [] })
           let valueUser = {'first_name': this.state.first_name, 'last_name': this.state.last_name, 'email': this.state.email, 'country': JSON.stringify(this.state.country), 'direction': this.state.direction, 'username': this.state.username, 'password': this.state.password, 'latitud': this.state.latitud, 'longitud': this.state.longitud,  'age': '1984-09-30' }
-          userService.postRegister(JSON.stringify(valueUser))
-              .then(response => {
-                  console.log(response);
 
-                  this.props.navigation.navigate('Auth');
-              })
-               .catch((error) => {
-                  console.log('-------');
-                  console.log(JSON.parse(error));
-               });
-     // .done();@
+          fetch('https://weedmatch.herokuapp.com/register/', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(valueUser),
+          })
+          .then(function(response){
+                if (!response.ok) {
+                    console.log("ERROR: " + JSON.stringify(response));
+
+                }
+             console.log(1)
+             //this.props.navigation.navigate('SignIn');
+
+             return response.json();
+            })
+          .then(function(data){
+            if(data.ok){
+
+            }
+            console.log(2)
+            Alert.alert(data.detail)
+            console.log(data)
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error('error');
+          });
+
   }
 
   registerCancel() {
-    //this.props.navigation.navigate.goBack();
+    this.props.navigation.navigate('SignIn');
   }
 
   render() {
+    const { countrys } = this.state;
     return (
       <ScrollView style={{backgroundColor: '#fff'}}>
         <View style={styles.headerLogin}>
@@ -116,6 +136,24 @@ class RegisterPage extends Component {
             returnKeyType='next'
             value={this.state.email}
           />
+          <TextInput
+              style={styles.inputStyle}
+              editable={true}
+              onChangeText={(direction) => this.setState({direction})}
+              placeholder='Address'
+              ref='direction'
+              returnKeyType='next'
+              value={this.state.direction}
+          />
+
+          <Picker
+              style={styles.inputStyle}
+              selectedValue={this.state.country}
+              onValueChange={itemValue => this.setState({ country: itemValue })}>
+              {countrys.map((i, index) => (
+                  <Picker.Item key={index} label={i.name} value={i.id} />
+              ))}
+          </Picker>
           <TextInput
             style={styles.inputStyle}
             editable={true}

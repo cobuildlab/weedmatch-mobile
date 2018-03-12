@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, ActivityIndicator} from 'react-native';
-import { Actions } from 'react-native-router-flux';
 
 import { userService } from '../services';
 //import styles from './styles';
