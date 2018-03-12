@@ -1,46 +1,130 @@
 import React, {Component} from 'react';
-import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage} from 'react-native';
-import { StackNavigator, SwitchNavigator } from 'react-navigation';
+import AlbumList from './src/components/AlbumList';
+import Album from './src/components/Album';
+import AlbumStack from './src/components/Router';
+import SampleText from './src/components/SampleText';
+import {
+    Button,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    StatusBar,
+    Text,
+    TouchableOpacity,
+    View,
+    AppRegistry,
+    SafeAreaView,
+  } from 'react-native';
+import {
+    createNavigator,
+    createNavigationContainer,
+    TabRouter,
+    addNavigationHelpers,
+    StackNavigator
+  } from 'react-navigation';
 
-class HomePage extends Component {
-  constructor(props){
-    super(props)
+const MyNavScreen = ({ navigation, banner }) => (
+    <ScrollView>
+      <SampleText>{banner}</SampleText>
+      <Button
+        onPress={() => {
+          navigation.goBack(null);
+        }}
+        title="Go back"
+      />
+    </ScrollView>
+  );
 
-    this.userLogout = this.userLogout.bind(this)
-  }
+  const MyHomeScreen = ({ navigation }) => (
+    <AlbumList />
+    // <MyNavScreen banner="Home Screen" navigation={navigation} />
+  );
 
-  static navigationOptions = {
-    title: 'Home Page',
-  };
+  const MyNotificationsScreen = ({ navigation }) => (
+    <Album />
+    // <MyNavScreen banner="Notifications Screen" navigation={navigation} />
+  );
 
-  userLogout() {
-    const { navigate } = this.props.navigation;
-    try {
-      AsyncStorage.removeItem('id_token');
-      navigate('Auth');
-     Alert.alert('Logout Success!');
-    } catch (error) {
-      console.log(error);
-      console.log('AsyncStorage error: ' + error.message);
-    }
-  }
-
-  render() {
+  const CustomTabBar = ({ navigation }) => {
+    const { routes } = navigation.state;
     return (
-      <View>
-        <TouchableOpacity onPress={this.getProtectedQuote}>
-          <Text> Get Chuck Norris quote! </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this.userLogout}>
-          <Text> Log out </Text>
-        </TouchableOpacity>
-
+      <View style={styles.tabContainer}>
+        {routes.map(route => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(route.routeName)}
+            style={styles.tab}
+            key={route.routeName}
+          >
+            <Text>{route.routeName}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
     );
-  }
-}
+  };
 
+  const CustomTabView = ({ router, navigation }) => {
+    const { routes, index } = navigation.state;
+    const ActiveScreen = router.getComponentForState(navigation.state);
+    return (
+      <SafeAreaView style={styles.safeArea} >
+        <View style={styles.container}>
+          <CustomTabBar navigation={navigation} />
+          <ActiveScreen
+            navigation={addNavigationHelpers({
+              ...navigation,
+              state: routes[index],
+            })}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  };
 
+  const CustomTabRouter = TabRouter(
+    {
+      Home: {
+        screen: AlbumStack,
+        path: '',
+      },
+      Notifications: {
+        screen: MyNotificationsScreen,
+        path: 'notifications',
+      },
+    },
+    {
+      // Change this to start on a different tab
+      initialRouteName: 'Home',
+    }
+  );
 
-export default HomePage;
+  const HomePage = createNavigationContainer(
+    createNavigator(CustomTabRouter)(CustomTabView)
+  );
+
+  const styles = StyleSheet.create({
+    container: {
+      marginTop: Platform.OS === 'ios' ? 20 : 0,
+    },
+    tabContainer: {
+      flexDirection: 'row',
+      height: 48,
+    },
+    tab: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: 4,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 4,
+    },
+    sampleText: {
+      margin: 14,
+    },
+    safeArea: {
+      flex: 1,
+      backgroundColor: '#ddd'
+    }
+  });
+
+  export default HomePage;
