@@ -23,6 +23,9 @@ import {
     StackNavigator
   } from 'react-navigation';
 
+
+
+
 const MyNavScreen = ({ navigation, banner }) => (
     <ScrollView>
       <SampleText>{banner}</SampleText>
@@ -37,12 +40,10 @@ const MyNavScreen = ({ navigation, banner }) => (
 
   const MyHomeScreen = ({ navigation }) => (
     <AlbumList />
-    // <MyNavScreen banner="Home Screen" navigation={navigation} />
   );
 
   const MyNotificationsScreen = ({ navigation }) => (
     <Album />
-    // <MyNavScreen banner="Notifications Screen" navigation={navigation} />
   );
 
   const CustomTabBar = ({ navigation }) => {
