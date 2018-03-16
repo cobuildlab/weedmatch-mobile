@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-import { LoginButton } from 'react-native-fbsdk';
+import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { userService } from '../services';
 //import styles from './styles';
@@ -68,6 +68,24 @@ class Authentication extends Component {
           });
   }
 
+
+
+  _facebookLogin() {
+      LoginManager.logInWithReadPermissions(['public_profile']).then(
+        function(result) {
+          if (result.isCancelled) {
+            alert('Login cancelled');
+          } else {
+            alert('Login success with permissions: '
+              +result.grantedPermissions.toString());
+          }
+        },
+        function(error) {
+          alert('Login fail with error: ' + error);
+        }
+      );
+  }
+
   render() {
     return (
       <ScrollView style={{backgroundColor: '#fff'}}>
@@ -96,7 +114,30 @@ class Authentication extends Component {
           <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
           </TouchableOpacity>
 
-          <LoginButton />
+          <TouchableOpacity
+              style={styles.buttomFacebookStyle}
+              onPress={this._facebookLogin.bind(this)}>
+              <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
+          </TouchableOpacity>
+
+          <LoginButton
+              publishPermissions={["publish_actions"]}
+              onLoginFinished={
+              (error, result) => {
+                  if (error) {
+                      alert("login has error: " + result.error);
+                  } else if (result.isCancelled) {
+                      alert("login is cancelled.");
+                  } else {
+                      AccessToken.getCurrentAccessToken().then(
+                      (data) => {
+                          console.log(data.accessToken.toString())
+                          alert(data.accessToken.toString())
+                      })
+                  }
+              }
+              }
+              onLogoutFinished={() => alert("logout.")}/>
 
         <TouchableOpacity
             style={styles.buttomLoginStyle}
