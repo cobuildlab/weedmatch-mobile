@@ -1,58 +1,59 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import React, {Component} from 'react';
+import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage, ActivityIndicator } from 'react-native';
+import { StackNavigator, SwitchNavigator } from 'react-navigation';
+import Splash from './src/components/Splash';
+import Authentication  from './src/components/Authentication';
+import LoginPage  from './src/components/Login';
+import RegisterPage  from './src/components/Register';
+import HomePage  from './src/components/Home';
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+class App extends Component {
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+  constructor() {
+    super();
+    this.state = { hasToken: false, isLoaded: false };
+  }
 
-type Props = {};
-export default class App extends Component<Props> {
+  componentWillMount() {
+      AsyncStorage.getItem('id_token').then((token) => {
+          this.setState({ hasToken: token !== null })
+      })
+  }
+
+  componentDidMount(){
+    console.log('App')
+    AsyncStorage.getItem('id_token')
+        .then((token) => {
+        if(token)
+            this.props.navigation.navigate('App');
+        else
+            this.props.navigation.navigate('Auth');
+      })
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error);
+     });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+      <View>
+            <Text>Splash</Text>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+const AppStack  = StackNavigator({ Home: HomePage });
+const AuthStack = StackNavigator({ SignIn: Authentication, Register: RegisterPage, Login: LoginPage });
+
+export default SwitchNavigator(
+  {
+    AuthLoading: Splash,
+    App: AppStack,
+    Auth: AuthStack,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  {
+    initialRouteName: 'AuthLoading',
+  }
+);

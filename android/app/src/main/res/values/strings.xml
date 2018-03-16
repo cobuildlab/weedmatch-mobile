@@ -1,3 +1,4 @@
 <resources>
+    <string name="facebook_app_id">1712442065726889</string>
     <string name="app_name">weedmatch</string>
 </resources>
