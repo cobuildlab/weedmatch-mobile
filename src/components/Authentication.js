@@ -5,7 +5,6 @@ import { StackNavigator } from 'react-navigation';
 import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { userService } from '../services';
-//import styles from './styles';
 
 class Authentication extends Component {
 
@@ -22,10 +21,6 @@ class Authentication extends Component {
     } catch (error) {
       console.error('AsyncStorage error: ' + error.message);
     }
-  }
-
-  componentDidmount(){
-
   }
 
   userRegister() {
@@ -67,8 +62,6 @@ class Authentication extends Component {
             Alert.alert('Login Fail');
           });
   }
-
-
 
   _facebookLogin() {
       LoginManager.logInWithReadPermissions(['public_profile']).then(
@@ -120,26 +113,7 @@ class Authentication extends Component {
               <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
           </TouchableOpacity>
 
-          <LoginButton
-              publishPermissions={["publish_actions"]}
-              onLoginFinished={
-              (error, result) => {
-                  if (error) {
-                      alert("login has error: " + result.error);
-                  } else if (result.isCancelled) {
-                      alert("login is cancelled.");
-                  } else {
-                      AccessToken.getCurrentAccessToken().then(
-                      (data) => {
-                          console.log(data.accessToken.toString())
-                          alert(data.accessToken.toString())
-                      })
-                  }
-              }
-              }
-              onLogoutFinished={() => alert("logout.")}/>
-
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.buttomLoginStyle}
             onPress={this.userLoginPage.bind(this)}>
             <Text style={styles.buttonText}>Inicia Sesión</Text>
