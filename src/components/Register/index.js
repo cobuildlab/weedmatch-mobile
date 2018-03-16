@@ -103,7 +103,7 @@ class RegisterPage extends Component {
             <View style={styles.imageStyle}>
               <Image
                 style={styles.container}
-                source={require('../assets/img/logo-login.png')}
+                source={require('../../assets/img/logo-login.png')}
                  />
             </View>
           </View>

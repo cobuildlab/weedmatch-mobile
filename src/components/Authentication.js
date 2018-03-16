@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
+import { LoginButton } from 'react-native-fbsdk';
+
 import { userService } from '../services';
 //import styles from './styles';
 
@@ -93,11 +95,9 @@ class Authentication extends Component {
             onPress={this.userLogin.bind(this)}>
           <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttomFacebookStyle}
-            onPress={this.userLogin.bind(this)}>
-          <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
-          </TouchableOpacity>
+
+          <LoginButton />
+
         <TouchableOpacity
             style={styles.buttomLoginStyle}
             onPress={this.userLoginPage.bind(this)}>

@@ -3,9 +3,9 @@ import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage, ActivityIndica
 import { StackNavigator, SwitchNavigator } from 'react-navigation';
 import Splash from './src/components/Splash';
 import Authentication  from './src/components/Authentication';
-import LoginPage  from './src/components/LoginPage';
-import RegisterPage  from './src/components/RegisterPage';
-import HomePage  from './src/components/HomePage';
+import LoginPage  from './src/components/Login';
+import RegisterPage  from './src/components/Register';
+import HomePage  from './src/components/Home';
 
 class App extends Component {
 
