@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Image
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 var width = Dimensions.get('window').width;
 export default class topBar extends Component {
   constructor(props) {
@@ -15,8 +16,13 @@ export default class topBar extends Component {
   
     this.state = {};
   }
+
   _goBack(){
     this.props.navigator.pop()
+  }
+
+  _profile(){
+    this.props.navigate('Profile');
   }
   _onReder(){
     if(this.props.onPhoto){
@@ -32,8 +38,11 @@ export default class topBar extends Component {
     }else{
       return(
       <View style={styles.nav}>
-      <View style={{flex:1}} >
+      <View style={{flex:1}}>
+          <TouchableHighlight onPress={this._profile.bind(this)}>
           <Image source={require('../images/camera.png')} style={{marginLeft:5, width:20, height:20}}/>
+
+          </TouchableHighlight>
       </View>
           <Text style={{flex:1, textAlign:'center'}}>{this.props.title}</Text>
       <View style={{flex:1}} >

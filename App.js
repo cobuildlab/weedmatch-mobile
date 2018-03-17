@@ -6,6 +6,7 @@ import Authentication  from './src/components/Authentication';
 import LoginPage  from './src/components/Login';
 import RegisterPage  from './src/components/Register';
 import HomePage  from './src/components/Home';
+import Profile  from './src/components/Profile';
 
 class App extends Component {
 
@@ -44,7 +45,7 @@ class App extends Component {
   }
 }
 
-const AppStack  = StackNavigator({ Home: HomePage });
+const AppStack  = StackNavigator({ Home: HomePage, Profile: Profile });
 const AuthStack = StackNavigator({ SignIn: Authentication, Register: RegisterPage, Login: LoginPage });
 
 export default SwitchNavigator(

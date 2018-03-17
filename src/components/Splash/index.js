@@ -39,7 +39,7 @@ class Splash extends Component {
         .catch((error) => {
           console.log(error);
        });
-    AsyncStorage.removeItem('id_token')
+    //AsyncStorage.removeItem('id_token')
     console.log('Splash')
 
   }

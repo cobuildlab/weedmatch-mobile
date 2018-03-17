@@ -141,7 +141,7 @@ export default class HomePage extends Component {
       render() {
         return (
           <View>
-           <TopBar title={'Feed'}/>
+           <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
 
            {this.renderFeed(this.state.feedData)}
           </View>

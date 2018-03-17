@@ -34,6 +34,17 @@ class Authentication extends Component {
     }*/
   }
 
+  userProfile() {
+      this.props.navigation.navigate('Profile');
+      /*try {
+        AsyncStorage.removeItem('id_token');
+        Alert.alert('Logout Success!');
+        Actions.Authentication();
+      } catch (error) {
+        console.log('AsyncStorage error: ' + error.message);
+      }*/
+    }
+
     userLoginPage() {
       this.props.navigation.navigate('Login');
       /*try {
@@ -124,6 +135,13 @@ class Authentication extends Component {
                 onPress={this.userRegister.bind(this)}>
               <Text style={styles.buttomTextRegister}>¿No tienes cuenta? ¡Únete!</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.buttomRegister}
+                onPress={this.userProfile.bind(this)}>
+              <Text style={styles.buttomTextRegister}>Profile</Text>
+            </TouchableOpacity>
+
           </View>
         </View>
       </ScrollView>
