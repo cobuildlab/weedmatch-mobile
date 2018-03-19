@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage} from 'react-native';
+import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage, StyleSheet} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { userService } from '../../services';
 
@@ -16,11 +16,9 @@ class Splash extends Component {
                AsyncStorage.getItem('id_token')
                    .then((token) => {
                        if(token)
-                           this.props.navigation.navigate('App');
-                           // Actions.main()
+                          // this.props.navigation.navigate('App');
                        else
-                           this.props.navigation.navigate('Auth');
-                           // Actions.auth()
+                           //this.props.navigation.navigate('Auth');
                    })
                    .catch((error) => {
                        console.log(error);
@@ -39,18 +37,31 @@ class Splash extends Component {
         .catch((error) => {
           console.log(error);
        });
-    //AsyncStorage.removeItem('id_token')
-    console.log('Splash')
 
   }
 
   render() {
     return (
-      <View>
-            <Text>Splash</Text>
+      <View style={styles.container}>
+          <Image source={require('./../img/logo-login.png')} style={styles.imageStyle} />
       </View>
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
+  imageStyle: {
+    height: 300,
+    width: null,
+    flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+  }
+});
 
 export default Splash;
