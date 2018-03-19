@@ -16,9 +16,9 @@ class Splash extends Component {
                AsyncStorage.getItem('id_token')
                    .then((token) => {
                        if(token)
-                          // this.props.navigation.navigate('App');
+                          this.props.navigation.navigate('App');
                        else
-                           //this.props.navigation.navigate('Auth');
+                           this.props.navigation.navigate('Auth');
                    })
                    .catch((error) => {
                        console.log(error);

@@ -75,13 +75,17 @@ class Authentication extends Component {
   }
 
   _facebookLogin() {
-      LoginManager.logInWithReadPermissions(['public_profile']).then(
+      LoginManager.logInWithReadPermissions(["public_profile"]).then(
         function(result) {
           if (result.isCancelled) {
             alert('Login cancelled');
           } else {
-            alert('Login success with permissions: '
-              +result.grantedPermissions.toString());
+            AccessToken.getCurrentAccessToken().then(
+                (data) => {
+                    console.log(data.accessToken.toString())
+                }
+            )
+            console.log(result);
           }
         },
         function(error) {
@@ -123,6 +127,25 @@ class Authentication extends Component {
               onPress={this._facebookLogin.bind(this)}>
               <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
           </TouchableOpacity>
+
+               <LoginButton
+                    publishPermissions={["publish_actions"]}
+                    onLoginFinished={
+                      (error, result) => {
+                        if (error) {
+                          alert("login has error: " + result.error);
+                        } else if (result.isCancelled) {
+                          alert("login is cancelled.");
+                        } else {
+                          AccessToken.getCurrentAccessToken().then(
+                            (data) => {
+                              alert(data.accessToken.toString())
+                            }
+                          )
+                        }
+                      }
+                    }
+                    onLogoutFinished={() => alert("logout.")}/>
 
           <TouchableOpacity
             style={styles.buttomLoginStyle}
