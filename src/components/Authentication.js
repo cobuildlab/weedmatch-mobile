@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
+// import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { userService } from '../services';
 
@@ -128,7 +128,7 @@ class Authentication extends Component {
               <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
           </TouchableOpacity>
 
-               <LoginButton
+               {/* <LoginButton
                     publishPermissions={["publish_actions"]}
                     onLoginFinished={
                       (error, result) => {
@@ -145,7 +145,7 @@ class Authentication extends Component {
                         }
                       }
                     }
-                    onLogoutFinished={() => alert("logout.")}/>
+                    onLogoutFinished={() => alert("logout.")}/> */}
 
           <TouchableOpacity
             style={styles.buttomLoginStyle}
