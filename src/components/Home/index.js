@@ -128,7 +128,7 @@ export default class HomePage extends Component {
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
                   }}>
-                    <View style={{height: 1, backgroundColor: '#B2B2B2', marginBottom: 10, marginLeft: 15, marginRight: 20, marginTop: 10,}} />
+                    <View style={{height: 1, backgroundColor: '#B2B2B2', marginBottom: 8, marginLeft: 16, marginRight: 20, marginTop: 5,}} />
 
                   </View>
             </View>
@@ -211,7 +211,7 @@ export default class HomePage extends Component {
         marginLeft:10,
         marginTop:5,
         width:30,
-        height:25
+        height:26
 
       },
       likes:{
@@ -238,8 +238,8 @@ export default class HomePage extends Component {
         fontSize:10
       },
       time:{
-        marginRight:15,
-        marginTop: 5,
+        marginRight:20,
+        marginTop: 10,
         fontSize:14,
         color:'#777',
         textAlign:'left'
