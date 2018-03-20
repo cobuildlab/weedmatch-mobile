@@ -17,6 +17,10 @@ const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2, secti
 import TopBar from './../topBar';
 import Stories from './../stories';
 
+var mePic = require('../../images/sebas.jpg');
+var meName = 'Sebastian Diaz'
+var meUsername = 'holasebasdiaz'
+
 export default class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -113,6 +117,10 @@ export default class HomePage extends Component {
      if(sectionID != "storiesSection"){
             return(
             <View style={{backgroundColor: '#FFF',}}>
+                <View style={styles.mediaUser}>
+                    <Image style={styles.picture} source={mePic} />
+                    <Text style={styles.username}>{meUsername}</Text>
+                </View>
                  <Image
                    style={styles.media}
                   source={rowData.media}/>
@@ -170,7 +178,7 @@ export default class HomePage extends Component {
       },
       listView:{
         marginTop:0,
-        marginBottom:180,
+        marginBottom:80,
         width:width,
       },
       picture:{
@@ -251,6 +259,27 @@ export default class HomePage extends Component {
         backgroundColor:'blue',
 
         height:40
-      }
+      },
+      mediaUser:{
+          alignItems: 'center',
+          padding:10,
+          backgroundColor:'#FFF',
+          width:width,
+          flexDirection:'row',
+          borderWidth:1,
+          borderTopColor:'#fff',
+          borderLeftColor:'#fff',
+          borderRightColor:'#fff',
+          borderBottomColor:'#fff',
+        },   picture:{
+             width:30,
+             height:30,
+             borderRadius:15,
+
+           },
+            username:{
+             paddingLeft:10,
+
+           },
 
     });

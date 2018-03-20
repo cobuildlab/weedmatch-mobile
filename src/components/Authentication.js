@@ -6,6 +6,7 @@ import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../services';
 
+
 class Authentication extends Component {
 
   constructor() {
