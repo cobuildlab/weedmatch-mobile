@@ -9,6 +9,7 @@ import {
       Image,
       Dimensions
 } from 'react-native';
+import ActionButton from 'react-native-action-button';
 
 var width = Dimensions.get('window').width;
 var feedData = require('./../feedData');
@@ -81,14 +82,27 @@ export default class HomePage extends Component {
                           onRefresh={this._onRefresh.bind(this)}
                         />
                       }
-
-
                   />
+                  <View style={{flex:1, backgroundColor: '#f3f3f3'}}>
+                     {/* Rest of the app comes ABOVE the action button component !*/}
+                     <ActionButton buttonColor="rgba(231,76,60,1)">
+                       <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+                         <Text >pl</Text>
+                       </ActionButton.Item>
+                       <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
+                         <Text >pl</Text>
+                       </ActionButton.Item>
+                       <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
+                         <Text >pl</Text>
+                       </ActionButton.Item>
+                     </ActionButton>
+                   </View>
               </View>
         )
 
 
         }
+
         _likes(likes){
 
           var users = ""
@@ -139,7 +153,10 @@ export default class HomePage extends Component {
                     <View style={{height: 1, backgroundColor: '#B2B2B2', marginBottom: 8, marginLeft: 16, marginRight: 20, marginTop: 5,}} />
 
                   </View>
+
             </View>
+
+
                 )
         }else{
             return false
@@ -166,6 +183,11 @@ export default class HomePage extends Component {
         alignItems: 'center',
         backgroundColor: '#FFF',
       },
+      actionButtonIcon: {
+        fontSize: 20,
+        height: 22,
+        color: 'white',
+      },
       welcome: {
         fontSize: 20,
         textAlign: 'center',
@@ -178,7 +200,7 @@ export default class HomePage extends Component {
       },
       listView:{
         marginTop:0,
-        marginBottom:80,
+        marginBottom:118,
         width:width,
       },
       picture:{

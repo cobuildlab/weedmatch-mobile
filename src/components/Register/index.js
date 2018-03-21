@@ -1,9 +1,24 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, Picker} from 'react-native';
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  AsyncStorage,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Image,
+  Picker,
+  KeyboardAvoidingView
+} from 'react-native';
 //import styles from './styles';
 import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../../services';
+
+export const IMAGE_HEIGHT = window.width / 2;
+export const IMAGE_WIDTH = window.width;
 
 class RegisterPage extends Component {
 
@@ -97,18 +112,23 @@ class RegisterPage extends Component {
   render() {
     const { countrys } = this.state;
     return (
-      <ScrollView style={{backgroundColor: '#fff'}}>
-        <View style={styles.headerLogin}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={styles.imageStyle}>
-              <Image
-                style={styles.container}
-                source={require('../../assets/img/logo-login.png')}
-                 />
-            </View>
-          </View>
-        </View>
-        <View style={styles.contentRegister}>
+      <KeyboardAvoidingView style={{
+        backgroundColor: '#fff',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 0,
+        padding: 0,
+        margin: 0,
+        }}
+        behavior="padding"
+      >
+
+      <Image
+          style={styles.container}
+          source={require('../../assets/img/logo-b.png')}
+      />
+
         <TextInput
           style={styles.inputStyle}
             editable={true}
@@ -121,39 +141,13 @@ class RegisterPage extends Component {
         <TextInput
           style={styles.inputStyle}
             editable={true}
-            onChangeText={(last_name) => this.setState({last_name})}
-            placeholder='Last Name'
-            ref='last_name'
-            returnKeyType='next'
-            value={this.state.last_name}
-          />
-        <TextInput
-          style={styles.inputStyle}
-            editable={true}
             onChangeText={(email) => this.setState({email})}
             placeholder='Email'
             ref='email'
             returnKeyType='next'
             value={this.state.email}
           />
-          <TextInput
-              style={styles.inputStyle}
-              editable={true}
-              onChangeText={(direction) => this.setState({direction})}
-              placeholder='Address'
-              ref='direction'
-              returnKeyType='next'
-              value={this.state.direction}
-          />
 
-          <Picker
-              style={styles.inputStyle}
-              selectedValue={this.state.country}
-              onValueChange={itemValue => this.setState({ country: itemValue })}>
-              {countrys.map((i, index) => (
-                  <Picker.Item key={index} label={i.name} value={i.id} />
-              ))}
-          </Picker>
           <TextInput
             style={styles.inputStyle}
             editable={true}
@@ -173,13 +167,8 @@ class RegisterPage extends Component {
             secureTextEntry={true}
             value={this.state.password}
           />
-          <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
+
+          <TouchableOpacity
               style={styles.buttomRegisterStyle}
               onPress={this.registerUser.bind(this)}>
               <Text style={styles.buttonText}> Register </Text>
@@ -190,33 +179,21 @@ class RegisterPage extends Component {
               onPress={this.registerCancel.bind(this)}>
               <Text style={styles.buttonTextCancel}> Cancel </Text>
             </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+        <View style={{ height: 0 }} />
+
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  headerLogin: {
-    backgroundColor: '#9605CC',
-    height: 200,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   container: {
-    flex: 2,
-    justifyContent: 'center',
-    width: null,
+    flex: 1,
+    width: '80%',
     resizeMode: 'contain',
+    justifyContent: 'center',
   },
-  imageStyle: {
-    height: 200,
-    flex: 3,
-    width: null,
-  },
+
   contentRegister: {
     flex: 1,
     flexDirection: 'column',
@@ -236,9 +213,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttomRegisterStyle:{
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 10,
-    width: 120,
+    width: 250,
     marginRight: 5,
     paddingTop: 10,
     paddingBottom: 10,
@@ -248,11 +225,10 @@ const styles = StyleSheet.create({
 
   },
   buttomCancelStyle:{
-    marginTop: 20,
+    marginTop: 2,
     marginBottom: 10,
-    width: 120,
-    marginLeft: 5,
-    paddingTop: 10,
+    width: 220,
+    paddingTop: 5,
     paddingBottom: 10,
     borderColor: '#9605CC',
     borderWidth: 1,

@@ -105,7 +105,6 @@ class Authentication extends Component {
             <Image
               style={styles.container}
               source={require('./img/logo-login.png')}
-              style={[{ width: null, height: 300}]}
                />
           </View>
         </View>
@@ -182,9 +181,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
-    width: null,
+    width: '100%',
     resizeMode: 'contain',
   },
   imageStyle: {
