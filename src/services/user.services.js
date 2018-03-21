@@ -4,6 +4,7 @@ export const userService = {
     logout,
     getCountry,
     postRegister,
+    feed,
 };
 
 const URL = "https://weedmatch.herokuapp.com/";
@@ -18,6 +19,16 @@ function login(username, password) {
     };
 
     return fetch(URL + 'login/', requestOptions).then(handleResponse);
+}
+
+function feed() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(),
+        // body: JSON.stringify({ lati, long })
+    };
+
+    return fetch(URL + 'public-feed/', requestOptions).then(handleResponse);
 }
 
 function logout() {

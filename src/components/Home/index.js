@@ -7,12 +7,14 @@ import {
       ListView,
       RefreshControl,
       Image,
-      Dimensions
+      Dimensions,
+      AsyncStorage
 } from 'react-native';
+import { userService } from '../../services';
 
 var width = Dimensions.get('window').width;
-var feedData = require('./../feedData');
-const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2, sectionHeaderHasChanged: (s1, s2) => s1 !== s2});
+// var feedData = require('./../feedData');
+const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 import TopBar from './../topBar';
 import Stories from './../stories';
@@ -23,46 +25,62 @@ export default class HomePage extends Component {
 
         this.state = {
 
-          feedData:ds1.cloneWithRowsAndSections([]),
+          feedData:ds1.cloneWithRows([]),
           loading:true,
           refreshing:false,
-          topBarShow:true
+          topBarShow:true,
+          totalPages: '',
+          nextPage: '',
         };
     }
 
     static navigationOptions = { header: null };
 
-
     componentDidMount(){
-        this.setState({
-          feedData: ds1.cloneWithRowsAndSections(feedData),
-          loading:false
-        })
 
+      userService.feed()
+      .then(response => {
+        if (response) {
+
+          response.results.map(album => 
+              console.log(album.id_user)
+          );
+
+          console.log(response.results)
+
+          this.setState({
+            feedData: ds1.cloneWithRows(response.results),
+            loading:false
+          })
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
 
-    sectionHeader(sectionData, sectionID){
-    /*    if(sectionID == 0){
-            return(<Stories />)
-        }else{*/
-            return(
-              <View style={styles.mediaUser}>
-                <Image
-                    style={styles.picture}
-                    source={sectionData.media.picture}/>
-                    <Text style={styles.username}>{sectionData.media.username}</Text>
-              </View>
-            )
-       /// }
-    }
+    // sectionHeader(sectionData, sectionID){
+    // /*    if(sectionID == 0){
+    //         return(<Stories />)
+    //     }else{*/
+    //         return(
+    //           <View style={styles.mediaUser}>
+    //             <Image
+    //                 style={styles.picture}
+    //                 source={sectionData.image}/>
+    //                 <Text style={styles.username}>{sectionData.media.username}</Text>
+    //           </View>
+    //         )
+    //    /// }
+    // }
 
     renderFeed(data){
         return(
               <View>
                  <ListView
                     style={styles.listView}
-                    initialListSize={5}
-                    enableEmptySections={true}
+                    // initialListSize={5}
+                    // enableEmptySections={true}
                     dataSource={data}
                     renderRow={this._renderRow.bind(this)}
                     // showsHorizontalScrollIndicator={false}
@@ -70,21 +88,49 @@ export default class HomePage extends Component {
                     //renderSectionHeader={this.sectionHeader}
                     // stickySectionHeadersEnabled={true}
                     // onChangeVisibleRows={(changedRows) => console.log(changedRows)}
-                    automaticallyAdjustContentInsets={false}
-                    refreshControl={
-                        <RefreshControl
-                          refreshing={this.state.refreshing}
-                          onRefresh={this._onRefresh.bind(this)}
-                        />
-                      }
-
-
+                    // automaticallyAdjustContentInsets={false}
+                    // refreshControl={
+                    //     <RefreshControl
+                    //       refreshing={this.state.refreshing}
+                    //       onRefresh={this._onRefresh.bind(this)}
+                    //     />
+                    //   }
                   />
               </View>
         )
+      }
 
+      _renderRow(rowData, rowID, sectionID, highlightRow){
 
-        }
+        console.log(rowData);
+  
+       if(sectionID != "storiesSection"){
+              return(
+              <View>
+                   <Image
+                     style={styles.media}
+                     source={{uri: rowData.image}}
+                     />
+  
+                   <View style={styles.mediaIcons}>
+                       <Image style={styles.icons} source={require('../../images/heart.png')} />
+                       <Image style={styles.icons} source={require('../../images/comm.png')} />
+                       <Image style={styles.icons} source={require('../../images/share.png')} />
+                    </View>
+                    <View style={styles.likes}>
+                   {/* {this._likes(rowData.likes)} */}
+                   </View>
+                     <View>
+                   {/* {this._comments(rowData.comments)} */}
+                   <Text style={styles.time}>HACE 2 HORAS</Text>
+                   </View>
+              </View>
+                  )
+          }else{
+              return false
+          }
+       }
+
         _likes(likes){
 
           var users = ""
@@ -108,41 +154,17 @@ export default class HomePage extends Component {
           });
         }
 
-     _renderRow(rowData, rowID, sectionID, highlightRow){
-
-     if(sectionID != "storiesSection"){
-            return(
-            <View>
-                 <Image
-                   style={styles.media}
-                  source={rowData.media}/>
-
-                 <View style={styles.mediaIcons}>
-                     <Image style={styles.icons} source={require('../../images/heart.png')} />
-                     <Image style={styles.icons} source={require('../../images/comm.png')} />
-                     <Image style={styles.icons} source={require('../../images/share.png')} />
-                  </View>
-                  <View style={styles.likes}>
-                 {this._likes(rowData.likes)}
-                 </View>
-                   <View>
-                 {this._comments(rowData.comments)}
-                 <Text style={styles.time}>HACE 2 HORAS</Text>
-                 </View>
-            </View>
-                )
-        }else{
-            return false
-        }
-     }
       _onRefresh(){}
 
 
       render() {
+        console.log(this.state.feedData);
         return (
           <View>
            <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
-
+            {/* {this.feedData.map(album => 
+              this.renderFeed(album)
+            )} */}
            {this.renderFeed(this.state.feedData)}
           </View>
         );
