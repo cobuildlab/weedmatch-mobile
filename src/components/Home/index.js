@@ -70,7 +70,7 @@ export default class HomePage extends Component {
 
     renderFeed(data){
         return(
-              <View>
+              <View style={{flex:1}}>
                  <ListView
                     style={styles.listView}
                     // initialListSize={5}
@@ -154,7 +154,7 @@ export default class HomePage extends Component {
       render() {
         console.log(this.state.feedData);
         return (
-          <View>
+          <View style={{flex:1}}>
            <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
            {this.renderFeed(this.state.feedData)}
            {this.showButton()}
@@ -222,7 +222,6 @@ export default class HomePage extends Component {
       },
       listView:{
         marginTop:0,
-        marginBottom:118,
         width:width,
       },
       picture:{
