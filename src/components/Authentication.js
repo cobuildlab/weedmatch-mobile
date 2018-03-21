@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
+// import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { userService } from '../services';
+
 
 class Authentication extends Component {
 
@@ -75,13 +76,17 @@ class Authentication extends Component {
   }
 
   _facebookLogin() {
-      LoginManager.logInWithReadPermissions(['public_profile']).then(
+      LoginManager.logInWithReadPermissions(["public_profile"]).then(
         function(result) {
           if (result.isCancelled) {
             alert('Login cancelled');
           } else {
-            alert('Login success with permissions: '
-              +result.grantedPermissions.toString());
+            AccessToken.getCurrentAccessToken().then(
+                (data) => {
+                    console.log(data.accessToken.toString())
+                }
+            )
+            console.log(result);
           }
         },
         function(error) {
@@ -100,7 +105,6 @@ class Authentication extends Component {
             <Image
               style={styles.container}
               source={require('./img/logo-login.png')}
-              style={[{ width: null, height: 300}]}
                />
           </View>
         </View>
@@ -123,6 +127,25 @@ class Authentication extends Component {
               onPress={this._facebookLogin.bind(this)}>
               <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
           </TouchableOpacity>
+
+               {/* <LoginButton
+                    publishPermissions={["publish_actions"]}
+                    onLoginFinished={
+                      (error, result) => {
+                        if (error) {
+                          alert("login has error: " + result.error);
+                        } else if (result.isCancelled) {
+                          alert("login is cancelled.");
+                        } else {
+                          AccessToken.getCurrentAccessToken().then(
+                            (data) => {
+                              alert(data.accessToken.toString())
+                            }
+                          )
+                        }
+                      }
+                    }
+                    onLogoutFinished={() => alert("logout.")}/> */}
 
           <TouchableOpacity
             style={styles.buttomLoginStyle}
@@ -158,9 +181,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
-    width: null,
+    width: '100%',
     resizeMode: 'contain',
   },
   imageStyle: {

@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, ActivityIndicator} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView} from 'react-native';
+
+import { StackNavigator } from 'react-navigation';
 
 import { userService } from '../../services';
 //import styles from './styles';
+
+export const IMAGE_HEIGHT = window.width / 2;
+export const IMAGE_WIDTH = window.width;
 
 class LoginPage extends Component {
 
@@ -48,18 +53,24 @@ class LoginPage extends Component {
 
     if (isLoading){
     return (
-        <ScrollView style={{backgroundColor: '#fff'}}>
-            <View style={styles.headerLogin}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                  <View style={styles.imageStyle}>
+      <KeyboardAvoidingView style={{
+        backgroundColor: '#fff',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 0,
+        padding: 0,
+        margin: 0,
+        }}
+        behavior="padding"
+      >
+
                     <Image
                       style={styles.container}
                       source={require('./logo-login.png')}
+                      style={[{ width: null, height: 300}]}
                        />
-                  </View>
-                </View>
-              </View>
-                <View style={styles.contentLogin}>
+
                   <Text style={styles.textLight}>
                     ENCUENTRA TU MEDIO
                   </Text>
@@ -75,29 +86,38 @@ class LoginPage extends Component {
                 <TouchableOpacity  style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
                   <Text > Iniciar Sesión con Redes Sociales </Text>
                 </TouchableOpacity>
-            </View>
-        </ScrollView>
+
+            <View style={{ height: 0 }} />
+
+          </KeyboardAvoidingView>
         )
     }else{
         return (
-      <ScrollView style={{backgroundColor: '#fff'}}>
-      <View style={styles.headerLogin}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={styles.imageStyle}>
+          <KeyboardAvoidingView style={{
+            backgroundColor: '#fff',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingTop: 0,
+            padding: 0,
+            margin: 0,
+            }}
+            behavior="padding"
+          >
+
             <Image
               style={styles.container}
-              source={require('./logo-login.png')}
+              source={require('../../assets/img/logo-b.png')}
                />
-          </View>
-        </View>
-      </View>
-        <View style={styles.contentLogin}>
+
+          <View style={styles.contentLogin}>
           <Text style={styles.textLight}>
             ENCUENTRA TU MEDIO
           </Text>
           <Text style={styles.textBold}>
             COGOLLO
           </Text>
+        </View>
           <TextInput
             style={styles.inputStyle}
             editable={true}
@@ -127,38 +147,26 @@ class LoginPage extends Component {
         <TouchableOpacity  style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
           <Text > Iniciar Sesión con Redes Sociales </Text>
         </TouchableOpacity>
-        </View>
-      </ScrollView>
+        <View style={{ height: 0 }} />
+
+      </KeyboardAvoidingView>
     );
     }
   }
 }
 
 const styles = StyleSheet.create({
-  headerLogin: {
-    backgroundColor: '#9605CC',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   container: {
-    flex: 2,
-    justifyContent: 'center',
-    width: null,
+    flex: 1,
+    width: '80%',
     resizeMode: 'contain',
-  },
-  imageStyle: {
-    height: 300,
-    flex: 3,
-    width: null,
+    justifyContent: 'center',
   },
   contentLogin: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 25,
   },
   textLight:{
     fontSize: 20,
@@ -168,7 +176,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#9605CC',
-    marginBottom: 40,
   },
   inputStyle:{
     backgroundColor: '#ffffff',
@@ -198,7 +205,8 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   buttomBackLogin:{
-    marginTop: 30,
+    marginTop: 20,
+    marginBottom: 10
   },
 
 });
