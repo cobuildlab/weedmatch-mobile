@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, Platform} from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
 
@@ -53,16 +53,8 @@ class LoginPage extends Component {
 
     if (isLoading){
     return (
-      <KeyboardAvoidingView style={{
-        backgroundColor: '#fff',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 0,
-        padding: 0,
-        margin: 0,
-        }}
-        behavior="padding"
+      <KeyboardAvoidingView style={styles.teclado}
+        behavior="height"
       >
 
                     <Image
@@ -93,16 +85,8 @@ class LoginPage extends Component {
         )
     }else{
         return (
-          <KeyboardAvoidingView style={{
-            backgroundColor: '#fff',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingTop: 0,
-            padding: 0,
-            margin: 0,
-            }}
-            behavior="padding"
+          <KeyboardAvoidingView style={styles.teclado}
+            behavior="height"
           >
 
             <Image
@@ -110,13 +94,13 @@ class LoginPage extends Component {
               source={require('../../assets/img/logo-b.png')}
                />
 
-          <View style={styles.contentLogin}>
-          <Text style={styles.textLight}>
-            ENCUENTRA TU MEDIO
-          </Text>
-          <Text style={styles.textBold}>
-            COGOLLO
-          </Text>
+              <View style={styles.contentLogin}>
+              <Text style={styles.textLight}>
+                ENCUENTRA TU MEDIO
+              </Text>
+              <Text style={styles.textBold}>
+                COGOLLO
+              </Text>
         </View>
           <TextInput
             style={styles.inputStyle}
@@ -208,6 +192,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10
   },
+  teclado:{
+    backgroundColor: '#fff',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    ...Platform.select({
+      ios: {
+
+      },
+      android: {
+
+      },
+    }),
+  }
 
 });
 

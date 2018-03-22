@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Image,
   Picker,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 //import styles from './styles';
 import { StackNavigator } from 'react-navigation';
@@ -112,22 +113,20 @@ class RegisterPage extends Component {
   render() {
     const { countrys } = this.state;
     return (
-      <KeyboardAvoidingView style={{
-        backgroundColor: '#fff',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 0,
-        padding: 0,
-        margin: 0,
-        }}
-        behavior="padding"
+      <KeyboardAvoidingView style={styles.teclado}
+        behavior="height"
       >
 
       <Image
           style={styles.container}
           source={require('../../assets/img/logo-b.png')}
       />
+      <Text style={styles.textLight}>
+        ENCUENTRA TU MEDIO
+      </Text>
+      <Text style={styles.textBold}>
+        COGOLLO
+      </Text>
 
         <TextInput
           style={styles.inputStyle}
@@ -201,6 +200,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 25,
   },
+  textLight:{
+    fontSize: 20,
+    color: '#9605CC',
+  },
+  textBold:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#9605CC',
+  },
   inputStyle:{
     backgroundColor: '#ffffff',
     height: 40,
@@ -248,6 +256,21 @@ const styles = StyleSheet.create({
   buttomBackLogin:{
     marginTop: 30,
   },
+  teclado:{
+    backgroundColor: '#fff',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    ...Platform.select({
+      ios: {
+
+      },
+      android: {
+
+      },
+    }),
+  }
 
 });
 
