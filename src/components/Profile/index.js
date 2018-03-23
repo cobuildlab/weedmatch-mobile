@@ -5,12 +5,19 @@ import {
   Text,
   View,
   ScrollView,
+  AsyncStorage,
+  TouchableHighlight,
   Image,
   Navigator
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 
 import TopBar from './../../utils/TopBar';
 import TabProfile from '../tabProfile';
+
+var mePic = require('../../images/sebas.jpg');
+var meName = 'Sebastian Diaz'
+var meUsername = 'holasebasdiaz'
 
 export default class Profile extends Component {
 
@@ -20,7 +27,12 @@ export default class Profile extends Component {
     this.state = {};
   }
 
-  //static navigationOptions = { header: null };
+_logout(){
+  AsyncStorage.removeItem('id_token');
+  this.props.navigation.navigate('Auth');
+
+}
+  static navigationOptions = { title: 'Perfil' };
 
   render() {
 
@@ -40,26 +52,14 @@ export default class Profile extends Component {
             </View>
 
           <View style={{flex:1}}>
-            <View style={styles.meData}>
 
-              <View style={styles.data}>
-                <Text style={{fontWeight:'bold'}}>22</Text>
-                <Text style={{fontSize:12, color:'#777'}}>posts</Text>
-              </View>
-
-              <View style={styles.data}>
-                <Text style={{fontWeight:'bold'}}>204</Text>
-                <Text style={{fontSize:12, color:'#777'}}>followers</Text>
-              </View>
-
-              <View style={styles.data}>
-                <Text style={{fontWeight:'bold'}}>22</Text>
-                <Text style={{fontSize:12, color:'#777'}}>following</Text>
-              </View>
-
-            </View>
             <View style={styles.edit}>
-              <Text>Edit profile</Text>
+              <Text>Editar Perfil</Text>
+            </View>
+            <View style={styles.edit2}>
+              <TouchableHighlight onPress={()=>this._logout()}>
+                  <Text style={styles.username}>Cerrar Sesión</Text>
+              </TouchableHighlight>
             </View>
           </View>
 
@@ -128,7 +128,15 @@ const styles = StyleSheet.create({
     alignItems:'center',
     margin:15,
     padding:2
+  },
+  edit2:{
+    borderWidth:1,
+    borderColor:'#ccc',
+    borderRadius:3,
+    alignItems:'center',
+    margin:15,
+    marginTop: 0,
+    padding:2
   }
 
 });
-

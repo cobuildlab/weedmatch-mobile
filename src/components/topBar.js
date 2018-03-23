@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+
   Dimensions,
   TouchableHighlight,
   Image
@@ -100,5 +101,5 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:'row',
   }
-  
+
 });

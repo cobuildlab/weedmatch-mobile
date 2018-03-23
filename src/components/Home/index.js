@@ -270,7 +270,7 @@ export default class HomePage extends Component {
             <View style={{flex:1}}>
               <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
               <View style={[styles.container, styles.horizontal]}>
-                <ActivityIndicator size="large" color="#0000ff" />
+                <ActivityIndicator size="large" color="#9605CC" />
               </View>
             </View>
           );
@@ -298,8 +298,7 @@ export default class HomePage extends Component {
           alignItems: 'center',
           justifyContent: 'center',
           bottom: 5,
-          left: 0,
-          right: 20,
+          right: 156,
       },
       FloatingButtonStyle: {
         resizeMode: 'contain',
