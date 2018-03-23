@@ -12,7 +12,8 @@ import {
   Picker,
   KeyboardAvoidingView,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  ToastAndroid
 } from 'react-native';
 //import styles from './styles';
 import { StackNavigator } from 'react-navigation';
@@ -35,7 +36,7 @@ class RegisterPage extends Component {
         longitud: '',
         age: '',
         sexo: 'Hombre',
-        isLoaded: false
+        isLoading: false
     };
   }
 
@@ -59,34 +60,16 @@ class RegisterPage extends Component {
   _registerUser() {
       if (!this.state.first_name || !this.state.email || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
           // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          let valueUser = {'first_name': this.state.first_name, 'email': this.state.email, 'username': this.state.username, 'password': this.state.password, 'latitud': parseFloat(this.state.latitud).toFixed(6), 'longitud': parseFloat(this.state.longitud).toFixed(6), 'sex': this.state.sexo, 'age': '1988-05-19' }
+          let valueUser = {"first_name": (this.state.first_name), "email": this.state.email, "username": this.state.username, "password": this.state.password, "latitud": parseFloat(this.state.latitud).toFixed(6), "longitud": parseFloat(this.state.longitud).toFixed(6), "sex": this.state.sexo, "age": "1989-05-19" }
           this.setState({ isLoading: true})
-          console.log(valueUser);
-          fetch('https://weedmatch.herokuapp.com/register/', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: (valueUser),
-          })
-          .then((response) => {
-            console.log(response)
-          })
-          .then((responseData) =>
-          {
-
-         /*   if(responseData.detail){
-              this.setState({ isLoading: false});
-
-            }else{
-              this.props.navigation.navigate('Login');
-            }*/
-            console.log(responseData);
-          })
-          .catch((error) => {
-            this.setState({ isLoading: false});
-            console.error(error);
+          userService.postRegister(valueUser)
+            .then((response) => {
+                this.props.navigation.navigate('Login');
+                ToastAndroid.show(response.detail, ToastAndroid.LONG);
+            })
+            .catch((error) => {
+                this.setState({ isLoading: false});
+                console.log(error);
           });
   }
 

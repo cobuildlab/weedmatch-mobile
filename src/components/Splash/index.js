@@ -9,17 +9,20 @@ class Splash extends Component {
     }
 
     componentDidMount(){
-  // AsyncStorage.removeItem('id_token');
-        AsyncStorage.getItem('id_token')
-            .then((token) => {
-                if(token)
-                    this.props.navigation.navigate('App');
-                else
-                    this.props.navigation.navigate('Auth');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        //AsyncStorage.removeItem('id_token');
+        setTimeout(() =>{
+            AsyncStorage.getItem('id_token')
+                .then((token) => {
+                    if(token){
+                        this.props.navigation.navigate('App');
+                    }else{
+                        this.props.navigation.navigate('Auth');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },1000)
     }
 
     render() {

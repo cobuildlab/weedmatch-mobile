@@ -9,7 +9,7 @@ export const userService = {
     publicImage
 };
 
-const URL = "https://weedmatch.herokuapp.com/";
+const URL = "http://192.168.0.21:8080/";
 //const URL = "https://weedmatch.herokuapp.com/";
 
 
@@ -19,7 +19,7 @@ function login(username, password) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
-
+        console.log(requestOptions);
     return fetch(URL + 'login/', requestOptions).then(handleResponse);
 }
 
@@ -41,7 +41,8 @@ function getCountry(username, password) {
 function postRegister(data) {
     const requestOptions = {
         method: 'POST',
-        body: data
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
     };
 
     return fetch(URL + 'register/', requestOptions).then(handleResponse);
@@ -75,13 +76,8 @@ function publicProfile(token, id) {
     return fetch(URL + 'public-profile/' + id + '/', requestOptions).then(handleResponse);
 }
 
-function requestOptions(){
-
-    return {'Authorization': 'Token ' + token};
-}
-
-
 function handleResponse(response) {
+    console.log(response);
     if (!response.ok) {
         return Promise.reject(response.json());
     }

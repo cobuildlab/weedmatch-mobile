@@ -83,11 +83,12 @@ export default class PublicProfile extends Component {
 
       render() {
         const {rowData, country, publicImage} = this.state;
+        console.log(rowData);
         return (
         <View style={{flex:1}}>
             <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
             <View style={{backgroundColor: '#FFF', flex:3}}>
-                <Image style={styles.media} source={{uri: rowData.image}} />
+                <Image style={styles.media} source={{uri: rowData.image_profile}} />
             </View>
 
             <View style={{flex: 1, flexDirection: 'column'}}>
