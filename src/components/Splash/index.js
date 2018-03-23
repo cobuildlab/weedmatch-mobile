@@ -8,60 +8,42 @@ class Splash extends Component {
         super();
     }
 
-  componentDidMount(){
-    // AsyncStorage.removeItem('id_token');
-    AsyncStorage.getItem('countrys')
-        .then((response) => {
-            if(response)
-               AsyncStorage.getItem('id_token')
-                   .then((token) => {
-                       if(token)
-                          this.props.navigation.navigate('App');
-                       else
-                           this.props.navigation.navigate('Auth');
-                   })
-                   .catch((error) => {
-                       console.log(error);
-                       alert(error);
-                   });
-            else
-            userService.getCountry()
-                .then(response => {
-                    AsyncStorage.setItem('countrys', JSON.stringify(response));
+    componentDidMount(){
+        //AsyncStorage.removeItem('id_token');
+        AsyncStorage.getItem('id_token')
+            .then((token) => {
+                if(token)
+                    this.props.navigation.navigate('App');
+                else
                     this.props.navigation.navigate('Auth');
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        })
-        .catch((error) => {
-          console.log(error);
-       });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-          <Image source={require('./../img/logo-login.png')} style={styles.imageStyle} />
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <Image source={require('./../img/logo-login.png')} style={styles.imageStyle} />
+            </View>
+        );
+    }
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
-  imageStyle: {
-    height: 300,
-    width: null,
-    flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-  }
+    container: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
+    imageStyle: {
+        height: 300,
+        width: null,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });
 
 export default Splash;

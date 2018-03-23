@@ -44,6 +44,8 @@ class LoginPage extends Component {
             }
           })
           .catch(error => {
+            this.setState({ isLoading: false})
+            Alert.alert(error.detail)
             console.log(error);
           });
   }

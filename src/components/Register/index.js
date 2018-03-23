@@ -11,7 +11,8 @@ import {
   Image,
   Picker,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ActivityIndicator
 } from 'react-native';
 //import styles from './styles';
 import { StackNavigator } from 'react-navigation';
@@ -27,15 +28,11 @@ class RegisterPage extends Component {
     super(props);
     this.state = {
         first_name: '',
-        last_name: '',
         email: '',
-        direction: '',
-        country: '',
         username: '',
         password: '',
         latitud: '',
         longitud: '',
-        countrys: [],
         age: '',
         isLoaded: false
     };
@@ -50,29 +47,19 @@ class RegisterPage extends Component {
                 latitud: position.coords.latitude,
                 longitud: position.coords.longitude
               })
-              console.log(this.state);
           },
           (error) => {
               console.log(error)
           },
           {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
       );
-
-      AsyncStorage.getItem('countrys')
-          .then((response) => {
-             this.setState({countrys: JSON.parse(response)})
-          })
-          .catch((error) => {
-              console.log(error);
-          });
     }
 
-  registerUser() {
-      console.log(this.props)
-      //if (!this.state.first_name || !this.state.last_name || !this.state.email || !this.state.direction || !this.state.country_id || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
+  _registerUser() {
+      if (!this.state.first_name || !this.state.email || !this.state.username || !this.state.password) return Alert.alert('Register Fail','Todos los campos son obligatorios');
           // TODO: localhost doesn't work because the app is running inside an emulator. Get the IP address with ifconfig.
-          let valueUser = {'first_name': this.state.first_name, 'last_name': this.state.last_name, 'email': this.state.email, 'country': JSON.stringify(this.state.country), 'direction': this.state.direction, 'username': this.state.username, 'password': this.state.password, 'latitud': this.state.latitud, 'longitud': this.state.longitud,  'age': '1984-09-30' }
-
+          let valueUser = {'first_name': this.state.first_name, 'email': this.state.email, 'username': this.state.username, 'password': this.state.password, 'latitud': this.state.latitud, 'longitud': this.state.longitud,  'age': '1984-09-30' }
+          this.setState({ isLoading: true})
           fetch('https://weedmatch.herokuapp.com/register/', {
             method: 'POST',
             headers: {
@@ -81,29 +68,17 @@ class RegisterPage extends Component {
             },
             body: JSON.stringify(valueUser),
           })
-          .then(function(response){
-                if (!response.ok) {
-                    console.log("ERROR: " + JSON.stringify(response));
+          .then((response) => response.json())
+          .then((responseData) =>
+          {
+            console.log(responseData);
 
-                }
-             console.log(1)
-             //this.props.navigation.navigate('SignIn');
-
-             return response.json();
-            })
-          .then(function(data){
-            if(data.ok){
-
-            }
-            console.log(2)
-            Alert.alert(data.detail)
-            console.log(data)
+            this.props.navigation.navigate('Login');
           })
           .catch((error) => {
+            this.setState({ isLoading: false});
             console.error(error);
-            console.error('error');
           });
-
   }
 
   registerCancel() {
@@ -111,7 +86,8 @@ class RegisterPage extends Component {
   }
 
   render() {
-    const { countrys } = this.state;
+    const { countrys, isLoading } = this.state;
+    if (!isLoading){
     return (
       <KeyboardAvoidingView style={styles.teclado}
         behavior="height"
@@ -169,7 +145,7 @@ class RegisterPage extends Component {
 
           <TouchableOpacity
               style={styles.buttomRegisterStyle}
-              onPress={this.registerUser.bind(this)}>
+              onPress={this._registerUser.bind(this)}>
               <Text style={styles.buttonText}> Register </Text>
             </TouchableOpacity>
 
@@ -182,6 +158,28 @@ class RegisterPage extends Component {
 
       </KeyboardAvoidingView>
     );
+    }else{
+      return (
+        <KeyboardAvoidingView style={styles.teclado}
+        behavior="height">
+
+        <Image
+            style={styles.container}
+            source={require('../../assets/img/logo-b.png')}
+        />
+        <Text style={styles.textLight}>
+          ENCUENTRA TU MEDIO
+        </Text>
+        <Text style={styles.textBold}>
+          COGOLLO
+        </Text>
+        <ActivityIndicator size="large" color="#0000ff" />
+
+
+
+      </KeyboardAvoidingView>
+      );
+    }
   }
 }
 

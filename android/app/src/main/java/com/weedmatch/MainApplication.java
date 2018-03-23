@@ -1,4 +1,4 @@
-package com.weedmatch;
+package weedmatch.fourgeeks.co;
 
 import android.app.Application;
 

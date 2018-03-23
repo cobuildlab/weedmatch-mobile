@@ -25,12 +25,10 @@ export default class tabProfile extends Component {
   }
 
   _goPhoto(data) {
-  this.props.navigator.push({
-  ident: 'Photo',
-  data
-
-
- })
+      this.props.navigator.push({
+          ident: 'Photo',
+          data
+     })
 
   }
 

@@ -5,6 +5,8 @@ export const userService = {
     getCountry,
     postRegister,
     feed,
+    publicProfile,
+    publicImage
 };
 
 const URL = "https://weedmatch.herokuapp.com/";
@@ -19,16 +21,6 @@ function login(username, password) {
     };
 
     return fetch(URL + 'login/', requestOptions).then(handleResponse);
-}
-
-function feed() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader(),
-        // body: JSON.stringify({ lati, long })
-    };
-
-    return fetch(URL + 'public-feed/', requestOptions).then(handleResponse);
 }
 
 function logout() {
@@ -47,13 +39,45 @@ function getCountry(username, password) {
 }
 
 function postRegister(data) {
-    console.log(data)
     const requestOptions = {
         method: 'POST',
         body: data
     };
 
     return fetch(URL + 'register/', requestOptions).then(handleResponse);
+}
+
+function feed(token, state) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(token),
+        // body: JSON.stringify({ lati, long })
+    };
+
+    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.logitud, requestOptions).then(handleResponse);
+}
+
+function publicImage(token, id) {
+  const requestOptions = {
+      method: 'GET',
+      headers: authHeader(token)
+  };
+
+  return fetch(URL + 'public-image/' + id + '/', requestOptions).then(handleResponse);
+}
+
+function publicProfile(token, id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(token)
+    };
+
+    return fetch(URL + 'public-profile/' + id + '/', requestOptions).then(handleResponse);
+}
+
+function requestOptions(){
+
+    return {'Authorization': 'Token ' + token};
 }
 
 

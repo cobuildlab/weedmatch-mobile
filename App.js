@@ -7,12 +7,13 @@ import LoginPage  from './src/components/Login';
 import RegisterPage  from './src/components/Register';
 import HomePage  from './src/components/Home';
 import Profile  from './src/components/Profile';
+import PublicProfile  from './src/components/PublicProfile';
 
 class App extends Component {
 
   constructor() {
-    super();
-    this.state = { hasToken: false, isLoaded: false };
+      super();
+      this.state = { hasToken: false, isLoaded: false };
   }
 
   componentWillMount() {
@@ -22,18 +23,18 @@ class App extends Component {
   }
 
   componentDidMount(){
-    console.log('App')
-    AsyncStorage.getItem('id_token')
-        .then((token) => {
-        if(token)
-            this.props.navigation.navigate('App');
-        else
-            this.props.navigation.navigate('Auth');
-      })
-      .catch((error) => {
-        console.log("Api call error");
-        alert(error);
-     });
+      console.log('App')
+      AsyncStorage.getItem('id_token')
+          .then((token) => {
+              if(token)
+                  this.props.navigation.navigate('App');
+              else
+                  this.props.navigation.navigate('Auth');
+          })
+          .catch((error) => {
+            console.log("Api call error");
+            alert(error);
+         });
   }
 
   render() {
@@ -45,7 +46,7 @@ class App extends Component {
   }
 }
 
-const AppStack  = StackNavigator({ Home: HomePage, Profile: Profile });
+const AppStack  = StackNavigator({ Home: HomePage, Profile: Profile, PublicProfile: PublicProfile });
 const AuthStack = StackNavigator({ SignIn: Authentication, Register: RegisterPage, Login: LoginPage });
 
 export default SwitchNavigator(

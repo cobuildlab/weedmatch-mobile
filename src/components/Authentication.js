@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, TextInput, TouchableOpacity, View, AsyncStorage, Alert, ScrollView, StyleSheet, Image} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-// import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
+import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
 
 import { userService } from '../services';
 
@@ -35,27 +35,9 @@ class Authentication extends Component {
     }*/
   }
 
-  userProfile() {
-      this.props.navigation.navigate('Profile');
-      /*try {
-        AsyncStorage.removeItem('id_token');
-        Alert.alert('Logout Success!');
-        Actions.Authentication();
-      } catch (error) {
-        console.log('AsyncStorage error: ' + error.message);
-      }*/
-    }
-
-    userLoginPage() {
-      this.props.navigation.navigate('Login');
-      /*try {
-        AsyncStorage.removeItem('id_token');
-        Alert.alert('Logout Success!');
-        Actions.Authentication();
-      } catch (error) {
-        console.log('AsyncStorage error: ' + error.message);
-      }*/
-    }
+  userLoginPage() {
+    this.props.navigation.navigate('Login');
+  }
 
   userLogin() {
       if (!this.state.username || !this.state.password) return Alert.alert('Login Fail','Revise el usuario y contraseña');
@@ -79,8 +61,10 @@ class Authentication extends Component {
       LoginManager.logInWithReadPermissions(["public_profile"]).then(
         function(result) {
           if (result.isCancelled) {
-            alert('Login cancelled');
+            console.log('Login cancelled');
           } else {
+            console.log('Login success with permissions: '
+              +result.grantedPermissions.toString());
             AccessToken.getCurrentAccessToken().then(
                 (data) => {
                     console.log(data.accessToken.toString())
@@ -90,7 +74,7 @@ class Authentication extends Component {
           }
         },
         function(error) {
-          alert('Login fail with error: ' + error);
+          console.log('Login fail with error: ' + error);
         }
       );
   }
@@ -128,24 +112,6 @@ class Authentication extends Component {
               <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
           </TouchableOpacity>
 
-               {/* <LoginButton
-                    publishPermissions={["publish_actions"]}
-                    onLoginFinished={
-                      (error, result) => {
-                        if (error) {
-                          alert("login has error: " + result.error);
-                        } else if (result.isCancelled) {
-                          alert("login is cancelled.");
-                        } else {
-                          AccessToken.getCurrentAccessToken().then(
-                            (data) => {
-                              alert(data.accessToken.toString())
-                            }
-                          )
-                        }
-                      }
-                    }
-                    onLogoutFinished={() => alert("logout.")}/> */}
 
           <TouchableOpacity
             style={styles.buttomLoginStyle}
@@ -158,13 +124,6 @@ class Authentication extends Component {
                 onPress={this.userRegister.bind(this)}>
               <Text style={styles.buttomTextRegister}>¿No tienes cuenta? ¡Únete!</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.buttomRegister}
-                onPress={this.userProfile.bind(this)}>
-              <Text style={styles.buttomTextRegister}>Profile</Text>
-            </TouchableOpacity>
-
           </View>
         </View>
       </ScrollView>

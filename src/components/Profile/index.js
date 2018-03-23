@@ -9,12 +9,8 @@ import {
   Navigator
 } from 'react-native';
 
-import TopBar from '../topBar';
+import TopBar from './../../utils/TopBar';
 import TabProfile from '../tabProfile';
-
-var mePic = require('../../images/sebas.jpg');
-var meName = 'Sebastian Diaz'
-var meUsername = 'holasebasdiaz'
 
 export default class Profile extends Component {
 
