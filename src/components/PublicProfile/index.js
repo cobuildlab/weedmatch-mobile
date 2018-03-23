@@ -90,20 +90,20 @@ export default class PublicProfile extends Component {
                 <Image style={styles.media} source={{uri: rowData.image}} />
             </View>
 
-            <View style={{flex: 2, flexDirection: 'column'}}>
+            <View style={{flex: 1, flexDirection: 'column'}}>
                 <View style={{flex: 1, flexDirection: 'column'}}>
-                    <Text style={{paddingTop: 20,paddingLeft: 20, fontSize: 20, color: '#333'}}>{rowData.first_name}, {rowData.age} </Text>
+                    <Text style={{ marginTop: 15, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.first_name}, {rowData.age} </Text>
                 </View>
                 <View style={{flex: 1, flexDirection: 'column'}}>
                     {country &&
-                        <Text style={{paddingTop: 20,paddingLeft: 20, fontSize: 20, color: '#333'}}>{country.name} </Text>
+                        <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{country.name} </Text>
                     }
                 </View>
                 <View style={{flex: 1, flexDirection: 'column'}}>
-                    <Text style={{paddingTop: 20,paddingLeft: 20, fontSize: 20, color: '#333'}}>{rowData.distance} </Text>
+                    <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.distance} </Text>
                 </View>
                 <View style={{flex: 1, flexDirection: 'column'}}>
-                    <Text style={{paddingTop: 20,paddingLeft: 20, fontSize: 20, color: '#333'}}>{rowData.description} </Text>
+                    <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.description} </Text>
                 </View>
 
 
