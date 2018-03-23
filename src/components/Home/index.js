@@ -298,8 +298,7 @@ export default class HomePage extends Component {
           alignItems: 'center',
           justifyContent: 'center',
           bottom: 5,
-          left: 0,
-          right: 20,
+          right: 156,
       },
       FloatingButtonStyle: {
         resizeMode: 'contain',
