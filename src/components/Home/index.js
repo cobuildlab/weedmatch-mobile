@@ -210,6 +210,7 @@ export default class HomePage extends Component {
       _onRefresh(){}
 
       render() {
+        console.log(this.state);
         const { isLoaded } = this.state;
         if(isLoaded){
           return (
@@ -221,8 +222,7 @@ export default class HomePage extends Component {
                        animationType={"slide"}
                        transparent={false}
                        visible={this.state.modalVisible}
-                       onRequestClose={() => console.log('closed')}
-                     >
+                       onRequestClose={() => console.log('closed')}>
                        <View style={styles.modalContainer}>
                          <Button
                            title='Close'
@@ -237,8 +237,7 @@ export default class HomePage extends Component {
                                    style={{opacity: i === this.state.index ? 0.5 : 1}}
                                    key={i}
                                    underlayColor='transparent'
-                                   onPress={() => this.setIndex(i)}
-                                 >
+                                   onPress={() => this.setIndex(i)}>
                                    <Image
                                      style={{
                                        width: width/3,

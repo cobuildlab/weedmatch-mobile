@@ -10,7 +10,8 @@ import {
       Dimensions,
       AsyncStorage,
       TouchableOpacity,
-      TouchableHighlight
+      TouchableHighlight,
+      ActivityIndicator
 } from 'react-native';
 
 import {userService} from './../../services';
@@ -38,7 +39,8 @@ export default class PublicProfile extends Component {
           topBarShow:true,
           totalPages: '',
           nextPage: '',
-          publicImage: {}
+          publicImage: {},
+          isLoading: false
         };
     }
 
@@ -55,6 +57,7 @@ export default class PublicProfile extends Component {
                 .then(response => {
                     this.setState({
                         loading:false,
+                        isLoading: true,
                         rowData: response,
                         country: response.country
                     })
@@ -82,50 +85,58 @@ export default class PublicProfile extends Component {
 
 
       render() {
-        const {rowData, country, publicImage} = this.state;
-        console.log(rowData);
-        return (
-        <View style={{flex:1}}>
-            <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
-            <View style={{backgroundColor: '#FFF', flex:3}}>
-                <Image style={styles.media} source={{uri: rowData.image_profile}} />
-            </View>
+        const {rowData, country, publicImage, isLoading} = this.state;
+        if(isLoading){
+            return (
+                    <View style={{flex:1}}>
+                        <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
+                        <View style={{backgroundColor: '#FFF', flex:3}}>
+                            <Image style={styles.media} source={{uri: rowData.image_profile}} />
+                        </View>
 
-            <View style={{flex: 1, flexDirection: 'column'}}>
-                <View style={{flex: 1, flexDirection: 'column'}}>
-                    <Text style={{ marginTop: 15, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.first_name}, {rowData.age} </Text>
+                        <View style={{flex: 1, flexDirection: 'column'}}>
+                            <View style={{flex: 1, flexDirection: 'column'}}>
+                                <Text style={{ marginTop: 15, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.first_name}, {rowData.age} </Text>
+                            </View>
+                            <View style={{flex: 1, flexDirection: 'column'}}>
+                                {country &&
+                                    <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{country.name} </Text>
+                                }
+                            </View>
+                            <View style={{flex: 1, flexDirection: 'column'}}>
+                                <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.distance} </Text>
+                            </View>
+                            <View style={{flex: 1, flexDirection: 'column'}}>
+                                <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.description} </Text>
+                            </View>
+
+
+                        </View>
+
+
+
+
+
+
+                        <View style={{flexDirection: 'row'}}>
+                                {publicImage.results &&
+                                       publicImage.results.map(function(value, i){
+                                            return (
+                                                <Image key={i} source={{uri: value.image}} style={styles.rowimage}/>
+                                           );
+                                        })
+                                     }
+                        </View>
+                    </View>
+                    );
+        }else{
+            return (
+                <View style={[styles.containers, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#9605CC" />
                 </View>
-                <View style={{flex: 1, flexDirection: 'column'}}>
-                    {country &&
-                        <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{country.name} </Text>
-                    }
-                </View>
-                <View style={{flex: 1, flexDirection: 'column'}}>
-                    <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.distance} </Text>
-                </View>
-                <View style={{flex: 1, flexDirection: 'column'}}>
-                    <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.description} </Text>
-                </View>
+            )
+        }
 
-
-            </View>
-
-
-
-
-
-
-            <View style={{flexDirection: 'row'}}>
-                    {publicImage.results &&
-                           publicImage.results.map(function(value, i){
-                                return (
-                                    <Image key={i} source={{uri: value.image}} style={styles.rowimage}/>
-                               );
-                            })
-                         }
-            </View>
-        </View>
-        );
       }
     }
 
@@ -293,6 +304,14 @@ export default class PublicProfile extends Component {
         borderWidth:.5,
         borderColor:'#fff'
 
+      },
+      containers: {
+        flex: 1,
+        justifyContent: 'center'
+      },
+      horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
       }
-
     });
