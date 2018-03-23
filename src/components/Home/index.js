@@ -270,7 +270,7 @@ export default class HomePage extends Component {
             <View style={{flex:1}}>
               <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
               <View style={[styles.container, styles.horizontal]}>
-                <ActivityIndicator size="large" color="#0000ff" />
+                <ActivityIndicator size="large" color="#9605CC" />
               </View>
             </View>
           );

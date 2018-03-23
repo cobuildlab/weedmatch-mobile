@@ -97,24 +97,10 @@ export default class tabProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <View style={styles.menu}>
-        <TouchableHighlight underlayColor='#FFF' style={styles.menuitem} onPress={() => this.setState({render:this._Grid()})}>
-          <Image source={require('./../images/menu.png')} style={{width:20, height:20}}/>
-        </TouchableHighlight>
-         <TouchableHighlight underlayColor='#FFF'  style={styles.menuitem} onPress={() => this.setState({render:this._List(feedData)})}>
-           <Image source={require('./../images/menu2.png')} style={{width:20, height:20}}/>
-        </TouchableHighlight>
-         <TouchableHighlight underlayColor='#FFF'  style={styles.menuitem} >
-         <Image source={require('./../images/tag.png')} style={{width:20, height:20}}/>
-        </TouchableHighlight>
-         <TouchableHighlight underlayColor='#FFF'  style={styles.menuitem}>
-          <Image source={require('./../images/saved.png')} style={{width:20, height:20}}/>
-        </TouchableHighlight>
-      </View>
       {this.state.render}
       </View>
-      
-    );  
+
+    );
   }
 }
 
@@ -165,15 +151,15 @@ const styles = StyleSheet.create({
   },
   listImage:{
     width:width,
-    height:width, 
+    height:width,
   },
    mediaUser:{
-  
+
     alignItems: 'center',
     padding:10,
 
     backgroundColor:'#FFF',
-    
+
     width:width,
     flexDirection:'row',
 
@@ -182,13 +168,13 @@ const styles = StyleSheet.create({
   borderLeftColor:'#fff',
   borderRightColor:'#fff',
   borderBottomColor:'#fff',
-   
+
   },
    picture:{
     width:30,
     height:30,
     borderRadius:15,
-     
+
   },
    username:{
     paddingLeft:10,
