@@ -9,7 +9,7 @@ class Splash extends Component {
     }
 
     componentDidMount(){
-        AsyncStorage.removeItem('id_token');
+  // AsyncStorage.removeItem('id_token');
         AsyncStorage.getItem('id_token')
             .then((token) => {
                 if(token)
