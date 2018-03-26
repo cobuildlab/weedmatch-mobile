@@ -15,7 +15,7 @@ import {
       TouchableHighlight,
       CameraRoll,
       Modal,
-      Button,
+      Button
 } from 'react-native';
 
 import { userService } from '../../services';
@@ -52,8 +52,8 @@ export default class HomePage extends Component {
       navigator.geolocation.getCurrentPosition(
           (position) => {
               this.setState({
-                latitud: '',//parseFloat(position.coords.latitude).toFixed(6),
-                longitud: ''//parseFloat(position.coords.longitude).toFixed(6)
+                'latitud': '',//parseFloat(position.coords.latitude).toFixed(6),
+                'longitud': ''//parseFloat(position.coords.longitude).toFixed(6)
               })
           },
           (error) => {
@@ -175,15 +175,15 @@ export default class HomePage extends Component {
     _renderRow(rowData, rowID, sectionID, highlightRow){
 
           return(
-            <View style={{backgroundColor: '#FFF',}}>
+            <View style={{backgroundColor: '#FFF'}}>
 
                     <View style={styles.mediaUser}>
-                        <TouchableHighlight onPress={()=>this._onPressButton(rowData)}>
+                        <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                             <Image style={styles.picture} source={{uri: rowData.image_profile}} />
-                        </TouchableHighlight>
-                        <TouchableHighlight onPress={()=>this._onPressButton(rowData)}>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                             <Text style={styles.username}>{rowData.username}</Text>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     </View>
                  <Image
                    style={styles.media}
