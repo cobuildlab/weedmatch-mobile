@@ -79,21 +79,18 @@ export default class HomePage extends Component {
     }
 
     _getPhoto(){
-/*
-
         ImagePicker.openCamera({
               cropping: false,
               width: 500,
               height: 500,
               includeExif: true,
             }).then(image => {
-              console.log('received image', image);
+              console.log('received image', image.path);
+              console.log(image);
               this.setState({
-                image: {uri: image.path}
+                image: image.path
               });
-            }).catch(e => alert(e));*/
-
-
+            }).catch(e => alert(e));
     }
 
     showButton() {
@@ -118,22 +115,31 @@ export default class HomePage extends Component {
         }
 
     share = () => {
-          console.log(this.state)
+       console.log(this.state.image)
 
-    /*    AsyncStorage.getItem('id_token').then((token) => {
-            RNFetchBlob.fetch('POST', 'http://192.168.0.21:8080/', {
-                Authorization : "Authorization " + token,
-                'Content-Type' : 'multipart/form-data',
-            }, [{ comment: 'none', name : 'avatar', image : image, data: binaryDataInBase64},
-               )},
-               ]).then((resp) => {
-                   console.log(resp)
-               }).catch((err) => {
-                      // ...
-               })
+       AsyncStorage.getItem('id_token').then((token) => {
+           const data = new FormData();
+               const requestOptions = {
+                   method: 'POST',
+                   headers: 'Authorization': 'Token ' + token,
+                   body: JSON.stringify(data)
+               };
+           data.append('name', 'testName'); // you can append anyone.
+           data.append('image', {
+               uri: this.state.image,
+               type: 'image/jpeg', // or photo.type
+               name: 'testPhotoName'
+           });
+           fetch(('http://192.168.0.21:8080/', requestOptions) {
+           }).then(res => {
+              console.log(res)
+           });
+
+
+
 
         })
-*/
+
 }
 
     renderFeed(data){
