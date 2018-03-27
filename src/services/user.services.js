@@ -9,8 +9,8 @@ export const userService = {
     publicImage
 };
 
-//const URL = "http://192.168.0.21:8080/";
-const URL = "https://weedmatch.herokuapp.com/";
+const URL = "http://192.168.0.21:8080/";
+//const URL = "https://weedmatch.herokuapp.com/";
 
 
 function login(username, password) {
@@ -65,6 +65,16 @@ function publicImage(token, id) {
   };
 
   return fetch(URL + 'public-image/' + id + '/', requestOptions).then(handleResponse);
+}
+
+
+function publicImagePost(token) {
+  const requestOptions = {
+      method: 'POST',
+      headers: authHeader(token)
+  };
+
+  return fetch(URL + 'public-image/', requestOptions).then(handleResponse);
 }
 
 function publicProfile(token, id) {
