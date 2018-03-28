@@ -71,5 +71,11 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Weedmatch requires access to your camera to take photos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Weedmatch requires access to your camera to take videos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Weedmatch requires access to your photo library to upload photos.</string>
 </dict>
 </plist>

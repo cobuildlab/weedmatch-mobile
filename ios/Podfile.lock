@@ -1,0 +1,109 @@
+PODS:
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - FBSDKCoreKit (4.30.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.30.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.30.0):
+    - FBSDKCoreKit (~> 4.30.0)
+  - QBImagePickerController (3.4.0)
+  - React (0.53.3):
+    - React/Core (= 0.53.3)
+  - react-native-fbsdk (0.7.0):
+    - React
+    - react-native-fbsdk/Core (= 0.7.0)
+    - react-native-fbsdk/Login (= 0.7.0)
+    - react-native-fbsdk/Share (= 0.7.0)
+  - react-native-fbsdk/Core (0.7.0):
+    - FBSDKCoreKit
+    - React
+  - react-native-fbsdk/Login (0.7.0):
+    - FBSDKLoginKit
+    - React
+  - react-native-fbsdk/Share (0.7.0):
+    - FBSDKShareKit
+    - React
+  - React/Core (0.53.3):
+    - yoga (= 0.53.3.React)
+  - React/DevSupport (0.53.3):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.53.3)
+  - React/RCTActionSheet (0.53.3):
+    - React/Core
+  - React/RCTAnimation (0.53.3):
+    - React/Core
+  - React/RCTBlob (0.53.3):
+    - React/Core
+  - React/RCTGeolocation (0.53.3):
+    - React/Core
+  - React/RCTImage (0.53.3):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.53.3):
+    - React/Core
+  - React/RCTNetwork (0.53.3):
+    - React/Core
+  - React/RCTSettings (0.53.3):
+    - React/Core
+  - React/RCTText (0.53.3):
+    - React/Core
+  - React/RCTVibration (0.53.3):
+    - React/Core
+  - React/RCTWebSocket (0.53.3):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - RNImageCropPicker (0.20.0):
+    - QBImagePickerController
+    - RSKImageCropper
+  - RSKImageCropper (2.0.0)
+  - yoga (0.53.3.React)
+
+DEPENDENCIES:
+  - react-native-fbsdk (from `../node_modules/react-native-fbsdk/ios/react-native-fbsdk.podspec`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
+
+EXTERNAL SOURCES:
+  React:
+    :path: ../node_modules/react-native
+  react-native-fbsdk:
+    :path: ../node_modules/react-native-fbsdk/ios/react-native-fbsdk.podspec
+  RNImageCropPicker:
+    :path: ../node_modules/react-native-image-crop-picker
+  yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga/yoga.podspec
+
+SPEC CHECKSUMS:
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FBSDKCoreKit: 7c4bba2877781a131ab5d54c0a78c405d4307b62
+  FBSDKLoginKit: fe7a7e82373dc5daad92e1623219e86224ab1fb1
+  FBSDKShareKit: a9427574b51bde4f437262c3f118c4ccfddeef6c
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
+  React: af66244a7d630be2aef03b4ddfe3570e4eff39fc
+  react-native-fbsdk: 8a738a123494ae9ba69482a5a8e88aa2108b8245
+  RNImageCropPicker: a637beb8f4c76bf9fe8a89d404ad65a33c4215ac
+  RSKImageCropper: d9a1acbc0600bf8decc8f0d21895872c99a9e4cf
+  yoga: 55da126afc384965b96bff46652464373b330add
+
+PODFILE CHECKSUM: a765d219cd0c4ef5bd99badb130f620e81e3afe7
+
+COCOAPODS: 1.4.0

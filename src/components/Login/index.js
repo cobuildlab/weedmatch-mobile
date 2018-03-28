@@ -37,8 +37,11 @@ class LoginPage extends Component {
           userService.login(this.state.username, this.state.password)
           .then(response => {
             if (response) {
+              console.log(response.token);
+              console.log(response.id.toString());
                 if (response && response.token) {
-                    this.saveItem('id_token', response.token);
+                  this.saveItem('id_token', response.token);
+                  this.saveItem('id_user', response.id.toString());
                     this.props.navigation.navigate('App');
                 }
             }
