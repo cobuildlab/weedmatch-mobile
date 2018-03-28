@@ -15,7 +15,8 @@ import {
       TouchableHighlight,
       Modal,
       Button,
-      TextInput
+      TextInput,
+      ToastAndroid
       } from 'react-native';
 
 import ImagePicker from 'react-native-image-crop-picker';
@@ -75,6 +76,20 @@ export default class HomePage extends Component {
 
     }
 
+    _refresh420(){
+        console.log(1);
+        AsyncStorage.getItem('id_token').then((token) => {
+                userService.feed(token, this.state)
+                    .then(response => {
+                        this.setState({
+                            feedData: ds1.cloneWithRows(response.results),
+                            loading: false,
+                            isLoaded: true
+                        })
+                    })
+            })
+    }
+
     _getPhoto(){
         ImagePicker.openPicker({
               cropping: false,
@@ -112,11 +127,11 @@ export default class HomePage extends Component {
         }
 
     share = () => {
+       this.setState({isLoaded: true});
        var re = /(?:\.([^.]+))?$/;
        var ext = re.exec(this.state.image)[1];
 
        AsyncStorage.getItem('id_token').then((token) => {
-        AsyncStorage.getItem('id_user').then((id) => {
            const data = new FormData();
 
            data.append('image', {
@@ -136,14 +151,17 @@ export default class HomePage extends Component {
             };
             console.log(requestOptions);
 
-           fetch("http://192.168.0.21:8080/public-image/", requestOptions)
-              .then(res => {
-              console.log(res)
-           })
+           fetch("https://weedmatch.herokuapp.com/public-image/", requestOptions)
+              .then(res => res.json())
+              .then(response => {
+                console.log(response);
+                ToastAndroid.show(response.detail, ToastAndroid.LONG);
+                this.setState({isLoaded: false, modalVisible: false});
+                this._refresh420();
+              })
            .catch(res => {
             console.log(res)
               });
-          })
         })
 }
 
@@ -256,50 +274,55 @@ export default class HomePage extends Component {
                        onRequestClose={() => console.log('closed')}>
                        <View style={styles.modalContainer}>
                          <Button
+
                            title='Close'
+                           color= '#9605CC'
                            onPress={this.toggleModal}
                          />
                          <ScrollView
                            contentContainerStyle={styles.scrollView}>
 
-                           <TextInput
-                               style={styles.inputStyle}
-                               editable={true}
-                               onChangeText={(comment) => this.setState({comment})}
-                               placeholder='Comentario'
-                               ref='comment'
-                               returnKeyType='next'
-                               value={this.state.comment}
+                           <ActivityIndicator size="large" color="#9605CC" hidesWhenStopped={this.state.isLoaded} />
+                            return {image != '' &&
+                                                          <TouchableHighlight>
+                                                              <Image
+                                                                  style={{
+                                                                  width: width,
+                                                                  height: width
+                                                                  }}
+                                                                  source={{uri: image}}
+                                                              />
 
-                           />
+                                                          </TouchableHighlight>
+
+                                                      }
+
+                                                      <TextInput
+                                                          style={styles.inputStyle}
+                                                          editable={true}
+                                                          onChangeText={(comment) => this.setState({comment})}
+                                                          placeholder='Comentario'
+                                                          ref='comment'
+                                                          returnKeyType='next'
+                                                          value={this.state.comment}
+                                                      />
 
 
-                           {
-                               <TouchableHighlight>
-                                   <Image
-                                       style={{
-                                       width: width/3,
-                                       height: width/3}}
-                                       source={{uri: image}}
-                                   />
 
-                               </TouchableHighlight>
-
-
-
-
-                           }
                          </ScrollView>
                           {
                             this.state.index !== null  && (
                               <View style={styles.shareButton}>
                                 <Button
-                                    title='Share'
+
+                                    color= '#9605CC'
+                                    title='Subir Imagen'
                                     onPress={this.share}
                                   />
                               </View>
                             )
                           }
+
                        </View>
                  </Modal>
             </View>
@@ -492,13 +515,8 @@ export default class HomePage extends Component {
       },
       inputStyle:{
           backgroundColor: '#ffffff',
-          height: 40,
-          width: 250,
-          borderColor: '#ccc',
-          borderRadius: 50,
-          borderWidth: 1,
-          paddingLeft: 20,
-          paddingRight: 10,
-          marginBottom: 10,
+          height: 80,
+          width: width,
+          padding: 5
         }
     });
