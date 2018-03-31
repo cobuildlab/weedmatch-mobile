@@ -9,9 +9,9 @@ class Splash extends Component {
     }
 
     componentDidMount(){
-        //AsyncStorage.removeItem('id_token');
+        //AsyncStorage.removeItem('token');
         setTimeout(() =>{
-            AsyncStorage.getItem('id_token')
+            AsyncStorage.getItem('token')
                 .then((token) => {
                     if(token){
                         this.props.navigation.navigate('App');

@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "purge": "./node_modules/.bin/react-native-clean-project"
+    "purge": "./node_modules/.bin/react-native-clean-project",
+    "run:ios": "react-native run-ios"
   },
   "dependencies": {
     "axios": "^0.18.0",

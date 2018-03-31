@@ -52,7 +52,7 @@ export default class PublicProfile extends Component {
         const userId = params ? params.userId : null;
         const otherParam = params ? params.otherParam : null;
 
-        AsyncStorage.getItem('id_token').then((token) => {
+        AsyncStorage.getItem('token').then((token) => {
             userService.publicProfile(token, userId)
                 .then(response => {
                     this.setState({

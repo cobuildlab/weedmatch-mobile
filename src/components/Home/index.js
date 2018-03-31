@@ -63,7 +63,7 @@ export default class HomePage extends Component {
           },
           {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
       );
-        AsyncStorage.getItem('id_token').then((token) => {
+        AsyncStorage.getItem('token').then((token) => {
             userService.feed(token, this.state)
                 .then(response => {
                     this.setState({
@@ -78,7 +78,7 @@ export default class HomePage extends Component {
 
     _refresh420(){
         console.log(1);
-        AsyncStorage.getItem('id_token').then((token) => {
+        AsyncStorage.getItem('token').then((token) => {
                 userService.feed(token, this.state)
                     .then(response => {
                         this.setState({
@@ -131,7 +131,7 @@ export default class HomePage extends Component {
        var re = /(?:\.([^.]+))?$/;
        var ext = re.exec(this.state.image)[1];
 
-       AsyncStorage.getItem('id_token').then((token) => {
+       AsyncStorage.getItem('token').then((token) => {
            const data = new FormData();
 
            data.append('image', {

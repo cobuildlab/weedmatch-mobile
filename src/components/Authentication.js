@@ -27,7 +27,7 @@ class Authentication extends Component {
   userRegister() {
     this.props.navigation.navigate('Register');
     /*try {
-      AsyncStorage.removeItem('id_token');
+      AsyncStorage.removeItem('token');
       Alert.alert('Logout Success!');
       Actions.Authentication();
     } catch (error) {
@@ -46,7 +46,7 @@ class Authentication extends Component {
             console.log(response);
             if (response) {
                 if (response && response.token) {
-                    this.saveItem('id_token', response.token);
+                    this.saveItem('token', response.token);
                     this.props.navigation.navigate('App');
                   }
             }

@@ -1,4 +1,7 @@
-import { authHeader } from '../helpers';
+import {authHeader, getLogger, catchErrorAndPropagate} from '../utils';
+
+LOG = getLogger("USERSERVICE");
+
 export const userService = {
     login,
     logout,
@@ -10,17 +13,22 @@ export const userService = {
 };
 
 //const URL = "http://192.168.0.21:8080/";
- const URL = "https://weedmatch.herokuapp.com/";
+const URL = "https://weedmatch.herokuapp.com/";
 
-
+/**
+ * Log in the user
+ * @param username The username
+ * @param password the Password
+ * @returns {Promise<any>}
+ */
 function login(username, password) {
+    LOG.log(`login: ${username}, ${password}`);
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password})
     };
-        console.log(requestOptions);
-    return fetch(URL + 'login/', requestOptions).then(handleResponse);
+    return fetch(URL + 'login/', requestOptions).catch(catchErrorAndPropagate);
 }
 
 function logout() {
@@ -35,17 +43,17 @@ function getCountry(username, password) {
         headers: authHeader()
     };
 
-    return fetch(URL + 'countrys/', requestOptions).then(handleResponse);
+    return fetch(URL + 'countrys/', requestOptions);
 }
 
 function postRegister(data) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
 
-    return fetch(URL + 'register/', requestOptions).then(handleResponse);
+    return fetch(URL + 'register/', requestOptions).then(handleResponse)
 }
 
 function feed(token, state) {
@@ -59,22 +67,22 @@ function feed(token, state) {
 }
 
 function publicImage(token, id) {
-  const requestOptions = {
-      method: 'GET',
-      headers: authHeader(token)
-  };
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(token)
+    };
 
-  return fetch(URL + 'public-image/' + id + '/', requestOptions).then(handleResponse);
+    return fetch(URL + 'public-image/' + id + '/', requestOptions).then(handleResponse);
 }
 
 
 function publicImagePost(token) {
-  const requestOptions = {
-      method: 'POST',
-      headers: authHeader(token)
-  };
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(token)
+    };
 
-  return fetch(URL + 'public-image/', requestOptions).then(handleResponse);
+    return fetch(URL + 'public-image/', requestOptions).then(handleResponse);
 }
 
 function publicProfile(token, id) {
@@ -92,5 +100,3 @@ function handleResponse(response) {
     }
     return response.json();
 }
-
-
