@@ -1,0 +1,13 @@
+{
+    "wmatch":"WEEDMATCH",
+    "login": {
+        "welcome": "Welcome {{name}} to our localized app!",
+        "login_button": "Login",
+        "signup_button": "Sign Up",
+        "required_fields_error": "Username and Password are required"
+    },
+    "main": {
+        "title": "FIND YOUR HALF"
+    }
+
+}

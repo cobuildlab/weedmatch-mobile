@@ -1,0 +1,12 @@
+{
+    "wmatch": "COGOLLO",
+    "login": {
+        "welcome": "Welcome {{name}} to our localized app!",
+        "login_button": "Login",
+        "signup_button": "Sign Up",
+        "required_fields_error": "El usuario y la clave son necesarios"
+    },
+    "main": {
+        "title": "ENCUENTRA TU MEDIO"
+    }
+}
