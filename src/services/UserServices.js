@@ -1,6 +1,5 @@
-import {authHeader, getLogger, catchErrorAndPropagate} from '../utils';
-
-LOG = getLogger("USERSERVICE");
+import {authHeader, catchErrorAndPropagate} from '../utils';
+import {APP_STORE} from "../Store";
 
 export const userService = {
     login,
@@ -22,18 +21,19 @@ const URL = "https://weedmatch.herokuapp.com/";
  * @returns {Promise<any>}
  */
 function login(username, password) {
-    LOG.log(`login: ${username}, ${password}`);
+    console.log(`USERSERVICE:login: ${username}, ${password}`);
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
     };
-    return fetch(URL + 'login/', requestOptions).catch(catchErrorAndPropagate);
+    return fetch(URL + 'login/', requestOptions);
 }
 
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
+    APP_STORE.TOKEN_EVENT.next({})
 }
 
 
@@ -53,7 +53,7 @@ function postRegister(data) {
         body: JSON.stringify(data)
     };
 
-    return fetch(URL + 'register/', requestOptions).then(handleResponse)
+    return fetch(URL + 'register/', requestOptions)
 }
 
 function feed(token, state) {

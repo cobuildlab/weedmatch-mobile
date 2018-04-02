@@ -9,15 +9,17 @@ import {
     ActivityIndicator,
     KeyboardAvoidingView,
 } from 'react-native';
-import {LOGIN_STATE, APP_STATE, TOKEN_STATE} from '../../State'
+import {APP_STORE} from '../../Store'
 import {loginAction} from './LoginActions'
 import styles from './style'
 import {strings} from '../../i18n';
+import {isValidText} from "../../utils";
 
 class LoginPage extends Component {
 
     constructor() {
         super();
+        console.log("LoginPage:constructor");
         this.state = {
             username: `alacret`,
             password: `alacret`,
@@ -26,24 +28,25 @@ class LoginPage extends Component {
     }
 
     componentDidMount() {
-        this.tokenSubscription = TOKEN_STATE.subscribe(() => {
+        console.log("LoginPage:componentDidMount");
+        this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
+            console.log("LoginPage:componentDidMount:tokenSubscription", state);
             this.setState({isLoading: false});
-            this.props.navigation.navigate('App');
+            if (isValidText(state.token))
+                this.props.navigation.navigate('App');
         });
 
-        this.appSubscription = APP_STATE.subscribe(state => {
+        this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
+            console.log("LoginPage:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
-            Alert.alert(state.error)
-        });
-        this.loginSubscription = LOGIN_STATE.subscribe(state => {
-            this.setState({isLoading: false});
-            console.log(state);
+            if (isValidText(state.error))
+                Alert.alert(state.error)
         });
     }
 
-    componentWillUmmount() {
+    componentWillUnmount() {
+        console.log("LoginPage:componentWillUmmount");
         this.tokenSubscription.unsubscribe();
-        this.loginSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
     }
 

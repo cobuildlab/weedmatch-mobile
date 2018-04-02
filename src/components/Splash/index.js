@@ -1,40 +1,35 @@
 import React, {Component} from 'react';
-import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage, StyleSheet} from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { userService } from '../../services';
+import {Image, View, StyleSheet} from 'react-native';
+import {APP_STORE} from "../../Store";
+import {isValidText} from "../../utils";
 
 class Splash extends Component {
-    constructor(){
+    constructor() {
         super();
     }
 
-    componentDidMount(){
-        //AsyncStorage.removeItem('token');
-        setTimeout(() =>{
-            AsyncStorage.getItem('token')
-                .then((token) => {
-                    if(token){
-                        this.props.navigation.navigate('App');
-                    }else{
-                        this.props.navigation.navigate('Auth');
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },1000)
+    componentDidMount() {
+        setTimeout(() => {
+            const token = APP_STORE.getToken();
+            console.log("TOKEN", token);
+            if (!isValidText(token)) {
+                this.props.navigation.navigate('Auth');
+                return;
+            }
+            this.props.navigation.navigate('App');
+        }, 1000)
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Image source={require('./splash.png')} style={styles.imageStyle} />
+                <Image source={require('./splash.png')} style={styles.imageStyle}/>
             </View>
         );
     }
 }
 
-
+// TODO: Styles outside the view
 const styles = StyleSheet.create({
     container: {
         flex: 1,
