@@ -37,7 +37,7 @@ class RegisterPage extends ValidationComponent {
             latitud: '',
             longitud: '',
             age: '',
-            sexo: 'Hombre',
+            sex: 'Hombre',
             isLoading: false
         };
     }
@@ -60,17 +60,18 @@ class RegisterPage extends ValidationComponent {
         );
         APP_STORE.APP_EVENT.subscribe(state => {
             this.setState({isLoading: true});
-            console.log(state);
             if (state.error) {
                 this.setState({isLoading: false});
-                ToastAndroid.show(this.getErrorMessages(), ToastAndroid.LONG);
+                if(state.error.detail){
+                    ToastAndroid.show(state.error.detail.age, ToastAndroid.LONG);
+                }
                 //Alert.alert(strings("register.errorTitle"), state.error);
             return;
             }
-            // if (state.success) {
-            //     Alert.alert(strings("register.successTitle"), state.error);
-            //     this.props.navigation.navigate('Login');
-            // }
+            if (state.success) {
+                ToastAndroid.show(strings("register.successTitle"), state.success, ToastAndroid.LONG);
+                this.props.navigation.navigate('Login');
+            }
         });
     }
 
@@ -83,16 +84,21 @@ class RegisterPage extends ValidationComponent {
             username:  {required: true, minlength:6, maxlength:12},
             password:  {required: true, minlength:6, maxlength:20},
             full_name: {required: true, minlength:3, maxlength:30},
-            email:     {required: true, email: true}
+            email:     {required: true, email: true},
+            age:       {date: 'YYYY-MM-DD', require: true}
         });
-        this.setState({isLoading: true});
-        registerAction(this.state.first_name, this.state.email, this.state.username, this.state.password,
-            parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6))
+        if(this.isFormValid()){
+            this.setState({isLoading: true});
+            registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
+                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
+        }else{
+            ToastAndroid.show(this.getErrorMessages(), ToastAndroid.LONG);
+        }
+
     }
 
     registerCancel() {
         this.props.navigation.goBack();
-        // this.props.navigation.navigate('SignIn');
     }
 
     render() {
@@ -117,6 +123,16 @@ class RegisterPage extends ValidationComponent {
                     ref='email'
                     returnKeyType='next'
                     value={this.state.email}
+                />
+
+                <TextInput
+                    style={styles.inputStyle}
+                    editable={true}
+                    onChangeText={(age) => this.setState({age})}
+                    placeholder={strings("register.age")}
+                    ref='age'
+                    returnKeyType='next'
+                    value={this.state.age}
                 />
                 <TextInput
                     style={styles.inputStyle}

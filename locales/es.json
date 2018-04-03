@@ -12,6 +12,7 @@
     "password": "Contraseña",
     "username": "Usuario",
     "email": "Correo Eléctronico",
+    "age": "Fecha de Nacimiento",
     "errorEmail": "Invalid Email",
     "errorPassword": "Invalid Password",
     "errorUsername": "Invalid Username",
