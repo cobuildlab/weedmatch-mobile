@@ -63,8 +63,10 @@ function registerAction(firstName, email, username, password, lat, lon, sex, age
             if (response.ok) {
                 APP_STORE.APP_EVENT.next({success: response.detail});
                 return;
+            }else{
+                APP_STORE.APP_EVENT.next({error: json});
             }
-            APP_STORE.APP_EVENT.next({error: error.detail})
+            //APP_STORE.APP_EVENT.next({error: error.detail})
         });
 }
 
