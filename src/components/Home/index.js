@@ -54,8 +54,8 @@ export default class HomePage extends Component {
       navigator.geolocation.getCurrentPosition(
           (position) => {
               this.setState({
-                latitud: position.coords.latitude.toFixed(6),
-                longitud: position.coords.longitude.toFixed(6),
+                latitud: '',//position.coords.latitude.toFixed(6),
+                longitud: '',// position.coords.longitude.toFixed(6),
               })
           },
           (error) => {

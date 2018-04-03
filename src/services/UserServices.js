@@ -1,4 +1,5 @@
 import {authHeader, catchErrorAndPropagate} from '../utils';
+import DeviceInfo from 'react-native-device-info';
 import {APP_STORE} from "../Store";
 
 export const userService = {
@@ -12,7 +13,8 @@ export const userService = {
 };
 
 //const URL = "http://192.168.0.21:8080/";
-const URL = "https://weedmatch.herokuapp.com/";
+const URL = "http://45.32.173.248/";
+const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 /**
  * Log in the user
@@ -24,7 +26,10 @@ function login(username, password) {
     console.log(`USERSERVICE:login: ${username}, ${password}`);
     const requestOptions = {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': LENGUAGE
+        },
         body: JSON.stringify({username, password})
     };
     return fetch(URL + 'login/', requestOptions);
@@ -49,7 +54,10 @@ function getCountry(username, password) {
 function postRegister(data) {
     const requestOptions = {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': LENGUAGE
+        },
         body: JSON.stringify(data)
     };
 

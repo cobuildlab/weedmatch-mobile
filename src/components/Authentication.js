@@ -109,7 +109,7 @@ class Authentication extends Component {
                     <Text style={styles.textBold}>
                         COGOLLO
                     </Text>
-                    <TouchableOpacity
+                {/*    <TouchableOpacity
                         style={styles.buttomLoginIntagramStyle}
                         onPress={this.userLogin.bind(this)}>
                         <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
@@ -120,7 +120,7 @@ class Authentication extends Component {
                         onPress={this._facebookLogin.bind(this)}>
                         <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
                     </TouchableOpacity>
-
+                */}
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                         onPress={this.userLoginPage.bind(this)}>

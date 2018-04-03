@@ -53,6 +53,9 @@ export default styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10
   },
+  errorMessages:{
+    color: 'red'
+  },
   teclado: {
     backgroundColor: '#fff',
     flex: 1,
