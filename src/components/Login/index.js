@@ -8,21 +8,23 @@ import {
     Image,
     ActivityIndicator,
     KeyboardAvoidingView,
+    ToastAndroid,
 } from 'react-native';
 import {APP_STORE} from '../../Store'
 import {loginAction} from './LoginActions'
 import styles from './style'
 import {strings} from '../../i18n';
 import {isValidText} from "../../utils";
+import ValidationComponent from '../../utils/ValidationComponent';
 
-class LoginPage extends Component {
+class LoginPage extends ValidationComponent {
 
     constructor() {
         super();
         console.log("LoginPage:constructor");
         this.state = {
-            username: `alacret`,
-            password: `alacret`,
+            username: ``,
+            password: ``,
             isLoading: false
         };
     }
@@ -40,6 +42,10 @@ class LoginPage extends Component {
             console.log("LoginPage:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
             if (isValidText(state.error))
+                console.log(state.error)
+                ToastAndroid.show(this.getErrorMessages(), ToastAndroid.LONG);
+                //ToastAndroid.show(state.error, ToastAndroid.LONG);
+                console.log(this.getErrorMessages())
                 Alert.alert(state.error)
         });
     }
@@ -57,13 +63,16 @@ class LoginPage extends Component {
     }
 
     userLogin() {
+        this.validate({
+            username: {required: true},
+            password: {required: true}
+        });
         this.setState({isLoading: true});
         loginAction(this.state.username, this.state.password)
     }
 
     render() {
         const {isLoading} = this.state;
-
         if (isLoading) {
             return (
                 <KeyboardAvoidingView style={styles.teclado} behavior="height">
@@ -139,10 +148,9 @@ class LoginPage extends Component {
                         <Text style={styles.buttonText}>Inicia Sesión</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
-                        <Text> Iniciar Sesión con Redes Sociales </Text>
+                        <Text> Iniciar Sesión   con Redes Sociales </Text>
                     </TouchableOpacity>
                     <View style={{height: 0}}/>
-
                 </KeyboardAvoidingView>
             );
         }

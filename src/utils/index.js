@@ -3,6 +3,13 @@
  * @param {string} text The text to be tested
  */
 import {APP_STATE} from "../Store";
+import DeviceInfo from 'react-native-device-info';
+
+/**
+ * Detects the lenguange and keeps in constant
+ */
+const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
+
 
 function isValidText(text) {
     if (text == null) {
@@ -19,10 +26,14 @@ function isValidText(text) {
 
 /**
  * Headers for Authorization
+ * LENGUAGE this cellphone
  * @param {string} token The token to be used
  */
 function authHeader(token) {
-    return {'Authorization': 'Token ' + token};
+    return {
+        'Authorization': 'Token ' + token,
+        'Accept-Language': LENGUAGE
+        };
 }
 
 /**
