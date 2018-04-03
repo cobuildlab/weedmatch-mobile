@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import SwitchNavigator from './App';
 
-AppRegistry.registerComponent('weedmatch', () => App);
+AppRegistry.registerComponent('weedmatch', () => SwitchNavigator);

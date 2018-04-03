@@ -1,0 +1,33 @@
+{
+  "wmatch": "COGOLLO",
+  "login": {
+    "welcome": "Welcome {{name}} to our localized app!",
+    "login_button": "Login",
+    "signup_button": "Sign Up",
+    "required_fields_error": "El usuario y la clave son necesarios"
+  },
+  "register": {
+    "fullName": "Full Name",
+    "errorFullName": "Invalid Full Name",
+    "errorEmail": "Invalid Email",
+    "errorPassword": "Invalid Password",
+    "errorUsername": "Invalid Username",
+    "errorSex": "Invalid Sex",
+    "errorAge": "Invalid Age",
+    "errorTitle": "Register Fail",
+    "successTitle": "Succesfully Registered"
+  },
+  "main": {
+    "title": "ENCUENTRA TU MEDIO"
+  },
+  "home": {
+    "actionSheet": "Elija una opción",
+    "camera": "Camara",
+    "biblio": "Biblioteca",
+    "cancel": "Cancelar",
+    "alerta": "Alerta",
+    "upload": "Subir Imagen",
+    "comment": "Comentario"
+
+  }
+}
