@@ -15,9 +15,8 @@ import {loginAction} from './LoginActions'
 import styles from './style'
 import {strings} from '../../i18n';
 import {isValidText} from "../../utils";
-import ValidationComponent from '../../utils/ValidationComponent';
 
-class LoginPage extends ValidationComponent {
+class LoginPage extends Component {
 
     constructor() {
         super();
@@ -43,10 +42,8 @@ class LoginPage extends ValidationComponent {
             this.setState({isLoading: false});
             if (isValidText(state.error))
                 console.log(state.error)
-                ToastAndroid.show(this.getErrorMessages(), ToastAndroid.LONG);
-                //ToastAndroid.show(state.error, ToastAndroid.LONG);
-                console.log(this.getErrorMessages())
-                Alert.alert(state.error)
+                ToastAndroid.show(state.error, ToastAndroid.LONG);
+                console.log(state.error)
         });
     }
 
@@ -63,10 +60,6 @@ class LoginPage extends ValidationComponent {
     }
 
     userLogin() {
-        this.validate({
-            username: {required: true},
-            password: {required: true}
-        });
         this.setState({isLoading: true});
         loginAction(this.state.username, this.state.password)
     }

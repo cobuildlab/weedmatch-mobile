@@ -8,6 +8,9 @@
   },
   "register": {
     "fullName": "Full Name",
+    "password": "Password",
+    "username": "Username",
+    "email": "Email",
     "errorFullName": "Invalid Full Name",
     "errorEmail": "Invalid Email",
     "errorPassword": "Invalid Password",
