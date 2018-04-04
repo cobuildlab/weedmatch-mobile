@@ -50,8 +50,8 @@ export default styles = StyleSheet.create({
     fontWeight: '500'
   },
   buttomBackLogin: {
-    marginTop: 20,
-    marginBottom: 10
+    marginTop: 15,
+    marginBottom: 20,
   },
   errorMessages:{
     color: 'red'

@@ -69,7 +69,7 @@ class LoginPage extends Component {
         const {isLoading} = this.state;
         if (isLoading) {
             return (
-                <KeyboardAvoidingView style={styles.teclado} behavior="height">
+                <KeyboardAvoidingView style={styles.teclado} behavior="padding">
                     <Image
                         style={styles.container}
                         source={require('./logo-login.png')}
@@ -99,7 +99,7 @@ class LoginPage extends Component {
         } else {
             return (
                 <KeyboardAvoidingView style={styles.teclado}
-                                      behavior="height"
+                                      behavior="padding"
                 >
 
                     <Image
@@ -142,7 +142,7 @@ class LoginPage extends Component {
                         <Text style={styles.buttonText}>Inicia Sesión</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
-                        <Text> Iniciar Sesión   con Redes Sociales </Text>
+                        <Text> Iniciar Sesión con redes sociales </Text>
                     </TouchableOpacity>
                     <View style={{height: 0}}/>
                 </KeyboardAvoidingView>
