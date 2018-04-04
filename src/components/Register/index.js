@@ -64,10 +64,19 @@ class RegisterPage extends ValidationComponent {
             this.setState({isLoading: true});
             if (state.error) {
                 this.setState({isLoading: false});
+                console.log(state);
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
-                        ToastAndroid.show(value, ToastAndroid.LONG);
+                        if(typeof value == 'object'){
+                            value.forEach(function(msg) {
+                                ToastAndroid.show(msg, ToastAndroid.LONG);
+                            });
+
+                        }else{
+                            ToastAndroid.show(value, ToastAndroid.LONG);
+                        }
+
                     });
 
                 }
@@ -216,8 +225,8 @@ class RegisterPage extends ValidationComponent {
     render() {
         console.log(this.state);
         var radio_props = [
-          {label: 'Masculino', value: 'Masculino' },
-          {label: 'Femenino', value: 'Femenino' }
+          {label: 'Hombre', value: 'Hombre' },
+          {label: 'Mujer', value: 'Mujer' }
         ];
         const {isLoading} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
@@ -244,7 +253,7 @@ class RegisterPage extends ValidationComponent {
                     value={this.state.email}
                 />
                 <View style={styles.inputStyleFecha}>
-                    <TouchableOpacity style={{position: 'absolute', zIndex: 999, top: 10, left: 17, width: 230}} onPress={this._showDatePicker.bind(this)}>
+                    <TouchableOpacity style={styles.picker} onPress={this._showDatePicker.bind(this)}>
                         {this.state.age == '' &&
                         <Text>
                             {strings("register.age")}

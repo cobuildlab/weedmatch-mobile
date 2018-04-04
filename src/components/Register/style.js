@@ -96,5 +96,12 @@ export default styles = StyleSheet.create({
             ios: {},
             android: {},
         }),
+    },
+    picker: {
+        position: 'absolute',
+        zIndex: 999,
+        top: 10,
+        left: 17,
+        width: 230
     }
 })
