@@ -193,12 +193,11 @@ class RegisterPage extends ValidationComponent {
                     onPress={this.registerCancel.bind(this)}>
                     <Text style={styles.buttonTextCancel}> Cancel </Text>
                 </TouchableOpacity>
-                <View style={{height: 0}}/>
             </View>
         }
         return (
-            <KeyboardAvoidingView style={styles.teclado}
-                                  behavior="height">
+           <ScrollView style={{backgroundColor: '#fff',}}>
+              <View style={styles.teclado}>
                 <Image style={styles.container}
                        source={require('../../assets/img/logo-b.png')}
                 />
@@ -209,7 +208,8 @@ class RegisterPage extends ValidationComponent {
                     COGOLLO
                 </Text>
                 {body}
-            </KeyboardAvoidingView>
+              </View>
+           </ScrollView>
         );
 
     }

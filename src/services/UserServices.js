@@ -94,7 +94,7 @@ function publicImage(token, state) {
     data.append('latitud', state.latitud);
     data.append('longitud', state.longitud);
     data.append('comment', state.comment);
-    
+
     const requestOptions = {
         method: 'POST',
         headers: authHeader(token),

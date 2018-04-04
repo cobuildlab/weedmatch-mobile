@@ -225,7 +225,8 @@ const styles = StyleSheet.create({
         paddingBottom: 14,
         borderRadius: 50,
         alignItems: 'center',
-        backgroundColor: '#c646b6',
+        // backgroundColor: '#c646b6',
+          backgroundColor: '#9605CC',
     },
 
 });

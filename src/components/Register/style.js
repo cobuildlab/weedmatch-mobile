@@ -2,18 +2,15 @@ import { StyleSheet, Platform  } from 'react-native';
 
 export default styles = StyleSheet.create({
     container: {
-        flex: 2,
         width: '80%',
         resizeMode: 'contain',
-        justifyContent: 'center',
+        flex: 1,
     },
 
     contentRegister: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 25,
     },
     textLight: {
         fontSize: 20,
@@ -23,6 +20,7 @@ export default styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#9605CC',
+        marginBottom: 25,
     },
     inputStyle: {
         backgroundColor: '#ffffff',
@@ -48,13 +46,12 @@ export default styles = StyleSheet.create({
 
     },
     buttomCancelStyle: {
-        marginTop: 2,
+        marginTop: 0,
         marginBottom: 10,
-        width: 220,
-        paddingTop: 5,
+        width: 250,
+        marginRight: 5,
+        paddingTop: 10,
         paddingBottom: 10,
-        borderColor: '#9605CC',
-        borderWidth: 1,
         borderRadius: 50,
         alignItems: 'center',
         backgroundColor: 'transparent',
@@ -70,12 +67,16 @@ export default styles = StyleSheet.create({
     buttomBackLogin: {
         marginTop: 30,
     },
+    grupBtn:{
+      flex: 1, flexDirection: 'row',  justifyContent: 'center',
+      width: '90%',
+    },
     teclado: {
         backgroundColor: '#fff',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-
+        height: 'auto',
         ...Platform.select({
             ios: {},
             android: {},
