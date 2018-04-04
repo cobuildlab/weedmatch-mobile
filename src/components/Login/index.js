@@ -118,6 +118,7 @@ class LoginPage extends Component {
                     <TextInput
                         style={styles.inputStyle}
                         editable={true}
+                        underlineColorAndroid='transparent'
                         onChangeText={(username) => this.setState({username})}
                         placeholder='Username'
                         ref='username'
@@ -128,6 +129,7 @@ class LoginPage extends Component {
                     <TextInput
                         style={styles.inputStyle}
                         editable={true}
+                        underlineColorAndroid='transparent'
                         onChangeText={(password) => this.setState({password})}
                         placeholder='Password'
                         ref='password'

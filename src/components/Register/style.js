@@ -71,6 +71,11 @@ export default styles = StyleSheet.create({
       flex: 1, flexDirection: 'row',  justifyContent: 'center',
       width: '90%',
     },
+    radioStyle:{
+      paddingTop: 5,
+      paddingBottom: 5,
+      marginRight: 10
+    },
     teclado: {
         backgroundColor: '#fff',
         flex: 1,
