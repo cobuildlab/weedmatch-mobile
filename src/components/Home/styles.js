@@ -21,7 +21,7 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         bottom: 5,
-        right: 156,
+        right: 136,
     },
     FloatingButtonStyle: {
       resizeMode: 'contain',
