@@ -33,6 +33,17 @@ export default styles = StyleSheet.create({
         paddingRight: 10,
         marginBottom: 10,
     },
+    inputStyleFecha: {
+            backgroundColor: '#ffffff',
+            height: 40,
+            width: 250,
+            borderColor: '#ccc',
+            borderRadius: 50,
+            borderWidth: 1,
+            paddingLeft: 100,
+            paddingRight: 10,
+            marginBottom: 10,
+        },
     buttomRegisterStyle: {
         marginTop: 0,
         marginBottom: 10,
@@ -70,6 +81,10 @@ export default styles = StyleSheet.create({
     grupBtn:{
       flex: 1, flexDirection: 'row',  justifyContent: 'center',
       width: '90%',
+    },
+    radioStyle:{
+      paddingTop: 5,
+      paddingBottom: 5,
     },
     teclado: {
         backgroundColor: '#fff',

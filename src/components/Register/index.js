@@ -9,7 +9,6 @@ import {
     ScrollView,
     StyleSheet,
     Image,
-    Picker,
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
@@ -19,7 +18,10 @@ import {strings} from "../../i18n";
 import {registerAction} from "./RegisterActions";
 import {APP_STORE} from "../../Store";
 import ValidationComponent from '../../utils/ValidationComponent';
-import styles from './style'
+import styles from './style';
+
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import Picker from 'react-native-picker';
 
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_WIDTH = window.width;
@@ -37,7 +39,7 @@ class RegisterPage extends ValidationComponent {
             latitud: '',
             longitud: '',
             age: '',
-            sex: 'Hombre',
+            sex: '',
             isLoading: false
         };
     }
@@ -111,6 +113,10 @@ class RegisterPage extends ValidationComponent {
                     this.getErrorsInField('age').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
                     return
                 }
+                if(this.isFieldInError('sex')){
+                    this.getErrorsInField('sex').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    return
+                }
                 if(this.isFieldInError('username')){
                     this.getErrorsInField('username').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
                     return
@@ -127,11 +133,92 @@ class RegisterPage extends ValidationComponent {
 
     }
 
+     _createDateData() {
+            let date = [];
+            for(let i=2002;i>1930;i--){
+                let month = [];
+                for(let j = 1;j<13;j++){
+                    let day = [];
+                    if(j === 2){
+                        for(let k=1;k<29;k++){
+                            day.push(k);
+                        }
+                        //Leap day for years that are divisible by 4, such as 2000, 2004
+                        if(i%4 === 0){
+                            day.push(29);
+                        }
+                    }
+                    else if(j in {1:1, 3:1, 5:1, 7:1, 8:1, 10:1, 12:1}){
+                        for(let k=1;k<32;k++){
+                            day.push(k);
+                        }
+                    }
+                    else{
+                        for(let k=1;k<31;k++){
+                            day.push(k);
+                        }
+                    }
+                    let _month = {};
+                    _month[j] = day;
+                    month.push(_month);
+                }
+                let _date = {};
+                _date[i] = month;
+                date.push(_date);
+            }
+            return date;
+        }
+
+        _showDatePicker() {
+            Picker.init({
+                pickerData: this._createDateData(),
+                pickerFontColor: [255, 0 ,0, 1],
+                onPickerConfirm: (pickedValue, pickedIndex) => {
+                    var month = '';
+                    var day = '';
+                    if(pickedValue[1] <= 9){
+                        month = 0 + pickedValue[1]
+                    }else{
+                        month = pickedValue[1];
+                    }
+                    if(pickedValue[2] <= 9){
+                        day = 0 + pickedValue[2]
+                    }else{
+                        day = pickedValue[2]
+                    }
+                    let dateAge = pickedValue[0] + '-' + month + '-' + day
+                    this.setState({age: dateAge})
+                },
+                onPickerCancel: (pickedValue, pickedIndex) => {
+                    console.log('date', pickedValue, pickedIndex);
+                },
+                onPickerSelect: (pickedValue, pickedIndex) => {
+                    console.log('date', pickedValue, pickedIndex);
+                }
+            });
+            Picker.show();
+        }
+
+        _toggle() {
+            Picker.toggle();
+        }
+
+        _isPickerShow(){
+            Picker.isPickerShow(status => {
+                alert(status);
+            });
+        }
+
     registerCancel() {
         this.props.navigation.goBack();
     }
 
     render() {
+        console.log(this.state);
+        var radio_props = [
+          {label: 'Masculino', value: 'Masculino' },
+          {label: 'Femenino', value: 'Femenino' }
+        ];
         const {isLoading} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
@@ -139,6 +226,7 @@ class RegisterPage extends ValidationComponent {
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
+                    underlineColorAndroid='transparent'
                     onChangeText={(full_name) => this.setState({full_name})}
                     placeholder={strings("register.fullName")}
                     ref='full_name'
@@ -148,25 +236,42 @@ class RegisterPage extends ValidationComponent {
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
+                    underlineColorAndroid='transparent'
                     onChangeText={(email) => this.setState({email})}
                     placeholder={strings("register.email")}
                     ref='email'
                     returnKeyType='next'
                     value={this.state.email}
                 />
-
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    onChangeText={(age) => this.setState({age})}
-                    placeholder={strings("register.age")}
-                    ref='age'
-                    returnKeyType='next'
-                    value={this.state.age}
+                <View style={styles.inputStyleFecha}>
+                    <TouchableOpacity style={{position: 'absolute', zIndex: 999, top: 10, left: 17, width: 230}} onPress={this._showDatePicker.bind(this)}>
+                        {this.state.age == '' &&
+                        <Text>
+                            {strings("register.age")}
+                        </Text>
+                        }
+                        {this.state.age !== '' &&
+                            <Text>
+                                {this.state.age}
+                            </Text>
+                        }
+                    </TouchableOpacity>
+                </View>
+                <RadioForm
+                    style={styles.radioStyle}
+                    radio_props={radio_props}
+                    initial={0}
+                    ref="sex"
+                    radioStyle={{paddingRight: 20}}
+                    formHorizontal={true}
+                    buttonColor={'#9605CC'}
+                    selectedButtonColor={'#9605CC'}
+                    onPress = {(value) => {this.setState({sex:value})}}
                 />
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
+                    underlineColorAndroid='transparent'
                     onChangeText={(username) => this.setState({username})}
                     placeholder={strings("register.username")}
                     ref='username'
@@ -176,6 +281,7 @@ class RegisterPage extends ValidationComponent {
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
+                    underlineColorAndroid='transparent'
                     onChangeText={(password) => this.setState({password})}
                     placeholder={strings("register.password")}
                     ref='password'

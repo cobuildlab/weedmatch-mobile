@@ -9,10 +9,11 @@ export const userService = {
     postRegister,
     feed,
     publicProfile,
-    publicImage
+    publicImage,
+    publicImageLike
 };
 
-// const URL = "http://192.168.0.21:8080/";
+//const URL = "http://192.168.0.21:8080/";
 // const URL = "https://weedmatch.herokuapp.com/";
 const URL = "http://45.32.173.248/";
 const LENGUAGE = 'us'//DeviceInfo.getDeviceLocale().slice(0,2);
@@ -103,13 +104,23 @@ function publicImage(token, state) {
     return fetch(URL + 'public-image/', requestOptions);
 }
 
-function publicImageLike(token, id) {
+function publicImageLike(token, id, id_user, like) {
+    let  valueLike = {
+        "like": like
+    }
+
+    const data = new FormData();
+    data.append('like', like);
+
     const requestOptions = {
         method: 'PUT',
-        headers: authHeader(token)
+        headers: authHeader(token),
+        body: data
     };
 
-    return fetch(URL + 'public-image/id/like/id_user/', requestOptions).then(handleResponse);
+    console.log(requestOptions);
+
+    return fetch(URL + 'public-image/' + id + '/like/' + id_user + '/', requestOptions);
 }
 
 function publicProfile(token, id) {

@@ -26,6 +26,8 @@ target 'weedmatch' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'Picker', :path => '../node_modules/react-native-picker'
+
 end
 
 # very important to have, unless you removed React dependencies for Libraries 
