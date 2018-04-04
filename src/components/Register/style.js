@@ -74,7 +74,6 @@ export default styles = StyleSheet.create({
     radioStyle:{
       paddingTop: 5,
       paddingBottom: 5,
-      marginRight: 10
     },
     teclado: {
         backgroundColor: '#fff',

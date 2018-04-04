@@ -39,7 +39,7 @@ class RegisterPage extends ValidationComponent {
             latitud: '',
             longitud: '',
             age: '',
-            sex: 'Hombre',
+            sex: '',
             isLoading: false
         };
     }
@@ -182,10 +182,10 @@ class RegisterPage extends ValidationComponent {
                     radio_props={radio_props}
                     initial={0}
                     ref="sex"
+                    radioStyle={{paddingRight: 20}}
                     formHorizontal={true}
                     buttonColor={'#9605CC'}
                     selectedButtonColor={'#9605CC'}
-                    wrapStyle = {{margin: 10}}
                     onPress = {(value) => {this.setState({sex:value})}}
                 />
                 <TextInput
