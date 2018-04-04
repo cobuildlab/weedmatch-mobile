@@ -20,10 +20,8 @@ target 'weedmatch' do
   ]
 
   pod 'react-native-fbsdk', :path =>  '../node_modules/react-native-fbsdk/ios/react-native-fbsdk.podspec'
-
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
-
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
   pod 'Picker', :path => '../node_modules/react-native-picker'

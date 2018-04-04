@@ -39,7 +39,7 @@ class RegisterPage extends ValidationComponent {
             latitud: '',
             longitud: '',
             age: '',
-            sex: '',
+            sex: 'Masculino',
             isLoading: false
         };
     }

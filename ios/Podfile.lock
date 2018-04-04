@@ -11,6 +11,9 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.30.0):
     - FBSDKCoreKit (~> 4.30.0)
+  - Picker (4.3.5):
+    - Picker/Core (= 4.3.5)
+  - Picker/Core (4.3.5)
   - QBImagePickerController (3.4.0)
   - React (0.53.3):
     - React/Core (= 0.53.3)
@@ -59,6 +62,9 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNDeviceInfo (0.21.4)
+  - RNI18n (2.0.12):
+    - React
   - RNImageCropPicker (0.20.0):
     - QBImagePickerController
     - RSKImageCropper
@@ -66,6 +72,7 @@ PODS:
   - yoga (0.53.3.React)
 
 DEPENDENCIES:
+  - Picker (from `../node_modules/react-native-picker`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk/ios/react-native-fbsdk.podspec`)
   - React/Core (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -79,14 +86,22 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNI18n (from `../node_modules/react-native-i18n`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 EXTERNAL SOURCES:
+  Picker:
+    :path: ../node_modules/react-native-picker
   React:
     :path: ../node_modules/react-native
   react-native-fbsdk:
     :path: ../node_modules/react-native-fbsdk/ios/react-native-fbsdk.podspec
+  RNDeviceInfo:
+    :path: ../node_modules/react-native-device-info
+  RNI18n:
+    :path: ../node_modules/react-native-i18n
   RNImageCropPicker:
     :path: ../node_modules/react-native-image-crop-picker
   yoga:
@@ -97,13 +112,16 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 7c4bba2877781a131ab5d54c0a78c405d4307b62
   FBSDKLoginKit: fe7a7e82373dc5daad92e1623219e86224ab1fb1
   FBSDKShareKit: a9427574b51bde4f437262c3f118c4ccfddeef6c
+  Picker: f11a9887a32fb5112a31851bbf523362af0f7bbc
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: af66244a7d630be2aef03b4ddfe3570e4eff39fc
   react-native-fbsdk: 8a738a123494ae9ba69482a5a8e88aa2108b8245
+  RNDeviceInfo: 06a9f93956871270fe4a07785e6fa4dea82eef74
+  RNI18n: db9be06a40336f04d136f24dd5de3f5eb9f3207c
   RNImageCropPicker: a637beb8f4c76bf9fe8a89d404ad65a33c4215ac
   RSKImageCropper: d9a1acbc0600bf8decc8f0d21895872c99a9e4cf
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: a765d219cd0c4ef5bd99badb130f620e81e3afe7
+PODFILE CHECKSUM: 43cbc12f1a2f67d81530786ca4301a3c00063e5b
 
 COCOAPODS: 1.4.0
