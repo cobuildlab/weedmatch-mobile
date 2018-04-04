@@ -183,11 +183,10 @@ class RegisterPage extends ValidationComponent {
                     initial={0}
                     ref="sex"
                     formHorizontal={true}
-                    animation={true}
                     buttonColor={'#9605CC'}
-                    buttonInnerColor={'#9605CC'}
-                    labelWrapStyle={{marginRight: 5}}
-                    onPress={(value) => {this.setState({sex:value})}}
+                    selectedButtonColor={'#9605CC'}
+                    wrapStyle = {{margin: 10}}
+                    onPress = {(value) => {this.setState({sex:value})}}
                 />
                 <TextInput
                     style={styles.inputStyle}
