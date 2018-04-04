@@ -16,6 +16,19 @@ async function saveToken(token) {
 }
 
 /**
+ * Synchronous save the token
+ * @param id
+ * @returns {Promise<void>}
+ */
+async function saveId(id) {
+    try {
+        await AsyncStorage.setItem("id", id);
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+    }
+}
+
+/**
  * Pops the token from the Async Store
  */
 async function popToken(state) {
@@ -37,6 +50,7 @@ class Store {
             error: undefined,
             success: undefined,
             token: undefined,
+            id: undefined,
             feed: undefined,
         };
         popToken(this.state);
@@ -62,6 +76,16 @@ class Store {
             if (isValidText(token)) {
                 saveToken(token);
                 me.state.token = token;
+            }
+        });
+        this.ID_EVENT = new Subject();
+        this.ID_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            const id = state.id;
+            if (isValidText(id)) {
+                saveId(id);
+                me.state.id = id;
             }
         });
         this.FEED_EVENT = new Subject();

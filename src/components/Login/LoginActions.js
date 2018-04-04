@@ -17,6 +17,7 @@ function loginAction(username, password) {
             if (response.ok) {
                 //APP_STORE.APP_EVENT.next({"success": strings("login.welcome")});
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
+                APP_STORE.ID_EVENT.next({"id": json.id.toString()});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});

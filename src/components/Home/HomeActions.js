@@ -13,6 +13,7 @@ function feedAction(token, state) {
             const json = await response.json();
             console.log(`homeAction:JSON:`, json);
             if (response.ok) {
+                console.log(json.results);
                 APP_STORE.FEED_EVENT.next({"feed": json.results});
                 return;
             }
@@ -37,4 +38,21 @@ function uploadAction(token, state) {
         });
 }
 
-export {feedAction, uploadAction};
+function likeAction(token, id, id_user, like) {
+
+    console.log(`likeAction: ${token}, ${id}, ${id_user}, ${like}`);
+
+    userService.publicImageLike(token, id, id_user, like)
+        .then(async (response) => {
+            console.log(`likeAction: ${token}, ${id}, ${id_user}, ${like}`, response);
+            const json = await response.json();
+            console.log(`likeAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.APP_EVENT.next({"success": json.detail});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
+export {feedAction, uploadAction, likeAction};
