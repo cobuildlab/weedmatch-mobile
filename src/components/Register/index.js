@@ -60,7 +60,7 @@ class RegisterPage extends ValidationComponent {
             },
             {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
         );
-        APP_STORE.APP_EVENT.subscribe(state => {
+        this.event = APP_STORE.APP_EVENT.subscribe(state => {
             this.setState({isLoading: true});
             if (state.error) {
                 this.setState({isLoading: false});
@@ -82,6 +82,7 @@ class RegisterPage extends ValidationComponent {
 
     componentWillUnmount() {
         console.log("RegisterPage:componentWillUmmount");
+        this.event.unsubscribe();
     }
 
     registerUser() {
