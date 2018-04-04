@@ -12,6 +12,7 @@
     "username": "Username",
     "email": "Email",
     "age": "Date of Birth",
+    "allInputs": "All inputs required",
     "errorFullName": "Invalid Full Name",
     "errorEmail": "Invalid Email",
     "errorPassword": "Invalid Password",

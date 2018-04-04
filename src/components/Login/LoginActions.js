@@ -15,7 +15,7 @@ function loginAction(username, password) {
             const json = await response.json();
             console.log(`loginAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.APP_EVENT.next({"success": strings("login.welcome")});
+                //APP_STORE.APP_EVENT.next({"success": strings("login.welcome")});
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
                 return;
             }

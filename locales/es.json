@@ -13,6 +13,7 @@
     "username": "Usuario",
     "email": "Correo Eléctronico",
     "age": "Fecha de Nacimiento",
+    "allInputs": "Todos los campos son requeridos",
     "errorEmail": "Invalid Email",
     "errorPassword": "Invalid Password",
     "errorUsername": "Invalid Username",

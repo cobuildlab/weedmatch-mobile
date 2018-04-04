@@ -50,7 +50,8 @@ export default class HomePage extends Component {
         comment: '',
         modalVisible: false,
         photos: [],
-        isLoaded: false
+        isLoaded: false,
+        load: false
       };
   }
 
@@ -78,6 +79,7 @@ export default class HomePage extends Component {
             return;
         }
         if (state.success) {
+            this.setState({load: false});
             Alert.alert(
               strings("home.alerta"),
               state.success,
@@ -104,6 +106,7 @@ export default class HomePage extends Component {
     }
 
     _uploadPhoto() {
+      this.setState({load: true});
       AsyncStorage.getItem('token').then((token) => {
         uploadAction(token, this.state)
       })
@@ -175,8 +178,10 @@ export default class HomePage extends Component {
             switch(index) {
               case 0:
                 this._takePhoto();
+                break;
               case 1:
                 this._getPhoto();
+                break;
               default:
                 break;
             }
@@ -286,7 +291,7 @@ export default class HomePage extends Component {
 
   render() {
     console.log(this.state);
-    const { isLoaded, image } = this.state;
+    const { isLoaded, image, load } = this.state;
     if(isLoaded){
       return (
         <View style={{flex:1}}>
@@ -306,29 +311,34 @@ export default class HomePage extends Component {
                   onPress={this.toggleModal}
                 />
                 <ScrollView contentContainerStyle={styles.scrollView}>
-
-                  <ActivityIndicator size="large" color="#9605CC" hidesWhenStopped={this.state.isLoaded} />
-                  { image != '' &&
-                    <TouchableHighlight>
-                        <Image
-                            style={{
-                            width: width,
-                            height: width
-                            }}
-                            source={{uri: image}}
-                        />
-
-                    </TouchableHighlight>
+                  { load &&
+                    <ActivityIndicator size="large" color="#9605CC" hidesWhenStopped={this.state.isLoaded} />
                   }
-                  <TextInput
-                      style={styles.inputStyle}
-                      editable={true}
-                      onChangeText={(comment) => this.setState({comment})}
-                      placeholder = {strings("home.comment")}
-                      ref='comment'
-                      returnKeyType='next'
-                      value={this.state.comment}
-                  />
+                  {!load &&
+                      <View>
+                          { image != '' &&
+                              <TouchableHighlight>
+                                  <Image
+                                      style={{
+                                      width: width,
+                                      height: width
+                                      }}
+                                      source={{uri: image}}
+                                  />
+
+                              </TouchableHighlight>
+                          }
+                              <TextInput
+                                  style={styles.inputStyle}
+                                  editable={true}
+                                  onChangeText={(comment) => this.setState({comment})}
+                                  placeholder = {strings("home.comment")}
+                                  ref='comment'
+                                  returnKeyType='next'
+                                  value={this.state.comment}
+                              />
+                      </View>
+                  }
 
                 </ScrollView>
                 {

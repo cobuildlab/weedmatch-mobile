@@ -42,6 +42,7 @@ class LoginPage extends Component {
             this.setState({isLoading: false});
             if (isValidText(state.error))
                 console.log(state.error)
+                console.log(state.error)
                 ToastAndroid.show(state.error, ToastAndroid.LONG);
                 console.log(state.error)
         });

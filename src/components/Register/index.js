@@ -63,13 +63,16 @@ class RegisterPage extends ValidationComponent {
             if (state.error) {
                 this.setState({isLoading: false});
                 if(state.error.detail){
-                    ToastAndroid.show(state.error.detail.age, ToastAndroid.LONG);
+                    Object.keys(state.error.detail).map(function(objectKey, index) {
+                        var value = state.error.detail[objectKey];
+                        ToastAndroid.show(value, ToastAndroid.LONG);
+                    });
+
                 }
-                //Alert.alert(strings("register.errorTitle"), state.error);
             return;
             }
             if (state.success) {
-                ToastAndroid.show(strings("register.successTitle"), state.success, ToastAndroid.LONG);
+                ToastAndroid.show(strings("register.successTitle"), ToastAndroid.LONG);
                 this.props.navigation.navigate('Login');
             }
         });
@@ -92,7 +95,14 @@ class RegisterPage extends ValidationComponent {
             registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
                 parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
         }else{
-            ToastAndroid.show(this.getErrorMessages(), ToastAndroid.LONG);
+            console.log('------');
+            console.log(this.state.full_name);
+            console.log(this.state.email);
+            if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
+                ToastAndroid.show(this.getErrorMessages('\n'), ToastAndroid.LONG);
+            }else{
+                ToastAndroid.show(strings("register.allInputs"), ToastAndroid.LONG);
+            }
         }
 
     }
