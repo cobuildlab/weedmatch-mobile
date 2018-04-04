@@ -11,6 +11,7 @@ import {
   Navigator
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import styles from './style';
 
 import TopBar from './../../utils/TopBar';
 import TabProfile from '../tabProfile';
@@ -18,6 +19,9 @@ import TabProfile from '../tabProfile';
 var mePic = require('../../images/sebas.jpg');
 var meName = 'Sebastian Diaz'
 var meUsername = 'holasebasdiaz'
+var meEdad = '24'
+var meCiudad = 'Santiago'
+var meDescription = 'Piolito, nomá'
 
 export default class Profile extends Component {
 
@@ -45,27 +49,29 @@ _logout(){
 
 
       <View style={styles.meInfoWrap}>
-
-            <View style={styles.meInfo}>
-              <Image source={mePic} style={styles.mePic}/>
-              <Text style={styles.meName}>{meName}</Text>
-            </View>
-
-          <View style={{flex:1}}>
-
-            <View style={styles.edit}>
-              <Text>Editar Perfil</Text>
-            </View>
-            <View style={styles.edit2}>
-              <TouchableHighlight onPress={()=>this._logout()}>
-                  <Text style={styles.username}>Cerrar Sesión</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+        <View style={styles.meInfo}>
+          <Image source={mePic} style={styles.mePic}/>
+        </View>
+        <View style={styles.meContenInfo}>
+          <Text style={styles.meName}>{meName}, {meEdad}</Text>
+        <Text style={styles.meNameOther}>{meCiudad}</Text>
+      <Text style={styles.meNameOther}>{meDescription}</Text>
+          <View style={{height: .8, backgroundColor: '#B2B2B2', marginBottom: 8, paddingLeft: 15, paddingRight: 15, marginTop: 20,}} />
+        </View>
 
       </View>
       <TabProfile navigator={this.props.navigator}/>
+      <View style={{flex:1}}>
 
+        {/* <View style={styles.edit}>
+          <Text>Editar Perfil</Text>
+        </View> */}
+        <View style={styles.edit2}>
+          <TouchableHighlight style={styles.buttomCerrarStyle} onPress={()=>this._logout()}>
+              <Text>Cerrar Sesión</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
 
       </ScrollView>
 
@@ -73,70 +79,3 @@ _logout(){
     );
   }
 }
-
-const styles = StyleSheet.create({
-  scrollView:{
-    backgroundColor: '#fff',
-    marginBottom:0
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  mePic:{
-      width:70,
-      height:70,
-      borderRadius:35
-  },
-  meInfoWrap:{
-    paddingTop:5,
-    flexDirection:'row'
-  },
-  meData:{
-    flex:2,
-    paddingTop:20,
-    flexDirection:'row',
-  },
-  meInfo:{
-    alignItems:'center',
-    padding:15
-  },
-  meName:{
-    fontWeight:'bold',
-    fontSize:12,
-    paddingTop:10
-  },
-  data:{
-    flex:1,
-
-    alignItems:'center'
-  },
-  edit:{
-    borderWidth:1,
-    borderColor:'#ccc',
-    borderRadius:3,
-    alignItems:'center',
-    margin:15,
-    padding:2
-  },
-  edit2:{
-    borderWidth:1,
-    borderColor:'#ccc',
-    borderRadius:3,
-    alignItems:'center',
-    margin:15,
-    marginTop: 0,
-    padding:2
-  }
-
-});

@@ -37,26 +37,10 @@ export default class tabProfile extends Component {
     return(
       <View>
       <View style={styles.viewrow}>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[1])}><Image source={feedData[1].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[2])}><Image source={feedData[2].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[3])}><Image source={feedData[3].media.media} style={styles.rowimage}/></TouchableHighlight>
+        <TouchableHighlight ><Image source={feedData[1].media.media} style={styles.rowimage}/></TouchableHighlight>
+        <TouchableHighlight ><Image source={feedData[2].media.media} style={styles.rowimage}/></TouchableHighlight>
+        <TouchableHighlight ><Image source={feedData[3].media.media} style={styles.rowimage}/></TouchableHighlight>
       </View>
-      <View style={styles.viewrow}>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[4])}><Image source={feedData[4].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[5])}><Image source={feedData[5].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[6])}><Image source={feedData[6].media.media} style={styles.rowimage}/></TouchableHighlight>
-      </View>
-      <View style={styles.viewrow}>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[7])}><Image source={feedData[7].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[8])}><Image source={feedData[8].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[9])}><Image source={feedData[9].media.media} style={styles.rowimage}/></TouchableHighlight>
-      </View>
-      <View style={styles.viewrow}>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[10])}><Image source={feedData[10].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[1])}><Image source={feedData[1].media.media} style={styles.rowimage}/></TouchableHighlight>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[2])}><Image source={feedData[2].media.media} style={styles.rowimage}/></TouchableHighlight>
-      </View>
-
       </View>
     )
   }
@@ -65,30 +49,12 @@ export default class tabProfile extends Component {
   //This should be a loop data reder
     return(
      <View>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[1])}><Image source={feedData[1].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[2])}><Image source={feedData[2].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[3])}><Image source={feedData[3].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[4])}><Image source={feedData[4].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[5])}><Image source={feedData[5].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[6])}><Image source={feedData[6].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[7])}><Image source={feedData[7].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[8])}><Image source={feedData[8].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[9])}><Image source={feedData[9].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[10])}><Image source={feedData[10].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[1])}><Image source={feedData[1].media.media} style={styles.listImage}/></TouchableHighlight>
-        <View style={styles.mediaUser}><Image style={styles.picture} source={mePic} /><Text style={styles.username}>{meUsername}</Text></View>
-        <TouchableHighlight onPress={() => this._goPhoto(feedData[2])}><Image source={feedData[2 ].media.media} style={styles.listImage}/></TouchableHighlight>
+        <View style={styles.mediaUser}><Image style={styles.picture}/><Text style={styles.username}>{meUsername}</Text></View>
+        <TouchableHighlight><Image source={feedData[1].media.media} style={styles.listImage}/></TouchableHighlight>
+        <View style={styles.mediaUser}><Image style={styles.picture}/><Text style={styles.username}>{meUsername}</Text></View>
+        <TouchableHighlight><Image source={feedData[2].media.media} style={styles.listImage}/></TouchableHighlight>
+        <View style={styles.mediaUser}><Image style={styles.picture}/><Text style={styles.username}>{meUsername}</Text></View>
+        <TouchableHighlight><Image source={feedData[3].media.media} style={styles.listImage}/></TouchableHighlight>
       </View>
     )
   }
@@ -146,6 +112,7 @@ const styles = StyleSheet.create({
     width:width/3,
     height:width/3,
     borderWidth:.5,
+    padding: 20,
     borderColor:'#fff'
 
   },
@@ -156,10 +123,7 @@ const styles = StyleSheet.create({
    mediaUser:{
 
     alignItems: 'center',
-    padding:10,
-
     backgroundColor:'#FFF',
-
     width:width,
     flexDirection:'row',
 
@@ -174,6 +138,7 @@ const styles = StyleSheet.create({
     width:30,
     height:30,
     borderRadius:15,
+    padding: 10,
 
   },
    username:{
