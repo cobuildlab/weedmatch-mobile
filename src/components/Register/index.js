@@ -83,6 +83,9 @@ class RegisterPage extends ValidationComponent {
     }
 
     registerUser() {
+        /*
+        * Validating Form with rules
+        */
         this.validate({
             username:  {required: true, minlength:6, maxlength:12},
             password:  {required: true, minlength:6, maxlength:20},
@@ -95,11 +98,28 @@ class RegisterPage extends ValidationComponent {
             registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
                 parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
         }else{
-            console.log('------');
-            console.log(this.state.full_name);
-            console.log(this.state.email);
             if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
-                ToastAndroid.show(this.getErrorMessages('\n'), ToastAndroid.LONG);
+                if(this.isFieldInError('full_name')){
+                    this.getErrorsInField('full_name').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    return
+                }
+                if(this.isFieldInError('email')){
+                    this.getErrorsInField('email').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    return
+                }
+                if(this.isFieldInError('age')){
+                    this.getErrorsInField('age').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    return
+                }
+                if(this.isFieldInError('username')){
+                    this.getErrorsInField('username').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    return
+                }
+                if(this.isFieldInError('password')){
+                    this.getErrorsInField('password').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    return
+                }
+
             }else{
                 ToastAndroid.show(strings("register.allInputs"), ToastAndroid.LONG);
             }

@@ -13,9 +13,9 @@ export const userService = {
 };
 
 // const URL = "http://192.168.0.21:8080/";
-const URL = "https://weedmatch.herokuapp.com/";
-// const URL = "http://45.32.173.248/";
-const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
+// const URL = "https://weedmatch.herokuapp.com/";
+const URL = "http://45.32.173.248/";
+const LENGUAGE = 'us'//DeviceInfo.getDeviceLocale().slice(0,2);
 
 /**
  * Log in the user
