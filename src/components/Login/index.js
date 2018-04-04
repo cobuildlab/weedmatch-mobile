@@ -69,7 +69,7 @@ class LoginPage extends Component {
         const {isLoading} = this.state;
         if (isLoading) {
             return (
-                <KeyboardAvoidingView style={styles.teclado} behavior="padding">
+                    <View style={styles.teclado}>
                     <Image
                         style={styles.container}
                         source={require('./logo-login.png')}
@@ -91,15 +91,16 @@ class LoginPage extends Component {
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
                         <Text> Iniciar Sesión con Redes Sociales </Text>
                     </TouchableOpacity>
+                    </View>
 
-                    <View style={{height: 0}}/>
 
-                </KeyboardAvoidingView>
+
+
             )
         } else {
             return (
-                <KeyboardAvoidingView style={styles.teclado}
-                                      behavior="padding"
+                <ScrollView style={{backgroundColor: '#fff',}}>
+                <View style={styles.teclado}
                 >
 
                     <Image
@@ -146,8 +147,8 @@ class LoginPage extends Component {
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
                         <Text> Iniciar Sesión con redes sociales </Text>
                     </TouchableOpacity>
-                    <View style={{height: 0}}/>
-                </KeyboardAvoidingView>
+                </View>
+                <ScrollView>
             );
         }
     }
