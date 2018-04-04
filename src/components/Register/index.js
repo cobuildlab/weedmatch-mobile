@@ -18,24 +18,26 @@ import {
 import {strings} from "../../i18n";
 import {registerAction} from "./RegisterActions";
 import {APP_STORE} from "../../Store";
+import ValidationComponent from '../../utils/ValidationComponent';
+import styles from './style'
 
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_WIDTH = window.width;
 
-class RegisterPage extends Component {
+class RegisterPage extends ValidationComponent {
 
     constructor(props) {
         super(props);
         console.log("RegisterPage:constructor");
         this.state = {
-            first_name: '',
+            full_name: '',
             email: '',
             username: '',
             password: '',
             latitud: '',
             longitud: '',
             age: '',
-            sexo: 'Hombre',
+            sex: 'Hombre',
             isLoading: false
         };
     }
@@ -58,14 +60,21 @@ class RegisterPage extends Component {
         );
         APP_STORE.APP_EVENT.subscribe(state => {
             this.setState({isLoading: true});
-            // if (state.error) {
-            //     Alert.alert(strings("register.errorTitle"), state.error);
-            //     return;
-            // }
-            // if (state.success) {
-            //     Alert.alert(strings("register.successTitle"), state.error);
-            //     this.props.navigation.navigate('Login');
-            // }
+            if (state.error) {
+                this.setState({isLoading: false});
+                if(state.error.detail){
+                    Object.keys(state.error.detail).map(function(objectKey, index) {
+                        var value = state.error.detail[objectKey];
+                        ToastAndroid.show(value, ToastAndroid.LONG);
+                    });
+
+                }
+            return;
+            }
+            if (state.success) {
+                ToastAndroid.show(strings("register.successTitle"), ToastAndroid.LONG);
+                this.props.navigation.navigate('Login');
+            }
         });
     }
 
@@ -74,14 +83,32 @@ class RegisterPage extends Component {
     }
 
     registerUser() {
-        this.setState({isLoading: true});
-        registerAction(this.state.first_name, this.state.email, this.state.username, this.state.password,
-            parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6))
+        this.validate({
+            username:  {required: true, minlength:6, maxlength:12},
+            password:  {required: true, minlength:6, maxlength:20},
+            full_name: {required: true, minlength:3, maxlength:30},
+            email:     {required: true, email: true},
+            age:       {date: 'YYYY-MM-DD', require: true}
+        });
+        if(this.isFormValid()){
+            this.setState({isLoading: true});
+            registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
+                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
+        }else{
+            console.log('------');
+            console.log(this.state.full_name);
+            console.log(this.state.email);
+            if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
+                ToastAndroid.show(this.getErrorMessages('\n'), ToastAndroid.LONG);
+            }else{
+                ToastAndroid.show(strings("register.allInputs"), ToastAndroid.LONG);
+            }
+        }
+
     }
 
     registerCancel() {
         this.props.navigation.goBack();
-        // this.props.navigation.navigate('SignIn');
     }
 
     render() {
@@ -92,26 +119,36 @@ class RegisterPage extends Component {
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
-                    onChangeText={(firstName) => this.setState({firstName})}
+                    onChangeText={(full_name) => this.setState({full_name})}
                     placeholder={strings("register.fullName")}
-                    ref='firstName'
+                    ref='full_name'
                     returnKeyType='next'
-                    value={this.state.firstName}
+                    value={this.state.full_name}
                 />
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
                     onChangeText={(email) => this.setState({email})}
-                    placeholder='Email'
+                    placeholder={strings("register.email")}
                     ref='email'
                     returnKeyType='next'
                     value={this.state.email}
+                />
+
+                <TextInput
+                    style={styles.inputStyle}
+                    editable={true}
+                    onChangeText={(age) => this.setState({age})}
+                    placeholder={strings("register.age")}
+                    ref='age'
+                    returnKeyType='next'
+                    value={this.state.age}
                 />
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
                     onChangeText={(username) => this.setState({username})}
-                    placeholder='Username'
+                    placeholder={strings("register.username")}
                     ref='username'
                     returnKeyType='next'
                     value={this.state.username}
@@ -120,7 +157,7 @@ class RegisterPage extends Component {
                     style={styles.inputStyle}
                     editable={true}
                     onChangeText={(password) => this.setState({password})}
-                    placeholder='Password'
+                    placeholder={strings("register.password")}
                     ref='password'
                     returnKeyType='next'
                     secureTextEntry={true}
@@ -157,90 +194,5 @@ class RegisterPage extends Component {
 
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 2,
-        width: '80%',
-        resizeMode: 'contain',
-        justifyContent: 'center',
-    },
-
-    contentRegister: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 25,
-    },
-    textLight: {
-        fontSize: 20,
-        color: '#9605CC',
-    },
-    textBold: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#9605CC',
-    },
-    inputStyle: {
-        backgroundColor: '#ffffff',
-        height: 40,
-        width: 250,
-        borderColor: '#ccc',
-        borderRadius: 50,
-        borderWidth: 1,
-        paddingLeft: 20,
-        paddingRight: 10,
-        marginBottom: 10,
-    },
-    buttomRegisterStyle: {
-        marginTop: 0,
-        marginBottom: 10,
-        width: 250,
-        marginRight: 5,
-        paddingTop: 10,
-        paddingBottom: 10,
-        borderRadius: 50,
-        alignItems: 'center',
-        backgroundColor: '#9605CC',
-
-    },
-    buttomCancelStyle: {
-        marginTop: 2,
-        marginBottom: 10,
-        width: 220,
-        paddingTop: 5,
-        paddingBottom: 10,
-        borderColor: '#9605CC',
-        borderWidth: 1,
-        borderRadius: 50,
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-
-    },
-    buttonTextCancel: {
-        color: '#9605CC',
-        fontSize: 16,
-    },
-    buttonText: {
-        color: '#ffffff',
-        fontSize: 16,
-    },
-    buttomBackLogin: {
-        marginTop: 30,
-    },
-    teclado: {
-        backgroundColor: '#fff',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        ...Platform.select({
-            ios: {},
-            android: {},
-        }),
-    }
-
-});
 
 export default RegisterPage;

@@ -79,6 +79,7 @@ function publicImage(token, state) {
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(state.image)[1];
 
+
     const data = new FormData();
 
     data.append('image', {
@@ -86,6 +87,8 @@ function publicImage(token, state) {
         type: 'image/' + ext,
         name: 'photo.' + ext
     });
+
+
 
     data.append('latitud', state.latitud);
     data.append('longitud', state.longitud);

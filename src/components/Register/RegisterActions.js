@@ -61,10 +61,12 @@ function registerAction(firstName, email, username, password, lat, lon, sex, age
             const json = await response.json();
             console.log(`registerAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.APP_EVENT.next({success: response.detail});
+                APP_STORE.APP_EVENT.next({success: json.detail});
                 return;
+            }else{
+                APP_STORE.APP_EVENT.next({error: json});
             }
-            APP_STORE.APP_EVENT.next({error: error.detail})
+            //APP_STORE.APP_EVENT.next({error: error.detail})
         });
 }
 
