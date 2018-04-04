@@ -134,6 +134,7 @@ export default class HomePage extends Component {
       cropping: false,
       width: 500,
       height: 500,
+      compressImageQuality: 0.5,
       includeExif: true,
       }).then(image => {
       console.log('received image', image.path);
@@ -150,6 +151,7 @@ export default class HomePage extends Component {
       cropping: false,
       width: 500,
       height: 500,
+      compressImageQuality: 0.5,
       includeExif: true,
       }).then(image => {
       console.log('received image', image.path);
