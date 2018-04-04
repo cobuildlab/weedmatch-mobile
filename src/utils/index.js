@@ -8,7 +8,7 @@ import DeviceInfo from 'react-native-device-info';
 /**
  * Detects the lenguange and keeps in constant
  */
-const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
+const LENGUAGE = 'en'//DeviceInfo.getDeviceLocale().slice(0,2);
 
 
 function isValidText(text) {
