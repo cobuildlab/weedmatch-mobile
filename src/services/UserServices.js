@@ -69,17 +69,15 @@ function feed(token, state) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token),
-        // body: JSON.stringify({ lati, long })
     };
 
-    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.logitud, requestOptions);
+    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud, requestOptions);
 }
 
 function publicImage(token, state) {
 
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(state.image)[1];
-
 
     const data = new FormData();
 
