@@ -68,7 +68,6 @@ class RegisterPage extends ValidationComponent {
             this.setState({isLoading: true});
             if (state.error) {
                 this.setState({isLoading: false});
-                console.log(state);
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
@@ -95,6 +94,7 @@ class RegisterPage extends ValidationComponent {
 
     componentWillUnmount() {
         console.log("RegisterPage:componentWillUmmount");
+        Picker.hide();
         this.event.unsubscribe();
     }
 
@@ -218,7 +218,6 @@ class RegisterPage extends ValidationComponent {
                     console.log('date', pickedValue, pickedIndex);
                 },
                 onPickerSelect: (pickedValue, pickedIndex) => {
-                    console.log('----');
                     this.setState({year: pickedValue[0]});
                     console.log('date3', pickedValue, pickedIndex);
                 }
@@ -241,7 +240,6 @@ class RegisterPage extends ValidationComponent {
     }
 
     render() {
-        console.log(this.state);
         var radio_props = [
           {label: strings("register.male"), value: 'Masculino' },
           {label: strings("register.female"), value: 'Femenino' }
