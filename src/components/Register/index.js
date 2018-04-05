@@ -43,7 +43,8 @@ class RegisterPage extends ValidationComponent {
             longitud: '',
             age: '',
             sex: 'Hombre',
-            isLoading: false
+            isLoading: false,
+            year: ''
         };
     }
 
@@ -149,13 +150,13 @@ class RegisterPage extends ValidationComponent {
      _createDateData() {
 
         var today = new Date();
-        date=today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+ today.getFullYear();
         var _month = parseInt(today.getMonth()+1);
-        console.log(_month);
+        var _today = parseInt(today.getDate());
+
             let date = [];
             for(var i=parseInt(today.getFullYear()-18);i>1930;i--){
                 let month = [];
-                for(let j = 1;j<13+1;j++){
+                for(let j = 1;j<13;j++){
                     let day = [];
                     if(j === 2){
                         for(let k=1;k<29;k++){
@@ -217,7 +218,9 @@ class RegisterPage extends ValidationComponent {
                     console.log('date', pickedValue, pickedIndex);
                 },
                 onPickerSelect: (pickedValue, pickedIndex) => {
-                    console.log('date', pickedValue, pickedIndex);
+                    console.log('----');
+                    this.setState({year: pickedValue[0]});
+                    console.log('date3', pickedValue, pickedIndex);
                 }
             });
             Picker.show();
