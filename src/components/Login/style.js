@@ -15,10 +15,12 @@ export default styles = StyleSheet.create({
   },
   textLight: {
     fontSize: 20,
+    marginTop: 35,
     color: '#9605CC',
   },
   textBold: {
     fontSize: 20,
+    marginBottom: 35,
     fontWeight: 'bold',
     color: '#9605CC',
   },
@@ -73,5 +75,3 @@ export default styles = StyleSheet.create({
   }
 
 });
-
-

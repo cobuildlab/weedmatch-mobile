@@ -59,7 +59,7 @@ export {isValidText, authHeader, catchErrorAndPropagate, toastMsg}
 
 
 const style={
-    backgroundColor: "#CC000000",
+    backgroundColor: "#333333",
     width: 300,
     height: Platform.OS === ("ios") ? 50 : 110,
     color: "#ffffff",
@@ -68,5 +68,5 @@ const style={
     fontSize: 12,
     borderRadius: Platform.OS === ("ios") ? 25 : 55,
     fontWeight: "normal",
-    yOffset: 40
+    yOffset: 60
 };
