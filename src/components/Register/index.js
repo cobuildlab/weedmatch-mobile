@@ -94,6 +94,7 @@ class RegisterPage extends ValidationComponent {
 
     componentWillUnmount() {
         console.log("RegisterPage:componentWillUmmount");
+        Picker.hide();
         this.event.unsubscribe();
     }
 
