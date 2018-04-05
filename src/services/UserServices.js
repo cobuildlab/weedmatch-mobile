@@ -72,6 +72,8 @@ function feed(token, state) {
         // body: JSON.stringify({ lati, long })
     };
 
+    console.log(requestOptions);
+
     return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.logitud, requestOptions);
 }
 

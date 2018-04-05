@@ -194,8 +194,7 @@ export default class HomePage extends Component {
               default:
                 break;
             }
-            
-            console.log(index) }}
+           }}
         />
       </View>
     );

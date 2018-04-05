@@ -3,9 +3,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 import defaultRules from './defaultRules';
 import defaultMessages from './defaultMessages';
+import DeviceInfo from 'react-native-device-info';
+
+const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 export default class ValidationComponent extends Component {
 
@@ -16,7 +18,7 @@ export default class ValidationComponent extends Component {
       // [{ fieldName: "name", messages: ["The field name is required."] }]
       this.errors = [];
       // Retrieve props
-      this.deviceLocale = 'en'; // ex: en, fr
+      this.deviceLocale = LENGUAGE; // ex: en, fr
       this.rules = defaultRules; // rules for Validation
       this.messages = defaultMessages;
   }

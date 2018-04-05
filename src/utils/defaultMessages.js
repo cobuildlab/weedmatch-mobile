@@ -1,5 +1,6 @@
 'use strict';
 
+
 const defaultMessages = {
     // English language - Used by default
     en: {
@@ -9,6 +10,14 @@ const defaultMessages = {
       date: 'The field "{0}" must be a valid date ({1}).',
       minlength: 'The field "{0}" length must be greater than {1}.',
       maxlength: 'The field "{0}" length must be lower than {1}.'
+    },
+    es: {
+        numbers: 'El campo "{0}" debe ser un número válido.',
+        email: 'El campo "{0}" Debe ser una dirección de correo electrónico válida.',
+        required: 'El campo "{0}" es requerido.',
+        date: 'El campo "{0}" Debe ser una fecha válida ({1}).',
+        minlength: 'El campo "{0}" la longitud debe ser mayor que {1}.',
+        maxlength: 'El campo "{0}" la longitud debe ser menor que {1}.'
     },
     // French language
     fr: {

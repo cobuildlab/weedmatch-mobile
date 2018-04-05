@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-native';
 /**
  * Detects the lenguange and keeps in constant
  */
-const LENGUAGE = 'en'//DeviceInfo.getDeviceLocale().slice(0,2);
+const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 
 function isValidText(text) {
@@ -37,7 +37,7 @@ function authHeader(token) {
     return {
         'Authorization': 'Token ' + token,
         'Accept-Language': LENGUAGE
-        };
+    }
 }
 
 /**
