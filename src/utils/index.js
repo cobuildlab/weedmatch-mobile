@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-native';
 /**
  * Detects the lenguange and keeps in constant
  */
-const LENGUAGE = 'en'//DeviceInfo.getDeviceLocale().slice(0,2);
+const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 
 function isValidText(text) {
@@ -66,7 +66,7 @@ const style={
     paddingLeft: 50,
     paddingRight: 50,
     fontSize: 12,
-    borderRadius: 50,
+    borderRadius: Platform.OS === ("ios") ? 25 : 55,
     fontWeight: "normal",
     yOffset: 40
 };

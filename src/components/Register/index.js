@@ -147,10 +147,15 @@ class RegisterPage extends ValidationComponent {
     }
 
      _createDateData() {
+
+        var today = new Date();
+        date=today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+ today.getFullYear();
+        var _month = parseInt(today.getMonth()+1);
+        console.log(_month);
             let date = [];
-            for(let i=2002;i>1930;i--){
+            for(var i=parseInt(today.getFullYear()-18);i>1930;i--){
                 let month = [];
-                for(let j = 1;j<13;j++){
+                for(let j = 1;j<13+1;j++){
                     let day = [];
                     if(j === 2){
                         for(let k=1;k<29;k++){
@@ -185,7 +190,13 @@ class RegisterPage extends ValidationComponent {
         _showDatePicker() {
             Picker.init({
                 pickerData: this._createDateData(),
-                pickerFontColor: [255, 0 ,0, 1],
+                pickerFontColor: [153, 0 ,204, 1],
+                pickerToolBarBg:[232, 232, 232, 1],
+                pickerTitleText: '',
+                pickerConfirmBtnColor: [153, 0 ,204, 1],
+                pickerCancelBtnColor: [153, 0 ,204, 1],
+                pickerBg: [226, 226, 226, 1],
+                
                 onPickerConfirm: (pickedValue, pickedIndex) => {
                     var month = '';
                     var day = '';

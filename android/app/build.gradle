@@ -156,6 +156,9 @@ android {
 
 dependencies {
     compile project(':react-native-toast-native')
+    compile project(':react-native-toast-native')
+    compile project(':react-native-toast-native')
+    compile project(':react-native-toast-native')
     compile project(':react-native-picker')
     compile project(':react-native-picker')
     compile project(':react-native-picker')
