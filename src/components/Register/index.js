@@ -15,11 +15,13 @@ import {
     ToastAndroid,
     TouchableWithoutFeedback
 } from 'react-native';
+
 import {strings} from "../../i18n";
 import {registerAction} from "./RegisterActions";
 import {APP_STORE} from "../../Store";
 import ValidationComponent from '../../utils/ValidationComponent';
 import styles from './style';
+import {toastMsg} from "../../utils";
 
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
@@ -40,7 +42,7 @@ class RegisterPage extends ValidationComponent {
             latitud: '',
             longitud: '',
             age: '',
-            sex: 'Masculino',
+            sex: 'Hombre',
             isLoading: false
         };
     }
@@ -65,17 +67,26 @@ class RegisterPage extends ValidationComponent {
             this.setState({isLoading: true});
             if (state.error) {
                 this.setState({isLoading: false});
+                console.log(state);
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
-                        ToastAndroid.show(value, ToastAndroid.LONG);
+                        if(typeof value == 'object'){
+                            value.forEach(function(msg) {
+                                toastMsg(msg);
+                            });
+
+                        }else{
+                            toastMsg(value);
+                        }
+
                     });
 
                 }
             return;
             }
             if (state.success) {
-                ToastAndroid.show(strings("register.successTitle"), ToastAndroid.LONG);
+                toastMsg(strings("register.successTitle"));
                 this.props.navigation.navigate('Login');
             }
         });
@@ -104,32 +115,32 @@ class RegisterPage extends ValidationComponent {
         }else{
             if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
                 if(this.isFieldInError('full_name')){
-                    this.getErrorsInField('full_name').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    this.getErrorsInField('full_name').map((result) => toastMsg(result))
                     return
                 }
                 if(this.isFieldInError('email')){
-                    this.getErrorsInField('email').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    this.getErrorsInField('email').map((result) => toastMsg(result))
                     return
                 }
                 if(this.isFieldInError('age')){
-                    this.getErrorsInField('age').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    this.getErrorsInField('age').map((result) => toastMsg(result))
                     return
                 }
                 if(this.isFieldInError('sex')){
-                    this.getErrorsInField('sex').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    this.getErrorsInField('sex').map((result) => toastMsg(result))
                     return
                 }
                 if(this.isFieldInError('username')){
-                    this.getErrorsInField('username').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    this.getErrorsInField('username').map((result) => toastMsg(result))
                     return
                 }
                 if(this.isFieldInError('password')){
-                    this.getErrorsInField('password').map((result) => ToastAndroid.show(result, ToastAndroid.LONG))
+                    this.getErrorsInField('password').map((result) => toastMsg(result))
                     return
                 }
 
             }else{
-                ToastAndroid.show(strings("register.allInputs"), ToastAndroid.LONG);
+                toastMsg(strings("register.allInputs"))
             }
         }
 

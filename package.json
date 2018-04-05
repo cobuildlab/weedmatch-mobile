@@ -26,6 +26,7 @@
     "react-native-image-crop-picker": "^0.20.0",
     "react-native-picker": "^4.3.5",
     "react-native-simple-radio-button": "^2.7.1",
+    "react-native-toast-native": "^1.2.1",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.4.0",
     "rxjs": "^5.5.8"

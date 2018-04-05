@@ -8,13 +8,14 @@ import {
     Image,
     ActivityIndicator,
     KeyboardAvoidingView,
-    ToastAndroid,
+    ScrollView,
+    Platform,
 } from 'react-native';
 import {APP_STORE} from '../../Store'
 import {loginAction} from './LoginActions'
 import styles from './style'
 import {strings} from '../../i18n';
-import {isValidText} from "../../utils";
+import {isValidText, toastMsg} from "../../utils";
 
 class LoginPage extends Component {
 
@@ -41,10 +42,7 @@ class LoginPage extends Component {
             console.log("LoginPage:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
             if (isValidText(state.error))
-                console.log(state.error)
-                console.log(state.error)
-                ToastAndroid.show(state.error, ToastAndroid.LONG);
-                console.log(state.error)
+                toastMsg(state.error);
         });
     }
 
@@ -73,7 +71,7 @@ class LoginPage extends Component {
         const {isLoading} = this.state;
         if (isLoading) {
             return (
-                <KeyboardAvoidingView style={styles.teclado} behavior="padding">
+                    <View style={styles.teclado}>
                     <Image
                         style={styles.container}
                         source={require('./logo-login.png')}
@@ -94,21 +92,19 @@ class LoginPage extends Component {
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
+                    </View>
 
-                    <View style={{height: 0}}/>
 
-                </KeyboardAvoidingView>
+
+
             )
         } else {
             return (
-                <KeyboardAvoidingView style={styles.teclado}
-                    behavior="padding"
-                >
-
+                <ScrollView style={{backgroundColor: '#fff',}}>
+                <View style={styles.teclado}>
                     <Image
                         style={styles.container}
-                        source={require('../../assets/img/logo-b.png')}
-                    />
+                        source={require('../../assets/img/logo-b.png')}/>
 
                     <View style={styles.contentLogin}>
                         <Text style={styles.textLight}>
@@ -138,8 +134,8 @@ class LoginPage extends Component {
                         ref='password'
                         returnKeyType='next'
                         secureTextEntry={true}
-                        value={this.state.password}
-                    />
+                        value={this.state.password} />
+
 
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
@@ -149,8 +145,8 @@ class LoginPage extends Component {
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
-                    <View style={{height: 0}}/>
-                </KeyboardAvoidingView>
+                </View>
+                </ScrollView>
             );
         }
     }
@@ -159,3 +155,16 @@ class LoginPage extends Component {
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_WIDTH = window.width;
 export default LoginPage;
+
+const style={
+    backgroundColor: "#CC000000",
+    width: 300,
+    height: Platform.OS === ("ios") ? 50 : 110,
+    color: "#ffffff",
+    paddingLeft: 50,
+    paddingRight: 50,
+    fontSize: 12,
+    borderRadius: 50,
+    fontWeight: "normal",
+    yOffset: 40
+};

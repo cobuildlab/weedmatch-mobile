@@ -2,9 +2,13 @@
  * Check is the text is a valid input
  * @param {string} text The text to be tested
  */
+import React, {Component} from 'react';
+import {
+    Platform,
+} from 'react-native';
 import {APP_STATE} from "../Store";
 import DeviceInfo from 'react-native-device-info';
-
+import Toast from 'react-native-toast-native';
 /**
  * Detects the lenguange and keeps in constant
  */
@@ -46,4 +50,23 @@ function catchErrorAndPropagate(err) {
     throw err;
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate}
+
+function toastMsg(msg){
+    Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
+}
+
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg}
+
+
+const style={
+    backgroundColor: "#CC000000",
+    width: 300,
+    height: Platform.OS === ("ios") ? 50 : 110,
+    color: "#ffffff",
+    paddingLeft: 50,
+    paddingRight: 50,
+    fontSize: 12,
+    borderRadius: 50,
+    fontWeight: "normal",
+    yOffset: 40
+};

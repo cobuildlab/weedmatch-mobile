@@ -74,6 +74,7 @@ export default class HomePage extends Component {
 
       this.event = APP_STORE.APP_EVENT.subscribe(state => {
         this.setState({isLoading: true});
+        console.log(state);
         if (state.error) {
           Alert.alert(state.error);
             return;
