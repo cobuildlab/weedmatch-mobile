@@ -245,8 +245,6 @@ export default class HomePage extends Component {
                           onRefresh={this._feedData.bind(this)}
                         />
                       }
-
-
                   />
               </View>
         )

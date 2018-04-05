@@ -12,7 +12,8 @@ import {
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
-    ToastAndroid
+    ToastAndroid,
+    TouchableWithoutFeedback
 } from 'react-native';
 import {strings} from "../../i18n";
 import {registerAction} from "./RegisterActions";
@@ -94,7 +95,7 @@ class RegisterPage extends ValidationComponent {
             password:  {required: true, minlength:6, maxlength:20},
             full_name: {required: true, minlength:3, maxlength:30},
             email:     {required: true, email: true},
-            age:       {date: 'YYYY-MM-DD', require: true}
+            age:       {date: 'YYYY-MM-dd', require: true}
         });
         if(this.isFormValid()){
             this.setState({isLoading: true});
@@ -178,14 +179,14 @@ class RegisterPage extends ValidationComponent {
                     var month = '';
                     var day = '';
                     if(pickedValue[1] <= 9){
-                        month = 0 + pickedValue[1]
+                        month = '0' + pickedValue[1].toString();
                     }else{
                         month = pickedValue[1];
                     }
                     if(pickedValue[2] <= 9){
-                        day = 0 + pickedValue[2]
+                        day = '0' + pickedValue[2].toString();
                     }else{
-                        day = pickedValue[2]
+                        day = pickedValue[2];
                     }
                     let dateAge = pickedValue[0] + '-' + month + '-' + day
                     this.setState({age: dateAge})
@@ -217,8 +218,8 @@ class RegisterPage extends ValidationComponent {
     render() {
         console.log(this.state);
         var radio_props = [
-          {label: 'Masculino', value: 'Masculino' },
-          {label: 'Femenino', value: 'Femenino' }
+          {label: strings("register.male"), value: 'Masculino' },
+          {label: strings("register.female"), value: 'Femenino' }
         ];
         const {isLoading} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
@@ -245,18 +246,20 @@ class RegisterPage extends ValidationComponent {
                     value={this.state.email}
                 />
                 <View style={styles.inputStyleFecha}>
-                    <TouchableOpacity style={{position: 'absolute', zIndex: 999, top: 10, left: 17, width: 230}} onPress={this._showDatePicker.bind(this)}>
-                        {this.state.age == '' &&
-                        <Text>
-                            {strings("register.age")}
-                        </Text>
-                        }
-                        {this.state.age !== '' &&
-                            <Text>
-                                {this.state.age}
-                            </Text>
-                        }
-                    </TouchableOpacity>
+                    <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                        <View style={styles.viewButtonStyleFecha}>
+                            {this.state.age == '' &&
+                                <Text style={styles.textButtonStyleFecha}>
+                                    {strings("register.age")}
+                                </Text>
+                            }
+                            {this.state.age !== '' &&
+                                <Text>
+                                    {this.state.age}
+                                </Text>
+                            }
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
                 <RadioForm
                     style={styles.radioStyle}
@@ -293,12 +296,12 @@ class RegisterPage extends ValidationComponent {
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
                     onPress={this.registerUser.bind(this)}>
-                    <Text style={styles.buttonText}> Register </Text>
+                    <Text style={styles.buttonText}> {strings("register.register")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttomCancelStyle}
                     onPress={this.registerCancel.bind(this)}>
-                    <Text style={styles.buttonTextCancel}> Cancel </Text>
+                    <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                 </TouchableOpacity>
             </View>
         }
@@ -309,7 +312,7 @@ class RegisterPage extends ValidationComponent {
                        source={require('../../assets/img/logo-b.png')}
                 />
                 <Text style={styles.textLight}>
-                    ENCUENTRA TU MEDIO
+                    {strings("main.title")}
                 </Text>
                 <Text style={styles.textBold}>
                     COGOLLO
@@ -318,7 +321,6 @@ class RegisterPage extends ValidationComponent {
               </View>
            </ScrollView>
         );
-
     }
 }
 

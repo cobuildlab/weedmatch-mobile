@@ -43,7 +43,17 @@ export default styles = StyleSheet.create({
             paddingLeft: 100,
             paddingRight: 10,
             marginBottom: 10,
-        },
+    },
+    viewButtonStyleFecha: {
+        position: 'absolute',
+        zIndex: 999,
+        top: 10,
+        left: 17,
+        width: 230,
+    },
+    textButtonStyleFecha: {
+        color: '#ccc',
+    },
     buttomRegisterStyle: {
         marginTop: 0,
         marginBottom: 10,

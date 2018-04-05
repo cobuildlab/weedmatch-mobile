@@ -2,14 +2,18 @@
   "wmatch": "WEEDMATCH",
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
-    "login_button": "Login",
-    "signup_button": "Sign Up",
+    "signup_button": "Don't you have an account? Join!",
+    "login": "Log In",
+    "redes": "Log in with Social Networks",
     "required_fields_error": "Username and Password are required"
   },
   "register": {
+    "register": "Register",
     "fullName": "Full Name",
     "password": "Password",
     "username": "Username",
+    "male": "Male",
+    "female": "Female",
     "email": "Email",
     "age": "Date of Birth",
     "allInputs": "All inputs required",
@@ -33,6 +37,5 @@
     "alerta": "Alert",
     "upload": "Upload Image",
     "comment": "Comment"
-
   }
 }

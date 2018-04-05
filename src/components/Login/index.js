@@ -60,6 +60,10 @@ class LoginPage extends Component {
         this.props.navigation.navigate('SignIn');
     }
 
+    popScreen() {
+        this.props.navigation.goBack();
+    }
+
     userLogin() {
         this.setState({isLoading: true});
         loginAction(this.state.username, this.state.password)
@@ -75,7 +79,6 @@ class LoginPage extends Component {
                         source={require('./logo-login.png')}
                         style={[{width: null, height: 300}]}
                     />
-
                     <Text style={styles.textLight}>
                         {strings('main.title')}
                     </Text>
@@ -86,10 +89,10 @@ class LoginPage extends Component {
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                         onPress={this.userLogin.bind(this)}>
-                        <Text style={styles.buttonText}>Inicia Sesión</Text>
+                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
-                        <Text> Iniciar Sesión con Redes Sociales </Text>
+                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
+                        <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
 
                     <View style={{height: 0}}/>
@@ -99,7 +102,7 @@ class LoginPage extends Component {
         } else {
             return (
                 <KeyboardAvoidingView style={styles.teclado}
-                                      behavior="padding"
+                    behavior="padding"
                 >
 
                     <Image
@@ -120,7 +123,7 @@ class LoginPage extends Component {
                         editable={true}
                         underlineColorAndroid='transparent'
                         onChangeText={(username) => this.setState({username})}
-                        placeholder='Username'
+                        placeholder={strings('register.username')}
                         ref='username'
                         returnKeyType='next'
                         value={this.state.username}
@@ -131,7 +134,7 @@ class LoginPage extends Component {
                         editable={true}
                         underlineColorAndroid='transparent'
                         onChangeText={(password) => this.setState({password})}
-                        placeholder='Password'
+                        placeholder={strings('register.password')}
                         ref='password'
                         returnKeyType='next'
                         secureTextEntry={true}
@@ -141,10 +144,10 @@ class LoginPage extends Component {
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                         onPress={this.userLogin.bind(this)}>
-                        <Text style={styles.buttonText}>Inicia Sesión</Text>
+                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.userAuthentication.bind(this)}>
-                        <Text> Iniciar Sesión con redes sociales </Text>
+                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
+                        <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
                     <View style={{height: 0}}/>
                 </KeyboardAvoidingView>

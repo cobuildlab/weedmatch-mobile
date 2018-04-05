@@ -2,25 +2,29 @@
   "wmatch": "COGOLLO",
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
-    "login_button": "Login",
-    "signup_button": "Sign Up",
+    "signup_button": "¿No tienes cuenta? ¡Únete!",
+    "login": "Inicia Sesión",
+    "redes": "Iniciar Sesión con Redes Sociales",
     "required_fields_error": "El usuario y la clave son necesarios"
   },
   "register": {
-    "fullName": "Full Name",
-    "errorFullName": "Invalid Full Name",
+    "register": "Registrate",
+    "fullName": "Nombre Completo",
+    "errorFullName": "Nombre Completo Inválido",
     "password": "Contraseña",
     "username": "Usuario",
+    "male": "Masculino",
+    "female": "Femenino",
     "email": "Correo Eléctronico",
     "age": "Fecha de Nacimiento",
     "allInputs": "Todos los campos son requeridos",
-    "errorEmail": "Invalid Email",
-    "errorPassword": "Invalid Password",
-    "errorUsername": "Invalid Username",
-    "errorSex": "Invalid Sex",
-    "errorAge": "Invalid Age",
-    "errorTitle": "Register Fail",
-    "successTitle": "Succesfully Registered"
+    "errorEmail": "Corre Inválido",
+    "errorPassword": "Contraseña Inválida",
+    "errorUsername": "Usuario Inválido",
+    "errorSex": "Sexo Inválido",
+    "errorAge": "Edad Inválida",
+    "errorTitle": "Registro Fallido",
+    "successTitle": "Registrado Exitosamente"
   },
   "main": {
     "title": "ENCUENTRA TU MEDIO"
@@ -33,6 +37,5 @@
     "alerta": "Alerta",
     "upload": "Subir Imagen",
     "comment": "Comentario"
-
   }
 }

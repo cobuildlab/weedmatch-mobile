@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk';
 import {userService} from '../services';
+import {strings} from '../i18n';
 import {Logger} from "../utils";
 
 class Authentication extends Component {
@@ -104,7 +105,7 @@ class Authentication extends Component {
                 </View>
                 <View style={styles.contentLogin}>
                     <Text style={styles.textLight}>
-                        ENCUENTRA TU MEDIO
+                        {strings("main.title")}
                     </Text>
                     <Text style={styles.textBold}>
                         COGOLLO
@@ -124,13 +125,13 @@ class Authentication extends Component {
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                         onPress={this.userLoginPage.bind(this)}>
-                        <Text style={styles.buttonText}>Inicia Sesión</Text>
+                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
                     </TouchableOpacity>
                     <View>
                         <TouchableOpacity
                             style={styles.buttomRegister}
                             onPress={this.userRegister.bind(this)}>
-                            <Text style={styles.buttomTextRegister}>¿No tienes cuenta? ¡Únete!</Text>
+                            <Text style={styles.buttomTextRegister}>{strings('login.signup_button')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
