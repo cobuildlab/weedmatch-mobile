@@ -91,7 +91,7 @@ export default class HomePage extends Component {
     });
 
       this._feedPosition()
-      this._feedData()
+
     }
 
     componentWillUnmount() {
@@ -120,8 +120,10 @@ export default class HomePage extends Component {
               latitud: position.coords.latitude.toFixed(6),
               longitud: position.coords.longitude.toFixed(6),
             })
+            this._feedData();
         },
         (error) => {
+            this._feedData();
             console.log(error)
         },
         {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}

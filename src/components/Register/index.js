@@ -241,8 +241,8 @@ class RegisterPage extends ValidationComponent {
 
     render() {
         var radio_props = [
-          {label: strings("register.male"), value: 'Masculino' },
-          {label: strings("register.female"), value: 'Femenino' }
+          {label: strings("register.male"), value: 'Hombre' },
+          {label: strings("register.female"), value: 'Mujer' }
         ];
         const {isLoading} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
