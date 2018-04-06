@@ -113,8 +113,8 @@ export default class HomePage extends Component {
       })
     }
 
-    _feedPosition() {
-      navigator.geolocation.getCurrentPosition(
+  _feedPosition() {
+       navigator.geolocation.getCurrentPosition(
         (position) => {
             this.setState({
               latitud: position.coords.latitude.toFixed(6),
