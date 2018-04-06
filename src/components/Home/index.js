@@ -20,6 +20,9 @@ import {
       Alert,
       } from 'react-native';
 
+import moment from 'moment';
+import moment_timezone from 'moment-timezone';
+import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet'
 import { userService } from '../../services';
@@ -47,6 +50,7 @@ export default class HomePage extends Component {
         totalPages: '',
         nextPage: '',
         image: '',
+        time: '',
         comment: '',
         modalVisible: false,
         photos: [],
@@ -91,7 +95,6 @@ export default class HomePage extends Component {
     });
 
       this._feedPosition()
-
     }
 
     componentWillUnmount() {
@@ -107,7 +110,9 @@ export default class HomePage extends Component {
     }
 
     _uploadPhoto() {
-      this.setState({load: true});
+      this.setState({load: true,
+                     time: moment().format()
+                    });
       AsyncStorage.getItem('token').then((token) => {
         uploadAction(token, this.state)
       })
@@ -120,7 +125,7 @@ export default class HomePage extends Component {
               latitud: position.coords.latitude.toFixed(6),
               longitud: position.coords.longitude.toFixed(6),
             })
-            this._feedData();
+            this._feedData()
         },
         (error) => {
             this._feedData();
@@ -258,6 +263,7 @@ export default class HomePage extends Component {
 
     _renderRow(rowData, rowID, sectionID, highlightRow){
 
+      console.log(moment(rowData.time).tz(DeviceInfo.getTimezone()).format('YYYY-MM-DD HH:mm'));
       return(
           <View style={{backgroundColor: '#FFF'}}>
             <View style={styles.mediaUser}>

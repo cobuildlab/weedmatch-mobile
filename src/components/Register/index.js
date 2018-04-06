@@ -87,7 +87,7 @@ class RegisterPage extends ValidationComponent {
             }
             if (state.success) {
                 toastMsg(strings("register.successTitle"));
-                this.props.navigation.navigate('Login');
+                this.props.navigation.goBack();
             }
         });
     }

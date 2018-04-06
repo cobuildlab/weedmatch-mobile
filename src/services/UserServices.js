@@ -13,7 +13,7 @@ export const userService = {
     publicImageLike
 };
 
-//const URL = "http://192.168.0.21:8080/";
+// const URL = "http://192.168.0.21:8080/";
 // const URL = "https://weedmatch.herokuapp.com/";
 const URL = "http://45.32.173.248/";
 const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
@@ -70,17 +70,15 @@ function feed(token, state) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token),
-        // body: JSON.stringify({ lati, long })
     };
 
-    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud, requestOptions);
+    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud, requestOptions);
 }
 
 function publicImage(token, state) {
 
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(state.image)[1];
-
 
     const data = new FormData();
 
@@ -89,9 +87,7 @@ function publicImage(token, state) {
         type: 'image/' + ext,
         name: 'photo.' + ext
     });
-
-
-
+    data.append('time', state.time);
     data.append('latitud', state.latitud);
     data.append('longitud', state.longitud);
     data.append('comment', state.comment);
