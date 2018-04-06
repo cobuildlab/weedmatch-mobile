@@ -129,6 +129,17 @@ function publicProfile(token, id) {
     return fetch(URL + 'public-profile/' + id + '/', requestOptions).then(handleResponse);
 }
 
+function forgotPassword(email) {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': LENGUAGE
+    },
+    body: JSON.stringify({"email": email})
+
+    return fetch(URL + '/forgot-password/', requestOptions).then(handleResponse);
+}
+
 function handleResponse(response) {
     if (!response.ok) {
         return Promise.reject(response.json());

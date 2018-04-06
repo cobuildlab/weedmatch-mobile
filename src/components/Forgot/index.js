@@ -12,34 +12,34 @@ import {
     Platform,
 } from 'react-native';
 import {APP_STORE} from '../../Store'
-import {loginAction} from './LoginActions'
+import {forgotAction} from './ForgotActions'
 import styles from './style'
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from "../../utils";
+import ValidationComponent from '../../utils/ValidationComponent';
 
-class LoginPage extends Component {
+class ForgotPage extends ValidationComponent {
 
     constructor() {
         super();
-        console.log("LoginPage:constructor");
+        console.log("Forgot:constructor");
         this.state = {
-            username: ``,
-            password: ``,
+            email: ``,
             isLoading: false
         };
     }
 
     componentDidMount() {
-        console.log("LoginPage:componentDidMount");
+        console.log("Forgot:componentDidMount");
         this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
-            console.log("LoginPage:componentDidMount:tokenSubscription", state);
+            console.log("Forgot:componentDidMount:tokenSubscription", state);
             this.setState({isLoading: false});
             if (isValidText(state.token))
                 this.props.navigation.navigate('App');
         });
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-            console.log("LoginPage:componentDidMount:appSubscription", state);
+            console.log("Forgot:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
             if (isValidText(state.error))
                 toastMsg(state.error);
@@ -47,7 +47,7 @@ class LoginPage extends Component {
     }
 
     componentWillUnmount() {
-        console.log("LoginPage:componentWillUmmount");
+        console.log("Forgot:componentWillUmmount");
         this.tokenSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
     }
@@ -62,14 +62,29 @@ class LoginPage extends Component {
         this.props.navigation.goBack();
     }
 
-    _forgotScreen() {
-        this.props.navigation.navigate('Forgot');
+    _forgotCancel() {
+        this.props.navigation.goBack();
     }
 
-    userLogin() {
-        this.setState({isLoading: true});
-        loginAction(this.state.username, this.state.password)
+    _forgotPassword() {
+        /*
+        * Validating Form with rules
+        */
+        this.validate({
+            email:     {required: true, email: true}
+        });
+        if(this.isFormValid()){
+            this.setState({isLoading: true});
+            forgotAction(this.state.email)
+        }else{
+            if(this.isFieldInError('email')){
+                this.getErrorsInField('email').map((result) => toastMsg(result))
+                return
+            }
+        }
+
     }
+
 
     render() {
         const {isLoading} = this.state;
@@ -98,10 +113,6 @@ class LoginPage extends Component {
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
                     </View>
-
-
-
-
             )
         } else {
             return (
@@ -123,35 +134,24 @@ class LoginPage extends Component {
                         style={styles.inputStyle}
                         editable={true}
                         underlineColorAndroid='transparent'
-                        onChangeText={(username) => this.setState({username})}
-                        placeholder={strings('register.username')}
-                        ref='username'
+                        onChangeText={(email) => this.setState({email})}
+                        placeholder={strings('register.email')}
+                        ref='email'
                         returnKeyType='next'
-                        value={this.state.username}
+                        value={this.state.email}
                     />
-
-                    <TextInput
-                        style={styles.inputStyle}
-                        editable={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({password})}
-                        placeholder={strings('register.password')}
-                        ref='password'
-                        returnKeyType='next'
-                        secureTextEntry={true}
-                        value={this.state.password} />
 
 
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
-                        onPress={this.userLogin.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
+                        onPress={this._forgotPassword.bind(this)}>
+                        <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this._forgotScreen.bind(this)}>
-                        <Text> {strings('login.forgot')} </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
-                        <Text> {strings('login.redes')} </Text>
+
+                    <TouchableOpacity
+                        style={styles.buttomCancelStyle}
+                        onPress={this._forgotCancel.bind(this)}>
+                        <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                     </TouchableOpacity>
                 </View>
                 </ScrollView>
@@ -162,17 +162,4 @@ class LoginPage extends Component {
 
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_WIDTH = window.width;
-export default LoginPage;
-
-const style={
-    backgroundColor: "#CC000000",
-    width: 300,
-    height: Platform.OS === ("ios") ? 50 : 110,
-    color: "#ffffff",
-    paddingLeft: 50,
-    paddingRight: 50,
-    fontSize: 12,
-    borderRadius: 50,
-    fontWeight: "normal",
-    yOffset: 40
-};
+export default ForgotPage;

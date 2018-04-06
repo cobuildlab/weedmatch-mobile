@@ -8,6 +8,7 @@ import RegisterPage from './src/components/Register';
 import HomePage from './src/components/Home';
 import Profile from './src/components/Profile';
 import PublicProfile from './src/components/PublicProfile';
+import ForgotPage from './src/components/Forgot';
 // import {TOKEN_STATE} from "./src/State";
 
 // class App extends Component {
@@ -46,7 +47,7 @@ import PublicProfile from './src/components/PublicProfile';
 // }
 
 const AppStack = StackNavigator({Home: HomePage, Profile: Profile, PublicProfile: PublicProfile});
-const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Login: LoginPage});
+const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Login: LoginPage, Forgot: ForgotPage});
 
 export default SwitchNavigator(
     {

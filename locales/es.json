@@ -5,6 +5,7 @@
     "signup_button": "¿No tienes cuenta? ¡Únete!",
     "login": "Inicia Sesión",
     "redes": "Iniciar Sesión con Redes Sociales",
+    "forgot": "Recuperar Contraseña",
     "required_fields_error": "El usuario y la clave son necesarios"
   },
   "register": {
@@ -37,5 +38,8 @@
     "alerta": "Alerta",
     "upload": "Subir Imagen",
     "comment": "Comentario"
+  },
+  "forgot": {
+    "send": "Enviar"
   }
 }
