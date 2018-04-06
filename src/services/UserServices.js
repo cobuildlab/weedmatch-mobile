@@ -13,9 +13,9 @@ export const userService = {
     publicImageLike
 };
 
-const URL = "http://192.168.0.21:8080/";
+// const URL = "http://192.168.0.21:8080/";
 // const URL = "https://weedmatch.herokuapp.com/";
-// const URL = "http://45.32.173.248/";
+const URL = "http://45.32.173.248/";
 const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 /**
@@ -72,11 +72,7 @@ function feed(token, state) {
         headers: authHeader(token),
     };
 
-<<<<<<< HEAD
     return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud, requestOptions);
-=======
-    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud, requestOptions);
->>>>>>> 4126836306223488ff3628e94a7a11ff1a6f296b
 }
 
 function publicImage(token, state) {
