@@ -37,7 +37,7 @@ function authHeader(token) {
     return {
         'Authorization': 'Token ' + token,
         'Accept-Language': LENGUAGE
-        };
+    }
 }
 
 /**

@@ -66,12 +66,17 @@ function postRegister(data) {
 }
 
 function feed(token, state) {
+
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token),
     };
 
+<<<<<<< HEAD
     return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud, requestOptions);
+=======
+    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud, requestOptions);
+>>>>>>> 4126836306223488ff3628e94a7a11ff1a6f296b
 }
 
 function publicImage(token, state) {

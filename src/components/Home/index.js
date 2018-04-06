@@ -95,6 +95,10 @@ export default class HomePage extends Component {
     });
 
       this._feedPosition()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4126836306223488ff3628e94a7a11ff1a6f296b
     }
 
     componentWillUnmount() {
@@ -125,9 +129,14 @@ export default class HomePage extends Component {
               latitud: position.coords.latitude.toFixed(6),
               longitud: position.coords.longitude.toFixed(6),
             })
+<<<<<<< HEAD
             this._feedData()
+=======
+            this._feedData();
+>>>>>>> 4126836306223488ff3628e94a7a11ff1a6f296b
         },
         (error) => {
+            this._feedData();
             console.log(error)
         },
         {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
@@ -200,8 +209,7 @@ export default class HomePage extends Component {
               default:
                 break;
             }
-            
-            console.log(index) }}
+           }}
         />
       </View>
     );
