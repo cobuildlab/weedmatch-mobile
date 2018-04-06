@@ -108,7 +108,7 @@ class Authentication extends Component {
                         {strings("main.title")}
                     </Text>
                     <Text style={styles.textBold}>
-                        COGOLLO
+                          {strings('wmatch')}
                     </Text>
                 {/*    <TouchableOpacity
                         style={styles.buttomLoginIntagramStyle}

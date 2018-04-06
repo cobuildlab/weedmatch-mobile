@@ -197,7 +197,7 @@ class RegisterPage extends ValidationComponent {
                 pickerConfirmBtnColor: [153, 0 ,204, 1],
                 pickerCancelBtnColor: [153, 0 ,204, 1],
                 pickerBg: [226, 226, 226, 1],
-                
+
                 onPickerConfirm: (pickedValue, pickedIndex) => {
                     var month = '';
                     var day = '';
@@ -345,7 +345,7 @@ class RegisterPage extends ValidationComponent {
                     {strings("main.title")}
                 </Text>
                 <Text style={styles.textBold}>
-                    COGOLLO
+                    {strings('wmatch')}
                 </Text>
                 {body}
               </View>

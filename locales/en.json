@@ -1,5 +1,5 @@
 {
-  "wmatch": "WEEDMATCH",
+  "wmatch": "CANNABIS",
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
     "signup_button": "Don't you have an account? Join!",
@@ -27,7 +27,7 @@
     "successTitle": "Succesfully Registered"
   },
   "main": {
-    "title": "FIND YOUR HALF"
+    "title": "LINKING LOVERS OF THE"
   },
   "home": {
     "actionSheet": "Pick one option",
