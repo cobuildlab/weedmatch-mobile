@@ -254,9 +254,10 @@ class RegisterPage extends ValidationComponent {
                     underlineColorAndroid='transparent'
                     onChangeText={(full_name) => this.setState({full_name})}
                     placeholder={strings("register.fullName")}
-                    ref='full_name'
-                    returnKeyType='next'
+                    returnKeyType = {"next"}
                     value={this.state.full_name}
+                    onSubmitEditing={() => { this.emailInput.focus(); }}
+                    blurOnSubmit={false}
                 />
                 <TextInput
                     style={styles.inputStyle}
@@ -264,9 +265,11 @@ class RegisterPage extends ValidationComponent {
                     underlineColorAndroid='transparent'
                     onChangeText={(email) => this.setState({email})}
                     placeholder={strings("register.email")}
-                    ref='email'
-                    returnKeyType='next'
+                    ref={(input) => { this.emailInput = input; }}
+                    returnKeyType = {"next"}
                     value={this.state.email}
+                    onSubmitEditing={() => { this._showDatePicker(); }}
+                    blurOnSubmit={false}
                 />
                 <View style={styles.inputStyleFecha}>
                     <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
@@ -302,8 +305,10 @@ class RegisterPage extends ValidationComponent {
                     onChangeText={(username) => this.setState({username})}
                     placeholder={strings("register.username")}
                     ref='username'
-                    returnKeyType='next'
+                    returnKeyType = {"next"}
                     value={this.state.username}
+                    onSubmitEditing={() => { this.passwordInput.focus(); }}
+                    blurOnSubmit={false}
                 />
                 <TextInput
                     style={styles.inputStyle}
@@ -311,10 +316,12 @@ class RegisterPage extends ValidationComponent {
                     underlineColorAndroid='transparent'
                     onChangeText={(password) => this.setState({password})}
                     placeholder={strings("register.password")}
-                    ref='password'
-                    returnKeyType='next'
+                    ref={(input) => { this.passwordInput = input; }}
+                    returnKeyType = {"next"}
                     secureTextEntry={true}
                     value={this.state.password}
+                    onSubmitEditing={() => { this.registerUser(); }}
+                    blurOnSubmit={false}
                 />
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}

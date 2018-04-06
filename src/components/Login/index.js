@@ -93,59 +93,56 @@ class LoginPage extends Component {
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
                     </View>
-
-
-
-
             )
         } else {
             return (
                 <ScrollView style={{backgroundColor: '#fff',}}>
-                <View style={styles.teclado}>
-                    <Image
-                        style={styles.container}
-                        source={require('../../assets/img/logo-b.png')}/>
-
-                    <View style={styles.contentLogin}>
-                        <Text style={styles.textLight}>
-                            {strings('main.title')}
-                        </Text>
-                        <Text style={styles.textBold}>
-                            {strings('wmatch')}
-                        </Text>
+                    <View style={styles.teclado}>
+                        <Image
+                            style={styles.container}
+                            source={require('../../assets/img/logo-b.png')}
+                        />
+                        <View style={styles.contentLogin}>
+                            <Text style={styles.textLight}>
+                                {strings('main.title')}
+                            </Text>
+                            <Text style={styles.textBold}>
+                                {strings('wmatch')}
+                            </Text>
+                        </View>
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(username) => this.setState({username})}
+                            placeholder={strings('register.username')}
+                            returnKeyType={"next"}
+                            value={this.state.username}
+                            onSubmitEditing={() => { this.passwordInput.focus(); }}
+                            blurOnSubmit={false}
+                        />
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(password) => this.setState({password})}
+                            placeholder={strings('register.password')}
+                            ref={(input) => { this.passwordInput = input; }}
+                            returnKeyType={"next"}
+                            secureTextEntry={true}
+                            onSubmitEditing={() => { this.userLogin() }}
+                            blurOnSubmit={false}
+                            value={this.state.password} 
+                        />
+                        <TouchableOpacity
+                            style={styles.buttomLoginStyle}
+                            onPress={this.userLogin.bind(this)}>
+                            <Text style={styles.buttonText}>{strings('login.login')}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
+                            <Text> {strings('login.redes')} </Text>
+                        </TouchableOpacity>
                     </View>
-                    <TextInput
-                        style={styles.inputStyle}
-                        editable={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(username) => this.setState({username})}
-                        placeholder={strings('register.username')}
-                        ref='username'
-                        returnKeyType='next'
-                        value={this.state.username}
-                    />
-
-                    <TextInput
-                        style={styles.inputStyle}
-                        editable={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({password})}
-                        placeholder={strings('register.password')}
-                        ref='password'
-                        returnKeyType='next'
-                        secureTextEntry={true}
-                        value={this.state.password} />
-
-
-                    <TouchableOpacity
-                        style={styles.buttomLoginStyle}
-                        onPress={this.userLogin.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
-                        <Text> {strings('login.redes')} </Text>
-                    </TouchableOpacity>
-                </View>
                 </ScrollView>
             );
         }
