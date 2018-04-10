@@ -276,8 +276,6 @@ export default class HomePage extends Component {
     _renderRow(rowData, rowID, sectionID, highlightRow){
 
       console.log(moment(rowData.time).tz(DeviceInfo.getTimezone()).format('YYYY-MM-DD HH:mm'));
-      console.log(rowID);
-      console.log(sectionID);
       return(
           <View style={{backgroundColor: '#FFF'}}>
             <View style={styles.mediaUser}>
