@@ -5,7 +5,10 @@
 import React, {Component} from 'react';
 import {
     Platform,
+    NetInfo,
+    Alert
 } from 'react-native';
+import {strings} from '../i18n';
 import {APP_STATE} from "../Store";
 import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-native';
@@ -13,7 +16,28 @@ import Toast from 'react-native-toast-native';
  * Detects the lenguange and keeps in constant
  */
 const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
+const connection = isConnected();
 
+function isConnected() {
+
+    function handleFirstConnectivityChange(isConnected) {
+        console.log('Then, is ' + (isConnected ? 'online' : 'offline'));
+        NetInfo.isConnected.removeEventListener(
+            'connectionChange',
+            handleFirstConnectivityChange
+        );
+        connection = (isConnected ? true : false);
+    }
+    
+    NetInfo.isConnected.addEventListener(
+    'connectionChange',
+    handleFirstConnectivityChange
+    );
+}
+
+function internet() {
+    return Alert.alert(strings("main.internet"));
+}
 
 function isValidText(text) {
     if (text == null) {
@@ -55,7 +79,7 @@ function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg}
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, internet }
 
 
 const style={

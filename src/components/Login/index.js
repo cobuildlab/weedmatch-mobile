@@ -15,7 +15,7 @@ import {APP_STORE} from '../../Store'
 import {loginAction} from './LoginActions'
 import styles from './style'
 import {strings} from '../../i18n';
-import {isValidText, toastMsg} from "../../utils";
+import {isValidText, toastMsg, connection, internet} from "../../utils";
 
 class LoginPage extends Component {
 
@@ -68,7 +68,11 @@ class LoginPage extends Component {
 
     userLogin() {
         this.setState({isLoading: true});
-        loginAction(this.state.username, this.state.password)
+        if (connection) {
+            loginAction(this.state.username, this.state.password)
+        } else {
+            internet();
+        }
     }
 
     render() {
@@ -93,15 +97,10 @@ class LoginPage extends Component {
                         onPress={this.userLogin.bind(this)}>
                         <Text style={styles.buttonText}>{strings('login.login')}</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
                     </View>
-
-
-
-
             )
         } else {
             return (

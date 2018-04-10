@@ -21,8 +21,7 @@ import {registerAction} from "./RegisterActions";
 import {APP_STORE} from "../../Store";
 import ValidationComponent from '../../utils/ValidationComponent';
 import styles from './style';
-import {toastMsg} from "../../utils";
-
+import {toastMsg,connection,internet} from "../../utils";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
 
@@ -111,9 +110,13 @@ class RegisterPage extends ValidationComponent {
         });
         if(this.isFormValid()){
             this.setState({isLoading: true});
-            registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
-                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
-        }else{
+            if (connection) {
+                registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
+                    parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
+            } else {
+                internet();
+            }  
+        } else {
             if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
                 if(this.isFieldInError('full_name')){
                     this.getErrorsInField('full_name').map((result) => toastMsg(result))
@@ -197,7 +200,7 @@ class RegisterPage extends ValidationComponent {
                 pickerConfirmBtnColor: [153, 0 ,204, 1],
                 pickerCancelBtnColor: [153, 0 ,204, 1],
                 pickerBg: [226, 226, 226, 1],
-                
+
                 onPickerConfirm: (pickedValue, pickedIndex) => {
                     var month = '';
                     var day = '';
@@ -254,9 +257,10 @@ class RegisterPage extends ValidationComponent {
                     underlineColorAndroid='transparent'
                     onChangeText={(full_name) => this.setState({full_name})}
                     placeholder={strings("register.fullName")}
-                    ref='full_name'
-                    returnKeyType='next'
+                    returnKeyType = {"next"}
                     value={this.state.full_name}
+                    onSubmitEditing={() => { this.emailInput.focus(); }}
+                    blurOnSubmit={false}
                 />
                 <TextInput
                     style={styles.inputStyle}
@@ -264,9 +268,11 @@ class RegisterPage extends ValidationComponent {
                     underlineColorAndroid='transparent'
                     onChangeText={(email) => this.setState({email})}
                     placeholder={strings("register.email")}
-                    ref='email'
-                    returnKeyType='next'
+                    ref={(input) => { this.emailInput = input; }}
+                    returnKeyType = {"next"}
                     value={this.state.email}
+                    onSubmitEditing={() => { this._showDatePicker(); }}
+                    blurOnSubmit={false}
                 />
                 <View style={styles.inputStyleFecha}>
                     <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
@@ -302,8 +308,10 @@ class RegisterPage extends ValidationComponent {
                     onChangeText={(username) => this.setState({username})}
                     placeholder={strings("register.username")}
                     ref='username'
-                    returnKeyType='next'
+                    returnKeyType = {"next"}
                     value={this.state.username}
+                    onSubmitEditing={() => { this.passwordInput.focus(); }}
+                    blurOnSubmit={false}
                 />
                 <TextInput
                     style={styles.inputStyle}
@@ -311,10 +319,12 @@ class RegisterPage extends ValidationComponent {
                     underlineColorAndroid='transparent'
                     onChangeText={(password) => this.setState({password})}
                     placeholder={strings("register.password")}
-                    ref='password'
-                    returnKeyType='next'
+                    ref={(input) => { this.passwordInput = input; }}
+                    returnKeyType = {"next"}
                     secureTextEntry={true}
                     value={this.state.password}
+                    onSubmitEditing={() => { this.registerUser(); }}
+                    blurOnSubmit={false}
                 />
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
@@ -338,7 +348,7 @@ class RegisterPage extends ValidationComponent {
                     {strings("main.title")}
                 </Text>
                 <Text style={styles.textBold}>
-                    COGOLLO
+                    {strings('wmatch')}
                 </Text>
                 {body}
               </View>

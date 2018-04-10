@@ -1,5 +1,5 @@
 {
-  "wmatch": "COGOLLO",
+  "wmatch": "CANNABIS",
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
     "signup_button": "¿No tienes cuenta? ¡Únete!",
@@ -28,7 +28,8 @@
     "successTitle": "Registrado Exitosamente"
   },
   "main": {
-    "title": "ENCUENTRA TU MEDIO"
+    "title": "UNIENDO AMANTES DEL",
+    "internet": "No hay conexión a Internet"
   },
   "home": {
     "actionSheet": "Elija una opción",
