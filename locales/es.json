@@ -27,7 +27,8 @@
     "successTitle": "Registrado Exitosamente"
   },
   "main": {
-    "title": "UNIENDO AMANTES DEL"
+    "title": "UNIENDO AMANTES DEL",
+    "internet": "No hay conexión a Internet"
   },
   "home": {
     "actionSheet": "Elija una opción",

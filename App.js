@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 // import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage, ActivityIndicator} from 'react-native';
 import {StackNavigator, SwitchNavigator} from 'react-navigation';
 import Splash from './src/components/Splash';
-import Authentication from './src/components/Authentication';
+import Authentication from './src/components/Authentication/index';
 import LoginPage from './src/components/Login';
 import RegisterPage from './src/components/Register';
 import HomePage from './src/components/Home';

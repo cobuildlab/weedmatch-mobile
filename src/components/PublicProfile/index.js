@@ -19,7 +19,6 @@ var width = Dimensions.get('window').width;
 const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 import TopBar from './../../utils/TopBar';
-import Stories from './../stories';
 
 var mePic = require('../../images/sebas.jpg');
 var meName = 'Sebastian Diaz'
