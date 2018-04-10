@@ -8,9 +8,9 @@ function forgotAction(email) {
 
     userService.forgotPassword(email)
         .then(async (response) => {
-            console.log(`loginAction: ${email}`, response);
+            console.log(`forgotAction: ${email}`, response);
             const json = await response.json();
-            console.log(`loginAction:JSON:`, json);
+            console.log(`forgotAction:JSON:`, json);
             if (response.ok) {
                 //APP_STORE.APP_EVENT.next({"success": strings("login.welcome")});
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});

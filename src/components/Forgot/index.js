@@ -11,9 +11,9 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
-import {APP_STORE} from '../../Store'
-import {forgotAction} from './ForgotActions'
-import styles from './style'
+import {APP_STORE} from '../../Store';
+import {forgotAction} from './ForgotActions';
+import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from "../../utils";
 import ValidationComponent from '../../utils/ValidationComponent';
@@ -71,7 +71,7 @@ class ForgotPage extends ValidationComponent {
         * Validating Form with rules
         */
         this.validate({
-            email:     {required: true, email: true}
+            email: {required: true, email: true}
         });
         if(this.isFormValid()){
             this.setState({isLoading: true});
@@ -105,7 +105,7 @@ class ForgotPage extends ValidationComponent {
                     <ActivityIndicator size="large" color="#0000ff"/>
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
-                        onPress={this.userLogin.bind(this)}>
+                        onPress={this._forgotPassword.bind(this)}>
                         <Text style={styles.buttonText}>{strings('login.login')}</Text>
                     </TouchableOpacity>
 
