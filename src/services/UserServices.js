@@ -14,9 +14,9 @@ export const userService = {
     forgotPassword
 };
 
-const URL = "http://192.168.0.21:8080/";
+//const URL = "http://192.168.0.21:8080/";
 // const URL = "https://weedmatch.herokuapp.com/";
-//const URL = "http://45.32.173.248/";
+const URL = "http://45.32.173.248/";
 const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 /**
@@ -139,8 +139,7 @@ function forgotPassword(email) {
       },
       body: JSON.stringify({"email": email})
     }
-    console.log(requestOptions);
-    return fetch(URL + '/forgot-password/', requestOptions).then(handleResponse);
+    return fetch(URL + '/forgot-password/', requestOptions);
 }
 
 function handleResponse(response) {

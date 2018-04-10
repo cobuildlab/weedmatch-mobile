@@ -11,10 +11,9 @@ function forgotAction(email) {
             console.log(`forgotAction: ${email}`, response);
             const json = await response.json();
             console.log(`forgotAction:JSON:`, json);
+
             if (response.ok) {
-                //APP_STORE.APP_EVENT.next({"success": strings("login.welcome")});
-                APP_STORE.TOKEN_EVENT.next({"token": json.token});
-                APP_STORE.ID_EVENT.next({"id": json.id.toString()});
+                APP_STORE.APP_EVENT.next({"success": json.detail});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
