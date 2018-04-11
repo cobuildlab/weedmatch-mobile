@@ -18,6 +18,24 @@ function forgotAction(email) {
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         });
+
 }
 
-export {forgotAction};
+function recoveryPassword(code, password){
+    console.log(`recoveryPassword: ${code} ${password}`);
+
+    userService.recoveryPassword(code, password)
+        .then(async (response) => {
+            console.log(`forgotAction: ${code}`, response);
+            const json = await response.json();
+            console.log(`forgotAction:JSON:`, json);
+
+            if (response.ok) {
+                APP_STORE.APP_EVENT.next({"success": json.detail});
+                return;
+            }
+                APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
+export {forgotAction, recoveryPassword};

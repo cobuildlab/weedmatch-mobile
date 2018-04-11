@@ -12,7 +12,7 @@ import {
     Platform,
 } from 'react-native';
 import {APP_STORE} from '../../Store';
-import {forgotAction} from './ForgotActions';
+import {forgotAction, recoveryPassword} from './ForgotActions';
 import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from "../../utils";
@@ -26,6 +26,9 @@ class ForgotPage extends ValidationComponent {
         this.state = {
             email: ``,
             step: 1,
+            code: '',
+            password: '',
+            confirmPassword: '',
             isLoading: false
         };
     }
@@ -34,17 +37,23 @@ class ForgotPage extends ValidationComponent {
         console.log("Forgot:componentDidMount");
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             console.log("Forgot:componentDidMount:appSubscription", state);
-            console.log('QQQQQQQ');
-            console.log(state);
-            console.log(2);
             this.setState({isLoading: false});
+            if(state.success && this.state.step == 2){
+                toastMsg(state.success);
+                this.appSubscription.unsubscribe();
+                this.props.navigation.navigate('Login');
+            }
+            if(state.success){
+                toastMsg(state.success);
+                this.setState({step: 2});
+            }
             if (isValidText(state.error))
                 toastMsg(state.error);
         });
     }
 
     componentWillUnmount() {
-        console.log("Forgot:componentWillUmmount");
+        console.log("Forgot:componentWillUnmount");
         this.appSubscription.unsubscribe();
     }
 
@@ -80,11 +89,38 @@ class ForgotPage extends ValidationComponent {
         }
 
     }
+    _forgotSendPassword() {
+        /*
+        * Validating Form with rules
+        */
+        this.validate({
+            code: {required: true, minlength:6, maxlength:20},
+            password: {required: true, minlength:6, maxlength:12},
+            confirmPassword: {required: true, minlength:6, maxlength:12}
+        });
+        if(this.isFormValid()){
+            this.setState({isLoading: true});
+            recoveryPassword(this.state.code, this.state.password);
+        }else{
+            if(this.isFieldInError('code')){
+                this.getErrorsInField('code').map((result) => toastMsg(result))
+                return
+            }
+            if(this.isFieldInError('password')){
+                this.getErrorsInField('password').map((result) => toastMsg(result))
+                return
+            }
+            if(this.isFieldInError('confirmPassword')){
+                this.getErrorsInField('confirmPassword').map((result) => toastMsg(result))
+                return
+            }
+        }
+
+    }
 
 
     render() {
         const {isLoading, step} = this.state;
-        console.log(step);
         if (isLoading) {
             return (
                     <View style={styles.teclado}>
@@ -100,21 +136,13 @@ class ForgotPage extends ValidationComponent {
                         {strings('wmatch')}
                     </Text>
                     <ActivityIndicator size="large" color="#0000ff"/>
-                    <TouchableOpacity
-                        style={styles.buttomLoginStyle}
-                        onPress={this._forgotPassword.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
-                        <Text> {strings('login.redes')} </Text>
-                    </TouchableOpacity>
                     </View>
             )
         } else {
             if(step == 1){
                 return (
-                            <ScrollView style={{backgroundColor: '#fff',}}>
+                        <ScrollView style={{backgroundColor: '#fff',}}>
                             <View style={styles.teclado}>
                                 <Image
                                     style={styles.container}
@@ -152,7 +180,7 @@ class ForgotPage extends ValidationComponent {
                                     <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                                 </TouchableOpacity>
                             </View>
-                            </ScrollView>
+                        </ScrollView>
                         );
             }else if(step == 2){
                 return (
@@ -174,26 +202,36 @@ class ForgotPage extends ValidationComponent {
                                     style={styles.inputStyle}
                                     editable={true}
                                     underlineColorAndroid='transparent'
-                                    onChangeText={(email) => this.setState({email})}
-                                    placeholder={strings('register.email')}
-                                    ref='email'
+                                    onChangeText={(code) => this.setState({code})}
+                                    placeholder={strings('forgot.code')}
+                                    ref='code'
                                     returnKeyType='next'
-                                    value={this.state.email}
+                                    value={this.state.code}
                                 />
                                 <TextInput
                                     style={styles.inputStyle}
                                     editable={true}
                                     underlineColorAndroid='transparent'
-                                    onChangeText={(email) => this.setState({email})}
-                                    placeholder={strings('register.email')}
-                                    ref='email'
+                                    onChangeText={(password) => this.setState({password})}
+                                    placeholder={strings('forgot.password')}
+                                    ref='password'
                                     returnKeyType='next'
-                                    value={this.state.email}
+                                    value={this.state.password}
+                                />
+                                <TextInput
+                                    style={styles.inputStyle}
+                                    editable={true}
+                                    underlineColorAndroid='transparent'
+                                    onChangeText={(confirmPassword) => this.setState({confirmPassword})}
+                                    placeholder={strings('forgot.confirmPassword')}
+                                    ref='confirmPassword'
+                                    returnKeyType='next'
+                                    value={this.state.confirmPassword}
                                 />
 
                                 <TouchableOpacity
                                     style={styles.buttomLoginStyle}
-                                    onPress={this._forgotPassword.bind(this)}>
+                                    onPress={this._forgotSendPassword.bind(this)}>
                                     <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
                                 </TouchableOpacity>
 

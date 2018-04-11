@@ -41,6 +41,9 @@
     "comment": "Comment"
   },
   "forgot": {
-    "send": "Send"
+    "send": "Send",
+    "code": "Code",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
   }
 }

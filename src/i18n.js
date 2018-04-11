@@ -1,9 +1,12 @@
 import ReactNative from 'react-native';
 import I18n from 'react-native-i18n';
+import DeviceInfo from 'react-native-device-info';
 
 // Import all locales
 import en from '../locales/en.json';
 import es from '../locales/es.json';
+
+const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
 
 // Should the app fallback to English if user locale doesn't exists
 I18n.fallbacks = true;
@@ -14,7 +17,7 @@ I18n.translations = {
     es,
 };
 
-const currentLocale = I18n.currentLocale();
+const currentLocale = LENGUAGE;
 
 // Is it a RTL language?
 export const isRTL = currentLocale.indexOf('he') === 0 || 

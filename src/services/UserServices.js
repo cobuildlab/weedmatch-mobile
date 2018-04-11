@@ -11,7 +11,8 @@ export const userService = {
     publicProfile,
     publicImage,
     publicImageLike,
-    forgotPassword
+    forgotPassword,
+    recoveryPassword
 };
 
 //const URL = "http://192.168.0.21:8080/";
@@ -139,7 +140,20 @@ function forgotPassword(email) {
       },
       body: JSON.stringify({"email": email})
     }
-    return fetch(URL + '/forgot-password/', requestOptions);
+    return fetch(URL + 'forgot-password/', requestOptions);
+}
+
+function recoveryPassword(code, password){
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': LENGUAGE
+      },
+      body: JSON.stringify({"code": code, "password": password})
+    }
+    return fetch(URL + 'recover-password/', requestOptions);
+
 }
 
 function handleResponse(response) {

@@ -155,6 +155,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-i18n')
     compile project(':react-native-toast-native')
     compile project(':react-native-toast-native')
     compile project(':react-native-toast-native')

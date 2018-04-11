@@ -41,6 +41,9 @@
     "comment": "Comentario"
   },
   "forgot": {
-    "send": "Enviar"
+    "send": "Enviar",
+    "code": "Codigo",
+    "password": "Password",
+    "confirmPassword": "Confirmar Password"
   }
 }

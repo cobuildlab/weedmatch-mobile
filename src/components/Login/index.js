@@ -54,21 +54,19 @@ class LoginPage extends Component {
 
     static navigationOptions = {header: null};
 
-    userAuthentication() {
-        this.props.navigation.navigate('SignIn');
-    }
-
     popScreen() {
         this.props.navigation.goBack();
     }
 
     _forgotScreen() {
+        this.tokenSubscription.unsubscribe();
+        this.appSubscription.unsubscribe();
         this.props.navigation.navigate('Forgot');
     }
 
     userLogin() {
-        this.setState({isLoading: true});
         if (connection) {
+            this.setState({isLoading: true});
             loginAction(this.state.username, this.state.password)
         } else {
             internet();
