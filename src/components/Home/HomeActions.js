@@ -1,7 +1,7 @@
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
-import {userService} from '../../services';
+import {userService} from './service';
 
 function feedAction(token, state) {
 
@@ -38,7 +38,7 @@ function uploadAction(token, state) {
         });
 }
 
-function likeAction(token, id, id_user, like) {
+function likeAction(token, id, id_user, like,row) {
 
     console.log(`likeAction: ${token}, ${id}, ${id_user}, ${like}`);
 
@@ -48,7 +48,7 @@ function likeAction(token, id, id_user, like) {
             const json = await response.json();
             console.log(`likeAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.APP_EVENT.next({"success": json.detail});
+                APP_STORE.LIKE_EVENT.next({"like": row});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});

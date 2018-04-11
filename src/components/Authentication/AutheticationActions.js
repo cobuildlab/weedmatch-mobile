@@ -1,6 +1,5 @@
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
-import {userService} from '../../services';
 import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk';
 
 function facebookAction() {

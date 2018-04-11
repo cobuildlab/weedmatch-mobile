@@ -11,9 +11,10 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
-import {APP_STORE} from '../../Store'
-import {loginAction} from './LoginActions'
-import styles from './style'
+
+import {APP_STORE} from '../../Store';
+import {loginAction} from './LoginActions';
+import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg, connection, internet} from "../../utils";
 
@@ -77,7 +78,7 @@ class LoginPage extends Component {
             return (
                     <View style={styles.teclado}>
                     <Image
-                        style={styles.container}
+                        style={styles.contai0ner}
                         source={require('./logo-login.png')}
                         style={[{width: null, height: 300}]}
                     />
@@ -100,7 +101,7 @@ class LoginPage extends Component {
             )
         } else {
             return (
-                <ScrollView style={{backgroundColor: '#fff',}}>
+                <ScrollView style={styles.containerView}>
                     <View style={styles.teclado}>
                         <Image
                             style={styles.container}

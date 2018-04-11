@@ -89,4 +89,7 @@ export default styles = StyleSheet.create({
         // backgroundColor: '#c646b6',
           backgroundColor: '#9605CC',
     },
+    scrollContainer: {
+        backgroundColor: '#fff',
+    },
 });

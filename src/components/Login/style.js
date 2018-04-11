@@ -72,6 +72,8 @@ export default styles = StyleSheet.create({
 
       },
     }),
-  }
-
+  },
+  containerView: {
+    backgroundColor: '#FFF',
+  },
 });
