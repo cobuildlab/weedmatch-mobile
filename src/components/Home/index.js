@@ -145,8 +145,8 @@ export default class HomePage extends Component {
       }
     }
 
-    _feedPosition() {
-      navigator.geolocation.getCurrentPosition(
+  _feedPosition() {
+       navigator.geolocation.getCurrentPosition(
         (position) => {
             this.setState({
               latitud: position.coords.latitude.toFixed(6),
@@ -220,8 +220,8 @@ export default class HomePage extends Component {
             strings("home.cancel"),
           ]}
           cancelButtonIndex={2}
-          onPress={(index) => { 
-            
+          onPress={(index) => {
+
             switch(index) {
               case 0:
                 this._takePhoto();
@@ -311,11 +311,13 @@ export default class HomePage extends Component {
                 <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Image style={styles.picture} source={{uri: rowData.image_profile}} />
                 </TouchableOpacity>
-
-                <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
+                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start',}}>
+                  <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Text style={styles.username}>{rowData.username}</Text>
-                </TouchableOpacity>
-
+                  </TouchableOpacity>
+                    <Text style={styles.distancia}>A 3km de distancia</Text>
+                </View>
+                  <Text style={styles.tiempo}>2 h</Text>
             </View>
             <Image
               style={styles.media}
@@ -334,7 +336,8 @@ export default class HomePage extends Component {
             </View>
           </View>
           <View style={styles.containerViewHorizontal}>
-          <View style={styles.containerViewSpace} />
+          <Text style={styles.description}>Pie de foto publicada #AmantesdelCannabis #Love esto esta quedando bien</Text>
+          <View style={styles.containerViewSpace}/>
           </View>
         </View>
       )

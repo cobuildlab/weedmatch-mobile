@@ -3,6 +3,7 @@ package weedmatch.fourgeeks.co;
 import android.app.Application;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactApplication;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.toast.RCTToastPackage;
 import com.toast.RCTToastPackage;
 import com.toast.RCTToastPackage;
@@ -50,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
               new MainReactPackage(),
+            new RNI18nPackage(),
               new RCTToastPackage(),
               new PickerViewPackage(),
               new RNSharePackage(),

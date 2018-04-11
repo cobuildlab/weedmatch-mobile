@@ -89,7 +89,7 @@ export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, i
 const style={
     backgroundColor: "#333333",
     width: 300,
-    height: Platform.OS === ("ios") ? 50 : 110,
+    height: Platform.OS === ("ios") ? 50 : 130,
     color: "#ffffff",
     paddingLeft: 50,
     paddingRight: 50,

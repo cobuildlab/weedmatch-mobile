@@ -5,10 +5,12 @@
     "signup_button": "Don't you have an account? Join!",
     "login": "Log In",
     "redes": "Log in with Social Networks",
+    "forgot": "Forgot Password",
     "required_fields_error": "Username and Password are required"
   },
   "register": {
     "register": "Register",
+    "terms": "Terms and Conditions",
     "fullName": "Full Name",
     "password": "Password",
     "username": "Username",
@@ -38,5 +40,11 @@
     "alerta": "Alert",
     "upload": "Upload Image",
     "comment": "Comment"
+  },
+  "forgot": {
+    "send": "Send",
+    "code": "Code",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
   }
 }

@@ -52,6 +52,7 @@ export default styles = StyleSheet.create({
     listView:{
       marginTop:0,
       width:width,
+      backgroundColor: '#fff'
     },
     picture:{
       width:30,
@@ -74,6 +75,21 @@ export default styles = StyleSheet.create({
       borderRightColor:'#fff',
       borderBottomColor:'#fff',
     },
+    username:{
+      paddingLeft:10,
+    },
+    distancia:{
+      paddingLeft:10,
+      color: '#999999',
+      fontSize: 12,
+      marginTop: 4,
+    },
+    tiempo:{
+
+      color: '#999999',
+      fontSize: 12,
+      marginTop: 20,
+    },
     mediaIcons:{
       width:width-10,
       flexDirection:'row',
@@ -82,8 +98,8 @@ export default styles = StyleSheet.create({
     icons:{
       marginLeft:10,
       marginTop:5,
-      width:30,
-      height:26
+      width:25,
+      height:22
     },
     likes:{
       flexDirection:'row',
@@ -107,11 +123,17 @@ export default styles = StyleSheet.create({
       fontSize:10
     },
     time:{
-      marginRight:20,
+      marginRight:15,
       marginTop: 10,
       fontSize:14,
-      color:'#777',
+      color:'#999999',
       textAlign:'left'
+    },
+    description: {
+      fontSize: 14,
+      color: '#333',
+      padding: 15,
+      paddingBottom: 10,
     },
     topBar:{
       backgroundColor:'blue'
@@ -181,12 +203,10 @@ export default styles = StyleSheet.create({
       justifyContent: 'flex-end',
     },
     containerViewSpace: {
-      height: 1,
-      backgroundColor: '#B2B2B2',
-      marginBottom: 8,
-      marginLeft: 16,
-      marginRight: 20,
-      marginTop: 5,
+      height: 0.5, 
+      backgroundColor: '#B2B2B2', 
+      marginBottom: 8,  
+      marginTop: 5
     },
     containerFlex: {
       flex: 1,
