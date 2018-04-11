@@ -91,6 +91,10 @@ class RegisterPage extends ValidationComponent {
         });
     }
 
+    userTerms() {
+        this.props.navigation.navigate('Terms');
+    }
+
     componentWillUnmount() {
         console.log("RegisterPage:componentWillUmmount");
         Picker.hide();
@@ -335,6 +339,11 @@ class RegisterPage extends ValidationComponent {
                     style={styles.buttomCancelStyle}
                     onPress={this.registerCancel.bind(this)}>
                     <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.buttomCancelStyle}
+                    onPress={this.userTerms.bind(this)}>
+                    <Text style={styles.buttonTextTerms}> {strings("register.terms")} </Text>
                 </TouchableOpacity>
             </View>
         }

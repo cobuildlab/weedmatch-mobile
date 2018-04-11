@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 // import {Alert, Image, Text, TouchableOpacity, View, AsyncStorage, ActivityIndicator} from 'react-native';
 import {StackNavigator, SwitchNavigator} from 'react-navigation';
 import Splash from './src/components/Splash';
+import Terms from './src/components/Terms';
 import Authentication from './src/components/Authentication/index';
 import LoginPage from './src/components/Login';
 import RegisterPage from './src/components/Register';
@@ -47,7 +48,7 @@ import ForgotPage from './src/components/Forgot';
 // }
 
 const AppStack = StackNavigator({Home: HomePage, Profile: Profile, PublicProfile: PublicProfile});
-const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Login: LoginPage, Forgot: ForgotPage});
+const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage});
 
 export default SwitchNavigator(
     {
