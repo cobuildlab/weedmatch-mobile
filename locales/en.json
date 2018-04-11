@@ -9,6 +9,7 @@
   },
   "register": {
     "register": "Register",
+    "terms": "Terms and Conditions",
     "fullName": "Full Name",
     "password": "Password",
     "username": "Username",

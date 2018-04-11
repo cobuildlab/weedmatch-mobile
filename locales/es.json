@@ -9,6 +9,7 @@
   },
   "register": {
     "register": "Registrate",
+    "terms": "Terminos y Condiciones",
     "fullName": "Nombre Completo",
     "errorFullName": "Nombre Completo Inválido",
     "password": "Contraseña",

@@ -52,6 +52,7 @@ export default styles = StyleSheet.create({
     listView:{
       marginTop:0,
       width:width,
+      backgroundColor: '#fff'
     },
     picture:{
       width:30,

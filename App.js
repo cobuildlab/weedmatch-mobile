@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {StackNavigator, SwitchNavigator} from 'react-navigation';
 import Splash from './src/components/Splash';
 import Authentication from './src/components/Authentication';
+import Terms from './src/components/Terms';
 import LoginPage from './src/components/Login';
 import RegisterPage from './src/components/Register';
 import HomePage from './src/components/Home';
@@ -46,7 +47,7 @@ import PublicProfile from './src/components/PublicProfile';
 // }
 
 const AppStack = StackNavigator({Home: HomePage, Profile: Profile, PublicProfile: PublicProfile});
-const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Login: LoginPage});
+const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage});
 
 export default SwitchNavigator(
     {

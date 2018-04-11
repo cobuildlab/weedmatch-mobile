@@ -81,6 +81,10 @@ export default styles = StyleSheet.create({
         color: '#9605CC',
         fontSize: 16,
     },
+    buttonTextTerms: {
+        color: '#333',
+        fontSize: 16,
+    },
     buttonText: {
         color: '#ffffff',
         fontSize: 16,
