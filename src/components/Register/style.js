@@ -117,5 +117,8 @@ export default styles = StyleSheet.create({
         top: 10,
         left: 17,
         width: 230
+    },
+    scrollContainer: {
+        backgroundColor: '#FFF',
     }
 })

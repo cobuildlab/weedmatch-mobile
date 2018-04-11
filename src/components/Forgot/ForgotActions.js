@@ -1,7 +1,7 @@
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
-import {userService} from '../../services';
+import {userService} from './service';
 
 function forgotAction(email) {
     console.log(`forgotAction: ${email}`);

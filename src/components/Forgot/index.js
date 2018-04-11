@@ -41,7 +41,7 @@ class ForgotPage extends ValidationComponent {
             if(state.success && this.state.step == 2){
                 toastMsg(state.success);
                 this.appSubscription.unsubscribe();
-                this.props.navigation.navigate('Login');
+                this.props.navigation.popToTop();
             }
             if(state.success){
                 toastMsg(state.success);
@@ -115,136 +115,136 @@ class ForgotPage extends ValidationComponent {
                 return
             }
         }
-
     }
-
 
     render() {
         const {isLoading, step} = this.state;
         if (isLoading) {
             return (
-                    <View style={styles.teclado}>
-                    <Image
-                        style={styles.container}
-                        source={require('./logo-login.png')}
-                        style={[{width: null, height: 300}]}
-                    />
-                    <Text style={styles.textLight}>
-                        {strings('main.title')}
-                    </Text>
-                    <Text style={styles.textBold}>
-                        {strings('wmatch')}
-                    </Text>
-                    <ActivityIndicator size="large" color="#0000ff"/>
-
-                    </View>
+                <View style={styles.teclado}>
+                <Image
+                    style={styles.container}
+                    source={require('../../assets/img/logo-b.png')}
+                    style={[{width: null, height: 300}]}
+                />
+                <Text style={styles.textLight}>
+                    {strings('main.title')}
+                </Text>
+                <Text style={styles.textBold}>
+                    {strings('wmatch')}
+                </Text>
+                <ActivityIndicator size="large" color="#0000ff"/>
+                </View>
             )
         } else {
             if(step == 1){
                 return (
-                        <ScrollView style={{backgroundColor: '#fff',}}>
-                            <View style={styles.teclado}>
-                                <Image
-                                    style={styles.container}
-                                    source={require('../../assets/img/logo-b.png')}/>
-
-                                <View style={styles.contentLogin}>
-                                    <Text style={styles.textLight}>
-                                        {strings('main.title')}
-                                    </Text>
-                                    <Text style={styles.textBold}>
-                                        {strings('wmatch')}
-                                    </Text>
-                                </View>
-                                <TextInput
-                                    style={styles.inputStyle}
-                                    editable={true}
-                                    underlineColorAndroid='transparent'
-                                    onChangeText={(email) => this.setState({email})}
-                                    placeholder={strings('register.email')}
-                                    ref='email'
-                                    returnKeyType='next'
-                                    value={this.state.email}
-                                />
-
-
-                                <TouchableOpacity
-                                    style={styles.buttomLoginStyle}
-                                    onPress={this._forgotPassword.bind(this)}>
-                                    <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={styles.buttomCancelStyle}
-                                    onPress={this._forgotCancel.bind(this)}>
-                                    <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
-                                </TouchableOpacity>
+                    <ScrollView style={{backgroundColor: '#fff',}}>
+                        <View style={styles.teclado}>
+                            <Image
+                                style={styles.container}
+                                source={require('../../assets/img/logo-b.png')}
+                            />
+                            <View style={styles.contentLogin}>
+                                <Text style={styles.textLight}>
+                                    {strings('main.title')}
+                                </Text>
+                                <Text style={styles.textBold}>
+                                    {strings('wmatch')}
+                                </Text>
                             </View>
-                        </ScrollView>
-                        );
+                            <TextInput
+                                style={styles.inputStyle}
+                                editable={true}
+                                underlineColorAndroid='transparent'
+                                onChangeText={(email) => this.setState({email})}
+                                placeholder={strings('register.email')}
+                                ref='email'
+                                returnKeyType = {"next"}
+                                onSubmitEditing={() => { this._forgotPassword(); }}
+                                value={this.state.email}
+                            />
+                            <TouchableOpacity
+                                style={styles.buttomLoginStyle}
+                                onPress={this._forgotPassword.bind(this)}>
+                                <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttomCancelStyle}
+                                onPress={this._forgotCancel.bind(this)}>
+                                <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
+                );
             }else if(step == 2){
                 return (
-                            <ScrollView style={{backgroundColor: '#fff',}}>
-                            <View style={styles.teclado}>
-                                <Image
-                                    style={styles.container}
-                                    source={require('../../assets/img/logo-b.png')}/>
+                    <ScrollView style={{backgroundColor: '#fff',}}>
+                        <View style={styles.teclado}>
+                            <Image
+                                style={styles.container}
+                                source={require('../../assets/img/logo-b.png')}/>
 
-                                <View style={styles.contentLogin}>
-                                    <Text style={styles.textLight}>
-                                        {strings('main.title')}
-                                    </Text>
-                                    <Text style={styles.textBold}>
-                                        {strings('wmatch')}
-                                    </Text>
-                                </View>
-                                <TextInput
-                                    style={styles.inputStyle}
-                                    editable={true}
-                                    underlineColorAndroid='transparent'
-                                    onChangeText={(code) => this.setState({code})}
-                                    placeholder={strings('forgot.code')}
-                                    ref='code'
-                                    returnKeyType='next'
-                                    value={this.state.code}
-                                />
-                                <TextInput
-                                    style={styles.inputStyle}
-                                    editable={true}
-                                    underlineColorAndroid='transparent'
-                                    onChangeText={(password) => this.setState({password})}
-                                    placeholder={strings('forgot.password')}
-                                    ref='password'
-                                    returnKeyType='next'
-                                    value={this.state.password}
-                                />
-                                <TextInput
-                                    style={styles.inputStyle}
-                                    editable={true}
-                                    underlineColorAndroid='transparent'
-                                    onChangeText={(confirmPassword) => this.setState({confirmPassword})}
-                                    placeholder={strings('forgot.confirmPassword')}
-                                    ref='confirmPassword'
-                                    returnKeyType='next'
-                                    value={this.state.confirmPassword}
-                                />
-
-                                <TouchableOpacity
-                                    style={styles.buttomLoginStyle}
-                                    onPress={this._forgotSendPassword.bind(this)}>
-                                    <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={styles.buttomCancelStyle}
-                                    onPress={this._forgotCancel.bind(this)}>
-                                    <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
-                                </TouchableOpacity>
+                            <View style={styles.contentLogin}>
+                                <Text style={styles.textLight}>
+                                    {strings('main.title')}
+                                </Text>
+                                <Text style={styles.textBold}>
+                                    {strings('wmatch')}
+                                </Text>
                             </View>
-                            </ScrollView>
-                        );
-            }
+                            <TextInput
+                                style={styles.inputStyle}
+                                editable={true}
+                                underlineColorAndroid='transparent'
+                                onChangeText={(code) => this.setState({code})}
+                                placeholder={strings('forgot.code')}
+                                value={this.state.code}
+                                ref={(input) => { this.codeInput = input; }}
+                                returnKeyType = {"next"}
+                                onSubmitEditing={() => { this.passwordInput.focus(); }}
+                                blurOnSubmit={false}
+                            />
+                            <TextInput
+                                style={styles.inputStyle}
+                                editable={true}
+                                underlineColorAndroid='transparent'
+                                onChangeText={(password) => this.setState({password})}
+                                placeholder={strings('forgot.password')}
+                                ref={(input) => { this.passwordInput = input; }}
+                                returnKeyType = {"next"}
+                                onSubmitEditing={() => { this.confirmInput.focus(); }}
+                                blurOnSubmit={false}
+                                value={this.state.password}
+                            />
+                            <TextInput
+                                style={styles.inputStyle}
+                                editable={true}
+                                underlineColorAndroid='transparent'
+                                onChangeText={(confirmPassword) => this.setState({confirmPassword})}
+                                placeholder={strings('forgot.confirmPassword')}
+                                ref={(input) => { this.confirmInput = input; }}
+                                returnKeyType = {"next"}
+                                onSubmitEditing={() => { this._forgotSendPassword(); }}
+                                blurOnSubmit={false}
+                                value={this.state.confirmPassword}
+                            />
 
+                            <TouchableOpacity
+                                style={styles.buttomLoginStyle}
+                                onPress={this._forgotSendPassword.bind(this)}>
+                                <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.buttomCancelStyle}
+                                onPress={this._forgotCancel.bind(this)}>
+                                <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
+                );
+            }
         }
     }
 }

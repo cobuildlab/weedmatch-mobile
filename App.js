@@ -48,7 +48,7 @@ import ForgotPage from './src/components/Forgot';
 // }
 
 const AppStack = StackNavigator({Home: HomePage, Profile: Profile, PublicProfile: PublicProfile});
-const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage});
+const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage,Forgot:ForgotPage});
 
 export default SwitchNavigator(
     {

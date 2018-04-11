@@ -147,11 +147,10 @@ class RegisterPage extends ValidationComponent {
                     return
                 }
 
-            }else{
+            } else {
                 toastMsg(strings("register.allInputs"))
             }
         }
-
     }
 
      _createDateData() {
@@ -348,7 +347,7 @@ class RegisterPage extends ValidationComponent {
             </View>
         }
         return (
-           <ScrollView style={{backgroundColor: '#fff',}}>
+           <ScrollView style={styles.scrollContainer}>
               <View style={styles.teclado}>
                 <Image style={styles.container}
                        source={require('../../assets/img/logo-b.png')}

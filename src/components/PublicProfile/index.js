@@ -44,7 +44,6 @@ export default class PublicProfile extends Component {
 
     static navigationOptions = { header: null };
 
-
     componentDidMount(){
         const { params } = this.props.navigation.state;
         const userId = params ? params.userId : null;

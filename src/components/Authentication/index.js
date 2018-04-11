@@ -58,7 +58,7 @@ export default class Authentication extends Component {
                         <View style={styles.imageStyle}>
                             <Image
                                 style={styles.container}
-                                source={require('.././img/logo-login.png')}
+                                source={require('../../assets/img/logo-login.png')}
                             />
                         </View>
                     </View>

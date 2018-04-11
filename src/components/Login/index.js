@@ -80,9 +80,8 @@ class LoginPage extends Component {
             return (
                     <View style={styles.teclado}>
                     <Image
-                        style={styles.contai0ner}
-                        source={require('./logo-login.png')}
-                        style={[{width: null, height: 300}]}
+                        style={styles.container}
+                        source={require('../../assets/img/logo-b.png')}
                     />
                     <Text style={styles.textLight}>
                         {strings('main.title')}
@@ -161,16 +160,3 @@ class LoginPage extends Component {
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_WIDTH = window.width;
 export default LoginPage;
-
-const style={
-    backgroundColor: "#CC000000",
-    width: 300,
-    height: Platform.OS === ("ios") ? 50 : 110,
-    color: "#ffffff",
-    paddingLeft: 50,
-    paddingRight: 50,
-    fontSize: 12,
-    borderRadius: 50,
-    fontWeight: "normal",
-    yOffset: 40
-};
