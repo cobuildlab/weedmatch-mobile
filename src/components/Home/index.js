@@ -201,8 +201,8 @@ export default class HomePage extends Component {
             strings("home.cancel"),
           ]}
           cancelButtonIndex={2}
-          onPress={(index) => { 
-            
+          onPress={(index) => {
+
             switch(index) {
               case 0:
                 this._takePhoto();
@@ -283,11 +283,13 @@ export default class HomePage extends Component {
                 <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Image style={styles.picture} source={{uri: rowData.image_profile}} />
                 </TouchableOpacity>
-
-                <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
+                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start',}}>
+                  <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Text style={styles.username}>{rowData.username}</Text>
-                </TouchableOpacity>
-
+                  </TouchableOpacity>
+                    <Text style={styles.distancia}>A 3km de distancia</Text>
+                </View>
+                  <Text style={styles.tiempo}>2 h</Text>
             </View>
             <Image
               style={styles.media}
@@ -310,7 +312,8 @@ export default class HomePage extends Component {
               flexDirection: 'column',
               justifyContent: 'flex-end',
           }}>
-          <View style={{height: 1, backgroundColor: '#B2B2B2', marginBottom: 8, marginLeft: 16, marginRight: 20, marginTop: 5,}} />
+          <Text style={styles.description}>Pie de foto publicada #AmantesdelCannabis #Love esto esta quedando bien</Text>
+          <View style={{height: 0.5, backgroundColor: '#B2B2B2', marginBottom: 8,  marginTop: 5,}} />
           </View>
         </View>
       )
