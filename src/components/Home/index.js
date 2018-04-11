@@ -16,7 +16,6 @@ import {
       Modal,
       Button,
       TextInput,
-      ToastAndroid,
       Alert,
       } from 'react-native';
 
@@ -25,8 +24,8 @@ import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet'
-import { userService } from '../../services';
 import TopBar from '../../utils/TopBar';
+import {connection, internet} from '../../utils';
 import styles from './styles'
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
@@ -104,18 +103,27 @@ export default class HomePage extends Component {
     }
 
     _feedData() {
-      AsyncStorage.getItem('token').then((token) => {
-        feedAction(token, this.state)
-      })
+      if (connection) {
+        AsyncStorage.getItem('token').then((token) => {
+          feedAction(token, this.state)
+        })
+      } else {
+        internet();
+      }
     }
 
     _uploadPhoto() {
-      this.setState({load: true,
-                     time: moment().format()
-                    });
-      AsyncStorage.getItem('token').then((token) => {
-        uploadAction(token, this.state)
-      })
+      this.setState(
+        { load: true,
+          time: moment().format()
+        });
+      if (connection) {
+        AsyncStorage.getItem('token').then((token) => {
+          uploadAction(token, this.state)
+        })
+      } else {
+        internet();
+      }
     }
 
     _feedPosition() {
@@ -136,9 +144,13 @@ export default class HomePage extends Component {
     }
 
     _like(idImage,id_user,like) {
-      AsyncStorage.getItem('token').then((token) => {
-        likeAction(token,idImage,id_user,like)
-      })
+      if (connection) {
+        AsyncStorage.getItem('token').then((token) => {
+          likeAction(token,idImage,id_user,like)
+        })
+      } else {
+        internet();
+      }
     }
 
   static navigationOptions = { header: null };

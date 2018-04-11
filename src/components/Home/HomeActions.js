@@ -5,7 +5,7 @@ import {userService} from '../../services';
 
 function feedAction(token, state) {
 
-    console.log(`homeAction: ${token}, ${state}`);
+    console.log(`homeAction: ${token}, ${state}`); 
 
     userService.feed(token, state)
         .then(async (response) => {
@@ -18,7 +18,7 @@ function feedAction(token, state) {
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
+        })
 }
 
 function uploadAction(token, state) {

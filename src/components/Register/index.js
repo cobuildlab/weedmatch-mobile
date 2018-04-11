@@ -21,8 +21,7 @@ import {registerAction} from "./RegisterActions";
 import {APP_STORE} from "../../Store";
 import ValidationComponent from '../../utils/ValidationComponent';
 import styles from './style';
-import {toastMsg} from "../../utils";
-
+import {toastMsg,connection,internet} from "../../utils";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
 
@@ -115,9 +114,13 @@ class RegisterPage extends ValidationComponent {
         });
         if(this.isFormValid()){
             this.setState({isLoading: true});
-            registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
-                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
-        }else{
+            if (connection) {
+                registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
+                    parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
+            } else {
+                internet();
+            }  
+        } else {
             if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
                 if(this.isFieldInError('full_name')){
                     this.getErrorsInField('full_name').map((result) => toastMsg(result))
