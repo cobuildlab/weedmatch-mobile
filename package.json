@@ -31,7 +31,8 @@
     "react-native-toast-native": "^1.2.1",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.4.0",
-    "rxjs": "^5.5.8"
+    "rxjs": "^5.5.8",
+    "validate.js": "^0.12.0"
   },
   "devDependencies": {
     "babel-jest": "22.4.1",

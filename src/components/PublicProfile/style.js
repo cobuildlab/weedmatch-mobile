@@ -157,5 +157,32 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 10
-    }
+    },
+    viewContainer: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+    viewFlex: {
+        flex: 1,
+    },
+    viewFlexDirection: {
+        flexDirection: 'row'
+    },
+
+    viewBackground: {
+        backgroundColor: '#FFF',
+        flex:3
+    },
+    textName: {
+        marginTop: 15,
+        paddingLeft: 20, 
+        fontSize: 16, 
+        color: '#333',
+    },
+    textContainer: {
+        marginTop: 10, 
+        paddingLeft: 20, 
+        fontSize: 16, 
+        color: '#333'
+    },
 });

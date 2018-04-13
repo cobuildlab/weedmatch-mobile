@@ -24,6 +24,8 @@ import styles from './style';
 import {toastMsg,connection,internet} from "../../utils";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
+// import validate from 'validate.js';
+import validate from './validate_wrapper';
 
 class RegisterPage extends ValidationComponent {
 
@@ -120,10 +122,18 @@ class RegisterPage extends ValidationComponent {
                     this.getErrorsInField('full_name').map((result) => toastMsg(result))
                     return
                 }
-                if(this.isFieldInError('email')){
-                    this.getErrorsInField('email').map((result) => toastMsg(result))
-                    return
+                // if(this.isFieldInError('email')){
+                //     this.getErrorsInField('email').map((result) => toastMsg(result))
+                //     return
+                // }
+
+                var msg = validate('email', this.state.email);
+
+                if  (msg) {
+                    toastMsg(msg);
+                    return;
                 }
+
                 if(this.isFieldInError('age')){
                     this.getErrorsInField('age').map((result) => toastMsg(result))
                     return

@@ -2,6 +2,9 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
+import moment from 'moment';
+import moment_timezone from 'moment-timezone';
+import DeviceInfo from 'react-native-device-info';
 
 function feedAction(token, state) {
 
@@ -55,4 +58,30 @@ function likeAction(token, id, id_user, like,row) {
         });
 }
 
-export {feedAction, uploadAction, likeAction};
+function calculateTime(rowData) {
+    var start = moment(rowData.time).tz(DeviceInfo.getTimezone());
+    var end = moment();
+
+    var minutes = parseInt(moment.duration(end.diff(start)).asMinutes());
+
+    if (minutes < 60) {
+        return minutes + ' m'
+    }
+
+    var hours = parseInt(moment.duration(end.diff(start)).asHours());
+
+    if (hours < 24) {
+        return hours + ' h'
+    }
+
+    var day = parseInt(moment.duration(end.diff(start)).asDays());
+
+    if (day < 31) {
+        return day + ' d'
+    }
+
+    return moment(rowData.time).tz(DeviceInfo.getTimezone()).format('MMMM DD, YYYY')
+
+}
+
+export { feedAction, uploadAction, likeAction, calculateTime };

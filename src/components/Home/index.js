@@ -29,7 +29,7 @@ import {connection, internet} from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import {feedAction, uploadAction, likeAction} from './HomeActions'
+import { feedAction, uploadAction, likeAction, calculateTime } from './HomeActions'
 
 const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var width = Dimensions.get('window').width;
@@ -74,7 +74,7 @@ export default class HomePage extends Component {
         if (state.error) {
           Alert.alert(state.error);
         }
-    });
+      });
 
       this.event = APP_STORE.APP_EVENT.subscribe(state => {
         this.setState({isLoading: true});
@@ -302,8 +302,7 @@ export default class HomePage extends Component {
     }
 
     _renderRow(rowData, rowID, sectionID, highlightRow){
-
-      console.log(moment(rowData.time).tz(DeviceInfo.getTimezone()).format('YYYY-MM-DD HH:mm'));
+      
       return(
           <View style={styles.containerView}>
             <View style={styles.mediaUser}>
@@ -315,9 +314,9 @@ export default class HomePage extends Component {
                   <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Text style={styles.username}>{rowData.username}</Text>
                   </TouchableOpacity>
-                    <Text style={styles.distancia}>A 3km de distancia</Text>
+                    <Text style={styles.distancia}>{rowData.distance} {strings("home.distance")}</Text>
                 </View>
-                  <Text style={styles.tiempo}>2 h</Text>
+                  <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
             </View>
             <Image
               style={styles.media}
