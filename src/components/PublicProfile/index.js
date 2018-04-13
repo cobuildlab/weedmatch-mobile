@@ -1,45 +1,28 @@
 import React, { Component } from 'react';
 import {
     AppRegistry,
-    StyleSheet,
     Text,
     View,
-    ListView,
-    RefreshControl,
     Image,
-    Dimensions,
     AsyncStorage,
     TouchableOpacity,
-    TouchableHighlight,
     ActivityIndicator,
     Alert
 } from 'react-native';
 
-import {userService} from './service';
 import styles from './style';
 import TopBar from './../../utils/TopBar';
 import { publicProfileAction } from './PublicProfileActions';
 import {APP_STORE} from '../../Store';
 import {connection, internet} from '../../utils';
 
-var mePic = require('../../images/sebas.jpg');
-var meName = 'Sebastian Diaz'
-var meUsername = 'holasebasdiaz'
-const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
 export default class PublicProfile extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-          latitud: '',
-          longitud: '',
           rowData:{},
-          feedData:ds1.cloneWithRows([]),
           refreshing:false,
-          topBarShow:true,
-          totalPages: '',
-          nextPage: '',
           publicImage: {},
           isLoading: false
         };
