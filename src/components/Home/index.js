@@ -335,7 +335,7 @@ export default class HomePage extends Component {
             </View>
           </View>
           <View style={styles.containerViewHorizontal}>
-          <Text style={styles.description}>Pie de foto publicada #AmantesdelCannabis #Love esto esta quedando bien</Text>
+          <Text style={styles.description}>{rowData.comment}</Text>
           <View style={styles.containerViewSpace}/>
           </View>
         </View>
