@@ -34,14 +34,6 @@ export default class Authentication extends Component {
 
     static navigationOptions = {header: null};
 
-    async saveItem(item, selectedValue) {
-        try {
-            await AsyncStorage.setItem(item, selectedValue);
-        } catch (error) {
-            console.error('AsyncStorage error: ' + error.message);
-        }
-    }
-
     userRegister() {
         this.props.navigation.navigate('Register');
     }

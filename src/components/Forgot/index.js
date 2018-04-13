@@ -12,7 +12,7 @@ import {
     Platform,
 } from 'react-native';
 import {APP_STORE} from '../../Store';
-import {forgotAction, recoveryPassword} from './ForgotActions';
+import {forgotAction, recoveryPassword, forgotPassword} from './ForgotActions';
 import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from "../../utils";
@@ -59,36 +59,28 @@ class ForgotPage extends ValidationComponent {
 
     static navigationOptions = {header: null};
 
-    userAuthentication() {
-        //this.props.navigation.navigate('SignIn');
-    }
-
-    popScreen() {
-        this.props.navigation.goBack();
-    }
-
     _forgotCancel() {
         this.props.navigation.goBack();
     }
 
-    _forgotPassword() {
+    _forgotPassword(email) {
         /*
         * Validating Form with rules
         */
         this.validate({
             email: {required: true, email: true}
         });
-        if(this.isFormValid()){
+        if (this.isFormValid()) {
             this.setState({isLoading: true});
             forgotAction(this.state.email);
-        }else{
-            if(this.isFieldInError('email')){
+        } else {
+            if (this.isFieldInError('email')) {
                 this.getErrorsInField('email').map((result) => toastMsg(result))
                 return
             }
         }
-
     }
+
     _forgotSendPassword() {
         /*
         * Validating Form with rules
