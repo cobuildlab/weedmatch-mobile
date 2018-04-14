@@ -1,0 +1,51 @@
+{
+  "wmatch": "CANNABIS",
+  "login": {
+    "welcome": "Welcome {{name}} to our localized app!",
+    "signup_button": "¿No tienes cuenta? ¡Únete!",
+    "login": "Inicia Sesión",
+    "redes": "Iniciar Sesión con Redes Sociales",
+    "forgot": "Recuperar Contraseña",
+    "required_fields_error": "El usuario y la clave son necesarios"
+  },
+  "register": {
+    "register": "Registrate",
+    "terms": "Terminos y Condiciones",
+    "fullName": "Nombre Completo",
+    "errorFullName": "Nombre Completo Inválido",
+    "password": "Contraseña",
+    "username": "Usuario",
+    "male": "Masculino",
+    "female": "Femenino",
+    "email": "Correo Eléctronico",
+    "age": "Fecha de Nacimiento",
+    "allInputs": "Todos los campos son requeridos",
+    "errorEmail": "Corre Inválido",
+    "errorPassword": "Contraseña Inválida",
+    "errorUsername": "Usuario Inválido",
+    "errorSex": "Sexo Inválido",
+    "errorAge": "Edad Inválida",
+    "errorTitle": "Registro Fallido",
+    "successTitle": "Registrado Exitosamente"
+  },
+  "main": {
+    "title": "UNIENDO AMANTES DEL",
+    "internet": "No hay conexión a Internet"
+  },
+  "home": {
+    "actionSheet": "Elija una opción",
+    "camera": "Camara",
+    "biblio": "Biblioteca",
+    "cancel": "Cancelar",
+    "alerta": "Alerta",
+    "upload": "Subir Imagen",
+    "comment": "Comentario",
+    "distance": "de distancia"
+  },
+  "forgot": {
+    "send": "Enviar",
+    "code": "Codigo",
+    "password": "Password",
+    "confirmPassword": "Confirmar Password"
+  }
+}
