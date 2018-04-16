@@ -5,23 +5,47 @@ import {userService} from './service';
 import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
+import { authHeader, catchErrorAndPropagate , URL,LENGUAGE} from '../../utils';
 
 function feedAction(token, state) {
 
-    console.log(`homeAction: ${token}, ${state}`); 
+    console.log(`homeAction: ${token}, ${state}`);
 
-    userService.feed(token, state)
-        .then(async (response) => {
-            console.log(`homeAction: ${token}, ${state}`, response);
-            const json = await response.json();
-            console.log(`homeAction:JSON:`, json);
-            if (response.ok) {
-                console.log(json.results);
-                APP_STORE.FEED_EVENT.next({"feed": json.results});
-                return;
-            }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
-        })
+    var pagUrl = '';
+
+    if (state.urlPage != '' && state.numPage > 0) {
+        pagUrl = state.urlPage;
+        getFeed(token, state,pagUrl);
+
+    } else if (state.numPage == 0){
+        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud;
+        getFeed(token, state,pagUrl);
+    }
+}
+
+function getFeed(token, state,pagUrl) {
+    userService.feed(token, state,pagUrl)
+    .then(async (response) => {
+        console.log(`homeAction: ${token}, ${state}`, response);
+        const json = await response.json();
+        console.log(`homeAction:JSON:`, json);
+        if (response.ok) {
+            console.log(json.results);
+            APP_STORE.FEED_EVENT.next({"feed": json.results});
+            APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
+            return;
+        }
+        APP_STORE.APP_EVENT.next({"error": json.detail});
+    })
+}
+
+function appendData(oldData, newData) {
+    oldData.slice();
+    newData.map((data) => { 
+        oldData.push(data);
+    });
+
+    return oldData;
 }
 
 function uploadAction(token, state) {
@@ -84,4 +108,4 @@ function calculateTime(rowData) {
 
 }
 
-export { feedAction, uploadAction, likeAction, calculateTime };
+export { feedAction, uploadAction, likeAction, calculateTime, appendData };

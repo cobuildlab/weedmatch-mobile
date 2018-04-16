@@ -8,14 +8,14 @@ export const userService = {
     publicImageLike,
 };
 
-function feed(token, state) {
+function feed(token, state,pagUrl) {
 
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token),
     };
 
-    return fetch(URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud, requestOptions);
+    return fetch(pagUrl, requestOptions);
 }
 
 function publicImage(token, state) {
