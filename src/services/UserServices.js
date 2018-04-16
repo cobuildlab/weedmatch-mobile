@@ -15,7 +15,6 @@ export const userService = {
     recoveryPassword
 };
 
-//const URL = "http://192.168.0.21:8080/";
 // const URL = "http://192.168.0.21:8080/";
 // const URL = "https://weedmatch.herokuapp.com/";
 const URL = "http://45.32.173.248/";
