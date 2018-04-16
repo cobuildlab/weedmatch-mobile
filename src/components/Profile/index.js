@@ -12,8 +12,6 @@ import {
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import styles from './style';
-
-import TopBar from './../../utils/TopBar';
 import TabProfile from '../tabProfile';
 
 var mePic = require('../../images/sebas.jpg');

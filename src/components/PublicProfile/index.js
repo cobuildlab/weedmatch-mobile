@@ -1,43 +1,28 @@
 import React, { Component } from 'react';
 import {
-      AppRegistry,
-      StyleSheet,
-      Text,
-      View,
-      ListView,
-      RefreshControl,
-      Image,
-      Dimensions,
-      AsyncStorage,
-      TouchableOpacity,
-      TouchableHighlight,
-      ActivityIndicator
+    AppRegistry,
+    Text,
+    View,
+    Image,
+    AsyncStorage,
+    TouchableOpacity,
+    ActivityIndicator,
+    Alert
 } from 'react-native';
 
-import {userService} from './../../services';
-var width = Dimensions.get('window').width;
-const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
+import styles from './style';
 import TopBar from './../../utils/TopBar';
-
-var mePic = require('../../images/sebas.jpg');
-var meName = 'Sebastian Diaz'
-var meUsername = 'holasebasdiaz'
+import { publicProfileAction } from './PublicProfileActions';
+import {APP_STORE} from '../../Store';
+import {connection, internet} from '../../utils';
 
 export default class PublicProfile extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-          latitud: '',
-          longitud: '',
           rowData:{},
-          feedData:ds1.cloneWithRows([]),
-          loading:true,
           refreshing:false,
-          topBarShow:true,
-          totalPages: '',
-          nextPage: '',
           publicImage: {},
           isLoading: false
         };
@@ -45,32 +30,37 @@ export default class PublicProfile extends Component {
 
     static navigationOptions = { header: null };
 
-
     componentDidMount(){
+
+        this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
+            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+            if (state.publicProfile) {
+                this.setState({
+                    isLoading: true,
+                    rowData: state.publicProfile,
+                    country: state.publicProfile.country
+                })
+              return;
+            }
+            if (state.error) {
+              Alert.alert(state.error);
+            }
+        });
+
+        this._publicProfile();
+    }
+
+    _publicProfile() {
         const { params } = this.props.navigation.state;
         const userId = params ? params.userId : null;
-        const otherParam = params ? params.otherParam : null;
 
-        AsyncStorage.getItem('token').then((token) => {
-            userService.publicProfile(token, userId)
-                .then(response => {
-                    this.setState({
-                        loading:false,
-                        isLoading: true,
-                        rowData: response,
-                        country: response.country
-                    })
-                })
-
-            userService.publicImage(token, userId)
-                .then(response => {
-                    this.setState({
-                        loading:false,
-                        publicImage: response
-                    })
-                })
-        })
-
+        if (connection) {
+          AsyncStorage.getItem('token').then((token) => {
+            publicProfileAction(token, userId)
+          })
+        } else {
+          internet();
+        }
     }
 
     showButton() {
@@ -82,235 +72,49 @@ export default class PublicProfile extends Component {
       );
     }
 
-
-      render() {
+    render() {
         const {rowData, country, publicImage, isLoading} = this.state;
-        if(isLoading){
+        if(isLoading) {
             return (
-                    <View style={{flex:1}}>
-                        <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
-                        <View style={{backgroundColor: '#FFF', flex:3}}>
-                            <Image style={styles.media} source={{uri: rowData.image_profile}} />
+                <View style={styles.viewFlex}>
+                    <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
+                    <View style={styles.viewBackground}>
+                        <Image style={styles.media} source={{uri: rowData.image_profile}} />
+                    </View>
+
+                    <View style={styles.viewContainer}>
+                        <View style={styles.viewContainer}>
+                            <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
                         </View>
-
-                        <View style={{flex: 1, flexDirection: 'column'}}>
-                            <View style={{flex: 1, flexDirection: 'column'}}>
-                                <Text style={{ marginTop: 15, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.first_name}, {rowData.age} </Text>
-                            </View>
-                            <View style={{flex: 1, flexDirection: 'column'}}>
-                                {country &&
-                                    <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{country.name} </Text>
-                                }
-                            </View>
-                            <View style={{flex: 1, flexDirection: 'column'}}>
-                                <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.distance} </Text>
-                            </View>
-                            <View style={{flex: 1, flexDirection: 'column'}}>
-                                <Text style={{marginTop: 10, paddingLeft: 20, fontSize: 16, color: '#333'}}>{rowData.description} </Text>
-                            </View>
-
-
+                        <View style={styles.viewContainer}>
+                            {country &&
+                                <Text style={styles.textContainer}>{country.name} </Text>
+                            }
                         </View>
-
-
-
-
-
-
-                        <View style={{flexDirection: 'row'}}>
-                                {publicImage.results &&
-                                       publicImage.results.map(function(value, i){
-                                            return (
-                                                <Image key={i} source={{uri: value.image}} style={styles.rowimage}/>
-                                           );
-                                        })
-                                     }
+                        <View style={styles.viewContainer}>
+                            <Text style={styles.textContainer}>{rowData.distance} </Text>
+                        </View>
+                        <View style={styles.viewContainer}>
+                            <Text style={styles.textContainer}>{rowData.description} </Text>
                         </View>
                     </View>
-                    );
-        }else{
+
+                    <View style={styles.viewFlexDirection}>
+                        {publicImage.results && publicImage.results.map(function(value, i) {
+                            return (
+                                <Image key={i} source={{uri: value.image}} style={styles.rowimage}/>
+                                );
+                            })
+                        }
+                    </View>
+                </View>
+            );
+        } else {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
                     <ActivityIndicator size="large" color="#9605CC" />
                 </View>
             )
         }
-
-      }
     }
-
-    const styles = StyleSheet.create({
-
-      MainContainer :{
-
-        justifyContent: 'center',
-        flex:1,
-        margin: 10
-      },
-
-      rowViewContainer:
-      {
-
-        fontSize: 18,
-        paddingRight: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
-
-      },
-
-      TouchableOpacityStyle:{
-
-          position: 'absolute',
-          width: 50,
-          height: 50,
-          alignItems: 'center',
-          justifyContent: 'center',
-          right: 30,
-          bottom: 30,
-        },
-
-        FloatingButtonStyle: {
-
-          resizeMode: 'contain',
-          width: 50,
-          height: 50,
-        },
-      container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFF',
-      },
-      actionButtonIcon: {
-        fontSize: 20,
-        height: 22,
-        color: 'white',
-      },
-      welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 5,
-      },
-      instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-      },
-      listView:{
-        marginTop:0,
-        width:width,
-      },
-      picture:{
-        width:30,
-        height:30,
-        borderRadius:15,
-
-      },
-      media:{
-      width:width,
-      height:width
-      },
-      mediaUser:{
-      alignItems: 'center',
-      padding:10,
-      backgroundColor:'#FFF',
-      width:width,
-      flexDirection:'row',
-      borderWidth:1,
-      borderTopColor:'#fff',
-      borderLeftColor:'#fff',
-      borderRightColor:'#fff',
-      borderBottomColor:'#fff',
-      },
-      username:{
-        paddingLeft:10,
-      },
-      mediaIcons:{
-           width:width-10,
-
-        flexDirection:'row',
-        height:30,
-
-      },
-      icons:{
-        marginLeft:10,
-        marginTop:5,
-        width:30,
-        height:26
-      },
-      likes:{
-        flexDirection:'row',
-        width:width,
-        marginTop:10,
-        marginLeft:10,
-        marginBottom:10,
-      },
-      comments:{
-
-        flexDirection:'row',
-        width:width,
-        marginLeft:10,
-        marginBottom:5
-      },
-      user:{
-        fontWeight:'bold',
-        fontSize:10
-      },
-      comment:{
-
-        marginLeft:5,
-        fontSize:10
-      },
-      time:{
-        marginRight:20,
-        marginTop: 10,
-        fontSize:14,
-        color:'#777',
-        textAlign:'left'
-      },
-      topBar:{
-        backgroundColor:'blue'
-      },
-      headerSection:{
-        backgroundColor:'blue',
-
-        height:40
-      },
-      mediaUser:{
-          alignItems: 'center',
-          padding:10,
-          backgroundColor:'#FFF',
-          width:width,
-          flexDirection:'row',
-          borderWidth:1,
-          borderTopColor:'#fff',
-          borderLeftColor:'#fff',
-          borderRightColor:'#fff',
-          borderBottomColor:'#fff',
-        },   picture:{
-             width:30,
-             height:30,
-             borderRadius:15,
-
-           },
-            username:{
-             paddingLeft:10,
-
-           },
-      rowimage:{
-        width:width/3,
-        height:width/3,
-        borderWidth:.5,
-        borderColor:'#fff'
-
-      },
-      containers: {
-        flex: 1,
-        justifyContent: 'center'
-      },
-      horizontal: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 10
-      }
-    });
+}

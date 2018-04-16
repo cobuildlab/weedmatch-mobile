@@ -11,9 +11,10 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
-import {APP_STORE} from '../../Store'
-import {loginAction} from './LoginActions'
-import styles from './style'
+
+import {APP_STORE} from '../../Store';
+import {loginAction} from './LoginActions';
+import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg, connection, internet} from "../../utils";
 
@@ -80,8 +81,7 @@ class LoginPage extends Component {
                     <View style={styles.teclado}>
                     <Image
                         style={styles.container}
-                        source={require('./logo-login.png')}
-                        style={[{width: null, height: 300}]}
+                        source={require('../../assets/img/logo-b.png')}
                     />
                     <Text style={styles.textLight}>
                         {strings('main.title')}
@@ -102,7 +102,7 @@ class LoginPage extends Component {
             )
         } else {
             return (
-                <ScrollView style={{backgroundColor: '#fff',}}>
+                <ScrollView style={styles.containerView}>
                 <View style={styles.teclado}>
                     <Image
                         style={styles.container}
@@ -160,16 +160,3 @@ class LoginPage extends Component {
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_WIDTH = window.width;
 export default LoginPage;
-
-const style={
-    backgroundColor: "#CC000000",
-    width: 300,
-    height: Platform.OS === ("ios") ? 50 : 110,
-    color: "#ffffff",
-    paddingLeft: 50,
-    paddingRight: 50,
-    fontSize: 12,
-    borderRadius: 50,
-    fontWeight: "normal",
-    yOffset: 40
-};

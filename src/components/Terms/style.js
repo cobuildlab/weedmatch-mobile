@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Platform  } from 'react-native';
 
 export default styles = StyleSheet.create({
     headerLogin: {
@@ -28,7 +28,17 @@ export default styles = StyleSheet.create({
     },
     textLight: {
         fontSize: 20,
-        color: '#9605CC',
+        color: '#333',
+        marginBottom: 10,
+
+    },
+    titleText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 15,
+    },
+    contentText: {
+        padding: 20,
     },
     textBold: {
         fontSize: 20,
@@ -91,5 +101,5 @@ export default styles = StyleSheet.create({
     },
     scrollContainer: {
         backgroundColor: '#fff',
-    },
+    }
 });

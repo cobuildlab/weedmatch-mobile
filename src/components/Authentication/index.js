@@ -11,7 +11,6 @@ import {
     Image
 } from 'react-native';
 import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk';
-import { userService } from '../../services';
 import {strings} from '../../i18n';
 import {Logger} from "../../utils";
 import styles from './styles'
@@ -35,14 +34,6 @@ export default class Authentication extends Component {
 
     static navigationOptions = {header: null};
 
-    async saveItem(item, selectedValue) {
-        try {
-            await AsyncStorage.setItem(item, selectedValue);
-        } catch (error) {
-            console.error('AsyncStorage error: ' + error.message);
-        }
-    }
-
     userRegister() {
         this.props.navigation.navigate('Register');
     }
@@ -53,14 +44,13 @@ export default class Authentication extends Component {
 
     render() {
         return (
-            <ScrollView style={{backgroundColor: '#fff'}}>
-
+            <ScrollView style={styles.scrollContainer}>
                 <View style={styles.headerLogin}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <View style={styles.imageStyle}>
                             <Image
                                 style={styles.container}
-                                source={require('.././img/logo-login.png')}
+                                source={require('../../assets/img/logo-login.png')}
                             />
                         </View>
                     </View>

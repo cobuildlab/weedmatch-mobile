@@ -140,25 +140,7 @@ export default styles = StyleSheet.create({
     },
     headerSection:{
       backgroundColor:'blue',
-
       height:40
-    },
-    mediaUser:{
-      alignItems: 'center',
-      padding:10,
-      backgroundColor:'#FFF',
-      width:width,
-      flexDirection:'row',
-      borderWidth:1,
-      borderTopColor:'#fff',
-      borderLeftColor:'#fff',
-      borderRightColor:'#fff',
-      borderBottomColor:'#fff',
-    },
-    picture:{
-      width:30,
-      height:30,
-      borderRadius:15,
     },
     username:{
       paddingLeft:10,
@@ -198,5 +180,39 @@ export default styles = StyleSheet.create({
         height: 80,
         width: width,
         padding: 5
-      }
+    },
+    containerView: {
+      backgroundColor: '#FFF',
+    },
+    containerLikes: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      paddingTop: 5,
+      paddingBottom: 5
+    },
+    containerLikesCount: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
+    containerViewHorizontal: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+    },
+    containerViewSpace: {
+      height: 0.5, 
+      backgroundColor: '#B2B2B2', 
+      marginBottom: 8,  
+      marginTop: 5
+    },
+    containerFlex: {
+      flex: 1,
+    },
+    imageSize: {
+      width: width,
+      height: width,  
+    }
   });

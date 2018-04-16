@@ -52,6 +52,8 @@ class Store {
             token: undefined,
             id: undefined,
             feed: undefined,
+            like: undefined,
+            publicProfile: undefined,
         };
         popToken(this.state);
         const me = this;
@@ -93,6 +95,18 @@ class Store {
             if (!state)
                 return;
             me.state.feed = state.feed;
+        });
+        this.LIKE_EVENT = new Subject();
+        this.LIKE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.like = state.like;
+        });
+        this.PUBLICPROFILE_EVENT = new Subject();
+        this.PUBLICPROFILE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.publicProfile = state.publicProfile;
         });
     }
 

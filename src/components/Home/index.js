@@ -26,10 +26,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet'
 import TopBar from '../../utils/TopBar';
 import {connection, internet} from '../../utils';
-import styles from './styles'
+import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import {feedAction, uploadAction, likeAction} from './HomeActions'
+import { feedAction, uploadAction, likeAction, calculateTime } from './HomeActions'
 
 const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var width = Dimensions.get('window').width;
@@ -63,6 +63,7 @@ export default class HomePage extends Component {
       this.feedData = APP_STORE.FEED_EVENT.subscribe(state => {
         console.log("Home420:componentDidMount:feedDataSuscription", state);
         if (state.feed) {
+
           this.setState({
             feedData: ds1.cloneWithRows(state.feed),
             loading: false,
@@ -73,7 +74,7 @@ export default class HomePage extends Component {
         if (state.error) {
           Alert.alert(state.error);
         }
-    });
+      });
 
       this.event = APP_STORE.APP_EVENT.subscribe(state => {
         this.setState({isLoading: true});
@@ -91,6 +92,24 @@ export default class HomePage extends Component {
               { cancelable: false }
             )
         }
+    });
+
+    this.likeEvent = APP_STORE.LIKE_EVENT.subscribe(state => {
+      console.log(state);
+      if (state.error) {
+        Alert.alert(state.error);
+          return;
+      }
+      if (state.like) {
+
+        var newDs = [];
+        newDs = this.state.feedData._dataBlob.s1.slice();
+        newDs[state.like].band = newDs[state.like].band == true ? false : true;
+        newDs[state.like].like = newDs[state.like].band == true ? newDs[state.like].like +1 : newDs[state.like].like -1;
+        this.setState({
+          feedData: ds1.cloneWithRows(newDs)
+        })
+      }
     });
 
       this._feedPosition()
@@ -143,10 +162,10 @@ export default class HomePage extends Component {
       );
     }
 
-    _like(idImage,id_user,like) {
+    _like(idImage,id_user,like,row) {
       if (connection) {
         AsyncStorage.getItem('token').then((token) => {
-          likeAction(token,idImage,id_user,like)
+          likeAction(token,idImage,id_user,like,row)
         })
       } else {
         internet();
@@ -245,27 +264,27 @@ export default class HomePage extends Component {
 
     renderFeed(data){
         return(
-              <View style={{flex:1}}>
-                 <ListView
-                    style={styles.listView}
-                    // initialListSize={5}
-                    enableEmptySections={true}
-                    dataSource={data}
-                    renderRow={this._renderRow.bind(this)}
-                    // showsHorizontalScrollIndicator={false}
-                    // stickyHeaderIndices = {[0]}
-                    //renderSectionHeader={this.sectionHeader}
-                    // stickySectionHeadersEnabled={true}
-                    // onChangeVisibleRows={(changedRows) => console.log(changedRows)}
-                    automaticallyAdjustContentInsets={false}
-                    refreshControl={
-                        <RefreshControl
-                          refreshing={this.state.refreshing}
-                          onRefresh={this._feedData.bind(this)}
-                        />
-                      }
-                  />
-              </View>
+          <View key={data._dataBlob.s1.slice().id_image} style={{flex:1}}>
+              <ListView
+                style={styles.listView}
+                // initialListSize={5}
+                enableEmptySections={true}
+                dataSource={data}
+                renderRow={this._renderRow.bind(this)}
+                // showsHorizontalScrollIndicator={false}
+                // stickyHeaderIndices = {[0]}
+                //renderSectionHeader={this.sectionHeader}
+                // stickySectionHeadersEnabled={true}
+                // onChangeVisibleRows={(changedRows) => console.log(changedRows)}
+                automaticallyAdjustContentInsets={false}
+                refreshControl={
+                    <RefreshControl
+                      refreshing={this.state.refreshing}
+                      onRefresh={this._feedData.bind(this)}
+                    />
+                  }
+              />
+          </View>
         )
       }
 
@@ -273,11 +292,19 @@ export default class HomePage extends Component {
         this.props.navigation.navigate('PublicProfile', { userId: rowData.id_user });
     }
 
-    _renderRow(rowData, rowID, sectionID, highlightRow){
+    _likes(like){
 
-      console.log(moment(rowData.time).tz(DeviceInfo.getTimezone()).format('YYYY-MM-DD HH:mm'));
+      var icon = like ? 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAArCAYAAAA+EwvfAAAACXBIWXMAAAsSAAALEgHS3X78AAAD5UlEQVRo3tWYT4hbVRTGv3Pe04WbdOFOJSm6KNNFIlEoRclUVFRKfdJFZUDmpo7YARkDuugyBXdubBEEEec9xHGkDMaCQillMmo3RTEFEReKGQVB7CIBETrwznGRTObmJZ3kJS9Dcjfhnbx7zve7303uH1JVDNNuvvBVhhgZZgU7CmatZTdONZBQ+++dYJ4dBbXyN+55+2xtmH60H8A381czzFpmRz1mTbUKABbELXa0wqz+0XWvHkfw7fOfHmJWww4Ms2bb+WBBNJm1wgyfSq9WYwFcP3btEDtaZsabZCXeK4CeGLNeIMZ7c2veQFf+fuuzErUGJtXqjz41rGfGFrEarCzVBwJcfex6rkWu6VYCIAbENjHM3JrXd8T+fOPzHDN8djTLHBE5GKLZhqjYOdl++Dq7mdOQqiKUFiFISBABNCTsPbc+VdATE6G0CjZ/XqiUouJ/f/2y18qN7G4f7eqPPjWsZ0FKhb7ApY9MXweuzFUzzKjt2toZ9c4oxHICxAjm1jwDAL+e3TDMukqOwunkhvVuLCdArI9iZanWBfDlka0qsRa6EicAwY5WmXXVzpkAxDax5rCy1HABYOPhbw0zFRiAQAFQZ35J10RQMCgSAxgKafeJxBcFtBidsyEAZ99ae3G7n/V9mkElAsqkqrh8+Ls6s6a7aJN1ojc2vhNNZmTc9Qdv5IiRtokn4ERPPAEnUoAaV4RMVPAMQXiuhJTrJ3hGIAquCmXkLoJnAcIVobT94qxBuCIAQJhVCFeEtgAtzCqEKyHVARR2gzMGcctVoYoAizbZDEFUSFXx4X3f16mzfW6vjJFVkeyVcXpW7MMuAEhIZQZWo3Nsyp24eP+7C3UGgHN38r6EtBXZf/fs2dXet9t7dsHeO53+I50nWvFoLCSEndyAhLQtQmUAcDtjpfAkpBoD6Sl3oilQ74FLLze6TmTLO/lGG6I55U6UHnr/TO2uZ+IP7v0hR4QqO5qKnoSm4IddfOTj0/7AW4kphSge+eQlf+h7oSmDKB5d9/zYF1tTAlHMbpzyR7qZa0PME2Gz3+3AAUAU81dO+vvp40G3aMs7+aoqin3uaSb97zRQ/FAOWE4YIqwekBPF49ee94fRxRiyLe/k/QNy4uKw4mM5cEBOBCduPGvi6IkNMEGI4JmbT5u4WkYCmABE8NyPT5lRdIwMkCBEcPKneTOqhrEAEoAIXvylYMapPzbAGBDB6d+eNOPWTgRgBIjgzB9PmCTqJgYQAyJY+Ou4SapmogBDQASv/HPMJFmPkXBrr9gX+qzYiYufiAOWEz4RFttOBK/9+7iZRJ2JAVgQOHcnbyZV43+pH15/PCQL9QAAAABJRU5ErkJggg==' : 'data:image/png;base64,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';
+    
+      return (
+        <Image style={styles.icons} source={{uri: icon}} />
+      )
+    }
+
+    _renderRow(rowData, rowID, sectionID, highlightRow){
+      
       return(
-          <View style={{backgroundColor: '#FFF'}}>
+          <View style={styles.containerView}>
             <View style={styles.mediaUser}>
 
                 <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
@@ -287,33 +314,29 @@ export default class HomePage extends Component {
                   <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Text style={styles.username}>{rowData.username}</Text>
                   </TouchableOpacity>
-                    <Text style={styles.distancia}>A 3km de distancia</Text>
+                    <Text style={styles.distancia}>{rowData.distance} {strings("home.distance")}</Text>
                 </View>
-                  <Text style={styles.tiempo}>2 h</Text>
+                  <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
             </View>
             <Image
               style={styles.media}
               source={{uri: rowData.image}}
             />
 
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: 5, paddingBottom: 5,}}>
+          <View style={styles.containerLikes}>
             <TouchableOpacity
-              onPress = {() => this._like(rowData.id,rowData.id_user,!rowData.band)}
+              onPress = {() => this._like(rowData.id,rowData.id_user,!rowData.band,sectionID)}
             >
-              <Image style={styles.icons} source={{uri: 'data:image/png;base64,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'}}/>
+            {this._likes(rowData.band)}
             </TouchableOpacity>
 
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end',}}>
+            <View style={styles.containerLikesCount}>
               <Text style={styles.time}>{rowData.like} weedy-likes</Text>
             </View>
           </View>
-          <View style={{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-          }}>
-          <Text style={styles.description}>Pie de foto publicada #AmantesdelCannabis #Love esto esta quedando bien</Text>
-          <View style={{height: 0.5, backgroundColor: '#B2B2B2', marginBottom: 8,  marginTop: 5,}} />
+          <View style={styles.containerViewHorizontal}>
+          <Text style={styles.description}>{rowData.comment}</Text>
+          <View style={styles.containerViewSpace}/>
           </View>
         </View>
       )
@@ -324,7 +347,7 @@ export default class HomePage extends Component {
     const { isLoaded, image, load } = this.state;
     if(isLoaded){
       return (
-        <View style={{flex:1}}>
+        <View style={styles.containerFlex}>
           <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           {this.renderFeed(this.state.feedData)}
           {this.showButton()}
@@ -349,10 +372,7 @@ export default class HomePage extends Component {
                           { image != '' &&
                               <TouchableHighlight>
                                   <Image
-                                      style={{
-                                      width: width,
-                                      height: width
-                                      }}
+                                      style={styles.imageSize}
                                       source={{uri: image}}
                                   />
 
@@ -388,7 +408,7 @@ export default class HomePage extends Component {
       );
     } else {
       return (
-        <View style={{flex:1}}>
+        <View style={styles.containerFlex}>
           <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#9605CC" />

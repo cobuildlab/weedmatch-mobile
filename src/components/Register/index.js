@@ -17,16 +17,15 @@ import {
 } from 'react-native';
 
 import {strings} from "../../i18n";
-import {registerAction} from "./RegisterActions";
+import {registerAction, createDateData} from "./RegisterActions";
 import {APP_STORE} from "../../Store";
 import ValidationComponent from '../../utils/ValidationComponent';
 import styles from './style';
 import {toastMsg,connection,internet} from "../../utils";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
-
-export const IMAGE_HEIGHT = window.width / 2;
-export const IMAGE_WIDTH = window.width;
+// import validate from 'validate.js';
+import validate from './validate_wrapper';
 
 class RegisterPage extends ValidationComponent {
 
@@ -74,13 +73,10 @@ class RegisterPage extends ValidationComponent {
                             value.forEach(function(msg) {
                                 toastMsg(msg);
                             });
-
-                        }else{
+                        } else {
                             toastMsg(value);
                         }
-
                     });
-
                 }
             return;
             }
@@ -119,17 +115,25 @@ class RegisterPage extends ValidationComponent {
                     parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
             } else {
                 internet();
-            }  
+            }
         } else {
             if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
                 if(this.isFieldInError('full_name')){
                     this.getErrorsInField('full_name').map((result) => toastMsg(result))
                     return
                 }
-                if(this.isFieldInError('email')){
-                    this.getErrorsInField('email').map((result) => toastMsg(result))
-                    return
+                // if(this.isFieldInError('email')){
+                //     this.getErrorsInField('email').map((result) => toastMsg(result))
+                //     return
+                // }
+
+                var msg = validate('email', this.state.email);
+
+                if  (msg) {
+                    toastMsg(msg);
+                    return;
                 }
+
                 if(this.isFieldInError('age')){
                     this.getErrorsInField('age').map((result) => toastMsg(result))
                     return
@@ -147,57 +151,15 @@ class RegisterPage extends ValidationComponent {
                     return
                 }
 
-            }else{
+            } else {
                 toastMsg(strings("register.allInputs"))
             }
         }
-
     }
-
-     _createDateData() {
-
-        var today = new Date();
-        var _month = parseInt(today.getMonth()+1);
-        var _today = parseInt(today.getDate());
-
-            let date = [];
-            for(var i=parseInt(today.getFullYear()-18);i>1930;i--){
-                let month = [];
-                for(let j = 1;j<13;j++){
-                    let day = [];
-                    if(j === 2){
-                        for(let k=1;k<29;k++){
-                            day.push(k);
-                        }
-                        //Leap day for years that are divisible by 4, such as 2000, 2004
-                        if(i%4 === 0){
-                            day.push(29);
-                        }
-                    }
-                    else if(j in {1:1, 3:1, 5:1, 7:1, 8:1, 10:1, 12:1}){
-                        for(let k=1;k<32;k++){
-                            day.push(k);
-                        }
-                    }
-                    else{
-                        for(let k=1;k<31;k++){
-                            day.push(k);
-                        }
-                    }
-                    let _month = {};
-                    _month[j] = day;
-                    month.push(_month);
-                }
-                let _date = {};
-                _date[i] = month;
-                date.push(_date);
-            }
-            return date;
-        }
 
         _showDatePicker() {
             Picker.init({
-                pickerData: this._createDateData(),
+                pickerData: createDateData(),
                 pickerFontColor: [153, 0 ,204, 1],
                 pickerToolBarBg:[232, 232, 232, 1],
                 pickerTitleText: '',
@@ -230,16 +192,6 @@ class RegisterPage extends ValidationComponent {
                 }
             });
             Picker.show();
-        }
-
-        _toggle() {
-            Picker.toggle();
-        }
-
-        _isPickerShow(){
-            Picker.isPickerShow(status => {
-                alert(status);
-            });
         }
 
     registerCancel() {
@@ -348,7 +300,7 @@ class RegisterPage extends ValidationComponent {
             </View>
         }
         return (
-           <ScrollView style={{backgroundColor: '#fff',}}>
+           <ScrollView style={styles.scrollContainer}>
               <View style={styles.teclado}>
                 <Image style={styles.container}
                        source={require('../../assets/img/logo-b.png')}

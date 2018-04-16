@@ -3,9 +3,9 @@ import { StyleSheet, Platform  } from 'react-native';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     width: '80%',
     resizeMode: 'contain',
-    justifyContent: 'center',
   },
   contentLogin: {
     flex: 1,
@@ -72,6 +72,8 @@ export default styles = StyleSheet.create({
 
       },
     }),
-  }
-
+  },
+  containerView: {
+    backgroundColor: '#FFF',
+  },
 });
