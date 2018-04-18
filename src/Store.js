@@ -52,6 +52,7 @@ class Store {
             token: undefined,
             id: undefined,
             feed: undefined,
+            page: undefined,
             like: undefined,
             publicProfile: undefined,
         };
@@ -95,6 +96,12 @@ class Store {
             if (!state)
                 return;
             me.state.feed = state.feed;
+        });
+        this.FEEDPAGE_EVENT = new Subject();
+        this.FEEDPAGE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.page = state.page;
         });
         this.LIKE_EVENT = new Subject();
         this.LIKE_EVENT.subscribe(state => {

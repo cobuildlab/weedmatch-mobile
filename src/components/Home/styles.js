@@ -214,5 +214,10 @@ export default styles = StyleSheet.create({
     imageSize: {
       width: width,
       height: width,  
+    },
+    userContainer: { 
+      flex: 1, 
+      flexDirection: 'column', 
+      justifyContent: 'flex-start'
     }
   });
