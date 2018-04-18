@@ -122,8 +122,10 @@ class LoginPage extends Component {
                         underlineColorAndroid='transparent'
                         onChangeText={(username) => this.setState({username})}
                         placeholder={strings('register.username')}
+                        returnKeyType = {"next"}
                         ref='username'
-                        returnKeyType='next'
+                        onSubmitEditing={() => { this.passwordInput.focus(); }}
+                        blurOnSubmit={false}
                         value={this.state.username}
                     />
 
@@ -132,12 +134,14 @@ class LoginPage extends Component {
                         editable={true}
                         underlineColorAndroid='transparent'
                         onChangeText={(password) => this.setState({password})}
-                        placeholder={strings('register.password')}
-                        ref='password'
-                        returnKeyType='next'
+                        placeholder={strings("register.password")}
+                        ref={(input) => { this.passwordInput = input; }}
+                        returnKeyType = {"next"}
                         secureTextEntry={true}
-                        value={this.state.password} />
-
+                        value={this.state.password}
+                        onSubmitEditing={() => { this.userLogin(); }}
+                        blurOnSubmit={false}
+                    />
 
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
