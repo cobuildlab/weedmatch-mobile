@@ -25,11 +25,11 @@ import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet'
 import TopBar from '../../utils/TopBar';
-import {connection, internet} from '../../utils';
+import {connection, internet } from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { feedAction, uploadAction, likeAction, calculateTime, appendData, getToken } from './HomeActions'
+import { feedAction, uploadAction, likeAction, calculateTime, appendData } from './HomeActions'
 
 const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var width = Dimensions.get('window').width;
@@ -143,7 +143,7 @@ export default class HomePage extends Component {
 
     _feedData() {
       if (connection) {
-        feedAction(getToken(), this.state);
+        feedAction(APP_STORE.getToken(), this.state);
       } else {
         internet();
       }
@@ -155,7 +155,7 @@ export default class HomePage extends Component {
           time: moment().format()
         });
       if (connection) {
-        uploadAction(getToken(), this.state)
+        uploadAction(APP_STORE.getToken(), this.state)
       } else {
         internet();
       }
@@ -180,7 +180,7 @@ export default class HomePage extends Component {
 
     _like(idImage,id_user,like,row) {
       if (connection) {
-        likeAction(getToken(),idImage,id_user,like,row)
+        likeAction(APP_STORE.getToken(),idImage,id_user,like,row)
       } else {
         internet();
       }

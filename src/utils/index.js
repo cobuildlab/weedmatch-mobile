@@ -81,7 +81,7 @@ function catchErrorAndPropagate(err) {
 
 function getToken() {
     AsyncStorage.getItem('token').then((token) => {
-        return token
+        return token;
     })
 }
 
