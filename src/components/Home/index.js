@@ -63,13 +63,13 @@ export default class HomePage extends Component {
         console.log("Home420:componentDidMount:feedDataSuscription", state);
         if (state.feed) {
 
-          this.setState(
-            {
-              dataSource: appendData(this.state.dataSource, state.feed),
-              feedData: ds1.cloneWithRows(appendData(this.state.dataSource, state.feed)),
-              loading: false,
-              isLoaded: true
-            });
+          this.setState(prevState => ({
+            dataSource: appendData(prevState.dataSource, state.feed),
+            feedData: ds1.cloneWithRows(this.state.dataSource),
+            loading: false,
+            isLoaded: true
+          }))
+
           return;
         }
         if (state.error) {
@@ -139,6 +139,8 @@ export default class HomePage extends Component {
       console.log("Home420:componentWillUmmount");
       this.feedData.unsubscribe();
       this.event.unsubscribe();
+      this.likeEvent.unsubscribe();
+      this.feedPage.unsubscribe();
     }
 
     _feedData() {
@@ -281,7 +283,7 @@ export default class HomePage extends Component {
         <View style={styles.containerFlex}>
             <ListView
               style={styles.listView}
-              initialListSize={12}
+              initialListSize={13}
               enableEmptySections={true}
               dataSource={this.state.feedData}
               renderRow={this._renderRow.bind(this)}

@@ -41,6 +41,7 @@ function getFeed(token, state,pagUrl) {
 
 function appendData(oldData, newData) {
     oldData.slice();
+
     newData.map((data) => { 
         oldData.push(data);
     });
