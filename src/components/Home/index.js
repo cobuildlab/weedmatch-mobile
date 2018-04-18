@@ -29,7 +29,7 @@ import {connection, internet} from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { feedAction, uploadAction, likeAction, calculateTime, appendData } from './HomeActions'
+import { feedAction, uploadAction, likeAction, calculateTime, appendData, getToken } from './HomeActions'
 
 const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var width = Dimensions.get('window').width;
@@ -143,9 +143,7 @@ export default class HomePage extends Component {
 
     _feedData() {
       if (connection) {
-        AsyncStorage.getItem('token').then((token) => {
-          feedAction(token, this.state);
-        })
+        feedAction(getToken(), this.state);
       } else {
         internet();
       }
@@ -157,9 +155,7 @@ export default class HomePage extends Component {
           time: moment().format()
         });
       if (connection) {
-        AsyncStorage.getItem('token').then((token) => {
-          uploadAction(token, this.state)
-        })
+        uploadAction(getToken(), this.state)
       } else {
         internet();
       }
@@ -184,9 +180,7 @@ export default class HomePage extends Component {
 
     _like(idImage,id_user,like,row) {
       if (connection) {
-        AsyncStorage.getItem('token').then((token) => {
-          likeAction(token,idImage,id_user,like,row)
-        })
+        likeAction(getToken(),idImage,id_user,like,row)
       } else {
         internet();
       }

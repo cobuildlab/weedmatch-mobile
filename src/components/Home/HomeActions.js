@@ -5,7 +5,7 @@ import {userService} from './service';
 import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
-import { authHeader, catchErrorAndPropagate , URL,LENGUAGE} from '../../utils';
+import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
 function feedAction(token, state) {
 

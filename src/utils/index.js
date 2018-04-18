@@ -6,7 +6,8 @@ import React, {Component} from 'react';
 import {
     Platform,
     NetInfo,
-    Alert
+    Alert,
+    AsyncStorage
 } from 'react-native';
 import {strings} from '../i18n';
 import {APP_STATE} from "../Store";
@@ -78,12 +79,18 @@ function catchErrorAndPropagate(err) {
     throw err;
 }
 
+function getToken() {
+    AsyncStorage.getItem('token').then((token) => {
+        return token
+    })
+}
+
 
 function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, internet, URL, LENGUAGE }
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, internet, URL, LENGUAGE, getToken }
 
 
 const style={
