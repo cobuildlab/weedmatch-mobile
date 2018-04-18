@@ -338,7 +338,7 @@ export default class HomePage extends Component {
                   <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     <Text style={styles.username}>{rowData.username}</Text>
                   </TouchableOpacity>
-                    <Text style={styles.distancia}>{rowData.distance} {strings("home.distance")}</Text>
+                    <Text style={styles.distancia}>{rowData.distance}</Text>
                 </View>
                   <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
             </View>
