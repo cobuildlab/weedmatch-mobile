@@ -66,6 +66,37 @@ export default styles = StyleSheet.create({
         backgroundColor: '#9605CC',
 
     },
+    buttomFacebookStyle: {
+        marginTop: 5,
+        marginBottom: 10,
+        width: 260,
+        paddingTop: 14,
+        paddingBottom: 14,
+        borderRadius: 50,
+        alignItems: 'center',
+        backgroundColor: '#3b5998',
+    },
+    textFacebook:{
+      marginBottom: 30,
+      color: '#777',
+    },
+    opt:{
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: '#777',
+    },
+    lineOpt:{
+      width: 50,
+      height: 1,
+      backgroundColor: '#777',
+    },
+    optBox:{
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
     buttomCancelStyle: {
         marginTop: 0,
         marginBottom: 10,

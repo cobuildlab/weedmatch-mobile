@@ -230,7 +230,7 @@ class RegisterPage extends ValidationComponent {
                     onSubmitEditing={() => { this._showDatePicker(); }}
                     blurOnSubmit={false}
                 />
-                <View style={styles.inputStyleFecha}>
+                {/* <View style={styles.inputStyleFecha}>
                     <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
                         <View style={styles.viewButtonStyleFecha}>
                             {this.state.age == '' &&
@@ -245,8 +245,8 @@ class RegisterPage extends ValidationComponent {
                             }
                         </View>
                     </TouchableWithoutFeedback>
-                </View>
-                <RadioForm
+                </View> */}
+                {/* <RadioForm
                     style={styles.radioStyle}
                     radio_props={radio_props}
                     initial={0}
@@ -256,8 +256,8 @@ class RegisterPage extends ValidationComponent {
                     buttonColor={'#9605CC'}
                     selectedButtonColor={'#9605CC'}
                     onPress = {(value) => {this.setState({sex:value})}}
-                />
-                <TextInput
+                /> */}
+                {/* <TextInput
                     style={styles.inputStyle}
                     editable={true}
                     underlineColorAndroid='transparent'
@@ -268,7 +268,7 @@ class RegisterPage extends ValidationComponent {
                     value={this.state.username}
                     onSubmitEditing={() => { this.passwordInput.focus(); }}
                     blurOnSubmit={false}
-                />
+                /> */}
                 <TextInput
                     style={styles.inputStyle}
                     editable={true}
@@ -285,7 +285,7 @@ class RegisterPage extends ValidationComponent {
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
                     onPress={this.registerUser.bind(this)}>
-                    <Text style={styles.buttonText}> {strings("register.register")} </Text>
+                    <Text style={styles.buttonText}> {strings("register.paso1")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttomCancelStyle}
@@ -311,6 +311,16 @@ class RegisterPage extends ValidationComponent {
                 <Text style={styles.textBold}>
                     {strings('wmatch')}
                 </Text>
+                <TouchableOpacity
+                    style={styles.buttomFacebookStyle}>
+                    <Text style={styles.buttonText}>{strings('register.facebook')}</Text>
+                </TouchableOpacity>
+                  <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                <View style={styles.optBox}>
+                <View style={styles.lineOpt} />
+                  <Text style={styles.opt}> {strings("register.opt")} </Text>
+                <View style={styles.lineOpt} />
+               </View>
                 {body}
               </View>
            </ScrollView>

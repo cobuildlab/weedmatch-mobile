@@ -2,14 +2,18 @@
   "wmatch": "CANNABIS",
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
-    "signup_button": "Don't you have an account? Join!",
-    "login": "Log In",
-    "redes": "Log in with Social Networks",
+    "signup_button": "You are a member? Log In",
+    "login": "Create Account",
+    "redes": "Log In with Social Networks",
+    "facebook": "Log In with Facebook",
     "forgot": "Forgot Password",
     "required_fields_error": "Username and Password are required"
   },
   "register": {
-    "register": "Register",
+    "paso1": "Continue",
+    "facebook": "Continue with Facebook",
+    "textFacebook": "We don't publish on your Facebook account",
+    "opt": "OR",
     "terms": "Terms and Conditions",
     "fullName": "Full Name",
     "password": "Password",
