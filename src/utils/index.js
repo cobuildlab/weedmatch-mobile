@@ -6,7 +6,8 @@ import React, {Component} from 'react';
 import {
     Platform,
     NetInfo,
-    Alert
+    Alert,
+    AsyncStorage
 } from 'react-native';
 import {strings} from '../i18n';
 import {APP_STATE} from "../Store";
@@ -77,7 +78,6 @@ function catchErrorAndPropagate(err) {
     APP_STATE.next({error: String(err)});
     throw err;
 }
-
 
 function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);

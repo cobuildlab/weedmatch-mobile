@@ -14,7 +14,7 @@ import styles from './style';
 import TopBar from './../../utils/TopBar';
 import { publicProfileAction } from './PublicProfileActions';
 import {APP_STORE} from '../../Store';
-import {connection, internet} from '../../utils';
+import {connection, internet } from '../../utils';
 
 export default class PublicProfile extends Component {
     constructor(props) {
@@ -55,9 +55,7 @@ export default class PublicProfile extends Component {
         const userId = params ? params.userId : null;
 
         if (connection) {
-          AsyncStorage.getItem('token').then((token) => {
-            publicProfileAction(token, userId)
-          })
+            publicProfileAction(APP_STORE.getToken(), userId)
         } else {
           internet();
         }
