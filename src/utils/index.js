@@ -79,18 +79,11 @@ function catchErrorAndPropagate(err) {
     throw err;
 }
 
-function getToken() {
-    AsyncStorage.getItem('token').then((token) => {
-        return token;
-    })
-}
-
-
 function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, internet, URL, LENGUAGE, getToken }
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, internet, URL, LENGUAGE }
 
 
 const style={

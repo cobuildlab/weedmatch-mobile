@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {
-      AppRegistry,
-      StyleSheet,
       Text,
       View,
       ListView,
@@ -9,8 +7,6 @@ import {
       RefreshControl,
       Image,
       ActivityIndicator,
-      Dimensions,
-      AsyncStorage,
       TouchableOpacity,
       TouchableHighlight,
       Modal,
@@ -31,18 +27,17 @@ import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
 import { feedAction, uploadAction, likeAction, calculateTime, appendData } from './HomeActions'
 
-const ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-var width = Dimensions.get('window').width;
-
 export default class HomePage extends Component {
 
   constructor(props) {
       super(props);
 
+      this.ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
       this.state = {
         latitud: '',
         longitud: '',
-        feedData: ds1.cloneWithRows([]),
+        feedData: this.ds1.cloneWithRows([]),
         dataSource: [],
         loading: true,
         refreshing: false,
@@ -65,7 +60,7 @@ export default class HomePage extends Component {
 
           this.setState(prevState => ({
             dataSource: appendData(prevState.dataSource, state.feed),
-            feedData: ds1.cloneWithRows(this.state.dataSource),
+            feedData: this.ds1.cloneWithRows(this.state.dataSource),
             loading: false,
             isLoaded: true
           }))
