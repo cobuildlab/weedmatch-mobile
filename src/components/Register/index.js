@@ -42,7 +42,8 @@ class RegisterPage extends ValidationComponent {
             age: '',
             sex: 'Hombre',
             isLoading: false,
-            year: ''
+            year: '',
+            step: 2
         };
     }
 
@@ -203,85 +204,83 @@ class RegisterPage extends ValidationComponent {
           {label: strings("register.male"), value: 'Hombre' },
           {label: strings("register.female"), value: 'Mujer' }
         ];
-        const {isLoading} = this.state;
+        const {isLoading, step} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
             body = <View>
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(full_name) => this.setState({full_name})}
-                    placeholder={strings("register.fullName")}
-                    returnKeyType = {"next"}
-                    value={this.state.full_name}
-                    onSubmitEditing={() => { this.emailInput.focus(); }}
-                    blurOnSubmit={false}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(email) => this.setState({email})}
-                    placeholder={strings("register.email")}
-                    ref={(input) => { this.emailInput = input; }}
-                    returnKeyType = {"next"}
-                    value={this.state.email}
-                    onSubmitEditing={() => { this._showDatePicker(); }}
-                    blurOnSubmit={false}
-                />
-                <View style={styles.inputStyleFecha}>
-                    <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
-                        <View style={styles.viewButtonStyleFecha}>
-                            {this.state.age == '' &&
-                                <Text style={styles.textButtonStyleFecha}>
-                                    {strings("register.age")}
-                                </Text>
-                            }
-                            {this.state.age !== '' &&
-                                <Text>
-                                    {this.state.age}
-                                </Text>
-                            }
-                        </View>
-                    </TouchableWithoutFeedback>
+                {step == 1 &&
+                <View>
+                    <TextInput
+                        style={styles.inputStyle}
+                        editable={true}
+                        underlineColorAndroid='transparent'
+                        onChangeText={(full_name) => this.setState({full_name})}
+                        placeholder={strings("register.fullName")}
+                        returnKeyType = {"next"}
+                        value={this.state.full_name}
+                        onSubmitEditing={() => { this.emailInput.focus(); }}
+                        blurOnSubmit={false}
+                    />
+                    <TextInput
+                        style={styles.inputStyle}
+                        editable={true}
+                        underlineColorAndroid='transparent'
+                        onChangeText={(email) => this.setState({email})}
+                        placeholder={strings("register.email")}
+                        ref={(input) => { this.emailInput = input; }}
+                        returnKeyType = {"next"}
+                        value={this.state.email}
+                        onSubmitEditing={() => { this._showDatePicker(); }}
+                        blurOnSubmit={false}
+                    />
+                    <View style={styles.inputStyleFecha}>
+                        <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                            <View style={styles.viewButtonStyleFecha}>
+                                {this.state.age == '' &&
+                                    <Text style={styles.textButtonStyleFecha}>
+                                        {strings("register.age")}
+                                    </Text>
+                                }
+                                {this.state.age !== '' &&
+                                    <Text>
+                                        {this.state.age}
+                                    </Text>
+                                }
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
                 </View>
-                <RadioForm
-                    style={styles.radioStyle}
-                    radio_props={radio_props}
-                    initial={0}
-                    ref="sex"
-                    radioStyle={{paddingRight: 20}}
-                    formHorizontal={true}
-                    buttonColor={'#9605CC'}
-                    selectedButtonColor={'#9605CC'}
-                    onPress = {(value) => {this.setState({sex:value})}}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(username) => this.setState({username})}
-                    placeholder={strings("register.username")}
-                    ref='username'
-                    returnKeyType = {"next"}
-                    value={this.state.username}
-                    onSubmitEditing={() => { this.passwordInput.focus(); }}
-                    blurOnSubmit={false}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(password) => this.setState({password})}
-                    placeholder={strings("register.password")}
-                    ref={(input) => { this.passwordInput = input; }}
-                    returnKeyType = {"next"}
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onSubmitEditing={() => { this.registerUser(); }}
-                    blurOnSubmit={false}
-                />
+                }
+                {step == 2 &&
+                <View>
+                    <RadioForm
+                        style={styles.radioStyle}
+                        radio_props={radio_props}
+                        initial={0}
+                        ref="sex"
+                        radioStyle={{paddingRight: 20}}
+                        formHorizontal={true}
+                        buttonColor={'#9605CC'}
+                        selectedButtonColor={'#9605CC'}
+                        onPress = {(value) => {this.setState({sex:value})}}
+                    />
+                    <TextInput
+                        style={styles.inputStyle}
+                        editable={true}
+                        underlineColorAndroid='transparent'
+                        onChangeText={(password) => this.setState({password})}
+                        placeholder={strings("register.password")}
+                        ref={(input) => { this.passwordInput = input; }}
+                        returnKeyType = {"next"}
+                        secureTextEntry={true}
+                        value={this.state.password}
+                        onSubmitEditing={() => { this.registerUser(); }}
+                        blurOnSubmit={false}
+                        />
+                </View>
+                }
+
+
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
                     onPress={this.registerUser.bind(this)}>
