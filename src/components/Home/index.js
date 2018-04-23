@@ -122,7 +122,7 @@ export default class HomePage extends Component {
         newDs[state.like].band = newDs[state.like].band == true ? false : true;
         newDs[state.like].like = newDs[state.like].band == true ? newDs[state.like].like +1 : newDs[state.like].like -1;
         this.setState({
-          feedData: ds1.cloneWithRows(newDs)
+          feedData: this.ds1.cloneWithRows(newDs)
         })
       }
     });
