@@ -67,7 +67,6 @@ export default class Authentication extends Component {
                         onPress={this.userLogin.bind(this)}>
                         <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity
                         style={styles.buttomFacebookStyle}
                         onPress={this._facebookLogin.bind(this)}>
@@ -75,17 +74,23 @@ export default class Authentication extends Component {
                     </TouchableOpacity>
                 */}
                     <TouchableOpacity
-                        style={styles.buttomLoginStyle}
+                        style={styles.buttomFacebookStyle}
                         onPress={this.userLoginPage.bind(this)}>
+                        <Text style={styles.buttonText}>{strings('login.facebook')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttomLoginStyle}
+                          onPress={this.userRegister.bind(this)}>
                         <Text style={styles.buttonText}>{strings('login.login')}</Text>
                     </TouchableOpacity>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.buttomRegister}
-                            onPress={this.userRegister.bind(this)}>
-                            <Text style={styles.buttomTextRegister}>{strings('login.signup_button')}</Text>
-                        </TouchableOpacity>
-                    </View>
+                </View>
+                <View style={styles.contentLogin}>
+                  <TouchableOpacity
+                      style={styles.buttomRegister}
+                      onPress={this.userLoginPage.bind(this)}>
+                      <Text style={styles.buttomTextRegister}>
+                        {strings('login.signup_button')}</Text>
+                  </TouchableOpacity>
                 </View>
             </ScrollView>
         );
