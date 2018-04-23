@@ -17,23 +17,11 @@ import Toast from 'react-native-toast-native';
  * Detects the lenguange and keeps in constant
  */
 const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
-const connection = isConnected();
+const URL = "http://45.32.173.248/";
 
-function isConnected() {
-
-    function handleFirstConnectivityChange(isConnected) {
-        console.log('Then, is ' + (isConnected ? 'online' : 'offline'));
-        NetInfo.isConnected.removeEventListener(
-            'connectionChange',
-            handleFirstConnectivityChange
-        );
-        connection = (isConnected ? true : false);
-    }
-    
-    NetInfo.isConnected.addEventListener(
-    'connectionChange',
-    handleFirstConnectivityChange
-    );
+async function checkConectivity() {
+    let response = await NetInfo.isConnected.fetch()
+    return response
 }
 
 function internet() {
@@ -52,10 +40,6 @@ function isValidText(text) {
     }
     return true
 }
-
-// const URL = "http://192.168.0.21:8080/";
-// const URL = "https://weedmatch.herokuapp.com/";
-const URL = "http://45.32.173.248/";
 
 /**
  * Headers for Authorization
@@ -83,7 +67,7 @@ function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, connection, internet, URL, LENGUAGE }
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet, URL, LENGUAGE, checkConectivity }
 
 
 const style={

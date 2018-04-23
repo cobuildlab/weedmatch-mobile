@@ -16,7 +16,7 @@ import {APP_STORE} from '../../Store';
 import {loginAction} from './LoginActions';
 import styles from './style';
 import {strings} from '../../i18n';
-import {isValidText, toastMsg, connection, internet} from "../../utils";
+import {isValidText, toastMsg, internet, checkConectivity} from "../../utils";
 
 class LoginPage extends Component {
 
@@ -66,7 +66,7 @@ class LoginPage extends Component {
     }
 
     userLogin() {
-        if (connection) {
+        if (checkConectivity()) {
             this.setState({isLoading: true});
             loginAction(this.state.username, this.state.password)
         } else {
@@ -78,7 +78,7 @@ class LoginPage extends Component {
         const {isLoading} = this.state;
         if (isLoading) {
             return (
-                    <View style={styles.teclado}>
+                <View style={styles.teclado}>
                     <Image
                         style={styles.container}
                         source={require('../../assets/img/logo-b.png')}
@@ -98,7 +98,7 @@ class LoginPage extends Component {
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
-                    </View>
+                </View>
             )
         } else {
             return (
@@ -122,20 +122,26 @@ class LoginPage extends Component {
                           underlineColorAndroid='transparent'
                           onChangeText={(username) => this.setState({username})}
                           placeholder={strings('register.username')}
+                          returnKeyType = {"next"}
                           ref='username'
-                          returnKeyType='next'
+                          onSubmitEditing={() => { this.passwordInput.focus(); }}
+                          blurOnSubmit={false}
                           value={this.state.username}
                       />
+
                       <TextInput
                           style={styles.inputStyle}
                           editable={true}
                           underlineColorAndroid='transparent'
                           onChangeText={(password) => this.setState({password})}
-                          placeholder={strings('register.password')}
-                          ref='password'
-                          returnKeyType='next'
+                          placeholder={strings("register.password")}
+                          ref={(input) => { this.passwordInput = input; }}
+                          returnKeyType = {"next"}
                           secureTextEntry={true}
-                          value={this.state.password} />
+                          value={this.state.password}
+                          onSubmitEditing={() => { this.userLogin(); }}
+                          blurOnSubmit={false}
+                      />
 
                       <TouchableOpacity
                           style={styles.buttomLoginStyle}

@@ -3,7 +3,8 @@
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
     "signup_button": "¿Eres Miembro? Inicia Sesión",
-    "login": "Crear Cuenta",
+    "login": "Iniciar Sesión",
+    "register": "¿No tienes cuenta? ¡Únete!",
     "redes": "Iniciar Sesión con Redes Sociales",
     "facebook": "Iniciar con Facebook",
     "forgot": "Recuperar Contraseña",
@@ -30,7 +31,8 @@
     "errorSex": "Sexo Inválido",
     "errorAge": "Edad Inválida",
     "errorTitle": "Registro Fallido",
-    "successTitle": "Registrado Exitosamente"
+    "successTitle": "Registrado Exitosamente",
+    "photo": "Subir Imagen"
   },
   "main": {
     "title": "UNIENDO AMANTES DEL",

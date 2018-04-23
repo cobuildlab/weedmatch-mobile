@@ -42,6 +42,26 @@ export default class Authentication extends Component {
         this.props.navigation.navigate('Login');
     }
 
+    _facebookLogin() {
+        LoginManager.logInWithReadPermissions(["public_profile"]).then(
+            function(result) {
+              if (result.isCancelled) {
+                alert('Login cancelled');
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                    (data) => {
+                        console.log(data.accessToken.toString())
+                    }
+                )
+                console.log(result);
+              }
+            },
+            function(error) {
+              alert('Login fail with error: ' + error);
+            }
+        );
+      }
+
     render() {
         return (
             <ScrollView style={styles.scrollContainer}>
@@ -66,22 +86,23 @@ export default class Authentication extends Component {
                         style={styles.buttomLoginIntagramStyle}
                         onPress={this.userLogin.bind(this)}>
                         <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>*/}
                     <TouchableOpacity
                         style={styles.buttomFacebookStyle}
                         onPress={this._facebookLogin.bind(this)}>
                         <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
                     </TouchableOpacity>
-                */}
+                {/*
                     <TouchableOpacity
-                        style={styles.buttomFacebookStyle}
+                    <TouchableOpacity
+                        style={styles.buttomLoginStyle}
                         onPress={this.userLoginPage.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.facebook')}</Text>
-                    </TouchableOpacity>
+                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                           onPress={this.userRegister.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
+                        <Text style={styles.buttonText}>{strings('login.register')}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.contentLogin}>

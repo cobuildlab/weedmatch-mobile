@@ -15,19 +15,38 @@ import {
     ToastAndroid,
     TouchableWithoutFeedback
 } from 'react-native';
-
-import {strings} from "../../i18n";
-import {registerAction, createDateData} from "./RegisterActions";
-import {APP_STORE} from "../../Store";
-import ValidationComponent from '../../utils/ValidationComponent';
+import {
+    strings
+} from "../../i18n";
+import {
+    registerAction,
+    createDateData
+} from "./RegisterActions";
+import {
+    APP_STORE
+} from "../../Store";
 import styles from './style';
-import {toastMsg,connection,internet} from "../../utils";
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import {
+        toastMsg,
+        connection,
+        internet,
+        checkConectivity
+} from "../../utils";
+
+import RadioForm, {
+    RadioButton,
+    RadioButtonInput,
+    RadioButtonLabel
+} from 'react-native-simple-radio-button';
+
 import Picker from 'react-native-picker';
 // import validate from 'validate.js';
 import validate from './validate_wrapper';
 
-class RegisterPage extends ValidationComponent {
+import ImagePicker from 'react-native-image-crop-picker';
+import ActionSheet from 'react-native-actionsheet';
+
+class RegisterPage extends Component {
 
     constructor(props) {
         super(props);
@@ -43,7 +62,7 @@ class RegisterPage extends ValidationComponent {
             sex: 'Hombre',
             isLoading: false,
             year: '',
-            step: 2
+            step: 1
         };
     }
 
@@ -99,17 +118,6 @@ class RegisterPage extends ValidationComponent {
     }
 
     registerUser() {
-        /*
-        * Validating Form with rules
-        */
-        this.validate({
-            username:  {required: true, minlength:6, maxlength:12},
-            password:  {required: true, minlength:6, maxlength:20},
-            full_name: {required: true, minlength:3, maxlength:30},
-            email:     {required: true, email: true},
-            age:       {date: 'YYYY-MM-dd', require: true}
-        });
-        if(this.isFormValid()){
             this.setState({isLoading: true});
             if (connection) {
                 registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
@@ -117,45 +125,9 @@ class RegisterPage extends ValidationComponent {
             } else {
                 internet();
             }
-        } else {
-            if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
-                if(this.isFieldInError('full_name')){
-                    this.getErrorsInField('full_name').map((result) => toastMsg(result))
-                    return
-                }
-                // if(this.isFieldInError('email')){
-                //     this.getErrorsInField('email').map((result) => toastMsg(result))
-                //     return
-                // }
 
-                var msg = validate('email', this.state.email);
 
-                if  (msg) {
-                    toastMsg(msg);
-                    return;
-                }
 
-                if(this.isFieldInError('age')){
-                    this.getErrorsInField('age').map((result) => toastMsg(result))
-                    return
-                }
-                if(this.isFieldInError('sex')){
-                    this.getErrorsInField('sex').map((result) => toastMsg(result))
-                    return
-                }
-                if(this.isFieldInError('username')){
-                    this.getErrorsInField('username').map((result) => toastMsg(result))
-                    return
-                }
-                if(this.isFieldInError('password')){
-                    this.getErrorsInField('password').map((result) => toastMsg(result))
-                    return
-                }
-
-            } else {
-                toastMsg(strings("register.allInputs"))
-            }
-        }
     }
 
         _showDatePicker() {
@@ -199,93 +171,160 @@ class RegisterPage extends ValidationComponent {
         this.props.navigation.goBack();
     }
 
+    nextStep() {
+        console.log(this.state);
+        this.setState({
+            step: this.state.step + 1
+        });
+    }
+
+    showActivity() {
+        return (
+          <View>
+            <ActionSheet
+              ref={o => this.ActionSheet = o}
+              title={strings("home.actionSheet")}
+              options={[
+                strings("home.camera"),
+                strings("home.biblio"),
+                strings("home.cancel"),
+              ]}
+              cancelButtonIndex={2}
+              onPress={(index) => {
+
+                switch(index) {
+                  case 0:
+                    this._takePhoto();
+                    break;
+                  case 1:
+                    this._getPhoto();
+                    break;
+                  default:
+                    break;
+                }
+               }}
+            />
+          </View>
+        );
+    }
+
+    _getPhoto() {
+        ImagePicker.openPicker({
+          cropping: false,
+          width: 500,
+          height: 500,
+          compressImageQuality: 0.5,
+          includeExif: true,
+          }).then(image => {
+          console.log('received image', image.path);
+          console.log(image);
+          this.setState({
+            image: image.path
+          });
+        }).catch(e => alert(e));
+    }
+
+    _takePhoto() {
+        ImagePicker.openCamera({
+          cropping: false,
+          width: 500,
+          height: 500,
+          compressImageQuality: 0.5,
+          includeExif: true,
+          }).then(image => {
+          console.log('received image', image.path);
+          console.log(image);
+          this.setState({
+            image: image.path
+          });
+
+        }).catch(e => alert(e));
+    }
+
     render() {
-        var radio_props = [
-          {label: strings("register.male"), value: 'Hombre' },
-          {label: strings("register.female"), value: 'Mujer' }
-        ];
         const {isLoading, step} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
             body = <View>
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(full_name) => this.setState({full_name})}
-                    placeholder={strings("register.fullName")}
-                    returnKeyType = {"next"}
-                    value={this.state.full_name}
-                    onSubmitEditing={() => { this.emailInput.focus(); }}
-                    blurOnSubmit={false}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(email) => this.setState({email})}
-                    placeholder={strings("register.email")}
-                    ref={(input) => { this.emailInput = input; }}
-                    returnKeyType = {"next"}
-                    value={this.state.email}
-                    onSubmitEditing={() => { this._showDatePicker(); }}
-                    blurOnSubmit={false}
-                />
-                {/* <View style={styles.inputStyleFecha}>
-                    <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
-                        <View style={styles.viewButtonStyleFecha}>
-                            {this.state.age == '' &&
-                                <Text style={styles.textButtonStyleFecha}>
-                                    {strings("register.age")}
-                                </Text>
-                            }
-                            {this.state.age !== '' &&
-                                <Text>
-                                    {this.state.age}
-                                </Text>
-                            }
+                {this.showActivity()}
+                {step == 1 &&
+                    <View>
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(full_name) => this.setState({full_name})}
+                            placeholder={strings("register.fullName")}
+                            returnKeyType = {"next"}
+                            value={this.state.full_name}
+                            onSubmitEditing={() => { this.emailInput.focus(); }}
+                            blurOnSubmit={false}
+                        />
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(email) => this.setState({email})}
+                            placeholder={strings("register.email")}
+                            ref={(input) => { this.emailInput = input; }}
+                            returnKeyType = {"next"}
+                            value={this.state.email}
+                            onSubmitEditing={() => { this._showDatePicker(); }}
+                            blurOnSubmit={false}
+                        />
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(password) => this.setState({password})}
+                            placeholder={strings("register.password")}
+                            ref={(input) => { this.passwordInput = input; }}
+                            returnKeyType = {"next"}
+                            secureTextEntry={true}
+                            value={this.state.password}
+                            onSubmitEditing={() => { this.registerUser(); }}
+                            blurOnSubmit={false}
+                        />
+                    </View>
+                }
+                {step == 2 &&
+                    <View>
+                        <View style={styles.inputStyleFecha}>
+                            <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                                <View style={styles.viewButtonStyleFecha}>
+                                    {this.state.age == '' &&
+                                        <Text style={styles.textButtonStyleFecha}>
+                                            {strings("register.age")}
+                                        </Text>
+                                    }
+                                    {this.state.age !== '' &&
+                                        <Text>
+                                            {this.state.age}
+                                        </Text>
+                                    }
+                                </View>
+                            </TouchableWithoutFeedback>
                         </View>
-                    </TouchableWithoutFeedback>
-                </View> */}
-                {/* <RadioForm
-                    style={styles.radioStyle}
-                    radio_props={radio_props}
-                    initial={0}
-                    ref="sex"
-                    radioStyle={{paddingRight: 20}}
-                    formHorizontal={true}
-                    buttonColor={'#9605CC'}
-                    selectedButtonColor={'#9605CC'}
-                    onPress = {(value) => {this.setState({sex:value})}}
-                /> */}
-                {/* <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(username) => this.setState({username})}
-                    placeholder={strings("register.username")}
-                    ref='username'
-                    returnKeyType = {"next"}
-                    value={this.state.username}
-                    onSubmitEditing={() => { this.passwordInput.focus(); }}
-                    blurOnSubmit={false}
-                /> */}
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(password) => this.setState({password})}
-                    placeholder={strings("register.password")}
-                    ref={(input) => { this.passwordInput = input; }}
-                    returnKeyType = {"next"}
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onSubmitEditing={() => { this.registerUser(); }}
-                    blurOnSubmit={false}
-                />
+                        <TouchableOpacity
+                            style={styles.buttomRegisterStyle}>
+                            <Text style={styles.buttonText}> {strings("register.male")} </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.buttomRegisterStyle}>
+                            <Text style={styles.buttonText}> {strings("register.female")} </Text>
+                        </TouchableOpacity>
+
+                    </View>
+                }
+                {step == 3 &&
+                        <TouchableOpacity style={styles.buttomRegisterStyle} onPress={() => this.ActionSheet.show() }>
+                            <Text style={styles.buttonText}> {strings("register.photo")} </Text>
+                        </TouchableOpacity>
+                }
+
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
-                    onPress={this.registerUser.bind(this)}>
+                    onPress={this.nextStep.bind(this)}>
                     <Text style={styles.buttonText}> {strings("register.paso1")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity

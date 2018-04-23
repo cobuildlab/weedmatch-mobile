@@ -58,23 +58,16 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-              new MainReactPackage(),
+            new MainReactPackage(),
             new VectorIconsPackage(),
             new RCTToastPackage(),
             new PickerViewPackage(),
             new PickerPackage(),
             new RNI18nPackage(),
             new RNFetchBlobPackage(),
-            new FBSDKPackage(),
             new RNDeviceInfo(),
-            new RNI18nPackage(),
-              new RCTToastPackage(),
-              new PickerViewPackage(),
-              new RNSharePackage(),
-              new PickerPackage(),
-              new RNDeviceInfo(),
-              new FBSDKPackage(mCallbackManager),
-              new VectorIconsPackage()
+            new RNSharePackage(),
+            new FBSDKPackage(mCallbackManager)
       );
     }
 

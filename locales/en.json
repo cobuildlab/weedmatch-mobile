@@ -3,7 +3,8 @@
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
     "signup_button": "You are a member? Log In",
-    "login": "Create Account",
+    "login": "Log In",
+    "register": "Don't you have an account? Join!",
     "redes": "Log In with Social Networks",
     "facebook": "Log In with Facebook",
     "forgot": "Forgot Password",
@@ -30,7 +31,8 @@
     "errorSex": "Invalid Sex",
     "errorAge": "Invalid Age",
     "errorTitle": "Register Fail",
-    "successTitle": "Succesfully Registered"
+    "successTitle": "Succesfully Registered",
+    "photo": "Upload Image"
   },
   "main": {
     "title": "LINKING LOVERS OF THE",
