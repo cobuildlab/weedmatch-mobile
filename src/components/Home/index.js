@@ -17,11 +17,10 @@ import {
 
 import moment from 'moment';
 import moment_timezone from 'moment-timezone';
-import DeviceInfo from 'react-native-device-info';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import TopBar from '../../utils/TopBar';
-import {connection, internet } from '../../utils';
+import { connection, internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
@@ -139,7 +138,7 @@ export default class HomePage extends Component {
     }
 
     _feedData() {
-      if (connection) {
+      if (checkConectivity()) {
         feedAction(APP_STORE.getToken(), this.state);
       } else {
         internet();
@@ -151,7 +150,7 @@ export default class HomePage extends Component {
         { load: true,
           time: moment().format()
         });
-      if (connection) {
+      if (checkConectivity()) {
         uploadAction(APP_STORE.getToken(), this.state)
       } else {
         internet();
@@ -176,7 +175,7 @@ export default class HomePage extends Component {
     }
 
     _like(idImage,id_user,like,row) {
-      if (connection) {
+      if (checkConectivity()) {
         likeAction(APP_STORE.getToken(),idImage,id_user,like,row)
       } else {
         internet();

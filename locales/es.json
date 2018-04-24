@@ -32,7 +32,10 @@
     "errorAge": "Edad Inválida",
     "errorTitle": "Registro Fallido",
     "successTitle": "Registrado Exitosamente",
-    "photo": "Subir Imagen"
+    "photo": "Subir Imagen",
+    "sexRequired": "Sexo es requerido",
+    "imageRequired": "Imagen es requerida",
+    "ageRequired": "Fecha de Nacimiento es requerida"
   },
   "main": {
     "title": "UNIENDO AMANTES DEL",

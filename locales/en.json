@@ -32,7 +32,10 @@
     "errorAge": "Invalid Age",
     "errorTitle": "Register Fail",
     "successTitle": "Succesfully Registered",
-    "photo": "Upload Image"
+    "photo": "Upload Image",
+    "sexRequired": "Invalid Sex, is required",
+    "imageRequired": "Image is required",
+    "ageRequired": "Date of Birth is required"
   },
   "main": {
     "title": "LINKING LOVERS OF THE",

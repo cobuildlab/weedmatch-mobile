@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import {strings} from '../i18n';
 import {APP_STATE} from "../Store";
-import DeviceInfo from 'react-native-device-info';
+import I18n from 'react-native-i18n';
 import Toast from 'react-native-toast-native';
 /**
  * Detects the lenguange and keeps in constant
  */
-const LENGUAGE = DeviceInfo.getDeviceLocale().slice(0,2);
+const LENGUAGE = I18n.currentLocale().slice(0,2);
 const URL = "http://45.32.173.248/";
+//const URL = "http://192.168.0.21:8080/";
 
 async function checkConectivity() {
     let response = await NetInfo.isConnected.fetch()

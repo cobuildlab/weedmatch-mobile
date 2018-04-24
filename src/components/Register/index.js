@@ -15,34 +15,14 @@ import {
     ToastAndroid,
     TouchableWithoutFeedback
 } from 'react-native';
-import {
-    strings
-} from "../../i18n";
-import {
-    registerAction,
-    createDateData
-} from "./RegisterActions";
-import {
-    APP_STORE
-} from "../../Store";
+import { strings } from "../../i18n";
+import { registerAction, createDateData, validateEmail } from "./RegisterActions";
+import { APP_STORE } from "../../Store";
 import styles from './style';
-import {
-        toastMsg,
-        connection,
-        internet,
-        checkConectivity
-} from "../../utils";
-
-import RadioForm, {
-    RadioButton,
-    RadioButtonInput,
-    RadioButtonLabel
-} from 'react-native-simple-radio-button';
-
+import { toastMsg, connection, internet, checkConectivity } from "../../utils";
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
-// import validate from 'validate.js';
 import validate from './validate_wrapper';
-
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -54,15 +34,20 @@ class RegisterPage extends Component {
         this.state = {
             full_name: '',
             email: '',
-            username: '',
             password: '',
             latitud: '',
             longitud: '',
             age: '',
-            sex: 'Hombre',
+            sex: '',
+            image: '',
             isLoading: false,
             year: '',
-            step: 1
+            step: 1,
+            emailError: '',
+            full_nameError: '',
+            passwordError: '',
+            ageError: '',
+            sexError: ''
         };
     }
 
@@ -102,7 +87,23 @@ class RegisterPage extends Component {
             }
             if (state.success) {
                 toastMsg(strings("register.successTitle"));
+                this.setState({isLoading: false});
                 this.props.navigation.goBack();
+            }
+        });
+        this.event = APP_STORE.EMAIL_EVENT.subscribe(state => {
+            this.setState({isLoading: true});
+            if (state.error) {
+                this.setState({isLoading: false});
+                toastMsg((state.error));
+            return;
+            }
+            if (state.success) {
+               this.setState({isLoading: false});
+               this.setState({
+                   step: 2
+               });
+               this.event.unsubscribe();
             }
         });
     }
@@ -118,16 +119,14 @@ class RegisterPage extends Component {
     }
 
     registerUser() {
-            this.setState({isLoading: true});
-            if (connection) {
-                registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
-                    parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
-            } else {
-                internet();
-            }
-
-
-
+        console.log('RegisterUser');
+        this.setState({isLoading: true});
+        if (checkConectivity()) {
+            registerAction(this.state.full_name, this.state.email, this.state.password,
+                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age, this.state.image)
+        } else {
+            internet();
+        }
     }
 
         _showDatePicker() {
@@ -171,11 +170,63 @@ class RegisterPage extends Component {
         this.props.navigation.goBack();
     }
 
-    nextStep() {
-        console.log(this.state);
+    _maleSelect() {
         this.setState({
-            step: this.state.step + 1
-        });
+            sex: 'Hombre'
+        })
+    }
+
+    _femaleSelect() {
+        this.setState({
+            sex: 'Mujer'
+        })
+    }
+
+    _nextStep() {
+        const emailError     = validate('email', this.state.email);
+        const full_nameError = validate('full_name', this.state.full_name);
+        const passwordError  = validate('password', this.state.password);
+
+        if(full_nameError){
+            toastMsg(full_nameError)
+            return false
+        }
+        if(emailError){
+            toastMsg(emailError)
+            return false
+        }else{
+            if(this.state.step  == 1){
+                this.setState({isLoading: true});
+                validateEmail({"email": this.state.email})
+            }
+        }
+        if(passwordError){
+            toastMsg(passwordError)
+            return false
+        }
+        if(this.state.step == 2){
+            if(this.state.age == ''){
+                toastMsg(strings("register.ageRequired"))
+                return false
+            }
+            if(this.state.sex == ''){
+                toastMsg(strings("register.sexRequired"))
+                return false
+            }else{
+                this.setState({
+                    step: this.state.step + 1
+                });
+            }
+        }
+
+        if(this.state.step === 3){
+            if(this.state.image == ''){
+                toastMsg(strings("register.imageRequired"))
+                return false
+            }else{
+                this.registerUser();
+            }
+        }
     }
 
     showActivity() {
@@ -242,7 +293,7 @@ class RegisterPage extends Component {
     }
 
     render() {
-        const {isLoading, step} = this.state;
+        const {isLoading, step, emailError, full_nameError, passwordError} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
             body = <View>
@@ -269,9 +320,9 @@ class RegisterPage extends Component {
                             ref={(input) => { this.emailInput = input; }}
                             returnKeyType = {"next"}
                             value={this.state.email}
-                            onSubmitEditing={() => { this._showDatePicker(); }}
                             blurOnSubmit={false}
                         />
+
                         <TextInput
                             style={styles.inputStyle}
                             editable={true}
@@ -282,9 +333,9 @@ class RegisterPage extends Component {
                             returnKeyType = {"next"}
                             secureTextEntry={true}
                             value={this.state.password}
-                            onSubmitEditing={() => { this.registerUser(); }}
                             blurOnSubmit={false}
                         />
+
                     </View>
                 }
                 {step == 2 &&
@@ -306,25 +357,27 @@ class RegisterPage extends Component {
                             </TouchableWithoutFeedback>
                         </View>
                         <TouchableOpacity
-                            style={styles.buttomRegisterStyle}>
+                            onPress={this._maleSelect.bind(this)}
+                            style={styles.buttomRegisterSexStyle}>
                             <Text style={styles.buttonText}> {strings("register.male")} </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={styles.buttomRegisterStyle}>
+                            onPress={this._femaleSelect.bind(this)}
+                            style={styles.buttomRegisterSexStyle}>
                             <Text style={styles.buttonText}> {strings("register.female")} </Text>
                         </TouchableOpacity>
 
                     </View>
                 }
                 {step == 3 &&
-                        <TouchableOpacity style={styles.buttomRegisterStyle} onPress={() => this.ActionSheet.show() }>
-                            <Text style={styles.buttonText}> {strings("register.photo")} </Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttomRegisterStyle} onPress={() => this.ActionSheet.show() }>
+                        <Text style={styles.buttonText}> {strings("register.photo")} </Text>
+                    </TouchableOpacity>
                 }
 
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
-                    onPress={this.nextStep.bind(this)}>
+                    onPress={this._nextStep.bind(this)}>
                     <Text style={styles.buttonText}> {strings("register.paso1")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -351,16 +404,22 @@ class RegisterPage extends Component {
                 <Text style={styles.textBold}>
                     {strings('wmatch')}
                 </Text>
+                <View>
+                { step == 1 &&
                 <TouchableOpacity
                     style={styles.buttomFacebookStyle}>
-                    <Text style={styles.buttonText}>{strings('register.facebook')}</Text>
+                    <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
                 </TouchableOpacity>
-                  <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                }
+                <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                </View>
+                { step == 1 &&
                 <View style={styles.optBox}>
-                <View style={styles.lineOpt} />
-                  <Text style={styles.opt}> {strings("register.opt")} </Text>
-                <View style={styles.lineOpt} />
-               </View>
+                    <View style={styles.lineOpt} />
+                      <Text style={styles.opt}> {strings("register.opt")} </Text>
+                    <View style={styles.lineOpt} />
+                </View>
+                }
                 {body}
               </View>
            </ScrollView>

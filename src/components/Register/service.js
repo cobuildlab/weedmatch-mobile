@@ -4,6 +4,7 @@ import {APP_STORE} from "../../Store";
 
 export const userService = {
     postRegister,
+    validateEmail,
 };
 
 /**
@@ -15,11 +16,25 @@ function postRegister(data) {
     const requestOptions = {
         method: 'POST',
         headers: {
+        'Accept-Language': LENGUAGE
+        },
+        body: data
+    };
+
+    console.log(requestOptions)
+
+    return fetch(URL + 'register/', requestOptions)
+}
+
+function validateEmail(data) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
         'Content-Type': 'application/json',
         'Accept-Language': LENGUAGE
         },
         body: JSON.stringify(data)
     };
 
-    return fetch(URL + 'register/', requestOptions)
+    return fetch(URL + 'email-verification/', requestOptions)
 }

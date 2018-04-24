@@ -66,6 +66,17 @@ export default styles = StyleSheet.create({
         backgroundColor: '#9605CC',
 
     },
+    buttomRegisterSexStyle: {
+        marginTop: 0,
+        marginBottom: 10,
+        width: 250,
+        marginRight: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderRadius: 50,
+        alignItems: 'center',
+        backgroundColor: '#9605CC',
+    },
     buttomFacebookStyle: {
         marginTop: 5,
         marginBottom: 10,

@@ -55,6 +55,7 @@ class Store {
             page: undefined,
             like: undefined,
             publicProfile: undefined,
+            email: undefined,
         };
         popToken(this.state);
         const me = this;
@@ -114,6 +115,12 @@ class Store {
             if (!state)
                 return;
             me.state.publicProfile = state.publicProfile;
+        });
+        this.EMAIL_EVENT = new Subject();
+        this.EMAIL_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.email = state.email;
         });
     }
 
