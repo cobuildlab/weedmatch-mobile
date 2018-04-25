@@ -118,14 +118,14 @@ export default class PublicProfile extends Component {
                       />
                     </View>
 
-                    <View style={styles.viewContainer}>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
-                            {country &&
-                                <Text style={styles.textContainer}>{country.name} </Text>
-                            }
+                  <View style={styles.viewContainer}>
+                      <View style={styles.viewContainer}>
+                          <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
+                      </View>
+                      <View style={styles.viewContainer}>
+                          {country &&
+                              <Text style={styles.textContainer}>{country.name} </Text>
+                          }
                         </View>
                         <View style={styles.viewContainer}>
                             <Text style={styles.textContainer}>{rowData.distance} </Text>
