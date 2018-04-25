@@ -7,7 +7,9 @@ import {
     AsyncStorage,
     TouchableOpacity,
     ActivityIndicator,
-    Alert
+    Alert,
+    SafeAreaView,
+    TouchableHighlight
 } from 'react-native';
 
 import styles from './style';
@@ -15,6 +17,7 @@ import TopBar from './../../utils/TopBar';
 import { publicProfileAction } from './PublicProfileActions';
 import {APP_STORE} from '../../Store';
 import {connection, internet } from '../../utils';
+import ImageSlider from 'react-native-image-slider';
 
 export default class PublicProfile extends Component {
     constructor(props) {
@@ -69,15 +72,50 @@ export default class PublicProfile extends Component {
         </TouchableOpacity>
       );
     }
-
+          
     render() {
+      const images = [
+        'https://placeimg.com/640/640/nature',
+        'https://placeimg.com/640/640/people',
+        'https://placeimg.com/640/640/animals',
+        'https://placeimg.com/640/640/beer',
+      ];
         const {rowData, country, publicImage, isLoading} = this.state;
         if(isLoading) {
             return (
                 <View style={styles.viewFlex}>
                     <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
                     <View style={styles.viewBackground}>
-                        <Image style={styles.media} source={{uri: rowData.image_profile}} />
+                        {/* <Image style={styles.media} source={{uri: rowData.image_profile}} /> */}
+                      <ImageSlider
+                        loopBothSides
+                        autoPlayWithInterval={3000}
+                        images={images}
+                        customSlide={({ index, item, style, width }) => (
+                          // It's important to put style here because it's got offset inside
+                          <View key={index} style={[style, styles.customSlide]}>
+                            <Image source={{ uri: item }} style={styles.media} />
+                          </View>
+                        )}
+                        customButtons={(position, move) => (
+                          <View style={styles.buttons}>
+                            {images.map((image, index) => {
+                              return (
+                                <TouchableHighlight
+                                  key={index}
+                                  underlayColor="#ccc"
+                                  onPress={() => move(index)}
+                                  style={styles.button}
+                                >
+                                  <Text style={position === index && styles.buttonSelected}>
+                                    -
+                                  </Text>
+                                </TouchableHighlight>
+                              );
+                            })}
+                          </View>
+                        )}
+                      />
                     </View>
 
                     <View style={styles.viewContainer}>

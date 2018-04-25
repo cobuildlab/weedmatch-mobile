@@ -4,7 +4,7 @@
     "welcome": "Welcome {{name}} to our localized app!",
     "signup_button": "You are a member? Log In",
     "login": "Log In",
-    "register": "Don't you have an account? Join!",
+    "register": "Create Account",
     "redes": "Log In with Social Networks",
     "facebook": "Log In with Facebook",
     "forgot": "Forgot Password",

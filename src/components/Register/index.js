@@ -42,7 +42,7 @@ class RegisterPage extends Component {
             image: '',
             isLoading: false,
             year: '',
-            step: 1,
+            step: 3,
             emailError: '',
             full_nameError: '',
             passwordError: '',
@@ -339,6 +339,16 @@ class RegisterPage extends Component {
                 }
                 {step == 2 &&
                     <View>
+                        <TouchableOpacity
+                            onPress={this._maleSelect.bind(this)}
+                            style={styles.buttomRegisterSexOff}>
+                            <Text style={styles.buttonTextOff}> {strings("register.male")} </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this._femaleSelect.bind(this)}
+                            style={styles.buttomRegisterSexOn}>
+                            <Text style={styles.buttonTextOn}> {strings("register.female")} </Text>
+                        </TouchableOpacity>
                         <View style={styles.inputStyleFecha}>
                             <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
                                 <View style={styles.viewButtonStyleFecha}>
@@ -355,23 +365,16 @@ class RegisterPage extends Component {
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
-                        <TouchableOpacity
-                            onPress={this._maleSelect.bind(this)}
-                            style={styles.buttomRegisterSexStyle}>
-                            <Text style={styles.buttonText}> {strings("register.male")} </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={this._femaleSelect.bind(this)}
-                            style={styles.buttomRegisterSexStyle}>
-                            <Text style={styles.buttonText}> {strings("register.female")} </Text>
-                        </TouchableOpacity>
-
                     </View>
                 }
                 {step == 3 &&
-                    <TouchableOpacity style={styles.buttomRegisterStyle} onPress={() => this.ActionSheet.show() }>
-                        <Text style={styles.buttonText}> {strings("register.photo")} </Text>
+                  <View style={styles.contentSocial}>
+                    <TouchableOpacity style={styles.buttomUploadStyle} onPress={() => this.ActionSheet.show() }>
+                        <Image style={styles.buttomUpload}
+                        source={require('../../assets/img/upload.png')}
+                        />
                     </TouchableOpacity>
+                  </View>
                 }
 
                 <TouchableOpacity
@@ -403,7 +406,7 @@ class RegisterPage extends Component {
                 <Text style={styles.textBold}>
                     {strings('wmatch')}
                 </Text>
-                <View>
+                <View style={styles.contentSocial}>
                 { step == 1 &&
                 <TouchableOpacity
                     style={styles.buttomFacebookStyle}>

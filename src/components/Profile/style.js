@@ -1,6 +1,9 @@
 import { StyleSheet, Platform  } from 'react-native';
 
 export default styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   scrollView:{
     backgroundColor: '#fff',
     marginBottom:0
@@ -55,7 +58,6 @@ export default styles = StyleSheet.create({
   },
   data:{
     flex:1,
-
     alignItems:'center'
   },
   edit:{
@@ -83,5 +85,13 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: 'transparent',
   },
+  viewContainer: {
+    height: .8,
+    backgroundColor: '#B2B2B2', 
+    marginBottom: 8, 
+    paddingLeft: 15, 
+    paddingRight: 15, 
+    marginTop: 20,
+  }
 
 });
