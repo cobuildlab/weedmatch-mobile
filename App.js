@@ -7,10 +7,11 @@ import LoginPage from './src/components/Login';
 import RegisterPage from './src/components/Register';
 import HomePage from './src/components/Home';
 import Profile from './src/components/Profile';
+import EditProfile from './src/components/editProfile';
 import PublicProfile from './src/components/PublicProfile';
 import ForgotPage from './src/components/Forgot';
 
-const AppStack = StackNavigator({Home: HomePage, Profile: Profile, PublicProfile: PublicProfile});
+const AppStack = StackNavigator({Home: HomePage, Profile: Profile, EditProfile: EditProfile, PublicProfile: PublicProfile});
 const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage, Forgot: ForgotPage});
 
 export default SwitchNavigator(

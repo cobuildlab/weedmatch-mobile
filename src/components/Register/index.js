@@ -42,7 +42,7 @@ class RegisterPage extends Component {
             image: '',
             isLoading: false,
             year: '',
-            step: 3,
+            step: 1,
             emailError: '',
             full_nameError: '',
             passwordError: '',

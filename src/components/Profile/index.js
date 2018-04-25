@@ -13,6 +13,7 @@ import {
 import { StackNavigator } from 'react-navigation';
 import styles from './style';
 import TabProfile from '../tabProfile';
+import EditProfile from '../editProfile';
 
 var mePic = require('../../images/sebas.jpg');
 var meName = 'Sebastian Diaz'
@@ -34,18 +35,16 @@ _logout(){
   this.props.navigation.navigate('Auth');
 
 }
+editProfile() {
+    this.props.navigation.navigate('EditProfile');
+}
   static navigationOptions = { title: 'Perfil' };
 
   render() {
 
     return (
      <View>
-
-
-
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.scrollView}>
-
-
       <View style={styles.meInfoWrap}>
         <View style={styles.meInfo}>
           <Image source={mePic} style={styles.mePic}/>
@@ -67,6 +66,9 @@ _logout(){
         <View style={styles.edit2}>
           <TouchableHighlight style={styles.buttomCerrarStyle} onPress={()=>this._logout()}>
               <Text>Cerrar Sesión</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.buttomCerrarStyle} onPress={this.editProfile.bind(this)}>
+              <Text>Editar Perfil</Text>
           </TouchableHighlight>
         </View>
       </View>
