@@ -68,15 +68,13 @@ export default class Profile extends Component {
 
 }
 
-renderSection() {
-  return (
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-
-          {this.renderSectionOne()}
-      </View>
-  )
-}
-
+  renderSection() {
+    return (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            {this.renderSectionOne()}
+        </View>
+    )
+  }
 
   render() {
 
