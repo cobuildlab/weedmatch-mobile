@@ -118,7 +118,7 @@ class RegisterPage extends Component {
         this.event.unsubscribe();
     }
 
-    registerUser() {
+    _registerUser() {
         console.log('RegisterUser');
         this.setState({isLoading: true});
         if (checkConectivity()) {
@@ -129,16 +129,15 @@ class RegisterPage extends Component {
         }
     }
 
-        _showDatePicker() {
-            Picker.init({
-                pickerData: createDateData(),
-                pickerFontColor: [153, 0 ,204, 1],
-                pickerToolBarBg:[232, 232, 232, 1],
-                pickerTitleText: '',
-                pickerConfirmBtnColor: [153, 0 ,204, 1],
-                pickerCancelBtnColor: [153, 0 ,204, 1],
-                pickerBg: [226, 226, 226, 1],
-
+    _showDatePicker() {
+        Picker.init({
+            pickerData: createDateData(),
+            pickerFontColor: [153, 0 ,204, 1],
+            pickerToolBarBg:[232, 232, 232, 1],
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [153, 0 ,204, 1],
+            pickerCancelBtnColor: [153, 0 ,204, 1],
+            pickerBg: [255, 255, 255, 1],
                 onPickerConfirm: (pickedValue, pickedIndex) => {
                     var month = '';
                     var day = '';
@@ -163,10 +162,10 @@ class RegisterPage extends Component {
                     console.log('date3', pickedValue, pickedIndex);
                 }
             });
-            Picker.show();
-        }
+        Picker.show();
+    }
 
-    registerCancel() {
+    _registerCancel() {
         this.props.navigation.goBack();
     }
 
@@ -224,12 +223,12 @@ class RegisterPage extends Component {
                 toastMsg(strings("register.imageRequired"))
                 return false
             }else{
-                this.registerUser();
+                this._registerUser();
             }
         }
     }
 
-    showActivity() {
+    _showActivity() {
         return (
           <View>
             <ActionSheet
@@ -297,7 +296,7 @@ class RegisterPage extends Component {
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
             body = <View>
-                {this.showActivity()}
+                {this._showActivity()}
                 {step == 1 &&
                     <View>
                         <TextInput
@@ -382,7 +381,7 @@ class RegisterPage extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttomCancelStyle}
-                    onPress={this.registerCancel.bind(this)}>
+                    onPress={this._registerCancel.bind(this)}>
                     <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
