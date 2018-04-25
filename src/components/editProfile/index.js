@@ -8,7 +8,8 @@ import {
   AsyncStorage,
   TouchableHighlight,
   Image,
-  Navigator
+  Navigator,
+  TouchableOpacity
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import styles from './style';
@@ -40,10 +41,27 @@ _logout(){
     return (
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.scrollView}>
       <View style={styles.meInfoWrap}>
-        <View style={styles.meInfo}>
+        <TouchableOpacity style={styles.buttomUploadStyle}>
           <Image source={mePic} style={styles.mePic}/>
-        </View>
+        </TouchableOpacity>
       </View>
+      <View style={styles.contentImg}>
+         <View style={styles.meSubPic}>
+           <TouchableOpacity style={styles.buttomUploadStyle}>
+             <Image  style={styles.meSubImg}/>
+           </TouchableOpacity>
+         </View>
+         <View style={styles.meSubPic}>
+           <TouchableOpacity style={styles.buttomUploadStyle}>
+             <Image  style={styles.meSubImg}/>
+           </TouchableOpacity>
+         </View>
+         <View style={styles.meSubPic}>
+           <TouchableOpacity style={styles.buttomUploadStyle}>
+             <Image  style={styles.meSubImg}/>
+           </TouchableOpacity>
+         </View>
+       </View>
       </ScrollView>
 
     );

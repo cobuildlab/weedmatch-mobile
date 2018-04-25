@@ -20,10 +20,19 @@ export default styles = StyleSheet.create({
     marginBottom: 5,
   },
   mePic:{
-      width:'100%',
-      height: 150,
-      resizeMode: 'contain',
-      backgroundColor: '#ccc',
+    width:'100%',
+    height: 300,
+    resizeMode: 'contain',
+    backgroundColor: '#ccc',
+  },
+  meSubPic:{
+    width: '33%',
+    height: 80,
+    backgroundColor: '#ccc',
+  },
+  meSubImg:{
+    width: '100%',
+    height: 80,
   },
   meInfoWrap:{
     flexDirection:'column'
@@ -58,6 +67,13 @@ export default styles = StyleSheet.create({
     flex:1,
 
     alignItems:'center'
+  },
+  contentImg:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
   },
   edit:{
     borderWidth:1,
