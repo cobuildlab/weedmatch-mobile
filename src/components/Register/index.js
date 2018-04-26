@@ -38,7 +38,7 @@ class RegisterPage extends Component {
             latitud: '',
             longitud: '',
             age: '',
-            sex: '',
+            sex: 'Hombre',
             image: '',
             isLoading: false,
             year: '',
@@ -118,7 +118,7 @@ class RegisterPage extends Component {
         this.event.unsubscribe();
     }
 
-    registerUser() {
+    _registerUser() {
         console.log('RegisterUser');
         this.setState({isLoading: true});
         if (checkConectivity()) {
@@ -129,16 +129,15 @@ class RegisterPage extends Component {
         }
     }
 
-        _showDatePicker() {
-            Picker.init({
-                pickerData: createDateData(),
-                pickerFontColor: [153, 0 ,204, 1],
-                pickerToolBarBg:[232, 232, 232, 1],
-                pickerTitleText: '',
-                pickerConfirmBtnColor: [153, 0 ,204, 1],
-                pickerCancelBtnColor: [153, 0 ,204, 1],
-                pickerBg: [226, 226, 226, 1],
-
+    _showDatePicker() {
+        Picker.init({
+            pickerData: createDateData(),
+            pickerFontColor: [153, 0 ,204, 1],
+            pickerToolBarBg:[232, 232, 232, 1],
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [153, 0 ,204, 1],
+            pickerCancelBtnColor: [153, 0 ,204, 1],
+            pickerBg: [255, 255, 255, 1],
                 onPickerConfirm: (pickedValue, pickedIndex) => {
                     var month = '';
                     var day = '';
@@ -163,10 +162,10 @@ class RegisterPage extends Component {
                     console.log('date3', pickedValue, pickedIndex);
                 }
             });
-            Picker.show();
-        }
+        Picker.show();
+    }
 
-    registerCancel() {
+    _registerCancel() {
         this.props.navigation.goBack();
     }
 
@@ -224,12 +223,12 @@ class RegisterPage extends Component {
                 toastMsg(strings("register.imageRequired"))
                 return false
             }else{
-                this.registerUser();
+                this._registerUser();
             }
         }
     }
 
-    showActivity() {
+    _showActivity() {
         return (
           <View>
             <ActionSheet
@@ -268,7 +267,6 @@ class RegisterPage extends Component {
           includeExif: true,
           }).then(image => {
           console.log('received image', image.path);
-          console.log(image);
           this.setState({
             image: image.path
           });
@@ -284,7 +282,6 @@ class RegisterPage extends Component {
           includeExif: true,
           }).then(image => {
           console.log('received image', image.path);
-          console.log(image);
           this.setState({
             image: image.path
           });
@@ -293,11 +290,11 @@ class RegisterPage extends Component {
     }
 
     render() {
-        const {isLoading, step, emailError, full_nameError, passwordError} = this.state;
+        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
             body = <View>
-                {this.showActivity()}
+                {this._showActivity()}
                 {step == 1 &&
                     <View>
                         <TextInput
@@ -343,12 +340,12 @@ class RegisterPage extends Component {
                         <TouchableOpacity
                             onPress={this._maleSelect.bind(this)}
                             style={styles.buttomRegisterSexOff}>
-                            <Text style={styles.buttonTextOff}> {strings("register.male")} </Text>
+                            <Text style={this.state.sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.male")} </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this._femaleSelect.bind(this)}
                             style={styles.buttomRegisterSexOn}>
-                            <Text style={styles.buttonTextOn}> {strings("register.female")} </Text>
+                            <Text style={this.state.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.female")} </Text>
                         </TouchableOpacity>
                         <View style={styles.inputStyleFecha}>
                             <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
@@ -371,9 +368,16 @@ class RegisterPage extends Component {
                 {step == 3 &&
                   <View style={styles.contentSocial}>
                     <TouchableOpacity style={styles.buttomUploadStyle} onPress={() => this.ActionSheet.show() }>
-                        <Image style={styles.buttomUpload}
-                        source={require('../../assets/img/upload.png')}
-                        />
+                        {image == '' &&
+                            <Image style={styles.buttomUpload}
+                            source={require('../../assets/img/upload.png')}
+                            />
+                        }
+                        {image !== '' &&
+                            <Image style={styles.buttomUpload}
+                            source={{uri: image}}
+                            />
+                        }
                     </TouchableOpacity>
                   </View>
                 }
@@ -385,7 +389,7 @@ class RegisterPage extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttomCancelStyle}
-                    onPress={this.registerCancel.bind(this)}>
+                    onPress={this._registerCancel.bind(this)}>
                     <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
