@@ -20,7 +20,7 @@ import moment_timezone from 'moment-timezone';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import TopBar from '../../utils/TopBar';
-import { connection, internet, checkConectivity } from '../../utils';
+import { internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
