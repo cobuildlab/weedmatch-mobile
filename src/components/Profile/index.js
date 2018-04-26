@@ -17,6 +17,7 @@ import TabProfile from '../tabProfile';
 import EditProfile from '../editProfile';
 
 var mePic = require('../../images/sebas.jpg');
+var menu = require('../../assets/img/edit.png');
 var meName = 'Sebastian Diaz'
 var meUsername = 'holasebasdiaz'
 var meEdad = '24'
@@ -90,11 +91,16 @@ _editProfile() {
          <Image source={mePic} style={styles.mePic}/>
        </View>
        <View style={styles.meContenInfo}>
-         <Text style={styles.meName}>{meName}, {meEdad}</Text>
-       <Text style={styles.meNameOther}>{meCiudad}</Text>
-     <Text style={styles.meNameOther}>{meDescription}</Text>
-         <View style={styles.viewContainer} />
-       </View>
+          <View style={styles.meData}>
+            <Text style={styles.meName}>{meName}, {meEdad}</Text>
+            <Text style={styles.meNameOther}>{meCiudad}</Text>
+            <Text style={styles.meNameOther}>{meDescription}</Text>
+          </View>
+          <TouchableHighlight style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
+              <Image source={menu} style={styles.buttomOpt}/>
+          </TouchableHighlight>
+          {/* <View style={styles.viewContainer} /> */}
+        </View>
      </View>
      {/* <TabProfile navigator={this.props.navigator}/> */}
      {this.renderSection()}
@@ -107,9 +113,7 @@ _editProfile() {
          <TouchableHighlight style={styles.buttomCerrarStyle} onPress={()=>this._logout()}>
              <Text>Cerrar Sesión</Text>
          </TouchableHighlight>
-         <TouchableHighlight style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
-             <Text>Editar Perfil</Text>
-         </TouchableHighlight>
+
        </View>
      </View>
      </ScrollView>
