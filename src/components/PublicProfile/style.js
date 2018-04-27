@@ -18,10 +18,10 @@ export default styles = StyleSheet.create({
         position: 'absolute',
         width: 50,
         height: 50,
+        top: -55,
         alignItems: 'center',
         justifyContent: 'center',
         right: 30,
-        bottom: 30,
     },
     ShowDetail: {
         resizeMode: 'contain',
@@ -165,7 +165,13 @@ export default styles = StyleSheet.create({
     },
     viewContainer: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginTop: 25,
+    },
+    viewContainerPlus: {
+        flex: 1,
+        flexDirection: 'column',
+        marginTop: -25,
     },
     viewFlex: {
         flex: 1,
@@ -179,14 +185,14 @@ export default styles = StyleSheet.create({
     },
     textName: {
         marginTop: 15,
-        paddingLeft: 20, 
-        fontSize: 16, 
+        paddingLeft: 20,
+        fontSize: 16,
         color: '#333',
     },
     textContainer: {
-        marginTop: 10, 
-        paddingLeft: 20, 
-        fontSize: 16, 
+        marginTop: 10,
+        paddingLeft: 20,
+        fontSize: 16,
         color: '#333'
     },
     container: {
@@ -231,7 +237,7 @@ export default styles = StyleSheet.create({
       buttonSelected: {
         opacity: 1,
         color: 'white',
-        fontSize: 40, 
+        fontSize: 40,
       },
       customSlide: {
         backgroundColor: 'green',
