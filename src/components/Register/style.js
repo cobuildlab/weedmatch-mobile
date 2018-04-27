@@ -72,10 +72,10 @@ export default styles = StyleSheet.create({
         height: 130,
     },
     buttomUpload: {
-        width: '100%',
-        resizeMode: 'contain',
-        flex: 1,
-        borderRadius: 65,
+        width: 120,
+        height: 120,
+        flex: 0,
+        borderRadius: 60,
     },
     buttomRegisterSexOff: {
         marginTop: 0,

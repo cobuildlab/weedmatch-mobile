@@ -9,6 +9,7 @@
     "run:ios": "react-native run-ios"
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "0.0.14",
     "axios": "^0.18.0",
     "eslint": "^4.19.1",
     "immutable": "^3.8.2",

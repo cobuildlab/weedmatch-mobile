@@ -34,11 +34,12 @@ export default styles = StyleSheet.create({
     padding: 15,
     paddingTop: 5,
     marginBottom: 20,
+    flexDirection:'row',
   },
   meData:{
     flex:2,
     paddingTop:20,
-    flexDirection:'row',
+    flexDirection:'column',
   },
   meInfo:{
     alignItems:'center',
@@ -54,7 +55,6 @@ export default styles = StyleSheet.create({
     fontSize:14,
     color: '#9D9D9C',
     paddingTop:5,
-
   },
   data:{
     flex:1,
@@ -75,23 +75,29 @@ export default styles = StyleSheet.create({
     padding:2
   },
   buttomCerrarStyle: {
-      marginTop: 0,
+      marginTop: 20,
       marginBottom: 10,
-      width: 250,
       marginRight: 5,
       paddingTop: 10,
       paddingBottom: 10,
       borderRadius: 50,
-      alignItems: 'center',
+      alignItems: 'flex-end',
       backgroundColor: 'transparent',
   },
+  buttomOpt:{
+    width: 25,
+    height: 20,
+    resizeMode: 'contain',
+    },
   viewContainer: {
-    height: .8,
-    backgroundColor: '#B2B2B2', 
-    marginBottom: 8, 
-    paddingLeft: 15, 
-    paddingRight: 15, 
+    height: .5,
+    backgroundColor: '#B2B2B2',
+    marginBottom: 8,
+    paddingLeft: 15,
+    paddingRight: 15,
     marginTop: 20,
-  }
+    flexDirection:'column',
+  },
+
 
 });
