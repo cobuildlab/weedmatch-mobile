@@ -81,7 +81,7 @@ export default class PublicProfile extends Component {
         this.images420Page = APP_STORE.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
           console.log("Public Profile:componentDidMount:images420PageSuscription", state);
           if (state.publicImages420Page) {
-  
+
             this.setState({
               urlPage: state.publicImages420Page,
               numPage: this.state.numPage + 1
@@ -121,7 +121,7 @@ export default class PublicProfile extends Component {
     _get420Images() {
       const { params } = this.props.navigation.state;
       const userId = params ? params.userId : null;
-      
+
       if (checkConectivity()) {
         Action420(APP_STORE.getToken(), this.state, userId);
       } else {
@@ -198,28 +198,22 @@ export default class PublicProfile extends Component {
           />
           </View>
           <View style={styles.viewContainer}>
-            <View style={styles.viewContainer}>
+            <View style={styles.viewContainerPlus}>
               <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
-            </View>
-            <View style={styles.viewContainer}>
                 {country &&
                     <Text style={styles.textContainer}>{country.name} </Text>
                 }
-                <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                  <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic} />
-                </TouchableOpacity>
-              </View>
-            <View style={styles.viewContainer}>
               <Text style={styles.textContainer}>{rowData.distance} </Text>
-            </View>
-            <View style={styles.viewContainer}>
               <Text style={styles.textContainer}>{rowData.description} </Text>
             </View>
+              <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic} />
+              </TouchableOpacity>
         </View>
         </View>
       );
     }
-          
+
     render() {
 
         const {rowData,country,isLoading, isDetail,public420} = this.state;
