@@ -20,22 +20,6 @@ function publicProfileAction(token, id) {
         });
 }
 
-function publicImagesAction(token, id) {
-    console.log(`publicImagesAction: ${token}, ${id}`);
-
-    userService.publicImages(token, id)
-        .then(async (response) => {
-            console.log(`publicImagesAction: ${token}, ${id}`, response);
-            const json = await response.json();
-            console.log(`publicImagesAction:JSON:`, json);
-            if (response.ok) {
-                APP_STORE.PUBLICIMAGES_EVENT.next({"publicImages": json});
-                return;
-            }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
-}
-
 function publicImages420Action(token, id, pageUrl) {
     console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`);
 
@@ -94,4 +78,4 @@ function getImages(data) {
     return _images;
 }
 
-export { publicProfileAction, publicImagesAction,getImages,publicImages420Action,appendData,Action420 };
+export { publicProfileAction,getImages,publicImages420Action,appendData,Action420 };
