@@ -225,7 +225,8 @@ export default styles = StyleSheet.create({
       },
       buttonSelected: {
         opacity: 1,
-        color: 'red',
+        color: 'white',
+        fontSize: 40, 
       },
       customSlide: {
         backgroundColor: 'green',

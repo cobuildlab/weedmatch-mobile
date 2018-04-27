@@ -56,6 +56,9 @@ class Store {
             like: undefined,
             publicProfile: undefined,
             email: undefined,
+            publicImages: undefined,
+            publicImages420: undefined,
+            publicImages420Page: undefined,
         };
         popToken(this.state);
         const me = this;
@@ -115,6 +118,24 @@ class Store {
             if (!state)
                 return;
             me.state.publicProfile = state.publicProfile;
+        });
+        this.PUBLICIMAGES_EVENT = new Subject();
+        this.PUBLICIMAGES_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.publicImages = state.publicImages;
+        });
+        this.PUBLICIMAGES420_EVENT = new Subject();
+        this.PUBLICIMAGES420_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.publicImages420 = state.publicImages420;
+        });
+        this.PUBLICIMAGES420PAGE_EVENT = new Subject();
+        this.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.publicImages420Page = state.publicImages420Page;
         });
         this.EMAIL_EVENT = new Subject();
         this.EMAIL_EVENT.subscribe(state => {
