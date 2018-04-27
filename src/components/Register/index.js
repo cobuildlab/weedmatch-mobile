@@ -68,9 +68,9 @@ class RegisterPage extends Component {
             {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
         );
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
-            this.setState({isLoading: true});
+            //this.setState({isLoading: true});
             if (state.error) {
-                this.setState({isLoading: false});
+                //this.setState({isLoading: false});
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
