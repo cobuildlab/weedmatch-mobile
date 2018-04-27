@@ -229,7 +229,7 @@ export default class PublicProfile extends Component {
                   style={{flex:1}}
                   ListHeaderComponent={this.renderiza()}
                   keyExtractor={( item , index ) => index}
-                  onEndReached={this._get420Images.bind(this)}
+                  // onEndReached={this._get420Images.bind(this)}
                   renderItem={({ item, index }) =>
                       <View style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                           <Image style={styles.imageView}
