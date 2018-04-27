@@ -98,7 +98,7 @@ export default class PublicProfile extends Component {
           if (state.publicImages420Page) {
   
             this.setState({
-              urlPage: state.page,
+              urlPage: state.publicImages420Page,
               numPage: this.state.numPage + 1
             })
             return;
@@ -156,7 +156,7 @@ export default class PublicProfile extends Component {
       }
   }
 
-    _showDetail = () => {
+    _changeView = () => {
       this.setState({
         isDetail: !this.state.isDetail
       })
@@ -233,8 +233,8 @@ export default class PublicProfile extends Component {
                 {country &&
                     <Text style={styles.textContainer}>{country.name} </Text>
                 }
-                <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._showDetail}>
-                  <Image source={require('../../assets/img/down.png')} style={styles.FloatingButtonStyle} />
+                <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                  <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic} />
                 </TouchableOpacity>
               </View>
             <View style={styles.viewContainer}>
@@ -263,14 +263,10 @@ export default class PublicProfile extends Component {
                   style={{flex:1}}
                   ListHeaderComponent={this.renderiza()}
                   keyExtractor={( item , index ) => index}
+                  onEndReached={this._get420Images.bind(this)}
                   renderItem={({ item, index }) =>
                       <View style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
-                          <Image style={{
-                              flex: 1,
-                              alignSelf: 'stretch',
-                              width: undefined,
-                              height: undefined,
-                          }}
+                          <Image style={styles.imageView}
                               source={{uri: getImages(public420)[index]}}>
                           </Image>
                       </View>
@@ -293,8 +289,8 @@ export default class PublicProfile extends Component {
                             {country &&
                                 <Text style={styles.textContainer}>{country.name} </Text>
                             }
-                            <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this.onPress}>
-                              <Image source={require('../../assets/img/plus.png')} style={styles.FloatingButtonStyle} />
+                            <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                              <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
                             </TouchableOpacity>
                           </View>
                         <View style={styles.viewContainer}>

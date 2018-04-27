@@ -23,7 +23,12 @@ export default styles = StyleSheet.create({
         right: 30,
         bottom: 30,
     },
-    FloatingButtonStyle: {
+    ShowDetail: {
+        resizeMode: 'contain',
+        width: 25,
+        height: 25,
+    },
+    ShowPublic: {
         resizeMode: 'contain',
         width: 50,
         height: 50,
@@ -237,4 +242,10 @@ export default styles = StyleSheet.create({
         width: 100,
         height: 100,
       },
+      imageView: {
+        flex: 1,
+        alignSelf: 'stretch',
+        width: undefined,
+        height: undefined,
+      }
 });
