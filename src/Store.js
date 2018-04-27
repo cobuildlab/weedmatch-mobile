@@ -56,7 +56,6 @@ class Store {
             like: undefined,
             publicProfile: undefined,
             email: undefined,
-            publicImages: undefined,
             publicImages420: undefined,
             publicImages420Page: undefined,
         };
@@ -118,12 +117,6 @@ class Store {
             if (!state)
                 return;
             me.state.publicProfile = state.publicProfile;
-        });
-        this.PUBLICIMAGES_EVENT = new Subject();
-        this.PUBLICIMAGES_EVENT.subscribe(state => {
-            if (!state)
-                return;
-            me.state.publicImages = state.publicImages;
         });
         this.PUBLICIMAGES420_EVENT = new Subject();
         this.PUBLICIMAGES420_EVENT.subscribe(state => {

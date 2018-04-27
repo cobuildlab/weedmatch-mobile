@@ -17,7 +17,7 @@ import {
 
 import styles from './style';
 import TopBar from './../../utils/TopBar';
-import { publicProfileAction, publicImagesAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
+import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
 import {APP_STORE} from '../../Store';
 import {connection, internet, checkConectivity } from '../../utils';
 import ImageSlider from 'react-native-image-slider';
@@ -31,7 +31,6 @@ export default class PublicProfile extends Component {
         this.state = {
           rowData:{},
           refreshing:false,
-          publicImages: {},
           public420: {},
           isLoading: false,
           isDetail: false,
@@ -52,27 +51,13 @@ export default class PublicProfile extends Component {
                     rowData: state.publicProfile,
                     country: state.publicProfile.country
                 })
-                this._publicImages();
-              return;
+                this._get420Images();
+                return;
             }
             if (state.error) {
               Alert.alert(state.error);
             }
         });
-
-        this.images = APP_STORE.PUBLICIMAGES_EVENT.subscribe(state => {
-          console.log("Public Images:componentDidMount:PUBLICIMAGES_EVENT", state);
-          if (state.publicImages) {
-              this.setState({
-                  publicImages: state.publicImages
-              })
-              this._get420Images();
-            return;
-          }
-          if (state.error) {
-            Alert.alert(state.error);
-          }
-      });
 
       this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
         console.log("Public Profile:componentDidMount:images420Suscription", state);
@@ -117,7 +102,6 @@ export default class PublicProfile extends Component {
 
     componentWillUnmount() {
       console.log("Home420:componentWillUmmount");
-      this.images.unsubscribe();
       this.images420.unsubscribe();
       this.images420Page.unsubscribe();
       this.public.unsubscribe();
@@ -144,17 +128,6 @@ export default class PublicProfile extends Component {
         internet();
       }
     }
-
-    _publicImages() {
-      const { params } = this.props.navigation.state;
-      const userId = params ? params.userId : null;
-
-      if (checkConectivity()) {
-        publicImagesAction(APP_STORE.getToken(), userId)
-      } else {
-        internet();
-      }
-  }
 
     _changeView = () => {
       this.setState({
@@ -191,14 +164,13 @@ export default class PublicProfile extends Component {
     }
 
     renderiza() {
-      const {rowData, country, publicImages} = this.state;
+      const {rowData, country} = this.state;
 
       return (
         <View>
         <View style={styles.viewBackground}>
         <ImageSlider
-          autoPlayWithInterval={3000}
-          images={getImages(publicImages)}
+          images={getImages(rowData.profile_images)}
           customSlide={({ index, item, style, width }) => (
             // It's important to put style here because it's got offset inside
             <View key={index} style={[style, styles.customSlide]}>
@@ -207,7 +179,7 @@ export default class PublicProfile extends Component {
           )}
           customButtons={(position, move) => (
             <View style={styles.buttons}>
-              {getImages(publicImages).map((image, index) => {
+              {getImages(rowData.profile_images).map((image, index) => {
                 return (
                   <TouchableOpacity
                     key={index}

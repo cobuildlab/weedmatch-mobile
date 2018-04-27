@@ -6,7 +6,7 @@ import {
  View,
  ScrollView,
  AsyncStorage,
- TouchableHighlight,
+ TouchableOpacity,
  Image,
  Navigator,
  Dimensions
@@ -96,9 +96,9 @@ _editProfile() {
             <Text style={styles.meNameOther}>{meCiudad}</Text>
             <Text style={styles.meNameOther}>{meDescription}</Text>
           </View>
-          <TouchableHighlight style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
+          <TouchableOpacity style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
               <Image source={menu} style={styles.buttomOpt}/>
-          </TouchableHighlight>
+          </TouchableOpacity>
           {/* <View style={styles.viewContainer} /> */}
         </View>
      </View>
@@ -110,9 +110,9 @@ _editProfile() {
          <Text>Editar Perfil</Text>
        </View> */}
        <View style={styles.edit2}>
-         <TouchableHighlight style={styles.buttomCerrarStyle} onPress={()=>this._logout()}>
+         <TouchableOpacity style={styles.buttomCerrarStyle} onPress={()=>this._logout()}>
              <Text>Cerrar Sesión</Text>
-         </TouchableHighlight>
+         </TouchableOpacity>
 
        </View>
      </View>
