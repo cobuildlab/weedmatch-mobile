@@ -7,6 +7,8 @@ import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
+const DOUBLE_PRESS_DELAY = 300;
+
 function feedAction(token, state) {
 
     console.log(`homeAction: ${token}, ${state}`);
@@ -83,6 +85,18 @@ function likeAction(token, id, id_user, like,row) {
         });
 }
 
+function handleImagePress(idImage,id_user,like,row) {
+    const now = new Date().getTime();
+    
+    if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
+      delete this.lastImagePress;
+      likeAction(APP_STORE.getToken(),idImage,id_user,like,row);
+    }
+    else {
+      this.lastImagePress = now;
+    }
+}
+
 function calculateTime(rowData) {
     var start = moment(rowData.time).tz(DeviceInfo.getTimezone());
     var end = moment();
@@ -109,4 +123,4 @@ function calculateTime(rowData) {
 
 }
 
-export { feedAction, uploadAction, likeAction, calculateTime, appendData };
+export { feedAction, uploadAction, likeAction, calculateTime, appendData,handleImagePress };

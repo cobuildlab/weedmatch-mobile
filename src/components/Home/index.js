@@ -24,7 +24,7 @@ import { internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { feedAction, uploadAction, likeAction, calculateTime, appendData } from './HomeActions'
+import { feedAction, uploadAction, likeAction, calculateTime, appendData,handleImagePress } from './HomeActions'
 
 export default class HomePage extends Component {
 
@@ -204,9 +204,9 @@ export default class HomePage extends Component {
       );
     }
 
-    _like(idImage,id_user,like,row) {
+    _likeHandlePress(idImage,id_user,like,row) {
       if (checkConectivity()) {
-        likeAction(APP_STORE.getToken(),idImage,id_user,like,row)
+        handleImagePress(idImage,id_user,like,row)
       } else {
         internet();
       }
@@ -308,18 +308,17 @@ export default class HomePage extends Component {
               dataSource={this.state.feedData}
               renderRow={this._renderRow.bind(this)}
               onEndReached={this._feedData.bind(this)}
-              // showsHorizontalScrollIndicator={false}
               // stickyHeaderIndices = {[0]}
               //renderSectionHeader={this.sectionHeader}
               // stickySectionHeadersEnabled={true}
               // onChangeVisibleRows={(changedRows) => console.log(changedRows)}
               automaticallyAdjustContentInsets={false}
               refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh.bind(this)}
-                  />
-                }
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
             />
         </View>
       )
@@ -364,10 +363,12 @@ export default class HomePage extends Component {
                 </View>
                   <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
             </View>
-            <Image
-              style={styles.media}
-              source={{uri: rowData.image}}
-            />
+            <TouchableOpacity onPress = {() => this._likeHandlePress(rowData.id,rowData.id_user,!rowData.band,sectionID)}>
+              <Image
+                style={styles.media}
+                source={{uri: rowData.image}}
+              />
+            </TouchableOpacity>
 
           <View style={styles.containerLikes}>
             <TouchableOpacity
