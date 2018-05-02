@@ -109,12 +109,10 @@ class LoginPage extends Component {
                           source={require('../../assets/img/logo-b.png')}/>
 
                       <View style={styles.contentLogin}>
-                          <Text style={styles.textLight}>
-                              {strings('main.title')}
+                          <Text style={styles.textRegister}>
+                              {strings('main.login')}
                           </Text>
-                          <Text style={styles.textBold}>
-                              {strings('wmatch')}
-                          </Text>
+
                       </View>
                       <TextInput
                           style={styles.inputStyle}

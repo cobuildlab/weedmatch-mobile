@@ -39,6 +39,9 @@
   },
   "main": {
     "title": "LINKING LOVERS OF THE",
+    "register": "Register",
+    "login": "Log In",
+    "recover": "Recover Password",
     "internet": "No Internet Connection"
   },
   "home": {

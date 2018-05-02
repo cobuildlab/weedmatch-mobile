@@ -15,6 +15,11 @@ export default styles = StyleSheet.create({
         fontSize: 20,
         color: '#9605CC',
     },
+    textRegister: {
+        fontSize: 26,
+        color: '#9605CC',
+        marginBottom: 30,
+    },
     textBold: {
         fontSize: 20,
         fontWeight: 'bold',
