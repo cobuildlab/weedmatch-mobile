@@ -58,12 +58,13 @@ export default class HomePage extends Component {
         if (state.feed) {
 
           if (this.state.refreshing) {
-            this.setState(prevState => ({
+            this.setState({
+              dataSource: [],
               feedData: this.ds1.cloneWithRows(state.feed),
               loading: false,
               refreshing: false,
               isLoaded: true
-            }));
+            });
           } else {
             this.setState(prevState => ({
               dataSource: appendData(prevState.dataSource, state.feed),
@@ -92,7 +93,7 @@ export default class HomePage extends Component {
         } else {
           this.setState({
             urlPage: '',
-          })
+        })
         return;
         }
         if (state.error) {
@@ -159,7 +160,6 @@ export default class HomePage extends Component {
 
       console.log(this.state);
       this.setState({
-        dataSource: [],
         feedData: this.ds1.cloneWithRows([]),
         refreshing: true,
         urlPage: '',
