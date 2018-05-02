@@ -50,7 +50,7 @@ function appendData(oldData, newData) {
 }
 
 function uploadAction(token, state) {
-
+    console.log(state);
     console.log(`uploadAction: ${token}, ${state}`);
 
     userService.publicImage(token, state)
