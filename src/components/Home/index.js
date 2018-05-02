@@ -9,6 +9,7 @@ import {
       ActivityIndicator,
       TouchableOpacity,
       TouchableHighlight,
+      TouchableWithoutFeedback,
       Modal,
       Button,
       TextInput,
@@ -363,12 +364,12 @@ export default class HomePage extends Component {
                 </View>
                   <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
             </View>
-            <TouchableOpacity onPress = {() => this._likeHandlePress(rowData.id,rowData.id_user,!rowData.band,sectionID)}>
+            <TouchableWithoutFeedback onPress = {() => this._likeHandlePress(rowData.id,rowData.id_user,!rowData.band,sectionID)}>
               <Image
                 style={styles.media}
                 source={{uri: rowData.image}}
               />
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
 
           <View style={styles.containerLikes}>
             <TouchableOpacity
@@ -416,13 +417,13 @@ export default class HomePage extends Component {
                   {!load &&
                       <View>
                           { image != '' &&
-                              <TouchableHighlight>
+                              <TouchableOpacity>
                                   <Image
                                       style={styles.imageSize}
                                       source={{uri: image}}
                                   />
 
-                              </TouchableHighlight>
+                              </TouchableOpacity>
                           }
                               <TextInput
                                   style={styles.inputStyle}
