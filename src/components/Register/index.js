@@ -405,11 +405,8 @@ class RegisterPage extends Component {
                 <Image style={styles.container}
                        source={require('../../assets/img/logo-b.png')}
                 />
-                <Text style={styles.textLight}>
-                    {strings("main.title")}
-                </Text>
-                <Text style={styles.textBold}>
-                    {strings('wmatch')}
+                <Text style={styles.textRegister}>
+                    {strings("main.register")}
                 </Text>
                 <View style={styles.contentSocial}>
                 { step == 1 &&

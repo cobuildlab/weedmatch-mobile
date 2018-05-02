@@ -39,6 +39,9 @@
   },
   "main": {
     "title": "UNIENDO AMANTES DEL",
+    "register": "Registro",
+    "login": "Iniciar Sesión",
+    "recover": "Recuperar Contraseña",
     "internet": "No hay conexión a Internet"
   },
   "home": {
