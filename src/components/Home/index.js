@@ -57,14 +57,22 @@ export default class HomePage extends Component {
         console.log("Home420:componentDidMount:feedDataSuscription", state);
         if (state.feed) {
 
-          this.setState(prevState => ({
-            dataSource: appendData(prevState.dataSource, state.feed),
-            feedData: this.ds1.cloneWithRows(this.state.dataSource),
-            loading: false,
-            refreshing: false,
-            isLoaded: true
-          }))
-
+          if (this.state.refreshing) {
+            this.setState(prevState => ({
+              feedData: this.ds1.cloneWithRows(state.feed),
+              loading: false,
+              refreshing: false,
+              isLoaded: true
+            }));
+          } else {
+            this.setState(prevState => ({
+              dataSource: appendData(prevState.dataSource, state.feed),
+              feedData: this.ds1.cloneWithRows(this.state.dataSource),
+              loading: false,
+              refreshing: false,
+              isLoaded: true
+            }));
+          }
           return;
         }
         if (state.error) {
@@ -79,12 +87,13 @@ export default class HomePage extends Component {
           this.setState({
             urlPage: state.page,
             numPage: this.state.numPage + 1
-          })
-          return;
+          });
+
         } else {
           this.setState({
             urlPage: '',
           })
+        return;
         }
         if (state.error) {
           Alert.alert(state.error);
@@ -147,12 +156,16 @@ export default class HomePage extends Component {
     }
 
     _onRefresh() {
+
+      console.log(this.state);
       this.setState({
+        dataSource: [],
         feedData: this.ds1.cloneWithRows([]),
         refreshing: true,
-        numPage: 0,
         urlPage: '',
+        numPage: 0,
       },() => { 
+        console.log(this.state);
         this._feedData();
       })
     }
