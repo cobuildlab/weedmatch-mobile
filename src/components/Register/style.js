@@ -58,6 +58,9 @@ export default styles = StyleSheet.create({
     textButtonStyleFecha: {
         color: '#ccc',
     },
+    textFecha: {
+        color: '#9605CC',
+    },
     buttomRegisterStyle: {
         marginTop: 15,
         marginBottom: 10,
