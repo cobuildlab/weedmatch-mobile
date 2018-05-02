@@ -61,6 +61,7 @@ export default class HomePage extends Component {
             dataSource: appendData(prevState.dataSource, state.feed),
             feedData: this.ds1.cloneWithRows(this.state.dataSource),
             loading: false,
+            refreshing: false,
             isLoaded: true
           }))
 
@@ -145,26 +146,42 @@ export default class HomePage extends Component {
       }
     }
 
+    _onRefresh() {
+      this.setState({
+        feedData: this.ds1.cloneWithRows([]),
+        refreshing: true,
+        numPage: 0,
+        urlPage: '',
+      },() => { 
+        this._feedData();
+      })
+    }
+
     _uploadPhoto() {
-      this.setState(
-        { load: true,
-          time: moment().format()
-        });
-      if (checkConectivity()) {
-        uploadAction(APP_STORE.getToken(), this.state)
-      } else {
-        internet();
-      }
+
+      this.setState({
+        load: true,
+        time: moment().format()
+      },() => { 
+        console.log(this.state.time);
+        if (checkConectivity()) {
+          uploadAction(APP_STORE.getToken(), this.state)
+        } else {
+          internet();
+        }
+      })
     }
 
   _feedPosition() {
        navigator.geolocation.getCurrentPosition(
         (position) => {
+
             this.setState({
               latitud: position.coords.latitude.toFixed(6),
               longitud: position.coords.longitude.toFixed(6),
+            },() => { 
+              this._feedData();
             })
-            this._feedData()
         },
         (error) => {
             this._feedData();
@@ -268,10 +285,6 @@ export default class HomePage extends Component {
     this.setState({ index })
   }
 
-  _share() {
-    this._uploadPhoto()
-  }
-
     renderFeed(){
       return(
         <View style={styles.containerFlex}>
@@ -291,7 +304,7 @@ export default class HomePage extends Component {
               refreshControl={
                   <RefreshControl
                     refreshing={this.state.refreshing}
-                    onRefresh={this._feedData.bind(this)}
+                    onRefresh={this._onRefresh.bind(this)}
                   />
                 }
             />
@@ -416,7 +429,7 @@ export default class HomePage extends Component {
                       <Button
                         color = '#9605CC'
                         title = { strings("home.upload") }
-                        onPress={this._share.bind(this)}
+                        onPress={this._uploadPhoto.bind(this)}
                       />
                     </View>
                   )

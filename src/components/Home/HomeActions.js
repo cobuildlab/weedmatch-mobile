@@ -55,7 +55,7 @@ function uploadAction(token, state) {
 
     userService.publicImage(token, state)
         .then(async (response) => {
-            console.log(`uploadAction: ${token}, ${state}`, response);
+            console.log(`uploadAction: ${token}, ${state.time}`, response);
             const json = await response.json();
             console.log(`uploadAction:JSON:`, json);
             if (response.ok) {
