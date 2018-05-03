@@ -15,6 +15,7 @@ import { internet, checkConectivity } from '../../utils';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
 import { swiperAction } from './SwiperActions'
+import TopBar from '../../utils/TopBar';
 
 export default class SwiperView extends Component {
   constructor (props) {
@@ -57,7 +58,7 @@ export default class SwiperView extends Component {
       this._Position()
   }
 
-//   static navigationOptions = { header: null };
+  static navigationOptions = { header: null };
 
   componentWillUnmount() {
     console.log("SwiperView :componentWillUmmount");
@@ -175,8 +176,10 @@ export default class SwiperView extends Component {
                 onTapCard={this.swipeLeft}
                 cards={this.state.cards}
                 cardIndex={this.state.cardIndex}
-                marginTop={-140}
-                cardVerticalMargin={160}
+                // marginTop={-140}
+                // cardVerticalMargin={160}
+                marginTop={-20}
+                cardVerticalMargin={100}
                 renderCard={this.renderCard}
                 onSwipedAll={this.onSwipedAllCards.bind(this)}
                 stackSize={3}
@@ -256,6 +259,7 @@ export default class SwiperView extends Component {
               >
               {this.showButtons()}
             </Swiper>
+            <TopBar title={'Feed'} navigate={this.props.navigation.navigate}/>
         </View>
         )
     } else {

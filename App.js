@@ -12,7 +12,7 @@ import EditProfile from './src/components/editProfile';
 import PublicProfile from './src/components/PublicProfile';
 import ForgotPage from './src/components/Forgot';
 
-const AppStack = StackNavigator({Home: SwiperView, Profile: Profile, EditProfile: EditProfile, PublicProfile: PublicProfile});
+const AppStack = StackNavigator({Swiper: SwiperView, Home: HomePage, Profile: Profile, EditProfile: EditProfile, PublicProfile: PublicProfile});
 const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage, Forgot: ForgotPage});
 
 export default SwitchNavigator(
