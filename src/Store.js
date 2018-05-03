@@ -58,6 +58,7 @@ class Store {
             email: undefined,
             publicImages420: undefined,
             publicImages420Page: undefined,
+            swiper: undefined,
         };
         popToken(this.state);
         const me = this;
@@ -135,6 +136,12 @@ class Store {
             if (!state)
                 return;
             me.state.email = state.email;
+        });
+        this.SWIPER_EVENT = new Subject();
+        this.SWIPER_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.swiper = state.swiper;
         });
     }
 

@@ -253,5 +253,12 @@ export default styles = StyleSheet.create({
         alignSelf: 'stretch',
         width: undefined,
         height: undefined,
+      },
+      buttonViewContainer: {
+        flex: 1,
+        padding: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
       }
 });

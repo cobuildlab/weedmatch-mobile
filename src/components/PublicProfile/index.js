@@ -137,13 +137,7 @@ export default class PublicProfile extends Component {
 
     showButtons() {
       return (
-          <View style={{
-              flex: 1,
-              padding: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-            }}>
+          <View style={styles.buttonViewContainer}>
               <View>
                 <TouchableOpacity>
                   <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />

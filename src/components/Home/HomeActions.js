@@ -19,8 +19,8 @@ function feedAction(token, state) {
         pagUrl = state.urlPage;
         getFeed(token, state,pagUrl);
 
-    } else if (state.numPage == 0){
-        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud;
+    } else if (state.numPage == 0) {
+        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
         getFeed(token, state,pagUrl);
     }
 }
