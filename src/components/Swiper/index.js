@@ -57,6 +57,8 @@ export default class SwiperView extends Component {
       this._Position()
   }
 
+  static navigationOptions = { header: null };
+
   componentWillUnmount() {
     console.log("SwiperView :componentWillUmmount");
     this.swiperData.unsubscribe();
@@ -92,7 +94,28 @@ export default class SwiperView extends Component {
   renderCard = card => {
     return (
       <View style={styles.card}>
-        <Text style={styles.text}>{card.username}</Text>
+                <View style={styles.viewFlex}>
+                    <View style={styles.viewBackground}>
+                        <Image style={styles.media} source={{uri: card.image_profile}} />
+                    </View>
+                    <View style={styles.viewContainer}>
+                        <View style={styles.viewContainer}>
+                            <Text style={styles.textName}>{card.first_name}, {card.age} </Text>
+                        </View>
+                        <View style={styles.viewContainer}>
+                                <Text style={styles.textContainer}>{card.country.name} </Text>
+                            <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                              <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                            </TouchableOpacity>
+                          </View>
+                        <View style={styles.viewContainer}>
+                            <Text style={styles.textContainer}>{card.distance} </Text>
+                        </View>
+                        <View style={styles.viewContainer}>
+                            <Text style={styles.textContainer}>{card.description} </Text>
+                        </View>
+                    </View>
+                </View>
       </View>
     )
   };

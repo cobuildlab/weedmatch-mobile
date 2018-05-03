@@ -1,4 +1,5 @@
-import { StyleSheet, Platform  } from 'react-native';
+import { StyleSheet, Platform, Dimensions  } from 'react-native';
+var width = Dimensions.get('window').width;
 
 export default styles = StyleSheet.create({
     container: {
@@ -39,5 +40,48 @@ export default styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       padding: 10
-  },
+    },
+    viewFlex: {
+      flex: 1,
+    },
+    viewBackground: {
+      backgroundColor: '#FFF',
+      flex:3
+    },
+    media: {
+      width:null,
+      height:width
+    },
+    viewContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      marginTop: 25,
+    },
+    textName: {
+      marginTop: 15,
+      paddingLeft: 20,
+      fontSize: 16,
+      color: '#333',
+    },
+    textContainer: {
+      marginTop: 10,
+      paddingLeft: 20,
+      fontSize: 16,
+      color: '#333'
+    },
+    TouchableOpacityStyle: {
+      position: 'absolute',
+      width: 50,
+      height: 50,
+      top: -55,
+      alignItems: 'center',
+      justifyContent: 'center',
+      right: 30,
+    },
+    ShowDetail: {
+      resizeMode: 'contain',
+      width: 25,
+      height: 25,
+    },
+
 })
