@@ -57,7 +57,7 @@ export default class SwiperView extends Component {
       this._Position()
   }
 
-  static navigationOptions = { header: null };
+//   static navigationOptions = { header: null };
 
   componentWillUnmount() {
     console.log("SwiperView :componentWillUmmount");
