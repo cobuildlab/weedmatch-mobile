@@ -261,7 +261,6 @@ export default class SwiperView extends Component {
               >
               {this.showButtons()}
             </Swiper>
-            {/* <TopBar title={'Feed'} navigate={this.props.navigation.navigate}/> */}
         </View>
         )
     } else {

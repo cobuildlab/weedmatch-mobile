@@ -11,7 +11,7 @@ import Profile from './src/components/Profile';
 import EditProfile from './src/components/editProfile';
 import PublicProfile from './src/components/PublicProfile';
 import ForgotPage from './src/components/Forgot';
-import Topbar from './topBar';
+import Topbar from './src/utils/TopBar';
 
 const AppStack = StackNavigator({Bar: Topbar, Home: HomePage, Profile: Profile, EditProfile: EditProfile, PublicProfile: PublicProfile});
 const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage, Forgot: ForgotPage});
