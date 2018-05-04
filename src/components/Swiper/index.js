@@ -141,6 +141,10 @@ export default class SwiperView extends Component {
     this.swiper.swipeTop();
   };
 
+  swipeTap = () => {
+    this.props.navigation.navigate('PublicProfile', { userId: this.state.cards[this.swiper.state.firstCardIndex].id_user });
+  };
+
   showButtons() {
     if (!this.state.noCards) {
         return(
@@ -174,7 +178,7 @@ export default class SwiperView extends Component {
                   this.swiper = swiper
                 }}
                 onSwiped={this.onSwiped}
-                onTapCard={this.swipeLeft}
+                onTapCard={this.swipeTap}
                 cards={this.state.cards}
                 cardIndex={this.state.cardIndex}
                 marginTop={-140}
