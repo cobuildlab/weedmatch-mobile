@@ -168,7 +168,7 @@ export default class SwiperView extends Component {
   render () {
     if(this.state.isLoaded) {
         return (
-            <View style={styles.container} ref="Carta">
+            <View style={styles.container}>
               <Swiper
                 ref={swiper => {
                   this.swiper = swiper
