@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import TopBar from './../../utils/TopBar';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
 import {APP_STORE} from '../../Store';
 import {connection, internet, checkConectivity } from '../../utils';
@@ -39,8 +38,6 @@ export default class PublicProfile extends Component {
           dataSource: [],
         };
     }
-
-    static navigationOptions = { header: null };
 
     componentDidMount(){
 
@@ -237,7 +234,6 @@ export default class PublicProfile extends Component {
           } else {
               return (
                 <View style={styles.viewFlex}>
-                    <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
                     <View style={styles.viewBackground}>
                         <Image style={styles.media} source={{uri: rowData.image_profile}} />
                     </View>

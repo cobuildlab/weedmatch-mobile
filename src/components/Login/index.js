@@ -18,7 +18,7 @@ import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg, internet, checkConectivity} from "../../utils";
 
-class LoginPage extends Component {
+export default class LoginPage extends Component {
 
     constructor() {
         super();
@@ -158,7 +158,3 @@ class LoginPage extends Component {
         }
     }
 }
-
-export const IMAGE_HEIGHT = window.width / 2;
-export const IMAGE_WIDTH = window.width;
-export default LoginPage;

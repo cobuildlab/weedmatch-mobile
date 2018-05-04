@@ -141,27 +141,31 @@ export default class SwiperView extends Component {
     this.swiper.swipeTop();
   };
 
+  swipeTap = () => {
+    this.props.navigation.navigate('PublicProfile', { userId: this.state.cards[this.swiper.state.firstCardIndex].id_user });
+  };
+
   showButtons() {
     if (!this.state.noCards) {
-        return(
-            <View style={styles.buttonViewContainer}>
-                <View>
-                    <TouchableOpacity onPress={this.swipeLeft}>
-                    <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity onPress={this.swipeTop}>
-                    <Image source={require('../../assets/img/actions/like.png')} style={{width: 50, height: 50}} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity onPress={this.swipeRight}>
-                    <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
-                    </TouchableOpacity>
-                </View>
-            </View>   
-        );
+      return(
+        <View style={styles.buttonViewContainer}>
+            <View>
+                <TouchableOpacity onPress={this.swipeLeft}>
+                <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
+                </TouchableOpacity>
+            </View>
+            <View>
+                <TouchableOpacity onPress={this.swipeTop}>
+                <Image source={require('../../assets/img/actions/like.png')} style={{width: 50, height: 50}} />
+                </TouchableOpacity>
+            </View>
+            <View>
+                <TouchableOpacity onPress={this.swipeRight}>
+                <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
+                </TouchableOpacity>
+            </View>
+        </View>
+      );
     }
   }
 
@@ -174,7 +178,7 @@ export default class SwiperView extends Component {
                   this.swiper = swiper
                 }}
                 onSwiped={this.onSwiped}
-                onTapCard={this.swipeLeft}
+                onTapCard={this.swipeTap}
                 cards={this.state.cards}
                 cardIndex={this.state.cardIndex}
                 marginTop={-140}
