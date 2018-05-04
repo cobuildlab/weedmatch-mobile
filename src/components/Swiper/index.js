@@ -37,6 +37,7 @@ export default class SwiperView extends Component {
 
   componentDidMount() {
       console.log("SwiperView: componentDidMount");
+      console.log(this.props.navigation);
 
       this.swiperData = APP_STORE.SWIPER_EVENT.subscribe(state => {
         console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
@@ -55,7 +56,7 @@ export default class SwiperView extends Component {
         }
       });
 
-      this._Position()
+      this._position()
   }
 
   static navigationOptions = { header: null };
@@ -65,7 +66,7 @@ export default class SwiperView extends Component {
     this.swiperData.unsubscribe();
   }
 
-  _Position() {
+  _position() {
     navigator.geolocation.getCurrentPosition(
      (position) => {
 
@@ -95,28 +96,28 @@ export default class SwiperView extends Component {
   renderCard = card => {
     return (
       <View style={styles.card}>
-                <View style={styles.viewFlex}>
-                    <View style={styles.viewBackground}>
-                        <Image style={styles.media} source={{uri: card.image_profile}} />
-                    </View>
-                    <View style={styles.viewContainer}>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textName}>{card.first_name}, {card.age} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
-                                <Text style={styles.textContainer}>{card.country.name} </Text>
-                            <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                              <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                            </TouchableOpacity>
-                          </View>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textContainer}>{card.distance} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textContainer}>{card.description} </Text>
-                        </View>
-                    </View>
+        <View style={styles.viewFlex}>
+            <View style={styles.viewBackground}>
+                <Image style={styles.media} source={{uri: card.image_profile}} />
+            </View>
+            <View style={styles.viewContainer}>
+                <View style={styles.viewContainer}>
+                    <Text style={styles.textName}>{card.first_name}, {card.age} </Text>
                 </View>
+                <View style={styles.viewContainer}>
+                        <Text style={styles.textContainer}>{card.country.name} </Text>
+                    <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                    </TouchableOpacity>
+                    </View>
+                <View style={styles.viewContainer}>
+                    <Text style={styles.textContainer}>{card.distance} </Text>
+                </View>
+                <View style={styles.viewContainer}>
+                    <Text style={styles.textContainer}>{card.description} </Text>
+                </View>
+            </View>
+        </View>
       </View>
     )
   };
@@ -176,10 +177,11 @@ export default class SwiperView extends Component {
                 onTapCard={this.swipeLeft}
                 cards={this.state.cards}
                 cardIndex={this.state.cardIndex}
-                // marginTop={-140}
-                // cardVerticalMargin={160}
-                marginTop={-20}
-                cardVerticalMargin={100}
+                marginTop={-140}
+                cardVerticalMargin={160}
+                // Cuando no hay Header
+                // marginTop={-20}
+                // cardVerticalMargin={100}
                 renderCard={this.renderCard}
                 onSwipedAll={this.onSwipedAllCards.bind(this)}
                 stackSize={3}
@@ -259,7 +261,7 @@ export default class SwiperView extends Component {
               >
               {this.showButtons()}
             </Swiper>
-            <TopBar title={'Feed'} navigate={this.props.navigation.navigate}/>
+            {/* <TopBar title={'Feed'} navigate={this.props.navigation.navigate}/> */}
         </View>
         )
     } else {

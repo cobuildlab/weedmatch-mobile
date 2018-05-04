@@ -70,6 +70,8 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Roboto_medium.ttf</string>
+		<string>Roboto.ttf</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Weedmatch requires access to your camera to take photos.</string>
@@ -77,18 +79,18 @@
 	<string>Weedmatch requires access to your camera to take videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Weedmatch requires access to your photo library to upload photos.</string>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb1657894947628619</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>1657894947628619</string>
-  <key>FacebookDisplayName</key>
-  <string>WeedMatch app</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1657894947628619</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1657894947628619</string>
+	<key>FacebookDisplayName</key>
+	<string>WeedMatch app</string>
 </dict>
 </plist>

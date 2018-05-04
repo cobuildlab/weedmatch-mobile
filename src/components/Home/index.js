@@ -395,7 +395,7 @@ export default class HomePage extends Component {
     if(isLoaded){
       return (
         <View style={styles.containerFlex}>
-          <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
+          {/* <TopBar title={'Feed'} navigate={this.props.navigation.navigate} /> */}
           {this.renderFeed()}
           {this.showButton()}
           {this.showActivity()}
@@ -456,7 +456,6 @@ export default class HomePage extends Component {
     } else {
       return (
         <View style={styles.containerFlex}>
-          <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#9605CC" />
           </View>
