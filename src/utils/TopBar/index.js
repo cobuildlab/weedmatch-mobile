@@ -37,20 +37,21 @@ export default class TopBar extends Component {
 
   render() {
     return (
-      <Container>
-        <Tabs 
-        initialPage={0}
-        locked={true}
-        onChangeTab={ (event) => {this.setState({ activePage: event.i })} }
-        tabBarUnderlineStyle={{backgroundColor: null}}
-        >
-          <Tab heading={<TabHeading>{this.getSwiperImage()}</TabHeading>}>
-            <Swiper navigation={this.props.navigation}/>
-          </Tab>
-          <Tab heading={<TabHeading>{this.getFeedImage()}</TabHeading>}>
-            <Home navigation={this.props.navigation}/>
-          </Tab>
-      </Tabs>
+      <Container style={{backgroundColor: '#fff'}}>
+        <Tabs
+          initialPage={0}
+          locked={true}
+          onChangeTab={ (event) => {this.setState({ activePage: event.i })} }
+          tabBarUnderlineStyle={{backgroundColor: '#fff'}}
+          tabContainerStyle={{paddingTop: 35, paddingBottom: 20, marginRight: 130, marginLeft: 130, backgroundColor: '#fff', borderColor: 'transparent', }}
+          >
+            <Tab heading={<TabHeading>{this.getSwiperImage()}</TabHeading>}>
+              <Swiper navigation={this.props.navigation}/>
+            </Tab>
+            <Tab heading={<TabHeading>{this.getFeedImage()}</TabHeading>}>
+              <Home navigation={this.props.navigation}/>
+            </Tab>
+        </Tabs>
       </Container>
     );
   }

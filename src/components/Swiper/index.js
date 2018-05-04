@@ -2,13 +2,13 @@ import React, {Component} from 'react'
 import Swiper from 'react-native-deck-swiper'
 import { Button,
          StyleSheet,
-         Text, 
-         View, 
+         Text,
+         View,
          Alert,
          TouchableOpacity,
          Image,
          ActivityIndicator,
-        } 
+        }
 from 'react-native'
 import styles from './style';
 import { internet, checkConectivity } from '../../utils';
@@ -73,7 +73,7 @@ export default class SwiperView extends Component {
          this.setState({
            latitud: position.coords.latitude.toFixed(6),
            longitud: position.coords.longitude.toFixed(6),
-         },() => { 
+         },() => {
            this._swiperData();
          })
      },
@@ -160,7 +160,7 @@ export default class SwiperView extends Component {
                     <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
                     </TouchableOpacity>
                 </View>
-            </View>   
+            </View>
         );
     }
   }
@@ -185,6 +185,7 @@ export default class SwiperView extends Component {
                 renderCard={this.renderCard}
                 onSwipedAll={this.onSwipedAllCards.bind(this)}
                 stackSize={3}
+                backgroundColor={'#fff'}
                 stackSeparation={15}
                 overlayLabels={{
                   bottom: {

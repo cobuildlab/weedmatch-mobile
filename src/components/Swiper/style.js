@@ -4,7 +4,7 @@ var width = Dimensions.get('window').width;
 export default styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#F5FCFF',
+      backgroundColor: '#888',
       alignItems: 'flex-start',
     },
     card: {
@@ -13,7 +13,8 @@ export default styles = StyleSheet.create({
       borderWidth: 2,
       borderColor: '#E8E8E8',
       justifyContent: 'center',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      paddingBottom: 25,
     },
     text: {
       textAlign: 'center',

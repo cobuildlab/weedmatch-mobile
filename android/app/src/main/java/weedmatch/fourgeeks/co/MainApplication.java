@@ -11,6 +11,14 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.toast.RCTToastPackage;
+import com.beefe.picker.PickerViewPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -58,6 +66,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new VectorIconsPackage(),
+            new RCTToastPackage(),
+            new PickerViewPackage(),
+            new PickerPackage(),
+            new RNI18nPackage(),
+            new RNFetchBlobPackage(),
+            new FBSDKPackage(),
+            new RNDeviceInfo(),
             new VectorIconsPackage(),
             new RCTToastPackage(),
             new PickerViewPackage(),
