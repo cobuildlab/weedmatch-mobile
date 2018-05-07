@@ -22,7 +22,6 @@ export default class SwiperView extends Component {
     super(props)
     this.state = {
       cards: [],
-      cardIndex: 0,
       noCards: false,
       latitud: '',
       longitud: '',
@@ -33,6 +32,8 @@ export default class SwiperView extends Component {
       loading: true,
       refreshing: false,
     }
+
+    this.cardIndex = 0;
   }
 
   componentDidMount() {
@@ -97,26 +98,26 @@ export default class SwiperView extends Component {
     return (
       <View style={styles.card}>
         <View style={styles.viewFlex}>
-            <View style={styles.viewBackground}>
-                <Image style={styles.media} source={{uri: card.image_profile}} />
+          <View style={styles.viewBackground}>
+              <Image style={styles.media} source={{uri: card.image_profile}} />
+          </View>
+          <View style={styles.viewContainer}>
+            <View style={styles.viewContainer}>
+                <Text style={styles.textName}>{card.first_name}, {card.age} </Text>
             </View>
             <View style={styles.viewContainer}>
-                <View style={styles.viewContainer}>
-                    <Text style={styles.textName}>{card.first_name}, {card.age} </Text>
-                </View>
-                <View style={styles.viewContainer}>
-                        <Text style={styles.textContainer}>{card.country.name} </Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                    </TouchableOpacity>
-                    </View>
-                <View style={styles.viewContainer}>
-                    <Text style={styles.textContainer}>{card.distance} </Text>
-                </View>
-                <View style={styles.viewContainer}>
-                    <Text style={styles.textContainer}>{card.description} </Text>
-                </View>
+                <Text style={styles.textContainer}>{card.country.name}</Text>
+                <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                    <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                </TouchableOpacity>
             </View>
+            <View style={styles.viewContainer}>
+              <Text style={styles.textContainer}>{card.distance} </Text>
+            </View>
+            <View style={styles.viewContainer}>
+              <Text style={styles.textContainer}>{card.description} </Text>
+            </View>
+          </View>
         </View>
       </View>
     )
@@ -128,6 +129,10 @@ export default class SwiperView extends Component {
         noCards: true,
     });
   }
+
+  onSwipe() {
+    this.cardIndex = this.cardIndex + 1;
+  };
 
   swipeLeft = () => {
     this.swiper.swipeLeft()
@@ -147,25 +152,25 @@ export default class SwiperView extends Component {
 
   showButtons() {
     if (!this.state.noCards) {
-        return(
-            <View style={styles.buttonViewContainer}>
-                <View>
-                    <TouchableOpacity onPress={this.swipeLeft}>
-                    <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity onPress={this.swipeTop}>
-                    <Image source={require('../../assets/img/actions/like.png')} style={{width: 50, height: 50}} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity onPress={this.swipeRight}>
-                    <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
-                    </TouchableOpacity>
-                </View>
+      return(
+        <View style={styles.buttonViewContainer}>
+            <View>
+                <TouchableOpacity onPress={this.swipeLeft}>
+                <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
+                </TouchableOpacity>
             </View>
-        );
+            <View>
+                <TouchableOpacity onPress={this.swipeTop}>
+                <Image source={require('../../assets/img/actions/like.png')} style={styles.imageSize} />
+                </TouchableOpacity>
+            </View>
+            <View>
+                <TouchableOpacity onPress={this.swipeRight}>
+                <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
+                </TouchableOpacity>
+            </View>
+        </View>
+      );
     }
   }
 
@@ -178,10 +183,15 @@ export default class SwiperView extends Component {
                   this.swiper = swiper
                 }}
                 disableBottomSwipe={true}
-                onSwiped={this.onSwiped}
                 onTapCard={this.swipeTap}
+
+                onSwiped={(cardIndex) => this.onSwipe()}
+                onSwipedLeft={(cardIndex) => this.swipeLeft}
+                onSwipedRight={(cardIndex) => this.swipeRight}
+                onSwipedTop={(cardIndex) => this.swipeTop}
+
                 cards={this.state.cards}
-                cardIndex={this.state.cardIndex}
+                cardIndex={this.cardIndex}
                 marginTop={-140}
                 cardVerticalMargin={160}
                 // Cuando no hay Header

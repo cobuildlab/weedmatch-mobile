@@ -84,5 +84,9 @@ export default styles = StyleSheet.create({
       width: 25,
       height: 25,
     },
+    imageSize: {
+      width: 50, 
+      height: 50
+    }
 
 })

@@ -240,7 +240,6 @@ export default styles = StyleSheet.create({
         fontSize: 40,
       },
       customSlide: {
-        backgroundColor: 'green',
         alignItems: 'center',
         justifyContent: 'center',
       },
