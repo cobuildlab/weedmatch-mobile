@@ -177,6 +177,7 @@ export default class SwiperView extends Component {
                 ref={swiper => {
                   this.swiper = swiper
                 }}
+                disableBottomSwipe={true}
                 onSwiped={this.onSwiped}
                 onTapCard={this.swipeTap}
                 cards={this.state.cards}
