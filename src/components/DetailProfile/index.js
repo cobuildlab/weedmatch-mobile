@@ -56,7 +56,6 @@ export default class PublicProfile extends Component {
     _publicProfile() {
         const { params } = this.props.navigation.state;
         const userId = params ? params.userId : null;
-
         publicProfileAction(APP_STORE.getToken(), userId)
 
         if (connection) {

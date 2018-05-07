@@ -12,7 +12,6 @@ import {
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
-    ToastAndroid,
     TouchableWithoutFeedback
 } from 'react-native';
 import { strings } from "../../i18n";
