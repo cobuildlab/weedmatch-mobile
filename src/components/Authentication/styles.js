@@ -87,7 +87,7 @@ export default styles = StyleSheet.create({
         borderRadius: 50,
         alignItems: 'center',
         // backgroundColor: '#c646b6',
-          backgroundColor: '#9605CC',
+        backgroundColor: '#9605CC',
     },
     scrollContainer: {
         backgroundColor: '#fff',
@@ -103,8 +103,8 @@ export default styles = StyleSheet.create({
     zIndex: 999,
     },
     imgIconProfile:{
-      width: 26,
-      height: 26
+      width: 28,
+      height: 28,
     },
 
     buttomIconMsg:{

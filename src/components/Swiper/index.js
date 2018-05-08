@@ -107,9 +107,6 @@ export default class SwiperView extends Component {
             </View>
             <View style={styles.viewContainer}>
                 <Text style={styles.textContainer}>{card.country.name}</Text>
-                <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                    <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                </TouchableOpacity>
             </View>
             <View style={styles.viewContainer}>
               <Text style={styles.textContainer}>{card.distance} </Text>
@@ -203,37 +200,37 @@ export default class SwiperView extends Component {
                 backgroundColor={'#fff'}
                 stackSeparation={15}
                 overlayLabels={{
-                  bottom: {
-                    title: 'BLEAH',
-                    style: {
-                      label: {
-                        backgroundColor: 'black',
-                        borderColor: 'black',
-                        color: 'white',
-                        borderWidth: 1
-                      },
-                      wrapper: {
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }
-                    }
-                  },
+                  // bottom: {
+                  //   title: 'BLEAH',
+                  //   style: {
+                  //     label: {
+                  //       backgroundColor: 'black',
+                  //       borderColor: 'black',
+                  //       color: 'white',
+                  //       borderWidth: 1
+                  //     },
+                  //     wrapper: {
+                  //       flexDirection: 'column',
+                  //       alignItems: 'center',
+                  //       justifyContent: 'center'
+                  //     }
+                  //   }
+                  // },
                   left: {
                     title: 'NOPE',
                     style: {
                       label: {
-                        backgroundColor: 'black',
-                        borderColor: 'black',
-                        color: 'white',
-                        borderWidth: 1
+                        // backgroundColor: 'black',
+                        borderColor: '#dc3644',
+                        color: '#dc3644',
+                        borderWidth: 5,
                       },
                       wrapper: {
                         flexDirection: 'column',
                         alignItems: 'flex-end',
                         justifyContent: 'flex-start',
-                        marginTop: 30,
-                        marginLeft: -30
+                        marginTop: 25,
+                        marginLeft: -25,
                       }
                     }
                   },
@@ -241,17 +238,17 @@ export default class SwiperView extends Component {
                     title: 'LIKE',
                     style: {
                       label: {
-                        backgroundColor: 'black',
-                        borderColor: 'black',
-                        color: 'white',
-                        borderWidth: 1
+                        // backgroundColor: 'black',
+                        borderColor: '#74c044',
+                        color: '#74c044',
+                        borderWidth: 5,
                       },
                       wrapper: {
                         flexDirection: 'column',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        marginTop: 30,
-                        marginLeft: 30
+                        marginTop: 25,
+                        marginLeft: 25
                       }
                     }
                   },
@@ -259,10 +256,10 @@ export default class SwiperView extends Component {
                     title: 'SUPER LIKE',
                     style: {
                       label: {
-                        backgroundColor: 'black',
-                        borderColor: 'black',
-                        color: 'white',
-                        borderWidth: 1
+                        // backgroundColor: 'black',
+                        borderColor: '#9605CC',
+                        color: '#9605CC',
+                        borderWidth: 5
                       },
                       wrapper: {
                         flexDirection: 'column',

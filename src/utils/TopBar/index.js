@@ -53,7 +53,6 @@ export default class TopBar extends Component {
           tabBarUnderlineStyle={{backgroundColor: '#fff'}}
           tabContainerStyle={{paddingTop: 35, paddingBottom: 20, marginRight: 130, marginLeft: 130, backgroundColor: '#fff', borderColor: 'transparent', }}
           >
-
             <Tab heading={<TabHeading>{this.getSwiperImage()}</TabHeading>}>
               <Swiper navigation={this.props.navigation}/>
             </Tab>
