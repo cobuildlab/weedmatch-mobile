@@ -7,6 +7,8 @@ import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
+const DOUBLE_PRESS_DELAY = 300;
+
 function feedAction(token, state) {
 
     console.log(`homeAction: ${token}, ${state}`);
@@ -17,8 +19,8 @@ function feedAction(token, state) {
         pagUrl = state.urlPage;
         getFeed(token, state,pagUrl);
 
-    } else if (state.numPage == 0){
-        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&logitud=' + state.longitud;
+    } else if (state.numPage == 0) {
+        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
         getFeed(token, state,pagUrl);
     }
 }
@@ -55,7 +57,7 @@ function uploadAction(token, state) {
 
     userService.publicImage(token, state)
         .then(async (response) => {
-            console.log(`uploadAction: ${token}, ${state}`, response);
+            console.log(`uploadAction: ${token}, ${state.time}`, response);
             const json = await response.json();
             console.log(`uploadAction:JSON:`, json);
             if (response.ok) {
@@ -81,6 +83,18 @@ function likeAction(token, id, id_user, like,row) {
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         });
+}
+
+function handleImagePress(idImage,id_user,like,row) {
+    const now = new Date().getTime();
+    
+    if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
+      delete this.lastImagePress;
+      likeAction(APP_STORE.getToken(),idImage,id_user,like,row);
+    }
+    else {
+      this.lastImagePress = now;
+    }
 }
 
 function calculateTime(rowData) {
@@ -109,4 +123,4 @@ function calculateTime(rowData) {
 
 }
 
-export { feedAction, uploadAction, likeAction, calculateTime, appendData };
+export { feedAction, uploadAction, likeAction, calculateTime, appendData,handleImagePress };

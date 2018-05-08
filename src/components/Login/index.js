@@ -16,9 +16,9 @@ import {APP_STORE} from '../../Store';
 import {loginAction} from './LoginActions';
 import styles from './style';
 import {strings} from '../../i18n';
-import {isValidText, toastMsg, connection, internet} from "../../utils";
+import {isValidText, toastMsg, internet, checkConectivity} from "../../utils";
 
-class LoginPage extends Component {
+export default class LoginPage extends Component {
 
     constructor() {
         super();
@@ -66,7 +66,7 @@ class LoginPage extends Component {
     }
 
     userLogin() {
-        if (connection) {
+        if (checkConectivity()) {
             this.setState({isLoading: true});
             loginAction(this.state.username, this.state.password)
         } else {
@@ -78,7 +78,7 @@ class LoginPage extends Component {
         const {isLoading} = this.state;
         if (isLoading) {
             return (
-                    <View style={styles.teclado}>
+                <View style={styles.teclado}>
                     <Image
                         style={styles.container}
                         source={require('../../assets/img/logo-b.png')}
@@ -98,65 +98,63 @@ class LoginPage extends Component {
                     <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
                         <Text> {strings('login.redes')} </Text>
                     </TouchableOpacity>
-                    </View>
+                </View>
             )
         } else {
             return (
                 <ScrollView style={styles.containerView}>
-                <View style={styles.teclado}>
-                    <Image
-                        style={styles.container}
-                        source={require('../../assets/img/logo-b.png')}/>
+                  <View style={styles.teclado}>
+                      <Image
+                          style={styles.container}
+                          source={require('../../assets/img/logo-b.png')}/>
 
-                    <View style={styles.contentLogin}>
-                        <Text style={styles.textLight}>
-                            {strings('main.title')}
-                        </Text>
-                        <Text style={styles.textBold}>
-                            {strings('wmatch')}
-                        </Text>
-                    </View>
-                    <TextInput
-                        style={styles.inputStyle}
-                        editable={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(username) => this.setState({username})}
-                        placeholder={strings('register.username')}
-                        ref='username'
-                        returnKeyType='next'
-                        value={this.state.username}
-                    />
+                      <View style={styles.contentLogin}>
+                          <Text style={styles.textRegister}>
+                              {strings('main.login')}
+                          </Text>
 
-                    <TextInput
-                        style={styles.inputStyle}
-                        editable={true}
-                        underlineColorAndroid='transparent'
-                        onChangeText={(password) => this.setState({password})}
-                        placeholder={strings('register.password')}
-                        ref='password'
-                        returnKeyType='next'
-                        secureTextEntry={true}
-                        value={this.state.password} />
+                      </View>
+                      <TextInput
+                          style={styles.inputStyle}
+                          editable={true}
+                          underlineColorAndroid='transparent'
+                          onChangeText={(username) => this.setState({username})}
+                          placeholder={strings('register.username')}
+                          returnKeyType = {"next"}
+                          ref='username'
+                          onSubmitEditing={() => { this.passwordInput.focus(); }}
+                          blurOnSubmit={false}
+                          value={this.state.username}
+                      />
 
+                      <TextInput
+                          style={styles.inputStyle}
+                          editable={true}
+                          underlineColorAndroid='transparent'
+                          onChangeText={(password) => this.setState({password})}
+                          placeholder={strings("register.password")}
+                          ref={(input) => { this.passwordInput = input; }}
+                          returnKeyType = {"next"}
+                          secureTextEntry={true}
+                          value={this.state.password}
+                          onSubmitEditing={() => { this.userLogin(); }}
+                          blurOnSubmit={false}
+                      />
 
-                    <TouchableOpacity
-                        style={styles.buttomLoginStyle}
-                        onPress={this.userLogin.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this._forgotScreen.bind(this)}>
-                        <Text> {strings('login.forgot')} </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
-                        <Text> {strings('login.redes')} </Text>
-                    </TouchableOpacity>
-                </View>
+                      <TouchableOpacity
+                          style={styles.buttomLoginStyle}
+                          onPress={this.userLogin.bind(this)}>
+                          <Text style={styles.buttonText}>{strings('login.login')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.buttomBackLogin} onPress={this._forgotScreen.bind(this)}>
+                          <Text> {strings('login.forgot')} </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.buttomBackLogin} onPress={this.popScreen.bind(this)}>
+                          <Text> {strings('login.redes')} </Text>
+                      </TouchableOpacity>
+                  </View>
                 </ScrollView>
             );
         }
     }
 }
-
-export const IMAGE_HEIGHT = window.width / 2;
-export const IMAGE_WIDTH = window.width;
-export default LoginPage;

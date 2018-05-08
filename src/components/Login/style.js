@@ -18,6 +18,11 @@ export default styles = StyleSheet.create({
     marginTop: 35,
     color: '#9605CC',
   },
+  textRegister: {
+      fontSize: 26,
+      color: '#9605CC',
+      marginBottom: 30,
+  },
   textBold: {
     fontSize: 20,
     marginBottom: 35,

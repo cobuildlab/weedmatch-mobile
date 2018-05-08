@@ -18,12 +18,17 @@ export default styles = StyleSheet.create({
         position: 'absolute',
         width: 50,
         height: 50,
+        top: -55,
         alignItems: 'center',
         justifyContent: 'center',
         right: 30,
-        bottom: 30,
     },
-    FloatingButtonStyle: {
+    ShowDetail: {
+        resizeMode: 'contain',
+        width: 25,
+        height: 25,
+    },
+    ShowPublic: {
         resizeMode: 'contain',
         width: 50,
         height: 50,
@@ -160,7 +165,13 @@ export default styles = StyleSheet.create({
     },
     viewContainer: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginTop: 25,
+    },
+    viewContainerPlus: {
+        flex: 1,
+        flexDirection: 'column',
+        marginTop: -25,
     },
     viewFlex: {
         flex: 1,
@@ -168,21 +179,85 @@ export default styles = StyleSheet.create({
     viewFlexDirection: {
         flexDirection: 'row'
     },
-
     viewBackground: {
         backgroundColor: '#FFF',
         flex:3
     },
     textName: {
         marginTop: 15,
-        paddingLeft: 20, 
-        fontSize: 16, 
+        paddingLeft: 20,
+        fontSize: 16,
         color: '#333',
     },
     textContainer: {
-        marginTop: 10, 
-        paddingLeft: 20, 
-        fontSize: 16, 
+        marginTop: 10,
+        paddingLeft: 20,
+        fontSize: 16,
         color: '#333'
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+      },
+      slider: { backgroundColor: '#000', height: 350 },
+      content1: {
+        width: '100%',
+        height: 50,
+        marginBottom: 10,
+        backgroundColor: '#000',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      content2: {
+        width: '100%',
+        height: 100,
+        marginTop: 10,
+        backgroundColor: '#000',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      contentText: { color: '#fff' },
+      buttons: {
+        zIndex: 1,
+        height: 15,
+        marginTop: -25,
+        marginBottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+      },
+      button: {
+        margin: 3,
+        width: 15,
+        height: 15,
+        opacity: 0.9,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      buttonSelected: {
+        opacity: 1,
+        color: 'white',
+        fontSize: 40,
+      },
+      customSlide: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      customImage: {
+        width: 100,
+        height: 100,
+      },
+      imageView: {
+        flex: 1,
+        alignSelf: 'stretch',
+        width: undefined,
+        height: undefined,
+      },
+      buttonViewContainer: {
+        flex: 1,
+        padding: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+      }
 });

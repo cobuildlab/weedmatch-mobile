@@ -45,9 +45,6 @@ function publicImage(token, state) {
 }
 
 function publicImageLike(token, id, id_user, like) {
-    let  valueLike = {
-        "like": like
-    }
 
     const data = new FormData();
     data.append('like', like);

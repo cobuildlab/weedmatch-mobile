@@ -2,14 +2,19 @@
   "wmatch": "CANNABIS",
   "login": {
     "welcome": "Welcome {{name}} to our localized app!",
-    "signup_button": "¿No tienes cuenta? ¡Únete!",
-    "login": "Inicia Sesión",
+    "signup_button": "¿Eres Miembro? Inicia Sesión",
+    "login": "Iniciar Sesión",
+    "register": "Crear Cuenta",
     "redes": "Iniciar Sesión con Redes Sociales",
+    "facebook": "Iniciar con Facebook",
     "forgot": "Recuperar Contraseña",
     "required_fields_error": "El usuario y la clave son necesarios"
   },
   "register": {
-    "register": "Registrate",
+    "paso1": "Continuar",
+    "facebook": "Continuar con Facebook",
+    "textFacebook": "No publicamos nada en tú facebook",
+    "opt": "Ó También",
     "terms": "Terminos y Condiciones",
     "fullName": "Nombre Completo",
     "errorFullName": "Nombre Completo Inválido",
@@ -26,10 +31,17 @@
     "errorSex": "Sexo Inválido",
     "errorAge": "Edad Inválida",
     "errorTitle": "Registro Fallido",
-    "successTitle": "Registrado Exitosamente"
+    "successTitle": "Registrado Exitosamente",
+    "photo": "Subir Imagen",
+    "sexRequired": "Sexo es requerido",
+    "imageRequired": "Imagen es requerida",
+    "ageRequired": "Fecha de Nacimiento es requerida"
   },
   "main": {
     "title": "UNIENDO AMANTES DEL",
+    "register": "Registro",
+    "login": "Iniciar Sesión",
+    "recover": "Recuperar Contraseña",
     "internet": "No hay conexión a Internet"
   },
   "home": {

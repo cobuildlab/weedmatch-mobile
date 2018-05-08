@@ -15,19 +15,18 @@ import {
     ToastAndroid,
     TouchableWithoutFeedback
 } from 'react-native';
-
-import {strings} from "../../i18n";
-import {registerAction, createDateData} from "./RegisterActions";
-import {APP_STORE} from "../../Store";
-import ValidationComponent from '../../utils/ValidationComponent';
+import { strings } from "../../i18n";
+import { registerAction, createDateData, validateEmail } from "./RegisterActions";
+import { APP_STORE } from "../../Store";
 import styles from './style';
-import {toastMsg,connection,internet} from "../../utils";
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import { toastMsg, connection, internet, checkConectivity } from "../../utils";
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import Picker from 'react-native-picker';
-// import validate from 'validate.js';
 import validate from './validate_wrapper';
+import ImagePicker from 'react-native-image-crop-picker';
+import ActionSheet from 'react-native-actionsheet';
 
-class RegisterPage extends ValidationComponent {
+class RegisterPage extends Component {
 
     constructor(props) {
         super(props);
@@ -35,14 +34,20 @@ class RegisterPage extends ValidationComponent {
         this.state = {
             full_name: '',
             email: '',
-            username: '',
             password: '',
             latitud: '',
             longitud: '',
             age: '',
             sex: 'Hombre',
+            image: '',
             isLoading: false,
-            year: ''
+            year: '',
+            step: 1,
+            emailError: '',
+            full_nameError: '',
+            passwordError: '',
+            ageError: '',
+            sexError: ''
         };
     }
 
@@ -82,7 +87,23 @@ class RegisterPage extends ValidationComponent {
             }
             if (state.success) {
                 toastMsg(strings("register.successTitle"));
+                this.setState({isLoading: false});
                 this.props.navigation.goBack();
+            }
+        });
+        this.event = APP_STORE.EMAIL_EVENT.subscribe(state => {
+            this.setState({isLoading: true});
+            if (state.error) {
+                this.setState({isLoading: false});
+                toastMsg((state.error));
+            return;
+            }
+            if (state.success) {
+               this.setState({isLoading: false});
+               this.setState({
+                   step: 2
+               });
+               this.event.unsubscribe();
             }
         });
     }
@@ -97,76 +118,26 @@ class RegisterPage extends ValidationComponent {
         this.event.unsubscribe();
     }
 
-    registerUser() {
-        /*
-        * Validating Form with rules
-        */
-        this.validate({
-            username:  {required: true, minlength:6, maxlength:12},
-            password:  {required: true, minlength:6, maxlength:20},
-            full_name: {required: true, minlength:3, maxlength:30},
-            email:     {required: true, email: true},
-            age:       {date: 'YYYY-MM-dd', require: true}
-        });
-        if(this.isFormValid()){
-            this.setState({isLoading: true});
-            if (connection) {
-                registerAction(this.state.full_name, this.state.email, this.state.username, this.state.password,
-                    parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age)
-            } else {
-                internet();
-            }
-        } else {
-            if(this.state.full_name !== '' || this.state.email !== '' || this.state.username !== '' || this.state.password !== '' || this.state.age !== ''){
-                if(this.isFieldInError('full_name')){
-                    this.getErrorsInField('full_name').map((result) => toastMsg(result))
-                    return
-                }
-                // if(this.isFieldInError('email')){
-                //     this.getErrorsInField('email').map((result) => toastMsg(result))
-                //     return
-                // }
-
-                var msg = validate('email', this.state.email);
-
-                if  (msg) {
-                    toastMsg(msg);
-                    return;
-                }
-
-                if(this.isFieldInError('age')){
-                    this.getErrorsInField('age').map((result) => toastMsg(result))
-                    return
-                }
-                if(this.isFieldInError('sex')){
-                    this.getErrorsInField('sex').map((result) => toastMsg(result))
-                    return
-                }
-                if(this.isFieldInError('username')){
-                    this.getErrorsInField('username').map((result) => toastMsg(result))
-                    return
-                }
-                if(this.isFieldInError('password')){
-                    this.getErrorsInField('password').map((result) => toastMsg(result))
-                    return
-                }
-
-            } else {
-                toastMsg(strings("register.allInputs"))
-            }
+    _registerUser() {
+        console.log('RegisterUser');
+        this.setState({isLoading: true});
+        if (checkConectivity()) {
+            registerAction(this.state.full_name, this.state.email, this.state.password,
+                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age, this.state.image)
+        } else {
+            internet();
         }
     }
 
-        _showDatePicker() {
-            Picker.init({
-                pickerData: createDateData(),
-                pickerFontColor: [153, 0 ,204, 1],
-                pickerToolBarBg:[232, 232, 232, 1],
-                pickerTitleText: '',
-                pickerConfirmBtnColor: [153, 0 ,204, 1],
-                pickerCancelBtnColor: [153, 0 ,204, 1],
-                pickerBg: [226, 226, 226, 1],
-
+    _showDatePicker() {
+        Picker.init({
+            pickerData: createDateData(),
+            pickerFontColor: [153, 0 ,204, 1],
+            pickerToolBarBg:[232, 232, 232, 1],
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [153, 0 ,204, 1],
+            pickerCancelBtnColor: [153, 0 ,204, 1],
+            pickerBg: [255, 255, 255, 1],
                 onPickerConfirm: (pickedValue, pickedIndex) => {
                     var month = '';
                     var day = '';
@@ -191,105 +162,235 @@ class RegisterPage extends ValidationComponent {
                     console.log('date3', pickedValue, pickedIndex);
                 }
             });
-            Picker.show();
-        }
+        Picker.show();
+    }
 
-    registerCancel() {
+    _registerCancel() {
         this.props.navigation.goBack();
     }
 
+    _maleSelect() {
+        this.setState({
+            sex: 'Hombre'
+        })
+    }
+
+    _femaleSelect() {
+        this.setState({
+            sex: 'Mujer'
+        })
+    }
+
+    _nextStep() {
+        const emailError     = validate('email', this.state.email);
+        const full_nameError = validate('full_name', this.state.full_name);
+        const passwordError  = validate('password', this.state.password);
+
+        if(full_nameError){
+            toastMsg(full_nameError)
+            return false
+        }
+        if(emailError){
+            toastMsg(emailError)
+            return false
+        }else{
+            if(this.state.step  == 1){
+                this.setState({isLoading: true});
+                validateEmail({"email": this.state.email})
+            }
+        }
+        if(passwordError){
+            toastMsg(passwordError)
+            return false
+        }
+        if(this.state.step == 2){
+            if(this.state.age == ''){
+                toastMsg(strings("register.ageRequired"))
+                return false
+            }
+            if(this.state.sex == ''){
+                toastMsg(strings("register.sexRequired"))
+                return false
+            }else{
+                this.setState({
+                    step: this.state.step + 1
+                });
+            }
+        }
+
+        if(this.state.step === 3){
+            if(this.state.image == ''){
+                toastMsg(strings("register.imageRequired"))
+                return false
+            }else{
+                this._registerUser();
+            }
+        }
+    }
+
+    _showActivity() {
+        return (
+          <View>
+            <ActionSheet
+              ref={o => this.ActionSheet = o}
+              title={strings("home.actionSheet")}
+              options={[
+                strings("home.camera"),
+                strings("home.biblio"),
+                strings("home.cancel"),
+              ]}
+              cancelButtonIndex={2}
+              onPress={(index) => {
+
+                switch(index) {
+                  case 0:
+                    this._takePhoto();
+                    break;
+                  case 1:
+                    this._getPhoto();
+                    break;
+                  default:
+                    break;
+                }
+               }}
+            />
+          </View>
+        );
+    }
+
+    _getPhoto() {
+        ImagePicker.openPicker({
+          cropping: false,
+          width: 500,
+          height: 500,
+          compressImageQuality: 0.5,
+          includeExif: true,
+          }).then(image => {
+          console.log('received image', image.path);
+          this.setState({
+            image: image.path
+          });
+        }).catch(e => alert(e));
+    }
+
+    _takePhoto() {
+        ImagePicker.openCamera({
+          cropping: false,
+          width: 500,
+          height: 500,
+          compressImageQuality: 0.5,
+          includeExif: true,
+          }).then(image => {
+          console.log('received image', image.path);
+          this.setState({
+            image: image.path
+          });
+
+        }).catch(e => alert(e));
+    }
+
     render() {
-        var radio_props = [
-          {label: strings("register.male"), value: 'Hombre' },
-          {label: strings("register.female"), value: 'Mujer' }
-        ];
-        const {isLoading} = this.state;
+        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#0000ff"/>;
         if (!isLoading) {
             body = <View>
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(full_name) => this.setState({full_name})}
-                    placeholder={strings("register.fullName")}
-                    returnKeyType = {"next"}
-                    value={this.state.full_name}
-                    onSubmitEditing={() => { this.emailInput.focus(); }}
-                    blurOnSubmit={false}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(email) => this.setState({email})}
-                    placeholder={strings("register.email")}
-                    ref={(input) => { this.emailInput = input; }}
-                    returnKeyType = {"next"}
-                    value={this.state.email}
-                    onSubmitEditing={() => { this._showDatePicker(); }}
-                    blurOnSubmit={false}
-                />
-                <View style={styles.inputStyleFecha}>
-                    <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
-                        <View style={styles.viewButtonStyleFecha}>
-                            {this.state.age == '' &&
-                                <Text style={styles.textButtonStyleFecha}>
-                                    {strings("register.age")}
-                                </Text>
-                            }
-                            {this.state.age !== '' &&
-                                <Text>
-                                    {this.state.age}
-                                </Text>
-                            }
+                {this._showActivity()}
+                {step == 1 &&
+                    <View>
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(full_name) => this.setState({full_name})}
+                            placeholder={strings("register.fullName")}
+                            returnKeyType = {"next"}
+                            value={this.state.full_name}
+                            onSubmitEditing={() => { this.emailInput.focus(); }}
+                            blurOnSubmit={false}
+                        />
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(email) => this.setState({email})}
+                            placeholder={strings("register.email")}
+                            ref={(input) => { this.emailInput = input; }}
+                            returnKeyType = {"next"}
+                            value={this.state.email}
+                            onSubmitEditing={() => { this.passwordInput.focus(); }}
+                            blurOnSubmit={false}
+                        />
+                        <TextInput
+                            style={styles.inputStyle}
+                            editable={true}
+                            underlineColorAndroid='transparent'
+                            onChangeText={(password) => this.setState({password})}
+                            placeholder={strings("register.password")}
+                            ref={(input) => { this.passwordInput = input; }}
+                            returnKeyType = {"next"}
+                            secureTextEntry={true}
+                            value={this.state.password}
+                            onSubmitEditing={() => { this._nextStep() }}
+                            blurOnSubmit={false}
+                        />
+
+                    </View>
+                }
+                {step == 2 &&
+                    <View>
+                        <TouchableOpacity
+                            onPress={this._maleSelect.bind(this)}
+                            style={this.state.sex === 'Hombre' ? styles.buttomRegisterSexOn : styles.buttomRegisterSexOff}>
+                            <Text style={this.state.sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.male")} </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this._femaleSelect.bind(this)}
+                            style={this.state.sex === 'Mujer' ? styles.buttomRegisterSexOn : styles.buttomRegisterSexOff}>
+                            <Text style={this.state.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.female")} </Text>
+                        </TouchableOpacity>
+                        <View style={styles.inputStyleFecha}>
+                            <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                                <View style={styles.viewButtonStyleFecha}>
+                                    {this.state.age == '' &&
+                                        <Text style={styles.textButtonStyleFecha}>
+                                            {strings("register.age")}
+                                        </Text>
+                                    }
+                                    {this.state.age !== '' &&
+                                        <Text>
+                                            {this.state.age}
+                                        </Text>
+                                    }
+                                </View>
+                            </TouchableWithoutFeedback>
                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
-                <RadioForm
-                    style={styles.radioStyle}
-                    radio_props={radio_props}
-                    initial={0}
-                    ref="sex"
-                    radioStyle={{paddingRight: 20}}
-                    formHorizontal={true}
-                    buttonColor={'#9605CC'}
-                    selectedButtonColor={'#9605CC'}
-                    onPress = {(value) => {this.setState({sex:value})}}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(username) => this.setState({username})}
-                    placeholder={strings("register.username")}
-                    ref='username'
-                    returnKeyType = {"next"}
-                    value={this.state.username}
-                    onSubmitEditing={() => { this.passwordInput.focus(); }}
-                    blurOnSubmit={false}
-                />
-                <TextInput
-                    style={styles.inputStyle}
-                    editable={true}
-                    underlineColorAndroid='transparent'
-                    onChangeText={(password) => this.setState({password})}
-                    placeholder={strings("register.password")}
-                    ref={(input) => { this.passwordInput = input; }}
-                    returnKeyType = {"next"}
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onSubmitEditing={() => { this.registerUser(); }}
-                    blurOnSubmit={false}
-                />
+                    </View>
+                }
+                {step == 3 &&
+                  <View style={styles.contentSocial}>
+                    <TouchableOpacity style={styles.buttomUploadStyle} onPress={() => this.ActionSheet.show() }>
+                        {image == '' &&
+                            <Image style={styles.buttomUpload}
+                            source={require('../../assets/img/upload.png')}
+                            />
+                        }
+                        {image !== '' &&
+                            <Image style={styles.buttomUpload}
+                            source={{uri: image}}
+                            />
+                        }
+                    </TouchableOpacity>
+                  </View>
+                }
+
                 <TouchableOpacity
                     style={styles.buttomRegisterStyle}
-                    onPress={this.registerUser.bind(this)}>
-                    <Text style={styles.buttonText}> {strings("register.register")} </Text>
+                    onPress={this._nextStep.bind(this)}>
+                    <Text style={styles.buttonText}> {strings("register.paso1")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttomCancelStyle}
-                    onPress={this.registerCancel.bind(this)}>
+                    onPress={this._registerCancel.bind(this)}>
                     <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -305,12 +406,25 @@ class RegisterPage extends ValidationComponent {
                 <Image style={styles.container}
                        source={require('../../assets/img/logo-b.png')}
                 />
-                <Text style={styles.textLight}>
-                    {strings("main.title")}
+                <Text style={styles.textRegister}>
+                    {strings("main.register")}
                 </Text>
-                <Text style={styles.textBold}>
-                    {strings('wmatch')}
-                </Text>
+                <View style={styles.contentSocial}>
+                { step == 1 &&
+                <TouchableOpacity
+                    style={styles.buttomFacebookStyle}>
+                    <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
+                </TouchableOpacity>
+                }
+                <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                </View>
+                { step == 1 &&
+                <View style={styles.optBox}>
+                    <View style={styles.lineOpt} />
+                      <Text style={styles.opt}> {strings("register.opt")} </Text>
+                    <View style={styles.lineOpt} />
+                </View>
+                }
                 {body}
               </View>
            </ScrollView>

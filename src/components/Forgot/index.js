@@ -119,11 +119,8 @@ class ForgotPage extends ValidationComponent {
                     source={require('../../assets/img/logo-b.png')}
                     style={[{width: null, height: 300}]}
                 />
-                <Text style={styles.textLight}>
-                    {strings('main.title')}
-                </Text>
-                <Text style={styles.textBold}>
-                    {strings('wmatch')}
+              <Text style={styles.textRecover}>
+                    {strings('main.recover')}
                 </Text>
                 <ActivityIndicator size="large" color="#0000ff"/>
                 </View>
@@ -138,11 +135,8 @@ class ForgotPage extends ValidationComponent {
                                 source={require('../../assets/img/logo-b.png')}
                             />
                             <View style={styles.contentLogin}>
-                                <Text style={styles.textLight}>
-                                    {strings('main.title')}
-                                </Text>
-                                <Text style={styles.textBold}>
-                                    {strings('wmatch')}
+                                <Text style={styles.textRecover}>
+                                    {strings('main.recover')}
                                 </Text>
                             </View>
                             <TextInput
@@ -178,12 +172,10 @@ class ForgotPage extends ValidationComponent {
                                 source={require('../../assets/img/logo-b.png')}/>
 
                             <View style={styles.contentLogin}>
-                                <Text style={styles.textLight}>
-                                    {strings('main.title')}
+                                <Text style={styles.textRecover}>
+                                    {strings('main.recover')}
                                 </Text>
-                                <Text style={styles.textBold}>
-                                    {strings('wmatch')}
-                                </Text>
+
                             </View>
                             <TextInput
                                 style={styles.inputStyle}

@@ -3,7 +3,6 @@ import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import {Logger} from "../../utils";
-import ValidationComponent from '../../utils/ValidationComponent';
 
 /**
  *
@@ -63,24 +62,29 @@ function verifyAction(firstName, email, username, password, lat, lon, sex, age) 
  * @param sex
  * @param age
  */
-function registerAction(firstName, email, username, password, lat, lon, sex, age) {
+function registerAction(firstName, email, password, lat, lon, sex, age, image) {
 
-    if (verifyAction(firstName, email, username, password, lat, lon, sex, age)) {
+        const data = new FormData();
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(image)[1];
 
-        let valueUser = {
-            "first_name": firstName,
-            email,
-            username,
-            password,
-            "latitud": lat,
-            "longitud": lon,
-            sex,
-            age
-        };
+        data.append('first_name', firstName);
+        data.append('email', email);
+        data.append('password', password);
+        data.append('latitud', lat);
+        data.append('longitud', lon);
+        data.append('sex', sex);
+        data.append('age', age);
+        data.append('image', {
+            uri: image,
+            type: 'image/' + ext,
+            name: 'photo.' + ext
+        });
 
-        userService.postRegister(valueUser)
+        userService.postRegister(data)
             .then(async (response) => {
-                console.log(`registerAction:`, valueUser);
+                console.log(`registerAction:`, data);
+                console.log(`response:`, response);
                 const json = await response.json();
                 console.log(`registerAction:JSON:`, json);
     
@@ -88,10 +92,11 @@ function registerAction(firstName, email, username, password, lat, lon, sex, age
                     APP_STORE.APP_EVENT.next({success: json.detail});
                     return;
                 }
+
                             
-                APP_STORE.APP_EVENT.next({error: error.detail})
+                APP_STORE.APP_EVENT.next({error: json.detail})
         });
-    }
+
 }
 
 function createDateData() {
@@ -134,4 +139,21 @@ function createDateData() {
         return date;
 }
 
-export {registerAction, createDateData};
+
+function validateEmail(email) {
+    userService.validateEmail(email)
+        .then(async (response) => {
+            console.log(`validateEmail:`, email);
+            const json = await response.json();
+            console.log(`validateEmail:JSON:`, json);
+
+        if (response.ok) {
+            APP_STORE.EMAIL_EVENT.next({success: json.detail});
+            return;
+        }
+
+        APP_STORE.EMAIL_EVENT.next({error: json.detail})
+    });
+}
+
+export {registerAction, createDateData, validateEmail};
