@@ -20,7 +20,6 @@ import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
-import TopBar from '../../utils/TopBar';
 import { internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
@@ -352,7 +351,6 @@ export default class HomePage extends Component {
       return(
           <View style={styles.containerView}>
             <View style={styles.mediaUser}>
-
                 <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     {this._profilePhoto(rowData.image_profile)}
                 </TouchableOpacity>
@@ -395,7 +393,6 @@ export default class HomePage extends Component {
     if(isLoaded){
       return (
         <View style={styles.containerFlex}>
-          <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           {this.renderFeed()}
           {this.showButton()}
           {this.showActivity()}
@@ -456,7 +453,6 @@ export default class HomePage extends Component {
     } else {
       return (
         <View style={styles.containerFlex}>
-          <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#9605CC" />
           </View>
