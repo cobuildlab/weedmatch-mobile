@@ -93,4 +93,31 @@ export default styles = StyleSheet.create({
         backgroundColor: '#fff',
         height: '100%'
     },
+
+    buttomIconProfile:{
+    position: 'absolute',
+    top: 22,
+    left: 15,
+    width: 10,
+    height: 10,
+    zIndex: 999,
+    },
+    imgIconProfile:{
+      width: 26,
+      height: 26
+    },
+
+    buttomIconMsg:{
+      position: 'absolute',
+      top: 22,
+      right: 35,
+      width: 10,
+      height: 10,
+      zIndex: 999,
+    },
+    imgIconMsg:{
+      width: 30,
+      height: 27,
+    },
+
 });
