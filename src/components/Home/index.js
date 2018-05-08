@@ -9,6 +9,7 @@ import {
       ActivityIndicator,
       TouchableOpacity,
       TouchableHighlight,
+      TouchableWithoutFeedback,
       Modal,
       Button,
       TextInput,
@@ -19,12 +20,11 @@ import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
-import TopBar from '../../utils/TopBar';
 import { internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { feedAction, uploadAction, likeAction, calculateTime, appendData } from './HomeActions'
+import { feedAction, uploadAction, likeAction, calculateTime, appendData,handleImagePress } from './HomeActions'
 
 export default class HomePage extends Component {
 
@@ -57,14 +57,23 @@ export default class HomePage extends Component {
         console.log("Home420:componentDidMount:feedDataSuscription", state);
         if (state.feed) {
 
-          this.setState(prevState => ({
-            dataSource: appendData(prevState.dataSource, state.feed),
-            feedData: this.ds1.cloneWithRows(this.state.dataSource),
-            loading: false,
-            refreshing: false,
-            isLoaded: true
-          }))
-
+          if (this.state.refreshing) {
+            this.setState({
+              dataSource: [],
+              feedData: this.ds1.cloneWithRows(state.feed),
+              loading: false,
+              refreshing: false,
+              isLoaded: true
+            });
+          } else {
+            this.setState(prevState => ({
+              dataSource: appendData(prevState.dataSource, state.feed),
+              feedData: this.ds1.cloneWithRows(this.state.dataSource),
+              loading: false,
+              refreshing: false,
+              isLoaded: true
+            }));
+          }
           return;
         }
         if (state.error) {
@@ -79,12 +88,13 @@ export default class HomePage extends Component {
           this.setState({
             urlPage: state.page,
             numPage: this.state.numPage + 1
-          })
-          return;
+          });
+
         } else {
           this.setState({
             urlPage: '',
-          })
+        })
+        return;
         }
         if (state.error) {
           Alert.alert(state.error);
@@ -147,12 +157,15 @@ export default class HomePage extends Component {
     }
 
     _onRefresh() {
+
+      console.log(this.state);
       this.setState({
         feedData: this.ds1.cloneWithRows([]),
         refreshing: true,
-        numPage: 0,
         urlPage: '',
+        numPage: 0,
       },() => { 
+        console.log(this.state);
         this._feedData();
       })
     }
@@ -191,9 +204,9 @@ export default class HomePage extends Component {
       );
     }
 
-    _like(idImage,id_user,like,row) {
+    _likeHandlePress(idImage,id_user,like,row) {
       if (checkConectivity()) {
-        likeAction(APP_STORE.getToken(),idImage,id_user,like,row)
+        handleImagePress(idImage,id_user,like,row)
       } else {
         internet();
       }
@@ -295,18 +308,17 @@ export default class HomePage extends Component {
               dataSource={this.state.feedData}
               renderRow={this._renderRow.bind(this)}
               onEndReached={this._feedData.bind(this)}
-              // showsHorizontalScrollIndicator={false}
               // stickyHeaderIndices = {[0]}
               //renderSectionHeader={this.sectionHeader}
               // stickySectionHeadersEnabled={true}
               // onChangeVisibleRows={(changedRows) => console.log(changedRows)}
               automaticallyAdjustContentInsets={false}
               refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this._onRefresh.bind(this)}
-                  />
-                }
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
             />
         </View>
       )
@@ -339,7 +351,6 @@ export default class HomePage extends Component {
       return(
           <View style={styles.containerView}>
             <View style={styles.mediaUser}>
-
                 <TouchableOpacity onPress={()=>this._onPressButton(rowData)}>
                     {this._profilePhoto(rowData.image_profile)}
                 </TouchableOpacity>
@@ -351,10 +362,12 @@ export default class HomePage extends Component {
                 </View>
                   <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
             </View>
-            <Image
-              style={styles.media}
-              source={{uri: rowData.image}}
-            />
+            <TouchableWithoutFeedback onPress = {() => this._likeHandlePress(rowData.id,rowData.id_user,!rowData.band,sectionID)}>
+              <Image
+                style={styles.media}
+                source={{uri: rowData.image}}
+              />
+            </TouchableWithoutFeedback>
 
           <View style={styles.containerLikes}>
             <TouchableOpacity
@@ -380,7 +393,6 @@ export default class HomePage extends Component {
     if(isLoaded){
       return (
         <View style={styles.containerFlex}>
-          <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           {this.renderFeed()}
           {this.showButton()}
           {this.showActivity()}
@@ -402,13 +414,13 @@ export default class HomePage extends Component {
                   {!load &&
                       <View>
                           { image != '' &&
-                              <TouchableHighlight>
+                              <TouchableOpacity>
                                   <Image
                                       style={styles.imageSize}
                                       source={{uri: image}}
                                   />
 
-                              </TouchableHighlight>
+                              </TouchableOpacity>
                           }
                               <TextInput
                                   style={styles.inputStyle}
@@ -441,7 +453,6 @@ export default class HomePage extends Component {
     } else {
       return (
         <View style={styles.containerFlex}>
-          <TopBar title={'Feed'} navigate={this.props.navigation.navigate} />
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#9605CC" />
           </View>

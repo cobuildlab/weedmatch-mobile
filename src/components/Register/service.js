@@ -26,6 +26,11 @@ function postRegister(data) {
     return fetch(URL + 'register/', requestOptions)
 }
 
+/**
+ * Validate de Email
+ * @param data The data of the user to validate
+ * @returns {Promise<any>}
+ */
 function validateEmail(data) {
     const requestOptions = {
         method: 'POST',
