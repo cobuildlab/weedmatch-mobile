@@ -17,6 +17,7 @@ import {
 
 import styles from './style';
 import {APP_STORE} from '../../Store';
+import {strings} from '../../i18n';
 import {connection, internet, checkConectivity } from '../../utils';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './ProfileActions';
 
@@ -38,12 +39,18 @@ export default class Profile extends Component {
         console.log('Profile');
     }
 
-    static navigationOptions = {
-      title: 'Perfil',
-      headerRight: <TouchableOpacity style={styles.buttonRight} onPress={() => this._logout}><Image style={styles.navRight} source={require('../../assets/img/logout.png')} /></TouchableOpacity> 
+    static navigationOptions = ({ navigation }) => {
+      const {params} = navigation.state;
+  
+      return {
+        title: strings('main.profile'),
+        headerRight: <TouchableOpacity style={styles.buttonRight} onPress={() => params.logout && params.logout()}><Image style={styles.navRight} source={require('../../assets/img/logout.png')} /></TouchableOpacity> 
+      };
     };
 
     componentDidMount(){
+
+      this.props.navigation.setParams({logout: () => this._logout()});
 
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
             console.log("Profile:componentDidMount:PROFILE_EVENT", state);
@@ -108,7 +115,7 @@ export default class Profile extends Component {
       this.public.unsubscribe();
     }
 
-    _logout() {
+    _logout = () => {
       AsyncStorage.removeItem('token');
       AsyncStorage.removeItem('id');
       this.props.navigation.navigate('Auth');
@@ -128,12 +135,6 @@ export default class Profile extends Component {
       } else {
         internet();
       }
-    }
-
-    _changeView = () => {
-      this.setState({
-        isDetail: !this.state.isDetail
-      })
     }
 
     _editProfile() {
@@ -157,9 +158,6 @@ export default class Profile extends Component {
               <Text style={styles.textContainer}>{rowData.distance} </Text>
               <Text style={styles.textContainer}>{rowData.description} </Text>
             </View>
-              {/* <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic} />
-              </TouchableOpacity> */}
               <TouchableOpacity style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
               <Image source={require('../../assets/img/edit.png')} style={styles.buttomOpt}/>
               </TouchableOpacity>
