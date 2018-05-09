@@ -316,9 +316,9 @@ class RegisterPage extends Component {
                             ref={(input) => { this.emailInput = input; }}
                             returnKeyType = {"next"}
                             value={this.state.email}
+                            onSubmitEditing={() => { this.passwordInput.focus(); }}
                             blurOnSubmit={false}
                         />
-
                         <TextInput
                             style={styles.inputStyle}
                             editable={true}
@@ -329,6 +329,7 @@ class RegisterPage extends Component {
                             returnKeyType = {"next"}
                             secureTextEntry={true}
                             value={this.state.password}
+                            onSubmitEditing={() => { this._nextStep() }}
                             blurOnSubmit={false}
                         />
 
@@ -338,12 +339,12 @@ class RegisterPage extends Component {
                     <View>
                         <TouchableOpacity
                             onPress={this._maleSelect.bind(this)}
-                            style={styles.buttomRegisterSexOff}>
+                            style={this.state.sex === 'Hombre' ? styles.buttomRegisterSexOn : styles.buttomRegisterSexOff}>
                             <Text style={this.state.sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.male")} </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this._femaleSelect.bind(this)}
-                            style={styles.buttomRegisterSexOn}>
+                            style={this.state.sex === 'Mujer' ? styles.buttomRegisterSexOn : styles.buttomRegisterSexOff}>
                             <Text style={this.state.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.female")} </Text>
                         </TouchableOpacity>
                         <View style={styles.inputStyleFecha}>

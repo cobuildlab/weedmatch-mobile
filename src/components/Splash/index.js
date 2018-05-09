@@ -4,7 +4,7 @@ import {APP_STORE} from "../../Store";
 import {isValidText} from "../../utils";
 import styles from './style';
 
-class Splash extends Component {
+export default class Splash extends Component {
     constructor() {
         super();
     }
@@ -16,9 +16,11 @@ class Splash extends Component {
             console.log("TOKEN", token);
             console.log("ID", id);
             if (!isValidText(token)) {
+                console.log(this.props.navigation);
                 this.props.navigation.navigate('Auth');
                 return;
             }
+            console.log(this.props.navigation);
             this.props.navigation.navigate('App');
         }, 1000)
     }
@@ -31,5 +33,3 @@ class Splash extends Component {
         );
     }
 }
-
-export default Splash;

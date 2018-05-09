@@ -16,10 +16,9 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import {APP_STORE} from '../../Store';
-import TopBar from './../../utils/TopBar';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
 import {connection, internet, checkConectivity } from '../../utils';
+import {APP_STORE} from '../../Store';
 import ImageSlider from 'react-native-image-slider';
 
 var { height, width } = Dimensions.get('window');
@@ -40,8 +39,6 @@ export default class PublicProfile extends Component {
         };
         console.log('PublicProfile');
     }
-
-    static navigationOptions = { header: null };
 
     componentDidMount(){
 
@@ -138,13 +135,7 @@ export default class PublicProfile extends Component {
 
     showButtons() {
       return (
-          <View style={{
-              flex: 1,
-              padding: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-            }}>
+          <View style={styles.buttonViewContainer}>
               <View>
                 <TouchableOpacity>
                   <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
@@ -244,7 +235,6 @@ export default class PublicProfile extends Component {
           } else {
               return (
                 <View style={styles.viewFlex}>
-                    <TopBar title={ 'Feed'} navigate={this.props.navigation.navigate} />
                     <View style={styles.viewBackground}>
                         <Image style={styles.media} source={{uri: rowData.image_profile}} />
                     </View>
