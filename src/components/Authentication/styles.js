@@ -87,10 +87,37 @@ export default styles = StyleSheet.create({
         borderRadius: 50,
         alignItems: 'center',
         // backgroundColor: '#c646b6',
-          backgroundColor: '#9605CC',
+        backgroundColor: '#9605CC',
     },
     scrollContainer: {
         backgroundColor: '#fff',
         height: '100%'
     },
+
+    buttomIconProfile:{
+    position: 'absolute',
+    top: 22,
+    left: 15,
+    width: 10,
+    height: 10,
+    zIndex: 999,
+    },
+    imgIconProfile:{
+      width: 28,
+      height: 28,
+    },
+
+    buttomIconMsg:{
+      position: 'absolute',
+      top: 22,
+      right: 35,
+      width: 10,
+      height: 10,
+      zIndex: 999,
+    },
+    imgIconMsg:{
+      width: 30,
+      height: 27,
+    },
+
 });

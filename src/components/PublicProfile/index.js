@@ -17,8 +17,8 @@ import {
 
 import styles from './style';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
-import {APP_STORE} from '../../Store';
 import {connection, internet, checkConectivity } from '../../utils';
+import {APP_STORE} from '../../Store';
 import ImageSlider from 'react-native-image-slider';
 
 var { height, width } = Dimensions.get('window');
@@ -37,6 +37,7 @@ export default class PublicProfile extends Component {
           numPage: 0,
           dataSource: [],
         };
+        console.log('PublicProfile');
     }
 
     componentDidMount(){
@@ -98,7 +99,7 @@ export default class PublicProfile extends Component {
     }
 
     componentWillUnmount() {
-      console.log("Home420:componentWillUmmount");
+      console.log("PublicProfile:componentWillUmmount");
       this.images420.unsubscribe();
       this.images420Page.unsubscribe();
       this.public.unsubscribe();

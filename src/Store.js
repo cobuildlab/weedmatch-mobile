@@ -44,6 +44,19 @@ async function popToken(state) {
     }
 }
 
+async function popId(state) {
+    try {
+        const id = await AsyncStorage.getItem('id');
+        if (isValidText(id)) {
+            console.log("popId:", id);
+             state.id = id;
+        }
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
 class Store {
     constructor() {
         this.state = {
@@ -55,12 +68,14 @@ class Store {
             page: undefined,
             like: undefined,
             publicProfile: undefined,
+            saveProfile: undefined,
             email: undefined,
             publicImages420: undefined,
             publicImages420Page: undefined,
             swiper: undefined,
         };
         popToken(this.state);
+        popId(this.state);
         const me = this;
         this.APP_EVENT = new Subject();
         this.APP_EVENT.subscribe(state => {
@@ -79,20 +94,18 @@ class Store {
         this.TOKEN_EVENT.subscribe(state => {
             if (!state)
                 return;
-            const token = state.token;
-            if (isValidText(token)) {
-                saveToken(token);
-                me.state.token = token;
+            if (isValidText(state.token)) {
+                saveToken(state.token);
+                me.state.token = state.token;
             }
         });
         this.ID_EVENT = new Subject();
         this.ID_EVENT.subscribe(state => {
             if (!state)
                 return;
-            const id = state.id;
-            if (isValidText(id)) {
-                saveId(id);
-                me.state.id = id;
+            if (isValidText(state.id)) {
+                saveId(state.id);
+                me.state.id = state.id;
             }
         });
         this.FEED_EVENT = new Subject();
@@ -118,6 +131,18 @@ class Store {
             if (!state)
                 return;
             me.state.publicProfile = state.publicProfile;
+        });
+        this.PUBLICEDITPROFILE_EVENT = new Subject();
+        this.PUBLICEDITPROFILE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.publicProfile = state.publicProfile;
+        });
+        this.PUBLIC_SAVE_PROFILE_EVENT = new Subject();
+        this.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.saveProfile = state.saveProfile;
         });
         this.PUBLICIMAGES420_EVENT = new Subject();
         this.PUBLICIMAGES420_EVENT.subscribe(state => {
@@ -147,6 +172,10 @@ class Store {
 
     getToken() {
         return this.state.token;
+    }
+
+    getId() {
+        return this.state.id;
     }
 }
 

@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
   mePic:{
     width:'100%',
     height: 300,
-    resizeMode: 'contain',
+    resizeMode: 'stretch',
     backgroundColor: '#ccc',
   },
   meSubPic:{

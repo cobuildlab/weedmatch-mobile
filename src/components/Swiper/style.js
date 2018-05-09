@@ -9,12 +9,12 @@ export default styles = StyleSheet.create({
     },
     card: {
       flex: 1,
-      borderRadius: 4,
+      borderRadius: 10,
       borderWidth: 2,
       borderColor: '#E8E8E8',
       justifyContent: 'center',
       backgroundColor: 'white',
-      paddingBottom: 25,
+      paddingBottom: 20,
     },
     text: {
       textAlign: 'center',
@@ -47,11 +47,15 @@ export default styles = StyleSheet.create({
     },
     viewBackground: {
       backgroundColor: '#FFF',
-      flex:3
+      flex:3,
+
     },
     media: {
       width:null,
-      height:width
+      height:width,
+      borderRadius: 10,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
     },
     viewContainer: {
       flex: 1,
@@ -61,14 +65,20 @@ export default styles = StyleSheet.create({
     textName: {
       marginTop: 15,
       paddingLeft: 20,
-      fontSize: 16,
+      fontSize: 18,
       color: '#333',
     },
     textContainer: {
-      marginTop: 10,
       paddingLeft: 20,
-      fontSize: 16,
-      color: '#333'
+      marginTop: 15,
+      fontSize: 14,
+      color: '#777'
+    },
+    textContainer2: {
+      paddingLeft: 20,
+      marginTop: 10,
+      fontSize: 14,
+      color: '#777'
     },
     TouchableOpacityStyle: {
       position: 'absolute',
@@ -85,7 +95,7 @@ export default styles = StyleSheet.create({
       height: 25,
     },
     imageSize: {
-      width: 50, 
+      width: 50,
       height: 50
     }
 

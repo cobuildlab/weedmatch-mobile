@@ -34,9 +34,14 @@ export default class LoginPage extends Component {
         console.log("LoginPage:componentDidMount");
         this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:tokenSubscription", state);
+        });
+
+        this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
+            console.log("LoginPage:componentDidMount:idSubscription", state);
             this.setState({isLoading: false});
-            if (isValidText(state.token))
+            if (isValidText(state.id)) {
                 this.props.navigation.navigate('App');
+            }
         });
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
@@ -51,6 +56,7 @@ export default class LoginPage extends Component {
         console.log("LoginPage:componentWillUmmount");
         this.tokenSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
     }
 
     static navigationOptions = {header: null};
