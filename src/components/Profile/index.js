@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    Text,
-    View,
-    Image,
-    AsyncStorage,
-    TouchableOpacity,
-    ActivityIndicator,
-    Alert,
-    SafeAreaView,
-    TouchableHighlight,
-    Dimensions,
-    FlatList,
-    ScrollView
+  AppRegistry,
+  Text,
+  View,
+  Image,
+  AsyncStorage,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+  SafeAreaView,
+  TouchableHighlight,
+  Dimensions,
+  FlatList,
+  ScrollView
 } from 'react-native';
 
 import styles from './style';
@@ -40,7 +40,7 @@ export default class Profile extends Component {
 
     static navigationOptions = {
       title: 'Perfil',
-      headerRight: <TouchableOpacity style={styles.buttonRight} onPress={() => this._logout}><Image style={styles.navRight} source={require('../../assets/img/logout.png')} /></TouchableOpacity> 
+      headerRight: <TouchableOpacity style={styles.buttonRight} onPress={() => this._logout}><Image style={styles.navRight} source={require('../../assets/img/logout.png')} /></TouchableOpacity>
     };
 
     componentDidMount(){

@@ -167,6 +167,7 @@ export default styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         marginTop: 25,
+        paddingBottom: 20,
     },
     viewContainerPlus: {
         flex: 1,
@@ -186,14 +187,14 @@ export default styles = StyleSheet.create({
     textName: {
         marginTop: 15,
         paddingLeft: 20,
-        fontSize: 16,
+        fontSize: 18,
         color: '#333',
     },
     textContainer: {
-        marginTop: 10,
+        marginTop: 5,
         paddingLeft: 20,
-        fontSize: 16,
-        color: '#333'
+        fontSize: 15,
+        color: '#777'
     },
     container: {
         flex: 1,
@@ -261,8 +262,10 @@ export default styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         borderRadius: 50,
-        alignItems: 'flex-end',
+        right: 20,
+        top: -25,
         backgroundColor: 'transparent',
+        position: 'absolute',
     },
     buttomOpt:{
         width: 25,
