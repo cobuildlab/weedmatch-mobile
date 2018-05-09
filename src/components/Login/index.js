@@ -39,10 +39,10 @@ class LoginPage extends Component {
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:idSubscription", state);
             this.setState({isLoading: false});
-            if (isValidText(state.id))
+            if (isValidText(state.id)) {
                 this.props.navigation.navigate('App');
+            }
         });
-
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:appSubscription", state);

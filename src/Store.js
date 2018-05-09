@@ -23,10 +23,6 @@ async function saveToken(token) {
 async function saveId(id) {
     try {
         await AsyncStorage.setItem("id", id);
-        console.log(id);
-        console.log('Save ID');
-        let id = await AsyncStorage.getItem('id');
-        console.log(id);
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
     }
@@ -97,20 +93,18 @@ class Store {
         this.TOKEN_EVENT.subscribe(state => {
             if (!state)
                 return;
-            const token = state.token;
-            if (isValidText(token)) {
-                saveToken(token);
-                me.state.token = token;
+            if (isValidText(state.token)) {
+                saveToken(state.token);
+                me.state.token = state.token;
             }
         });
         this.ID_EVENT = new Subject();
         this.ID_EVENT.subscribe(state => {
             if (!state)
                 return;
-            const id = state.id;
-            if (isValidText(id)) {
-                saveId(id);
-                me.state.id = id;
+            if (isValidText(state.id)) {
+                saveId(state.id);
+                me.state.id = state.id;
             }
         });
         this.FEED_EVENT = new Subject();

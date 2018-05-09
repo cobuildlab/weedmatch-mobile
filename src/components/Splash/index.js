@@ -12,7 +12,9 @@ class Splash extends Component {
     componentDidMount() {
         setTimeout(() => {
             const token = APP_STORE.getToken();
+            const id = APP_STORE.getId();
             console.log("TOKEN", token);
+            console.log("ID", id);
             if (!isValidText(token)) {
                 this.props.navigation.navigate('Auth');
                 return;

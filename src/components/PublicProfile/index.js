@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import styles from './style';
+import {APP_STORE} from '../../Store';
 import TopBar from './../../utils/TopBar';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
 import {connection, internet, checkConectivity } from '../../utils';
