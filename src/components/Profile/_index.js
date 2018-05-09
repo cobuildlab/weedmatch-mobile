@@ -35,22 +35,21 @@ var images = [
 
 var { height, width } = Dimensions.get('window');
 
-
 export default class Profile extends Component {
 
- constructor(props) {
-   super(props);
-   this.state = {};
- }
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
- _logout(){
-  AsyncStorage.removeItem('token');
-  AsyncStorage.removeItem('id');
-  this.props.navigation.navigate('Auth');
- }
-_editProfile() {
-     this.props.navigation.navigate('EditProfile');
- }
+  _logout(){
+    AsyncStorage.removeItem('token');
+    AsyncStorage.removeItem('id');
+    this.props.navigation.navigate('Auth');
+  }
+  _editProfile() {
+    this.props.navigation.navigate('EditProfile');
+  }
 
  static navigationOptions = { title: 'Perfil' };
 

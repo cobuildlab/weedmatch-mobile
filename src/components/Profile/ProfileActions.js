@@ -2,6 +2,7 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
+import {AsyncStorage } from 'react-native';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
 function publicProfileAction(token, id) {

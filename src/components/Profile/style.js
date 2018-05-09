@@ -269,4 +269,11 @@ export default styles = StyleSheet.create({
         height: 20,
         resizeMode: 'contain',
     },
+    navRight: {
+        height:18,
+        width:18
+    },
+    buttonRight: {
+        marginRight: 18
+    }
 });

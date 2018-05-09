@@ -17,10 +17,8 @@ import {
 
 import styles from './style';
 import {APP_STORE} from '../../Store';
-import TopBar from './../../utils/TopBar';
 import {connection, internet, checkConectivity } from '../../utils';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './ProfileActions';
-import ImageSlider from 'react-native-image-slider';
 
 var { height, width } = Dimensions.get('window');
 
@@ -37,15 +35,18 @@ export default class Profile extends Component {
           numPage: 0,
           dataSource: [],
         };
-        console.log('PublicProfile');
+        console.log('Profile');
     }
 
-    static navigationOptions = { header: null };
+    static navigationOptions = {
+      title: 'Perfil',
+      headerRight: <TouchableOpacity style={styles.buttonRight} onPress={() => this._logout}><Image style={styles.navRight} source={require('../../assets/img/logout.png')} /></TouchableOpacity> 
+    };
 
     componentDidMount(){
 
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+            console.log("Profile:componentDidMount:PROFILE_EVENT", state);
             if (state.publicProfile) {
                 this.setState({
                     rowData: state.publicProfile,
@@ -60,7 +61,7 @@ export default class Profile extends Component {
         });
 
       this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
-        console.log("Public Profile:componentDidMount:images420Suscription", state);
+        console.log("Profile:componentDidMount:images420Suscription", state);
         if (state.publicImages420) {
 
           this.setState(prevState => ({
@@ -79,7 +80,7 @@ export default class Profile extends Component {
       });
 
         this.images420Page = APP_STORE.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
-          console.log("Public Profile:componentDidMount:images420PageSuscription", state);
+          console.log("Profile:componentDidMount:images420PageSuscription", state);
           if (state.publicImages420Page) {
 
             this.setState({
@@ -101,10 +102,16 @@ export default class Profile extends Component {
     }
 
     componentWillUnmount() {
-      console.log("PublicProfile:componentWillUmmount");
+      console.log("Profile:componentWillUmmount");
       this.images420.unsubscribe();
       this.images420Page.unsubscribe();
       this.public.unsubscribe();
+    }
+
+    _logout() {
+      AsyncStorage.removeItem('token');
+      AsyncStorage.removeItem('id');
+      this.props.navigation.navigate('Auth');
     }
 
     _publicProfile() {
@@ -156,7 +163,7 @@ export default class Profile extends Component {
               <TouchableOpacity style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
               <Image source={require('../../assets/img/edit.png')} style={styles.buttomOpt}/>
               </TouchableOpacity>
-        </View>
+          </View>
         </View>
       );
     }
