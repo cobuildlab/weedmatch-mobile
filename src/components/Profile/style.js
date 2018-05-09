@@ -278,5 +278,18 @@ export default styles = StyleSheet.create({
     },
     buttonRight: {
         marginRight: 18
+<<<<<<< HEAD
     }
 });
+=======
+    },
+    buttomIconMsg:{
+        position: 'absolute',
+        top: -22,
+        right: 35,
+        width: 10,
+        height: 10,
+        zIndex: 999,
+    },
+});
+>>>>>>> fd15219641a8770d72139039f28b60a600bac325
