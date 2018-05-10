@@ -335,7 +335,12 @@ export default class HomePage extends Component {
     }
 
     _onPressButton(rowData){
-        this.props.navigation.navigate('PublicProfile', { userId: rowData.id_user });
+
+        if(rowData.id_user == APP_STORE.getId()) {
+          this.props.navigation.navigate('Profile');
+        } else {
+          this.props.navigation.navigate('PublicProfile', { userId: rowData.id_user });
+        }
     }
 
      _likes(like){
