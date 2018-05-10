@@ -128,6 +128,15 @@ export default styles = StyleSheet.create({
   },
   labelText:{
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginTop: 20,
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  labelTextComprar:{
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -140,7 +149,13 @@ export default styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 0,
     paddingBottom: 0,
-    alignItems: 'flex-start',
+  },
+  textLabelvalue:{
+    color: '#777',
+    fontSize: 16,
+    marginBottom: 0,
+    marginLeft: 30,
+    paddingBottom: 0,
   },
   labelTextGender:{
     flex: 1,
@@ -243,6 +258,10 @@ export default styles = StyleSheet.create({
     paddingRight: 30,
     marginTop: 0,
   },
-
-
+  marginView: {
+    marginTop: 30,
+    width: '100%',
+    marginRight:50,
+    alignItems: 'center',
+  }
 });

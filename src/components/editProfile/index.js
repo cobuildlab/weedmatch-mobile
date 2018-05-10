@@ -13,21 +13,15 @@ import {
   TextInput,
   Picker,
 } from 'react-native';
+
 import { strings } from "../../i18n";
 import { StackNavigator } from 'react-navigation';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles from './style';
-import TabProfile from '../tabProfile';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import {APP_STORE} from '../../Store';
 import { publicEditAction, saveProfileAction } from './EditProfileActions';
-var mePic = require('../../assets/img/upload.png');
-var Delete = require('../../assets/img/delete.png');
-var meName = 'Sebastian Diaz'
-var meUsername = 'holasebasdiaz'
-var meEdad = '24'
-var meCiudad = 'Santiago'
 var meDescription = 'Piolito, nomá'
 
 export default class EditProfile extends Component {
@@ -35,17 +29,13 @@ export default class EditProfile extends Component {
   constructor(props) {
     super(props);
     console.log("EditProfile:constructor");
-    console.log(APP_STORE.getId());
 
     this.state = {
       sliderOneChanging: false,
-      sliderOneValue: [5],
-      multiSliderValue: [2, 200],
+      sliderOneValue: [2],
       image: '',
       user: {}
-
     };
-
   }
 
       componentDidMount(){
@@ -124,12 +114,6 @@ export default class EditProfile extends Component {
     sliderOneValuesChangeFinish = () => {
      this.setState({
        sliderOneChanging: false,
-     });
-    }
-
-    multiSliderValuesChange = (values) => {
-     this.setState({
-       multiSliderValue: values,
      });
     }
 
@@ -229,7 +213,7 @@ export default class EditProfile extends Component {
       <View style={styles.meInfoWrap}>
         <TouchableOpacity onPress={() => this.ActionSheet.show()  }>
           {image == '' &&
-            <Image source={mePic} style={styles.mePic}/>
+            <Image source={require('../../assets/img/upload.png')} style={styles.mePic}/>
           }
           {image !== '' &&
             <Image style={styles.mePic} source={{uri: image}} />
@@ -242,7 +226,7 @@ export default class EditProfile extends Component {
              <Image  style={styles.meSubImg}/>
            </TouchableOpacity>
            <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={Delete}/>
+             <Image source={require('../../assets/img/delete.png')}/>
            </TouchableOpacity>
          </View>
          <View style={styles.meSubPic}>
@@ -250,7 +234,7 @@ export default class EditProfile extends Component {
              <Image style={styles.meSubImg}/>
            </TouchableOpacity>
            <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={Delete}/>
+             <Image source={require('../../assets/img/delete.png')}/>
            </TouchableOpacity>
          </View>
          <View style={styles.meSubPic}>
@@ -258,7 +242,7 @@ export default class EditProfile extends Component {
              <Image style={styles.meSubImg}/>
            </TouchableOpacity>
            <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={Delete}/>
+             <Image source={require('../../assets/img/delete.png')}/>
            </TouchableOpacity>
          </View>
        </View>
@@ -286,72 +270,30 @@ export default class EditProfile extends Component {
           style={styles.meDescription}
           value={user.username}
         />
-        {/* <View style={styles.divider} />
-          <View style={styles.labelText}>
-            <Text style={styles.textLabel}>Pais</Text>
-          </View>
-          <TextInput
-             style={styles.meDescription}
-             placeholder={'jorpg'}
-           />
-         <View style={styles.divider} />
-         <View style={styles.labelText}>
-           <Text style={styles.textLabel}>Ciudad</Text>
-         </View>
-         <TextInput
-            style={styles.meDescription}
-            placeholder={'jorpg'}
+        <View style={styles.divider} />
+        <View style={styles.labelText}>
+          <Text style={styles.textLabel}>Distancia Máxima</Text>
+          <Text style={styles.textLabelvalue}>{this.state.sliderOneValue + 'Km'}</Text>
+        </View>
+        <View style={styles.marginView}>
+          <MultiSlider
+            selectedStyle={{
+              backgroundColor: '#9605CC',
+            }}
+            min={2}
+            max={201}
+            unselectedStyle={{
+              backgroundColor: '#ccc',
+            }}
+            values={this.state.sliderOneValue}
+            sliderLength={300}
+            onValuesChangeStart={this.sliderOneValuesChangeStart}
+            onValuesChange={this.sliderOneValuesChange}
+            onValuesChangeFinish={this.sliderOneValuesChangeFinish}
           />
-        */}
-          <View style={styles.divider} />
-              <View style={styles.labelText}>
-                <Text style={styles.textLabel}>Distancia Máxima</Text>
-              </View>
-              {/* <TextInput
-                 style={styles.meDescription}
-                 placeholder={'Rango'}
-               /> */}
-               <View style={{marginTop: 30,}}>
-                 <MultiSlider
-                   selectedStyle={{
-                     backgroundColor: '#9605CC',
-                   }}
-                   unselectedStyle={{
-                     backgroundColor: '#ccc',
-                   }}
-                    style={{marginBottom: 0,}}
-                    values={this.state.sliderOneValue}
-                    sliderLength={200}
-                    onValuesChangeStart={this.sliderOneValuesChangeStart}
-                    onValuesChange={this.sliderOneValuesChange}
-                    onValuesChangeFinish={this.sliderOneValuesChangeFinish}
-                  />
-               </View>
-             <View style={styles.divider} />
-
+        </View>
+        <View style={styles.divider} />
        </View>
-       {/* <View style={styles.labelText}>
-         <Text style={styles.textLabel}>Genero</Text>
-       </View>
-       <View style={styles.contentFormGender}>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={styles.buttomEditSexOn}>
-             <Text style={styles.buttonTextOn}>Hombre</Text>
-           </TouchableOpacity>
-         </View>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={styles.buttomEditSexOff}>
-             <Text style={styles.buttonTextOff}>Mujer</Text>
-           </TouchableOpacity>
-
-         </View>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={styles.buttomEditSexOff}>
-             <Text style={styles.buttonTextOff}>Otros</Text>
-           </TouchableOpacity>
-         </View>
-       </View> */}
-
        <View style={styles.labelTextGender}>
          <Text style={styles.textLabel}>Match</Text>
        </View>
@@ -397,7 +339,7 @@ export default class EditProfile extends Component {
        </View>
        <View style={styles.divider} />
 
-       <View style={styles.labelText}>
+       <View style={styles.labelTextComprar}>
          <Text style={styles.textLabelCard}>Comprar Version Pro</Text>
          <TouchableOpacity
              style={styles.buttomCardStyle}>

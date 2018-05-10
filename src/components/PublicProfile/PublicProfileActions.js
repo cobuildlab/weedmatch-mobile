@@ -4,10 +4,10 @@ import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
-function publicProfileAction(token, id) {
+function publicProfileAction(token, id,state) {
     console.log(`publicProfileAction: ${token}, ${id}`);
 
-    userService.publicProfile(token, id)
+    userService.publicProfile(token, id,state)
         .then(async (response) => {
             console.log(`publicProfileAction: ${token}, ${id}`, response);
             const json = await response.json();

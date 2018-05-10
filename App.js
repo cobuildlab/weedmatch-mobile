@@ -8,7 +8,7 @@ import RegisterPage from './src/components/Register';
 import HomePage from './src/components/Home';
 import SwiperView from './src/components/Swiper';
 import Profile from './src/components/Profile';
-import EditProfile from './src/components/editProfile';
+import EditProfile from './src/components/EditProfile';
 import PublicProfile from './src/components/PublicProfile';
 import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';

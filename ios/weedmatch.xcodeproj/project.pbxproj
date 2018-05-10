@@ -23,6 +23,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		24115AA120768D9B00D9288C /* libRNToastNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24115AA020768B3A00D9288C /* libRNToastNative.a */; };
+		243440A420A4B413005E7AA9 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 248D15F020A3F39700B5791C /* libRCTBEEPickerManager.a */; };
 		248D15F920A3F63D00B5791C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 248D15F620A3F39700B5791C /* libRNDeviceInfo.a */; };
 		248D15FA20A3F6DD00B5791C /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 246B9960206B29400027179F /* libimageCropPicker.a */; };
 		248D164720A3FA5000B5791C /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248D164620A3FA5000B5791C /* RSKImageCropper.framework */; };
@@ -470,6 +471,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				243440A420A4B413005E7AA9 /* libRCTBEEPickerManager.a in Frameworks */,
 				248D15FA20A3F6DD00B5791C /* libimageCropPicker.a in Frameworks */,
 				248D15F920A3F63D00B5791C /* libRNDeviceInfo.a in Frameworks */,
 				24115AA120768D9B00D9288C /* libRNToastNative.a in Frameworks */,

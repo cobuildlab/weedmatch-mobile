@@ -3,8 +3,9 @@ import { StyleSheet, Platform, Dimensions  } from 'react-native';
 export default styles = StyleSheet.create({
 
     imageContainer: {
-        height:26,
-        width:24
+        height:27,
+        width:27,
+        resizeMode:'contain'
     },
     buttomIconMsg:{
         position: 'absolute',

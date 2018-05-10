@@ -95,7 +95,7 @@ export default class LoginPage extends Component {
                     <Text style={styles.textBold}>
                         {strings('wmatch')}
                     </Text>
-                    <ActivityIndicator size="large" color="#0000ff"/>
+                    <ActivityIndicator size="large" color="#9605CC"/>
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                         onPress={this.userLogin.bind(this)}>

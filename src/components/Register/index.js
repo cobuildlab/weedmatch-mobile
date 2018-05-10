@@ -12,7 +12,7 @@ import {
     KeyboardAvoidingView,
     Platform,
     ActivityIndicator,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
 } from 'react-native';
 import { strings } from "../../i18n";
 import { registerAction, createDateData, validateEmail } from "./RegisterActions";
@@ -192,14 +192,14 @@ class RegisterPage extends Component {
         if(emailError){
             toastMsg(emailError)
             return false
-        }else{
-            if(this.state.step  == 1){
-                this.setState({isLoading: true});
-                validateEmail({"email": this.state.email})
-            }
         }
         if(passwordError){
             toastMsg(passwordError)
+            return false
+        }
+        if(this.state.step  == 1){
+            this.setState({isLoading: true});
+            validateEmail({"email": this.state.email})
             return false
         }
         if(this.state.step == 2){
@@ -374,7 +374,7 @@ class RegisterPage extends Component {
                             />
                         }
                         {image !== '' &&
-                            <Image style={styles.buttomUpload}
+                            <Image style={styles.buttomToUpload}
                             source={{uri: image}}
                             />
                         }
@@ -400,7 +400,7 @@ class RegisterPage extends Component {
             </View>
         }
         return (
-           <ScrollView style={styles.scrollContainer}>
+           <KeyboardAvoidingView style={styles.scrollContainer} behavior="padding">
               <View style={styles.teclado}>
                 <Image style={styles.container}
                        source={require('../../assets/img/logo-b.png')}
@@ -426,7 +426,7 @@ class RegisterPage extends Component {
                 }
                 {body}
               </View>
-           </ScrollView>
+           </KeyboardAvoidingView>
         );
     }
 }

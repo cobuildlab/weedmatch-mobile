@@ -78,8 +78,16 @@ export default styles = StyleSheet.create({
         marginBottom: 10,
         width: 170,
         height: 130,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     buttomUpload: {
+        width: 120,
+        height: 120,
+        flex: 0,
+        resizeMode:'contain'
+    },
+    buttomToUpload: {
         width: 120,
         height: 120,
         flex: 0,
@@ -208,5 +216,6 @@ export default styles = StyleSheet.create({
     },
     scrollContainer: {
         backgroundColor: '#FFF',
+        flex:1,
     }
 })

@@ -68,13 +68,13 @@ function uploadAction(token, state) {
         });
 }
 
-function likeAction(token, id, id_user, like,row) {
+function likeAction(id, id_user, like,row) {
 
-    console.log(`likeAction: ${token}, ${id}, ${id_user}, ${like}`);
+    console.log(`likeAction: ${id}, ${id_user}, ${like}`);
 
-    userService.publicImageLike(token, id, id_user, like)
+    userService.publicImageLike(APP_STORE.getToken(), id, id_user, like)
         .then(async (response) => {
-            console.log(`likeAction: ${token}, ${id}, ${id_user}, ${like}`, response);
+            console.log(`likeAction: ${id}, ${id_user}, ${like}`, response);
             const json = await response.json();
             console.log(`likeAction:JSON:`, json);
             if (response.ok) {
@@ -90,7 +90,7 @@ function handleImagePress(idImage,id_user,like,row) {
     
     if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
       delete this.lastImagePress;
-      likeAction(APP_STORE.getToken(),idImage,id_user,like,row);
+      likeAction(idImage,id_user,like,row);
     }
     else {
       this.lastImagePress = now;

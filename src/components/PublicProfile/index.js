@@ -29,6 +29,8 @@ export default class PublicProfile extends Component {
         super(props);
 
         this.state = {
+          latitud: '',
+          longitud: '',
           rowData:{},
           refreshing:false,
           public420: {},
@@ -100,8 +102,27 @@ export default class PublicProfile extends Component {
           }
         });
 
-        this._publicProfile();
+        this._feedPosition();
     }
+
+    _feedPosition() {
+      navigator.geolocation.getCurrentPosition(
+       (position) => {
+
+           this.setState({
+             latitud: position.coords.latitude.toFixed(6),
+             longitud: position.coords.longitude.toFixed(6),
+           },() => { 
+             this._publicProfile();
+           })
+       },
+       (error) => {
+           this._publicProfile();
+           console.log(error)
+       },
+       {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
+     );
+   }
 
     componentWillUnmount() {
       console.log("PublicProfile:componentWillUmmount");
@@ -115,7 +136,7 @@ export default class PublicProfile extends Component {
         const userId = params ? params.userId : null;
 
         if (checkConectivity()) {
-          publicProfileAction(APP_STORE.getToken(), userId)
+          publicProfileAction(APP_STORE.getToken(), userId,this.state)
         } else {
           internet();
         }
@@ -240,28 +261,28 @@ export default class PublicProfile extends Component {
           } else {
               return (
                 <View style={styles.viewFlex}>
-                    <View style={styles.viewBackground}>
-                        <Image style={styles.media} source={{uri: rowData.image_profile}} />
+                  <View style={styles.viewBackground}>
+                    <Image style={styles.media} source={{uri: rowData.image_profile}} />
+                  </View>
+                  <View style={styles.viewContainer}>
+                    <View style={styles.viewContainer}>
+                      <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
                     </View>
                     <View style={styles.viewContainer}>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
-                            {country &&
-                                <Text style={styles.textContainer}>{country.name} </Text>
-                            }
-                            <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                              <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                            </TouchableOpacity>
-                          </View>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textContainer}>{rowData.distance} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textContainer}>{rowData.description} </Text>
-                        </View>
+                      {country &&
+                          <Text style={styles.textContainer}>{country.name} </Text>
+                      }
+                      <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                      </TouchableOpacity>
                     </View>
+                    <View style={styles.viewContainer}>
+                        <Text style={styles.textContainer}>{rowData.distance} </Text>
+                    </View>
+                    <View style={styles.viewContainer}>
+                        <Text style={styles.textContainer}>{rowData.description} </Text>
+                    </View>
+                  </View>
                     {this.showButtons()}
                 </View>
             );
