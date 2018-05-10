@@ -60,6 +60,7 @@ export default class EditProfile extends Component {
                       isLoading: true,
                       user: state.publicEditProfile,
                       sliderOneValue: newValues,
+                      image: state.publicEditProfile.profile_images[0].image
                   })
 
                 return;
@@ -267,7 +268,7 @@ export default class EditProfile extends Component {
          </View>
          <TextInput
             style={styles.meDescription}
-            placeholder={user.description}
+            value={user.description}
           />
         <View style={styles.divider} />
         <View style={styles.labelText}>
@@ -275,7 +276,7 @@ export default class EditProfile extends Component {
         </View>
         <TextInput
            style={styles.meDescription}
-           placeholder={user.first_name}
+           value={user.first_name}
          />
        <View style={styles.divider} />
        <View style={styles.labelText}>
@@ -283,7 +284,7 @@ export default class EditProfile extends Component {
        </View>
        <TextInput
           style={styles.meDescription}
-          placeholder={user.username}
+          value={user.username}
         />
         {/* <View style={styles.divider} />
           <View style={styles.labelText}>
@@ -318,7 +319,7 @@ export default class EditProfile extends Component {
                    unselectedStyle={{
                      backgroundColor: '#ccc',
                    }}
-                   style={{marginBottom: 0,}}
+                    style={{marginBottom: 0,}}
                     values={this.state.sliderOneValue}
                     sliderLength={200}
                     onValuesChangeStart={this.sliderOneValuesChangeStart}
@@ -356,19 +357,19 @@ export default class EditProfile extends Component {
        </View>
        <View style={styles.contentFormGender}>
          <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.match === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Hombre') }>
+           <TouchableOpacity style={this.state.user.match_sex === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Hombre') }>
              <Text style={this.state.user.match_sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
            </TouchableOpacity>
          </View>
          <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.match === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Mujer') }>
+           <TouchableOpacity style={this.state.user.match_sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Mujer') }>
              <Text style={this.state.user.match_sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
            </TouchableOpacity>
 
          </View>
          <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.match === 'Todos' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Todos') }>
-             <Text style={this.state.user.match_sex === 'Todos' ? styles.buttonTextOn : styles.buttonTextOff}>Todos</Text>
+           <TouchableOpacity style={this.state.user.match_sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Otro') }>
+             <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
            </TouchableOpacity>
          </View>
        </View>
@@ -379,18 +380,18 @@ export default class EditProfile extends Component {
        </View>
        <View style={styles.contentFormGender}>
          <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.genero === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Hombre') }>
-             <Text style={this.state.user.genero === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
+           <TouchableOpacity style={this.state.user.sex === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Hombre') }>
+             <Text style={this.state.user.sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
            </TouchableOpacity>
          </View>
          <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.genero === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Mujer') }>
-             <Text style={this.state.user.genero === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
+           <TouchableOpacity style={this.state.user.sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Mujer') }>
+             <Text style={this.state.user.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
            </TouchableOpacity>
          </View>
          <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.genero === 'Todos' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Todos') }>
-             <Text style={this.state.user.genero === 'Todos' ? styles.buttonTextOn : styles.buttonTextOff}>Todos</Text>
+           <TouchableOpacity style={this.state.user.sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Otro') }>
+             <Text style={this.state.user.sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
            </TouchableOpacity>
          </View>
        </View>

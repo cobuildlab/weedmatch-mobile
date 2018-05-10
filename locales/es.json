@@ -40,6 +40,7 @@
   "main": {
     "title": "UNIENDO AMANTES DEL",
     "register": "Registro",
+    "profile": "Perfil",
     "login": "Iniciar Sesión",
     "recover": "Recuperar Contraseña",
     "internet": "No hay conexión a Internet"

@@ -18,6 +18,8 @@ import {
 import styles from './style';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
 import {connection, internet, checkConectivity } from '../../utils';
+import {APP_STORE} from '../../Store';
+import {strings} from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
 
 var { height, width } = Dimensions.get('window');
@@ -38,6 +40,10 @@ export default class PublicProfile extends Component {
         };
         console.log('PublicProfile');
     }
+
+    static navigationOptions = {
+      title: strings('main.profile'),
+    };  
 
     componentDidMount(){
 
