@@ -48,7 +48,6 @@ public class MainApplication extends Application implements ReactApplication {
             new PickerViewPackage(),
             new PickerPackage(),
             new RNI18nPackage(),
-            new FBSDKPackage(),
             new RNDeviceInfo(),
             new FBSDKPackage(mCallbackManager)
       );
