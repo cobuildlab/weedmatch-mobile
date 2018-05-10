@@ -17,8 +17,8 @@ import Toast from 'react-native-toast-native';
  * Detects the lenguange and keeps in constant
  */
 const LENGUAGE = I18n.currentLocale().slice(0,2);
-//const URL = "http://45.32.173.248/";
-const URL = "http://192.168.0.29:8080/";
+const URL = "http://45.32.173.248/";
+// const URL = "http://192.168.0.29:8080/";
 
 async function checkConectivity() {
     let response = await NetInfo.isConnected.fetch()
