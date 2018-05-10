@@ -8,7 +8,6 @@ import com.beefe.picker.PickerViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
-import cl.json.RNSharePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -51,7 +50,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNI18nPackage(),
             new FBSDKPackage(),
             new RNDeviceInfo(),
-            new RNSharePackage(),
             new FBSDKPackage(mCallbackManager)
       );
     }
