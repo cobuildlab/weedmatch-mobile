@@ -19,7 +19,7 @@ export default class TopBar extends Component {
 
   getSwiperImage(){
 
-    const image = this.state.activePage == 0 ? <Image source={require('../../assets/img/mariOn.png')} style={styles.imageContainer} /> : <Image source={require('../../assets/img/mari.png')} style={styles.imageContainer} />;
+    const image = this.state.activePage == 0 ? <Image source={require('../../assets/img/mariOn.png')} style={styles.imageContainerLeft} /> : <Image source={require('../../assets/img/mari.png')} style={styles.imageContainerLeft} />;
 
     return (
       image
@@ -28,7 +28,7 @@ export default class TopBar extends Component {
 
   getFeedImage(){
 
-    const image = this.state.activePage == 1 ? <Image source={require('../../assets/img/420On.png')} style={styles.imageContainer} /> : <Image source={require('../../assets/img/420.png')} style={styles.imageContainer} />;
+    const image = this.state.activePage == 1 ? <Image source={require('../../assets/img/420On.png')} style={styles.imageContainerRight} /> : <Image source={require('../../assets/img/420.png')} style={styles.imageContainerRight} />;
 
     return (
       image

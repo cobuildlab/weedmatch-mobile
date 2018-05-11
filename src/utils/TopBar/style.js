@@ -2,10 +2,25 @@ import { StyleSheet, Platform, Dimensions  } from 'react-native';
 
 export default styles = StyleSheet.create({
 
-    imageContainer: {
+    imageContainerLeft: {
         height:27,
         width:27,
-        resizeMode:'contain'
+        resizeMode:'contain',
+        ...Platform.select({
+            android: {
+                marginLeft: 130,
+            },
+        }),
+    },
+    imageContainerRight: {
+        height:27,
+        width:27,
+        resizeMode:'contain',
+        ...Platform.select({
+            android: {
+                marginRight: 130,
+            },
+        }),
     },
     buttomIconMsg:{
         position: 'absolute',
@@ -65,16 +80,8 @@ export default styles = StyleSheet.create({
                 marginLeft: 130, 
             },
             android: {
-                marginRight: 130, 
-                marginLeft: 130, 
-                shadowColor: null,
-                shadowRadius: 0,
-                shadowOpacity:0,
-                shadowOffset: {
-                    width:0,
-                    height:0
-                }
-
+                // marginRight: 130, 
+                // marginLeft: 130, 
             },
           }),
     },
