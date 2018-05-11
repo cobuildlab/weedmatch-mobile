@@ -9,18 +9,40 @@ export default styles = StyleSheet.create({
     },
     buttomIconMsg:{
         position: 'absolute',
-        top: 22,
-        right: 35,
-        width: 10,
-        height: 10,
+        ...Platform.select({
+            ios: {
+              width: 10,
+              height: 10,
+              top: 22,
+              right: 35,
+            },
+            android: {
+              width: 30,
+              height: 30,
+              top: 12,
+              right: 15,
+            },
+          }),
         zIndex: 999,
     },
     buttomIconProfile:{
         position: 'absolute',
-        top: 22,
-        left: 15,
-        width: 10,
-        height: 10,
+
+        flex: 1,
+        ...Platform.select({
+          ios: {
+            width: 10,
+            height: 10,
+            top: 22,
+            left: 15,
+          },
+          android: {
+            width: 30,
+            height: 30,
+            top: 12,
+            left: 15
+          },
+        }),
         zIndex: 999,
     },
     imgIconProfile:{
@@ -32,14 +54,37 @@ export default styles = StyleSheet.create({
         height: 27,
     },
     tabContainerStyle: {
-        paddingTop: 35, 
-        paddingBottom: 20, 
-        marginRight: 130, 
-        marginLeft: 130, 
+
         backgroundColor: '#fff', 
         borderColor: 'transparent',
+        ...Platform.select({
+            ios: {
+                paddingTop: 35, 
+                paddingBottom: 20, 
+                marginRight: 130, 
+                marginLeft: 130, 
+            },
+            android: {
+                marginRight: 130, 
+                marginLeft: 130, 
+                shadowColor: null,
+                shadowRadius: 0,
+                shadowOpacity:0,
+                shadowOffset: {
+                    width:0,
+                    height:0
+                }
+
+            },
+          }),
     },
     containerColor: {
+        backgroundColor: null
+    },
+    bgColor: {
+        backgroundColor: '#fff'
+    },
+    tabContainer: {
         backgroundColor: '#fff'
     }
 })

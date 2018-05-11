@@ -45,7 +45,7 @@ export default class TopBar extends Component {
 
   render() {
     return (
-      <Container style={styles.containerColor}>
+      <Container style={styles.bgColor}>
         <TouchableOpacity style={styles.buttomIconProfile} onPress={ () => this.showProfile()}>
           <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
         </TouchableOpacity>
@@ -58,11 +58,12 @@ export default class TopBar extends Component {
           onChangeTab={ (event) => {this.setState({ activePage: event.i })} }
           tabBarUnderlineStyle={styles.containerColor}
           tabContainerStyle={styles.tabContainerStyle}
+          edgeHitWidth={0}
           >
-            <Tab heading={<TabHeading>{this.getSwiperImage()}</TabHeading>}>
+            <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
               <Swiper navigation={this.props.navigation}/>
             </Tab>
-            <Tab heading={<TabHeading>{this.getFeedImage()}</TabHeading>}>
+            <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
               <Home navigation={this.props.navigation}/>
             </Tab>
         </Tabs>
