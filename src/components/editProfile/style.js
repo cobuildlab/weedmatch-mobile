@@ -67,8 +67,8 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
   },
   buttonTextOff: {
-      color: '#ccc',
-      fontSize: 16,
+    color: '#ccc',
+    fontSize: 16,
   },
   buttomEditSexOn: {
       marginBottom: 10,
@@ -169,11 +169,12 @@ export default styles = StyleSheet.create({
     paddingBottom: 0,
   },
   buttomUploadStyle:{
-    backgroundColor: '#ccc',
+    backgroundColor: '#fff',
   },
   meSubImg:{
     width: '100%',
     height: 80,
+    resizeMode: 'contain'
   },
   meInfoWrap:{
     flexDirection:'column'
@@ -206,16 +207,26 @@ export default styles = StyleSheet.create({
   },
   data:{
     flex:1,
-
     alignItems:'center'
+  },
+  imageMode: {
+    resizeMode: 'stretch',
   },
   buttomDelete:{
     ...StyleSheet.absoluteFillObject,
-    top: -8,
-    left: -8,
-    width: 15,
-    height: 15,
+    top: -3,
+    left: 5,
     zIndex: 999,
+    ...Platform.select({
+      ios: {
+        width: 15,
+        height: 15,
+      },
+      android: {
+        width: 35,
+        height: 35,
+      },
+    }),
   },
   contentImg:{
     flex: 1,

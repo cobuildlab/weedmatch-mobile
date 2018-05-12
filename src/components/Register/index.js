@@ -288,9 +288,74 @@ class RegisterPage extends Component {
         }).catch(e => alert(e));
     }
 
+    renderBy(body) {
+        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
+        if (Platform.OS == 'android') {
+            return (
+                <ScrollView style={styles.scrollContainer}>
+                <View style={styles.teclado}>
+                  <Image style={styles.container}
+                         source={require('../../assets/img/logo-b.png')}
+                  />
+                  <Text style={styles.textRegister}>
+                      {strings("main.register")}
+                  </Text>
+                  <View style={styles.contentSocial}>
+                  { step == 1 &&
+                  <TouchableOpacity
+                      style={styles.buttomFacebookStyle}>
+                      <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
+                  </TouchableOpacity>
+                  }
+                  <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                  </View>
+                  { step == 1 &&
+                  <View style={styles.optBox}>
+                      <View style={styles.lineOpt} />
+                        <Text style={styles.opt}> {strings("register.opt")} </Text>
+                      <View style={styles.lineOpt} />
+                  </View>
+                  }
+                  {body}
+                </View>
+             </ScrollView>
+              );
+          } else if (Platform.OS == 'ios') {
+                return (
+                    <KeyboardAvoidingView style={styles.scrollContainer} behavior="padding">
+                        <View style={styles.teclado}>
+                        <Image style={styles.container}
+                                source={require('../../assets/img/logo-b.png')}
+                        />
+                        <Text style={styles.textRegister}>
+                            {strings("main.register")}
+                        </Text>
+                        <View style={styles.contentSocial}>
+                        { step == 1 &&
+                        <TouchableOpacity
+                            style={styles.buttomFacebookStyle}>
+                            <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
+                        </TouchableOpacity>
+                        }
+                        <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                        </View>
+                        { step == 1 &&
+                        <View style={styles.optBox}>
+                            <View style={styles.lineOpt} />
+                                <Text style={styles.opt}> {strings("register.opt")} </Text>
+                            <View style={styles.lineOpt} />
+                        </View>
+                        }
+                        {body}
+                        </View>
+                    </KeyboardAvoidingView>
+                    );
+        }
+    }
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
-        let body = <ActivityIndicator size="large" color="#0000ff"/>;
+        let body = <ActivityIndicator size="large" color="#9605CC"/>;
         if (!isLoading) {
             body = <View>
                 {this._showActivity()}
@@ -400,33 +465,9 @@ class RegisterPage extends Component {
             </View>
         }
         return (
-           <KeyboardAvoidingView style={styles.scrollContainer} behavior="padding">
-              <View style={styles.teclado}>
-                <Image style={styles.container}
-                       source={require('../../assets/img/logo-b.png')}
-                />
-                <Text style={styles.textRegister}>
-                    {strings("main.register")}
-                </Text>
-                <View style={styles.contentSocial}>
-                { step == 1 &&
-                <TouchableOpacity
-                    style={styles.buttomFacebookStyle}>
-                    <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
-                </TouchableOpacity>
-                }
-                <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
-                </View>
-                { step == 1 &&
-                <View style={styles.optBox}>
-                    <View style={styles.lineOpt} />
-                      <Text style={styles.opt}> {strings("register.opt")} </Text>
-                    <View style={styles.lineOpt} />
-                </View>
-                }
-                {body}
-              </View>
-           </KeyboardAvoidingView>
+            <View style={styles.scrollContainer}>
+                {this.renderBy(body)}
+            </View>
         );
     }
 }

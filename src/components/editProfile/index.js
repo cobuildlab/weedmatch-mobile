@@ -223,26 +223,26 @@ export default class EditProfile extends Component {
       <View style={styles.contentImg}>
          <View style={styles.meSubPic}>
            <TouchableOpacity style={styles.buttomUploadStyle}>
-             <Image  style={styles.meSubImg}/>
+             <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
            </TouchableOpacity>
            <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={require('../../assets/img/delete.png')}/>
+             <Image source={require('../../assets/img/delete.png')} style={styles.imageMode} />
            </TouchableOpacity>
          </View>
          <View style={styles.meSubPic}>
            <TouchableOpacity style={styles.buttomUploadStyle}>
-             <Image style={styles.meSubImg}/>
+             <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
            </TouchableOpacity>
            <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={require('../../assets/img/delete.png')}/>
+             <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
            </TouchableOpacity>
          </View>
          <View style={styles.meSubPic}>
            <TouchableOpacity style={styles.buttomUploadStyle}>
-             <Image style={styles.meSubImg}/>
+             <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
            </TouchableOpacity>
            <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={require('../../assets/img/delete.png')}/>
+             <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
            </TouchableOpacity>
          </View>
        </View>
@@ -251,6 +251,7 @@ export default class EditProfile extends Component {
            <Text style={styles.textLabel}>Acerca de ti</Text>
          </View>
          <TextInput
+            underlineColorAndroid='transparent'
             style={styles.meDescription}
             value={user.description}
           />
@@ -259,6 +260,7 @@ export default class EditProfile extends Component {
           <Text style={styles.textLabel}>Nombre</Text>
         </View>
         <TextInput
+           underlineColorAndroid='transparent'
            style={styles.meDescription}
            value={user.first_name}
          />
@@ -267,6 +269,7 @@ export default class EditProfile extends Component {
          <Text style={styles.textLabel}>Usuario</Text>
        </View>
        <TextInput
+          underlineColorAndroid='transparent'
           style={styles.meDescription}
           value={user.username}
         />
