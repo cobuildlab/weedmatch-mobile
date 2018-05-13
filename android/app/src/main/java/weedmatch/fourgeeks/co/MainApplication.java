@@ -4,6 +4,7 @@ import android.app.Application;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactApplication;
 import com.toast.RCTToastPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
@@ -45,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new RCTToastPackage(),
+            new RNSpinkitPackage(),
             new PickerViewPackage(),
             new PickerPackage(),
             new RNI18nPackage(),
