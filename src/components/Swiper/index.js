@@ -16,6 +16,7 @@ import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
 import { swiperAction } from './SwiperActions'
 import TopBar from '../../utils/TopBar';
+import Spinner from 'react-native-spinkit';
 
 export default class SwiperView extends Component {
   constructor (props) {
@@ -171,111 +172,122 @@ export default class SwiperView extends Component {
     }
   }
 
+  showLoadingCards() {
+      return(
+        <View style={styles.containerLoader}>
+          <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'}/>
+          <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
+        </View>
+      );
+  }
+
   render () {
     if(this.state.isLoaded) {
+      if(!this.state.noCards) {
         return (
-            <View style={styles.container}>
-              <Swiper
-                ref={swiper => {
-                  this.swiper = swiper
-                }}
-                disableBottomSwipe={true}
-                onTapCard={this.swipeTap}
+          <View style={styles.container}>
+            <Swiper
+              ref={swiper => {
+                this.swiper = swiper
+              }}
+              disableBottomSwipe={true}
+              onTapCard={this.swipeTap}
 
-                onSwiped={(cardIndex) => this.onSwipe()}
-                onSwipedLeft={(cardIndex) => this.swipeLeft}
-                onSwipedRight={(cardIndex) => this.swipeRight}
-                onSwipedTop={(cardIndex) => this.swipeTop}
+              onSwiped={(cardIndex) => this.onSwipe()}
+              onSwipedLeft={(cardIndex) => this.swipeLeft}
+              onSwipedRight={(cardIndex) => this.swipeRight}
+              onSwipedTop={(cardIndex) => this.swipeTop}
 
-                cards={this.state.cards}
-                cardIndex={this.cardIndex}
-                marginTop={-140}
-                cardVerticalMargin={160}
-                // Cuando no hay Header
-                // marginTop={-20}
-                // cardVerticalMargin={100}
-                renderCard={this.renderCard}
-                onSwipedAll={this.onSwipedAllCards.bind(this)}
-                stackSize={3}
-                backgroundColor={'#fff'}
-                stackSeparation={15}
-                overlayLabels={{
-                  // bottom: {
-                  //   title: 'BLEAH',
-                  //   style: {
-                  //     label: {
-                  //       backgroundColor: 'black',
-                  //       borderColor: 'black',
-                  //       color: 'white',
-                  //       borderWidth: 1
-                  //     },
-                  //     wrapper: {
-                  //       flexDirection: 'column',
-                  //       alignItems: 'center',
-                  //       justifyContent: 'center'
-                  //     }
-                  //   }
-                  // },
-                  left: {
-                    title: 'NOPE',
-                    style: {
-                      label: {
-                        // backgroundColor: 'black',
-                        borderColor: '#dc3644',
-                        color: '#dc3644',
-                        borderWidth: 5,
-                      },
-                      wrapper: {
-                        flexDirection: 'column',
-                        alignItems: 'flex-end',
-                        justifyContent: 'flex-start',
-                        marginTop: 25,
-                        marginLeft: -25,
-                      }
-                    }
-                  },
-                  right: {
-                    title: 'LIKE',
-                    style: {
-                      label: {
-                        // backgroundColor: 'black',
-                        borderColor: '#74c044',
-                        color: '#74c044',
-                        borderWidth: 5,
-                      },
-                      wrapper: {
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                        justifyContent: 'flex-start',
-                        marginTop: 25,
-                        marginLeft: 25
-                      }
-                    }
-                  },
-                  top: {
-                    title: 'SUPER LIKE',
-                    style: {
-                      label: {
-                        // backgroundColor: 'black',
-                        borderColor: '#9605CC',
-                        color: '#9605CC',
-                        borderWidth: 5
-                      },
-                      wrapper: {
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }
+              cards={this.state.cards}
+              cardIndex={this.cardIndex}
+              marginTop={-140}
+              cardVerticalMargin={160}
+              renderCard={this.renderCard}
+              onSwipedAll={this.onSwipedAllCards.bind(this)}
+              stackSize={3}
+              backgroundColor={'#fff'}
+              stackSeparation={15}
+              overlayLabels={{
+                // bottom: {
+                //   title: 'BLEAH',
+                //   style: {
+                //     label: {
+                //       backgroundColor: 'black',
+                //       borderColor: 'black',
+                //       color: 'white',
+                //       borderWidth: 1
+                //     },
+                //     wrapper: {
+                //       flexDirection: 'column',
+                //       alignItems: 'center',
+                //       justifyContent: 'center'
+                //     }
+                //   }
+                // },
+                left: {
+                  title: 'NOPE',
+                  style: {
+                    label: {
+                      borderColor: '#dc3644',
+                      color: '#dc3644',
+                      borderWidth: 5,
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'flex-end',
+                      justifyContent: 'flex-start',
+                      marginTop: 25,
+                      marginLeft: -25,
                     }
                   }
-                }}
-                animateOverlayLabelsOpacity
-                animateCardOpacity
-              >
-              {this.showButtons()}
-            </Swiper>
-        </View>
-        )
+                },
+                right: {
+                  title: 'LIKE',
+                  style: {
+                    label: {
+                      borderColor: '#74c044',
+                      color: '#74c044',
+                      borderWidth: 5,
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      justifyContent: 'flex-start',
+                      marginTop: 25,
+                      marginLeft: 25
+                    }
+                  }
+                },
+                top: {
+                  title: 'SUPER LIKE',
+                  style: {
+                    label: {
+                      borderColor: '#9605CC',
+                      color: '#9605CC',
+                      borderWidth: 5
+                    },
+                    wrapper: {
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }
+                  }
+                }
+              }}
+              animateOverlayLabelsOpacity
+              animateCardOpacity
+            >
+            {this.showButtons()}
+          </Swiper>
+      </View>
+      );
+      } else {
+        return(
+          <View style={styles.containerFlex}>
+            {this.showLoadingCards()}
+          </View>
+        );
+      }
     } else {
       return (
         <View style={styles.containerFlex}>

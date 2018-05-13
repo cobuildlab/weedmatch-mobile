@@ -37,6 +37,20 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#FFF',
     },
+    containerLoader: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    containerLoaderImage: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      height: 80,
+      width: 80,
+      resizeMode: 'contain',
+    },
     horizontal: {
       flexDirection: 'row',
       justifyContent: 'space-around',
