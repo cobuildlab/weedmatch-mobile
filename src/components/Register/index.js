@@ -292,7 +292,10 @@ class RegisterPage extends Component {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         if (Platform.OS == 'android') {
             return (
-                <ScrollView style={styles.scrollContainer}>
+                <ScrollView 
+                    style={styles.scrollContainer}
+                    keyboardShouldPersistTaps={'always'}
+                >
                 <View style={styles.teclado}>
                   <Image style={styles.container}
                          source={require('../../assets/img/logo-b.png')}

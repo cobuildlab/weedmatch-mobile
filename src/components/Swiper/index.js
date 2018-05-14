@@ -172,15 +172,6 @@ export default class SwiperView extends Component {
     }
   }
 
-  showLoadingCards() {
-      return(
-        <View style={styles.containerLoader}>
-          <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'}/>
-          <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
-        </View>
-      );
-  }
-
   render () {
     if(this.state.isLoaded) {
       if(!this.state.noCards) {
@@ -283,8 +274,9 @@ export default class SwiperView extends Component {
       );
       } else {
         return(
-          <View style={styles.containerFlex}>
-            {this.showLoadingCards()}
+          <View style={styles.containerLoader}>
+            <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'}/>
+            <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
           </View>
         );
       }

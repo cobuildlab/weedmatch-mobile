@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   TextInput,
   Picker,
+  Keyboard
 } from 'react-native';
 
 import { strings } from "../../i18n";
@@ -34,7 +35,10 @@ export default class EditProfile extends Component {
       sliderOneChanging: false,
       sliderOneValue: [2],
       image: '',
-      user: {}
+      user: {},
+      username: '',
+      description: '',
+      name: '',
     };
   }
 
@@ -50,6 +54,9 @@ export default class EditProfile extends Component {
                       isLoading: true,
                       user: state.publicEditProfile,
                       sliderOneValue: newValues,
+                      username: state.publicEditProfile.username,
+                      description: state.publicEditProfile.description,
+                      name: state.publicEditProfile.first_name,
                       image: state.publicEditProfile.profile_images[0].image
                   })
 
@@ -208,7 +215,11 @@ export default class EditProfile extends Component {
   render() {
     const { image, user } = this.state;
     return (
-      <ScrollView automaticallyAdjustContentInsets={false} style={styles.scrollView}>
+      <ScrollView 
+        automaticallyAdjustContentInsets={false} 
+        style={styles.scrollView}
+        keyboardShouldPersistTaps={'always'}
+      >
       {this.showActivity()}
       <View style={styles.meInfoWrap}>
         <TouchableOpacity onPress={() => this.ActionSheet.show()  }>
@@ -253,7 +264,12 @@ export default class EditProfile extends Component {
          <TextInput
             underlineColorAndroid='transparent'
             style={styles.meDescription}
-            value={user.description}
+            value={this.state.description}
+            onChangeText={(description) => this.setState({description})}
+            blurOnSubmit={false}
+            returnKeyType = {"next"}
+            ref='descripcion'
+            onSubmitEditing={() => { this.nombre.focus(); }}
           />
         <View style={styles.divider} />
         <View style={styles.labelText}>
@@ -262,7 +278,12 @@ export default class EditProfile extends Component {
         <TextInput
            underlineColorAndroid='transparent'
            style={styles.meDescription}
-           value={user.first_name}
+           value={this.state.name}
+           onChangeText={(name) => this.setState({name})}
+           blurOnSubmit={false}
+           returnKeyType = {"next"}
+           ref={(input) => { this.nombre = input; }}
+           onSubmitEditing={() => { this.usuario.focus(); }}
          />
        <View style={styles.divider} />
        <View style={styles.labelText}>
@@ -271,7 +292,12 @@ export default class EditProfile extends Component {
        <TextInput
           underlineColorAndroid='transparent'
           style={styles.meDescription}
-          value={user.username}
+          value={this.state.username}
+          onChangeText={(username) => this.setState({username})}
+          blurOnSubmit={false}
+          returnKeyType = {"next"}
+          ref={(input) => { this.usuario = input; }}
+          onSubmitEditing={() => { Keyboard.dismiss() }}
         />
         <View style={styles.divider} />
         <View style={styles.labelText}>

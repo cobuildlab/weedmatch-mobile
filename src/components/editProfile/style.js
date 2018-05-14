@@ -3,7 +3,8 @@ import { StyleSheet, Platform  } from 'react-native';
 export default styles = StyleSheet.create({
   scrollView:{
     backgroundColor: '#fff',
-    marginBottom:0
+    marginBottom:0,
+    flex:1
   },
   container: {
     flex: 1,
