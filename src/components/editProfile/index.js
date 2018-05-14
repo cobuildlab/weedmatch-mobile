@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   TextInput,
   Picker,
-  Keyboard
+  Keyboard,
+  ActivityIndicator
 } from 'react-native';
 
 import { strings } from "../../i18n";
@@ -32,6 +33,7 @@ export default class EditProfile extends Component {
     console.log("EditProfile:constructor");
 
     this.state = {
+      isLoading: false,
       sliderOneChanging: false,
       sliderOneValue: [2],
       image: '',
@@ -59,7 +61,6 @@ export default class EditProfile extends Component {
                       name: state.publicEditProfile.first_name,
                       image: state.publicEditProfile.profile_images[0].image
                   })
-
                 return;
               }
               if (state.error) {
@@ -85,16 +86,16 @@ export default class EditProfile extends Component {
 
       }
 
-      componentWillUnmount() {
-          console.log("EditProfile:componentWillUmmount");
-          this.public.unsubscribe();
-          this.saveProfile.unsubscribe();
+    componentWillUnmount() {
+        console.log("EditProfile:componentWillUmmount");
+        this.public.unsubscribe();
+        this.saveProfile.unsubscribe();
 
-      }
+    }
 
-      _getProfileId() {
-          publicEditAction(APP_STORE.getToken(), APP_STORE.getId())
-      }
+    _getProfileId() {
+        publicEditAction(APP_STORE.getToken(), APP_STORE.getId())
+    }
 
 
     _logout(){
@@ -210,184 +211,205 @@ export default class EditProfile extends Component {
     }
 
 
+  setPhoto(index){
+
+    if(this.state.user.profile_images.length == index + 1) {
+      return (
+        <Image style={styles.meSubImg} source={{uri: url}} />
+      )
+    } else {
+      return (
+        <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
+      )
+    }
+  }
+
   static navigationOptions = { title: 'Editar Perfil' };
 
   render() {
-    const { image, user } = this.state;
-    return (
-      <ScrollView 
-        automaticallyAdjustContentInsets={false} 
-        style={styles.scrollView}
-        keyboardShouldPersistTaps={'always'}
-      >
-      {this.showActivity()}
-      <View style={styles.meInfoWrap}>
-        <TouchableOpacity onPress={() => this.ActionSheet.show()  }>
-          {image == '' &&
-            <Image source={require('../../assets/img/upload.png')} style={styles.mePic}/>
-          }
-          {image !== '' &&
-            <Image style={styles.mePic} source={{uri: image}} />
-          }
-        </TouchableOpacity>
-      </View>
-      <View style={styles.contentImg}>
-         <View style={styles.meSubPic}>
-           <TouchableOpacity style={styles.buttomUploadStyle}>
-             <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
-           </TouchableOpacity>
-           <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={require('../../assets/img/delete.png')} style={styles.imageMode} />
-           </TouchableOpacity>
+    const { image, user, isLoading } = this.state;
+
+    if(isLoading) {
+      return (
+        <ScrollView 
+          automaticallyAdjustContentInsets={false} 
+          style={styles.scrollView}
+          keyboardShouldPersistTaps={'always'}
+        >
+        {this.showActivity()}
+        <View style={styles.meInfoWrap}>
+          <TouchableOpacity onPress={() => this.ActionSheet.show()  }>
+            {image == '' &&
+              <Image source={require('../../assets/img/upload.png')} style={styles.mePic}/>
+            }
+            {image !== '' &&
+              <Image style={styles.mePic} source={{uri: image}} />
+            }
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contentImg}>
+           <View style={styles.meSubPic}>
+             <TouchableOpacity style={styles.buttomUploadStyle}>
+              {this.setPhoto(1)}
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.buttomDelete}>
+               <Image source={require('../../assets/img/delete.png')} style={styles.imageMode} />
+             </TouchableOpacity>
+           </View>
+           <View style={styles.meSubPic}>
+             <TouchableOpacity style={styles.buttomUploadStyle}>
+              {this.setPhoto(2)}
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.buttomDelete}>
+               <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
+             </TouchableOpacity>
+           </View>
+           <View style={styles.meSubPic}>
+             <TouchableOpacity style={styles.buttomUploadStyle}>
+              {this.setPhoto(3)}
+             </TouchableOpacity>
+             <TouchableOpacity style={styles.buttomDelete}>
+               <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
+             </TouchableOpacity>
+           </View>
          </View>
-         <View style={styles.meSubPic}>
-           <TouchableOpacity style={styles.buttomUploadStyle}>
-             <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
-           </TouchableOpacity>
-           <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
-           </TouchableOpacity>
-         </View>
-         <View style={styles.meSubPic}>
-           <TouchableOpacity style={styles.buttomUploadStyle}>
-             <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
-           </TouchableOpacity>
-           <TouchableOpacity style={styles.buttomDelete}>
-             <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
-           </TouchableOpacity>
-         </View>
-       </View>
-       <View style={styles.contentForm}>
+         <View style={styles.contentForm}>
+           <View style={styles.labelText}>
+             <Text style={styles.textLabel}>Acerca de ti</Text>
+           </View>
+           <TextInput
+              underlineColorAndroid='transparent'
+              style={styles.meDescription}
+              value={this.state.description}
+              onChangeText={(description) => this.setState({description})}
+              blurOnSubmit={false}
+              returnKeyType = {"next"}
+              ref='descripcion'
+              onSubmitEditing={() => { this.nombre.focus(); }}
+            />
+          <View style={styles.divider} />
+          <View style={styles.labelText}>
+            <Text style={styles.textLabel}>Nombre</Text>
+          </View>
+          <TextInput
+             underlineColorAndroid='transparent'
+             style={styles.meDescription}
+             value={this.state.name}
+             onChangeText={(name) => this.setState({name})}
+             blurOnSubmit={false}
+             returnKeyType = {"next"}
+             ref={(input) => { this.nombre = input; }}
+             onSubmitEditing={() => { this.usuario.focus(); }}
+           />
+         <View style={styles.divider} />
          <View style={styles.labelText}>
-           <Text style={styles.textLabel}>Acerca de ti</Text>
+           <Text style={styles.textLabel}>Usuario</Text>
          </View>
          <TextInput
             underlineColorAndroid='transparent'
             style={styles.meDescription}
-            value={this.state.description}
-            onChangeText={(description) => this.setState({description})}
+            value={this.state.username}
+            onChangeText={(username) => this.setState({username})}
             blurOnSubmit={false}
             returnKeyType = {"next"}
-            ref='descripcion'
-            onSubmitEditing={() => { this.nombre.focus(); }}
+            ref={(input) => { this.usuario = input; }}
+            onSubmitEditing={() => { Keyboard.dismiss() }}
           />
+          <View style={styles.divider} />
+          <View style={styles.labelText}>
+            <Text style={styles.textLabel}>Distancia Máxima</Text>
+            <Text style={styles.textLabelvalue}>{this.state.sliderOneValue + 'Km'}</Text>
+          </View>
+          <View style={styles.marginView}>
+            <MultiSlider
+              selectedStyle={{
+                backgroundColor: '#9605CC',
+              }}
+              min={2}
+              max={201}
+              unselectedStyle={{
+                backgroundColor: '#ccc',
+              }}
+              values={this.state.sliderOneValue}
+              sliderLength={300}
+              onValuesChangeStart={this.sliderOneValuesChangeStart}
+              onValuesChange={this.sliderOneValuesChange}
+              onValuesChangeFinish={this.sliderOneValuesChangeFinish}
+            />
+          </View>
+          <View style={styles.divider} />
+         </View>
+         <View style={styles.labelTextGender}>
+           <Text style={styles.textLabel}>Match</Text>
+         </View>
+         <View style={styles.contentFormGender}>
+           <View style={styles.contenGender}>
+             <TouchableOpacity style={this.state.user.match_sex === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Hombre') }>
+               <Text style={this.state.user.match_sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
+             </TouchableOpacity>
+           </View>
+           <View style={styles.contenGender}>
+             <TouchableOpacity style={this.state.user.match_sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Mujer') }>
+               <Text style={this.state.user.match_sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
+             </TouchableOpacity>
+  
+           </View>
+           <View style={styles.contenGender}>
+             <TouchableOpacity style={this.state.user.match_sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Otro') }>
+               <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
+             </TouchableOpacity>
+           </View>
+         </View>
+         <View style={styles.divider} />
+  
+         <View style={styles.labelTextGender}>
+           <Text style={styles.textLabel}>Tu Genero</Text>
+         </View>
+         <View style={styles.contentFormGender}>
+           <View style={styles.contenGender}>
+             <TouchableOpacity style={this.state.user.sex === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Hombre') }>
+               <Text style={this.state.user.sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
+             </TouchableOpacity>
+           </View>
+           <View style={styles.contenGender}>
+             <TouchableOpacity style={this.state.user.sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Mujer') }>
+               <Text style={this.state.user.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
+             </TouchableOpacity>
+           </View>
+           <View style={styles.contenGender}>
+             <TouchableOpacity style={this.state.user.sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Otro') }>
+               <Text style={this.state.user.sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
+             </TouchableOpacity>
+           </View>
+         </View>
+         <View style={styles.divider} />
+  
+         <View style={styles.labelTextComprar}>
+           <Text style={styles.textLabelCard}>Comprar Version Pro</Text>
+           <TouchableOpacity
+               style={styles.buttomCardStyle}>
+               <Text style={styles.buttonTextCard}>Pagar con Tarjeta de Credito</Text>
+           </TouchableOpacity>
+         </View>
         <View style={styles.divider} />
-        <View style={styles.labelText}>
-          <Text style={styles.textLabel}>Nombre</Text>
+      <View style={styles.content}>
+          <TouchableOpacity
+              style={styles.buttomRegisterStyle} onPress={() => this._saveInfo()}>
+              <Text style={styles.buttonText}>Guardar Cambios</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+              style={styles.buttomPassStyle}>
+              <Text style={styles.buttonTextCard}>Cambiar Contraseña</Text>
+          </TouchableOpacity>
         </View>
-        <TextInput
-           underlineColorAndroid='transparent'
-           style={styles.meDescription}
-           value={this.state.name}
-           onChangeText={(name) => this.setState({name})}
-           blurOnSubmit={false}
-           returnKeyType = {"next"}
-           ref={(input) => { this.nombre = input; }}
-           onSubmitEditing={() => { this.usuario.focus(); }}
-         />
-       <View style={styles.divider} />
-       <View style={styles.labelText}>
-         <Text style={styles.textLabel}>Usuario</Text>
-       </View>
-       <TextInput
-          underlineColorAndroid='transparent'
-          style={styles.meDescription}
-          value={this.state.username}
-          onChangeText={(username) => this.setState({username})}
-          blurOnSubmit={false}
-          returnKeyType = {"next"}
-          ref={(input) => { this.usuario = input; }}
-          onSubmitEditing={() => { Keyboard.dismiss() }}
-        />
-        <View style={styles.divider} />
-        <View style={styles.labelText}>
-          <Text style={styles.textLabel}>Distancia Máxima</Text>
-          <Text style={styles.textLabelvalue}>{this.state.sliderOneValue + 'Km'}</Text>
-        </View>
-        <View style={styles.marginView}>
-          <MultiSlider
-            selectedStyle={{
-              backgroundColor: '#9605CC',
-            }}
-            min={2}
-            max={201}
-            unselectedStyle={{
-              backgroundColor: '#ccc',
-            }}
-            values={this.state.sliderOneValue}
-            sliderLength={300}
-            onValuesChangeStart={this.sliderOneValuesChangeStart}
-            onValuesChange={this.sliderOneValuesChange}
-            onValuesChangeFinish={this.sliderOneValuesChangeFinish}
-          />
-        </View>
-        <View style={styles.divider} />
-       </View>
-       <View style={styles.labelTextGender}>
-         <Text style={styles.textLabel}>Match</Text>
-       </View>
-       <View style={styles.contentFormGender}>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.match_sex === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Hombre') }>
-             <Text style={this.state.user.match_sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
-           </TouchableOpacity>
-         </View>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.match_sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Mujer') }>
-             <Text style={this.state.user.match_sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
-           </TouchableOpacity>
-
-         </View>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.match_sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Otro') }>
-             <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
-           </TouchableOpacity>
-         </View>
-       </View>
-       <View style={styles.divider} />
-
-       <View style={styles.labelTextGender}>
-         <Text style={styles.textLabel}>Tu Genero</Text>
-       </View>
-       <View style={styles.contentFormGender}>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.sex === 'Hombre' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Hombre') }>
-             <Text style={this.state.user.sex === 'Hombre' ? styles.buttonTextOn : styles.buttonTextOff}>Hombre</Text>
-           </TouchableOpacity>
-         </View>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Mujer') }>
-             <Text style={this.state.user.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
-           </TouchableOpacity>
-         </View>
-         <View style={styles.contenGender}>
-           <TouchableOpacity style={this.state.user.sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setGenero('Otro') }>
-             <Text style={this.state.user.sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
-           </TouchableOpacity>
-         </View>
-       </View>
-       <View style={styles.divider} />
-
-       <View style={styles.labelTextComprar}>
-         <Text style={styles.textLabelCard}>Comprar Version Pro</Text>
-         <TouchableOpacity
-             style={styles.buttomCardStyle}>
-             <Text style={styles.buttonTextCard}>Pagar con Tarjeta de Credito</Text>
-         </TouchableOpacity>
-       </View>
-      <View style={styles.divider} />
-    <View style={styles.content}>
-        <TouchableOpacity
-            style={styles.buttomRegisterStyle} onPress={() => this._saveInfo()}>
-            <Text style={styles.buttonText}>Guardar Cambios</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-            style={styles.buttomPassStyle}>
-            <Text style={styles.buttonTextCard}>Cambiar Contraseña</Text>
-        </TouchableOpacity>
-      </View>
-      </ScrollView>
-
-    );
+        </ScrollView>
+      );
+    } else {
+        return (
+            <View style={[styles.containers, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#9605CC" />
+            </View>
+        )
+    }
   }
 }

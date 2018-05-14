@@ -67,7 +67,6 @@ class RegisterPage extends Component {
             {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
         );
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
-            //this.setState({isLoading: true});
             if (state.error) {
                 //this.setState({isLoading: false});
                 if(state.error.detail){
@@ -87,7 +86,7 @@ class RegisterPage extends Component {
             if (state.success) {
                 toastMsg(strings("register.successTitle"));
                 this.setState({isLoading: false});
-                this.props.navigation.goBack();
+                this.props.navigation.navigate('App');
             }
         });
         this.event = APP_STORE.EMAIL_EVENT.subscribe(state => {

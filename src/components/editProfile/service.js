@@ -35,7 +35,9 @@ function saveProfile(token, id, state) {
         "first_name": state.user.first_name,
         "description": state.user.description,
         "match_sex": state.user.match_sex,
-        "sex": state.user.sex
+        "sex": state.user.sex,
+        "distance": state.sliderOneValue.toString(),
+        "notification":"true"
     }
 
     const requestOptions = {
