@@ -4,6 +4,7 @@ import {APP_STORE} from "../../Store";
 
 export const userService = {
     publicProfile,
+    publicImages420
 };
 
 /**
@@ -12,11 +13,25 @@ export const userService = {
  * @param id The id of the user
  * @returns {Promise<any>}
  */
-function publicProfile(token, id) {
+function publicProfile(token, id, state) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token)
     };
 
-    return fetch(URL + 'public-profile/' + id + '/', requestOptions);
+    return fetch(URL + 'public-profile/' + id + '/?latitud=' + state.latitud + '&longitud=' + state.longitud, requestOptions);
+}
+
+/**
+ * Get the user's profile data
+ * @param token The token of the current user's sesion
+ * @param pageUrl The Url of the page to fetch
+ * @returns {Promise<any>}
+ */
+function publicImages420(token,pageUrl) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(token)
+    };
+    return fetch(pageUrl, requestOptions);
 }

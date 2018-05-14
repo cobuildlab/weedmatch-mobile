@@ -16,7 +16,7 @@ export default styles = StyleSheet.create({
     },
     imageStyle: {
         height: 300,
-        flex: 3,
+        flex: 2,
         width: null,
     },
     contentLogin: {
@@ -66,12 +66,12 @@ export default styles = StyleSheet.create({
     buttomFacebookStyle: {
         marginTop: 5,
         marginBottom: 10,
-        width: 280,
+        width: 260,
         paddingTop: 14,
         paddingBottom: 14,
         borderRadius: 50,
         alignItems: 'center',
-        backgroundColor: '#b22abf',
+        backgroundColor: '#3b5998',
     },
     buttonTextFacebook: {
         color: 'white',
@@ -81,15 +81,43 @@ export default styles = StyleSheet.create({
     buttomLoginStyle: {
         marginTop: 5,
         marginBottom: 10,
-        width: 260,
+        width: 240,
         paddingTop: 14,
         paddingBottom: 14,
         borderRadius: 50,
         alignItems: 'center',
         // backgroundColor: '#c646b6',
-          backgroundColor: '#9605CC',
+        backgroundColor: '#9605CC',
     },
     scrollContainer: {
         backgroundColor: '#fff',
+        height: '100%'
     },
+
+    buttomIconProfile:{
+    position: 'absolute',
+    top: 22,
+    left: 15,
+    width: 10,
+    height: 10,
+    zIndex: 999,
+    },
+    imgIconProfile:{
+      width: 28,
+      height: 28,
+    },
+
+    buttomIconMsg:{
+      position: 'absolute',
+      top: 22,
+      right: 35,
+      width: 10,
+      height: 10,
+      zIndex: 999,
+    },
+    imgIconMsg:{
+      width: 30,
+      height: 27,
+    },
+
 });

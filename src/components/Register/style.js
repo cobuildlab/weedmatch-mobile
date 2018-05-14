@@ -6,7 +6,6 @@ export default styles = StyleSheet.create({
         resizeMode: 'contain',
         flex: 1,
     },
-
     contentRegister: {
         flex: 1,
         flexDirection: 'column',
@@ -15,6 +14,11 @@ export default styles = StyleSheet.create({
     textLight: {
         fontSize: 20,
         color: '#9605CC',
+    },
+    textRegister: {
+        fontSize: 26,
+        color: '#9605CC',
+        marginBottom: 30,
     },
     textBold: {
         fontSize: 20,
@@ -34,15 +38,15 @@ export default styles = StyleSheet.create({
         marginBottom: 10,
     },
     inputStyleFecha: {
-            backgroundColor: '#ffffff',
-            height: 40,
-            width: 250,
-            borderColor: '#ccc',
-            borderRadius: 50,
-            borderWidth: 1,
-            paddingLeft: 100,
-            paddingRight: 10,
-            marginBottom: 10,
+        backgroundColor: '#ffffff',
+        height: 40,
+        width: 250,
+        borderColor: '#ccc',
+        borderRadius: 50,
+        borderWidth: 1,
+        paddingLeft: 100,
+        paddingRight: 10,
+        marginBottom: 10,
     },
     viewButtonStyleFecha: {
         position: 'absolute',
@@ -54,8 +58,11 @@ export default styles = StyleSheet.create({
     textButtonStyleFecha: {
         color: '#ccc',
     },
+    textFecha: {
+        color: '#9605CC',
+    },
     buttomRegisterStyle: {
-        marginTop: 0,
+        marginTop: 15,
         marginBottom: 10,
         width: 250,
         marginRight: 5,
@@ -65,6 +72,95 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#9605CC',
 
+    },
+    buttomUploadStyle: {
+        marginTop: 15,
+        marginBottom: 10,
+        width: 170,
+        height: 130,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttomUpload: {
+        width: 120,
+        height: 120,
+        flex: 0,
+        resizeMode:'contain'
+    },
+    buttomToUpload: {
+        width: 120,
+        height: 120,
+        flex: 0,
+        borderRadius: 60,
+    },
+    buttomRegisterSexOff: {
+        marginTop: 0,
+        marginBottom: 10,
+        width: 250,
+        marginRight: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderColor: '#ccc',
+        borderRadius: 50,
+        borderWidth: 1,
+        alignItems: 'center',
+    },
+    buttonTextOff: {
+        color: '#ccc',
+        fontSize: 16,
+    },
+    buttomRegisterSexOn: {
+        marginTop: 0,
+        marginBottom: 10,
+        width: 250,
+        marginRight: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderColor: '#9605CC',
+        borderRadius: 50,
+        borderWidth: 1,
+        alignItems: 'center',
+    },
+    buttonTextOn: {
+        color: '#9605CC',
+        fontSize: 16,
+    },
+
+    buttomFacebookStyle: {
+        marginTop: 5,
+        marginBottom: 10,
+        width: 260,
+        paddingTop: 14,
+        paddingBottom: 14,
+        borderRadius: 50,
+        alignItems: 'center',
+        backgroundColor: '#3b5998',
+    },
+    textFacebook:{
+      marginBottom: 30,
+      color: '#777',
+    },
+    contentSocial:{
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    opt:{
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: '#777',
+    },
+    lineOpt:{
+      width: 50,
+      height: 1,
+      backgroundColor: '#777',
+    },
+    optBox:{
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 20,
     },
     buttomCancelStyle: {
         marginTop: 0,
@@ -120,5 +216,6 @@ export default styles = StyleSheet.create({
     },
     scrollContainer: {
         backgroundColor: '#FFF',
+        flex:1,
     }
 })

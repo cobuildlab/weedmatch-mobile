@@ -3,24 +3,18 @@ package weedmatch.fourgeeks.co;
 import android.app.Application;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactApplication;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.toast.RCTToastPackage;
-import com.toast.RCTToastPackage;
-import com.toast.RCTToastPackage;
-import com.toast.RCTToastPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.beefe.picker.PickerViewPackage;
-import cl.json.RNSharePackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
@@ -50,15 +44,14 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-              new MainReactPackage(),
+            new MainReactPackage(),
+            new RCTToastPackage(),
+            new RNSpinkitPackage(),
+            new PickerViewPackage(),
+            new PickerPackage(),
             new RNI18nPackage(),
-              new RCTToastPackage(),
-              new PickerViewPackage(),
-              new RNSharePackage(),
-              new PickerPackage(),
-              new RNDeviceInfo(),
-              new FBSDKPackage(mCallbackManager),
-              new VectorIconsPackage()
+            new RNDeviceInfo(),
+            new FBSDKPackage(mCallbackManager)
       );
     }
 

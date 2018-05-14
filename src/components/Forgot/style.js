@@ -18,6 +18,12 @@ export default styles = StyleSheet.create({
     marginTop: 35,
     color: '#9605CC',
   },
+  textRecover: {
+    fontSize: 26,
+    marginTop: 30,
+    marginBottom: 35,
+    color: '#9605CC',
+  },
   textBold: {
     fontSize: 20,
     marginBottom: 35,
@@ -36,15 +42,14 @@ export default styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttomLoginStyle: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 5,
+    marginBottom: 20,
     width: 250,
     paddingTop: 14,
     paddingBottom: 14,
     borderRadius: 50,
     alignItems: 'center',
     backgroundColor: '#9605CC',
-
   },
   buttonText: {
     color: '#ffffff',
