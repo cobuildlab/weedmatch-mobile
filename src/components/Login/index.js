@@ -108,22 +108,24 @@ export default class LoginPage extends Component {
             )
         } else {
             return (
-                <ScrollView style={styles.containerView}>
+                <ScrollView 
+                    style={styles.containerView}
+                    keyboardShouldPersistTaps={'always'}
+                >
                   <View style={styles.teclado}>
                       <Image
                           style={styles.container}
-                          source={require('../../assets/img/logo-b.png')}/>
-
+                          source={require('../../assets/img/logo-b.png')}
+                      />
                       <View style={styles.contentLogin}>
                           <Text style={styles.textRegister}>
                               {strings('main.login')}
                           </Text>
-
                       </View>
                       <TextInput
                           style={styles.inputStyle}
-                          editable={true}
                           underlineColorAndroid='transparent'
+                          editable={true}
                           onChangeText={(username) => this.setState({username})}
                           placeholder={strings('register.username')}
                           returnKeyType = {"next"}
@@ -132,11 +134,10 @@ export default class LoginPage extends Component {
                           blurOnSubmit={false}
                           value={this.state.username}
                       />
-
                       <TextInput
                           style={styles.inputStyle}
-                          editable={true}
                           underlineColorAndroid='transparent'
+                          editable={true}
                           onChangeText={(password) => this.setState({password})}
                           placeholder={strings("register.password")}
                           ref={(input) => { this.passwordInput = input; }}
@@ -146,7 +147,6 @@ export default class LoginPage extends Component {
                           onSubmitEditing={() => { this.userLogin(); }}
                           blurOnSubmit={false}
                       />
-
                       <TouchableOpacity
                           style={styles.buttomLoginStyle}
                           onPress={this.userLogin.bind(this)}>

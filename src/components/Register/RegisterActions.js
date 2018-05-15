@@ -64,39 +64,39 @@ function verifyAction(firstName, email, username, password, lat, lon, sex, age) 
  */
 function registerAction(firstName, email, password, lat, lon, sex, age, image) {
 
-        const data = new FormData();
-        var re = /(?:\.([^.]+))?$/;
-        var ext = re.exec(image)[1];
+    const data = new FormData();
+    var re = /(?:\.([^.]+))?$/;
+    var ext = re.exec(image)[1];
 
-        data.append('first_name', firstName);
-        data.append('email', email);
-        data.append('password', password);
-        data.append('latitud', lat);
-        data.append('longitud', lon);
-        data.append('sex', sex);
-        data.append('age', age);
-        data.append('image', {
-            uri: image,
-            type: 'image/' + ext,
-            name: 'photo.' + ext
-        });
+    data.append('first_name', firstName);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('latitud', lat);
+    data.append('longitud', lon);
+    data.append('sex', sex);
+    data.append('age', age);
+    data.append('image', {
+        uri: image,
+        type: 'image/' + ext,
+        name: 'photo.' + ext
+    });
 
-        userService.postRegister(data)
-            .then(async (response) => {
-                console.log(`registerAction:`, data);
-                console.log(`response:`, response);
-                const json = await response.json();
-                console.log(`registerAction:JSON:`, json);
-    
-                if (response.ok) {
-                    APP_STORE.APP_EVENT.next({success: json.detail});
-                    return;
-                }
+    userService.postRegister(data)
+        .then(async (response) => {
+            console.log(`registerAction:`, data);
+            console.log(`response:`, response);
+            const json = await response.json();
+            console.log(`registerAction:JSON:`, json);
 
-                            
-                APP_STORE.APP_EVENT.next({error: json.detail})
-        });
-
+            if (response.ok) {
+                APP_STORE.APP_EVENT.next({"success": json.detail})
+                APP_STORE.TOKEN_EVENT.next({"token": json.token});
+                APP_STORE.ID_EVENT.next({"id": json.id.toString()});
+            return;
+            }
+                        
+            APP_STORE.APP_EVENT.next({error: json.detail})
+    });
 }
 
 function createDateData() {
@@ -136,7 +136,7 @@ function createDateData() {
             _date[i] = month;
             date.push(_date);
         }
-        return date;
+    return date;
 }
 
 

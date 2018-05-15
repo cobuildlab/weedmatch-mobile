@@ -3,7 +3,8 @@ import { StyleSheet, Platform  } from 'react-native';
 export default styles = StyleSheet.create({
   scrollView:{
     backgroundColor: '#fff',
-    marginBottom:0
+    marginBottom:0,
+    flex:1
   },
   container: {
     flex: 1,
@@ -12,7 +13,7 @@ export default styles = StyleSheet.create({
   mePic:{
     width:'100%',
     height: 300,
-    resizeMode: 'stretch',
+    resizeMode: 'cover',
     backgroundColor: '#ccc',
   },
   meSubPic:{
@@ -23,6 +24,17 @@ export default styles = StyleSheet.create({
   meDescription:{
     width: '100%',
     height: 40,
+  },
+  containers: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
   },
   contentForm:{
     flex: 1,
@@ -174,6 +186,11 @@ export default styles = StyleSheet.create({
   meSubImg:{
     width: '100%',
     height: 80,
+    resizeMode: 'cover'
+  },
+  meSubImgSin:{
+    width: '100%',
+    height: 80,
     resizeMode: 'contain'
   },
   meInfoWrap:{
@@ -214,8 +231,8 @@ export default styles = StyleSheet.create({
   },
   buttomDelete:{
     ...StyleSheet.absoluteFillObject,
-    top: -3,
-    left: 5,
+    top: -8,
+    left: -8,
     zIndex: 999,
     ...Platform.select({
       ios: {

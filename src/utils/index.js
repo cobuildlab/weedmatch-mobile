@@ -56,6 +56,19 @@ function authHeader(token) {
 }
 
 /**
+ * Headers for Authorization
+ * LENGUAGE this cellphone
+ * @param {string} token The token to be used
+ */
+function authHeaderForm(token) {
+    return {
+        'Authorization': 'Token ' + token,
+        'Accept-Language': LENGUAGE,
+        'Content-Type': 'multipart/form-data'
+    }
+}
+
+/**
  * Propagate an Error in to the
  * @param {Error} err error to be propagated
  * @throws {Error} the error that receives
@@ -69,7 +82,7 @@ function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet, URL, LENGUAGE, checkConectivity }
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet,authHeaderForm, URL, LENGUAGE, checkConectivity }
 
 
 const style={

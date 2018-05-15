@@ -59,13 +59,13 @@ export default class TopBar extends Component {
           tabBarUnderlineStyle={styles.containerColor}
           tabContainerStyle={styles.tabContainerStyle}
           edgeHitWidth={0}
-          >
-            <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
-              <Swiper navigation={this.props.navigation}/>
-            </Tab>
-            <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
-              <Home navigation={this.props.navigation}/>
-            </Tab>
+        >
+          <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
+            <Swiper navigation={this.props.navigation}/>
+          </Tab>
+          <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
+            <Home navigation={this.props.navigation}/>
+          </Tab>
         </Tabs>
       </Container>
     );
