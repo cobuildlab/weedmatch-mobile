@@ -13,7 +13,9 @@ import {
   TextInput,
   Picker,
   Keyboard,
-  ActivityIndicator
+  ActivityIndicator,
+  Switch,
+  Alert
 } from 'react-native';
 
 import { strings } from "../../i18n";
@@ -42,6 +44,7 @@ export default class EditProfile extends Component {
       username: '',
       description: '',
       name: '',
+      notification: true
     };
   }
 
@@ -61,6 +64,7 @@ export default class EditProfile extends Component {
               description: state.publicEditProfile.description,
               name: state.publicEditProfile.first_name,
               images: state.publicEditProfile.profile_images,
+              notification: state.publicEditProfile.notification
           })
           return;
         }
@@ -72,16 +76,26 @@ export default class EditProfile extends Component {
     this.saveProfile = APP_STORE.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => {
       console.log("Public Save Profile:componentDidMount:PUBLIC_SAVE_PROFILE_EVENT", state);
       console.log(state);
-      if (state) {
+      if (state.saveProfile) {
           this.setState({
               isLoading: true,
           })
           return;
       }
       if (state.error) {
+          this.setState({isLoading: true})
           Alert.alert(state.error);
       }
     });
+
+    this.event = APP_STORE.APP_EVENT.subscribe(state => {
+      this.setState({isLoading: true});
+      console.log(state);
+      if (state.error) {
+        Alert.alert(state.error);
+          return;
+      }
+  });
 
     this._getProfileId();
 
@@ -254,6 +268,12 @@ export default class EditProfile extends Component {
     }
   }
 
+  notificationes() {
+    this.setState({
+      notification: !this.state.notification 
+    });
+  }
+
   setButton(index){
 
     if(this.state.images.length >= index + 1) {
@@ -369,6 +389,15 @@ export default class EditProfile extends Component {
               onValuesChangeFinish={this.sliderOneValuesChangeFinish}
             />
           </View>
+          <View style={styles.divider} />
+            <View style={styles.labelText}>
+              <Text style={styles.textLabel}>Silenciar notificaciones</Text>
+              <Switch
+                onTintColor={"#9605CC"}
+                value={this.state.notification}
+                onValueChange={() => this.notificationes()}
+              />
+            </View>
           <View style={styles.divider} />
          </View>
          <View style={styles.labelTextGender}>
