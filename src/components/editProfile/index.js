@@ -392,12 +392,14 @@ export default class EditProfile extends Component {
           <View style={styles.divider} />
             <View style={styles.labelText}>
               <Text style={styles.textLabelSwitch}>Silenciar notificaciones</Text>
+              <View style={styles.viewSwitch}>
               <Switch
                 style={styles.switchStyle}
                 onTintColor={"#9605CC"}
                 value={this.state.notification}
                 onValueChange={() => this.notificationes()}
               />
+              </View>
             </View>
           <View style={styles.divider} />
          </View>

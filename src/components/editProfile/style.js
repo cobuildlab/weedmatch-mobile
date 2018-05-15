@@ -170,8 +170,12 @@ export default styles = StyleSheet.create({
     paddingBottom: 0,
   },
   switchStyle:{
-    marginLeft: 20,
     marginBottom: 20,
+  },
+  viewSwitch:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   textLabelvalue:{
     color: '#777',

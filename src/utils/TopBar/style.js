@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
         resizeMode:'contain',
         ...Platform.select({
             android: {
-                marginLeft: 150,
+                marginLeft: 130,
             },
         }),
     },
@@ -18,7 +18,7 @@ export default styles = StyleSheet.create({
         resizeMode:'contain',
         ...Platform.select({
             android: {
-                marginRight: 150,
+                marginRight: 130,
             },
         }),
     },
