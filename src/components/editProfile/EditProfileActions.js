@@ -19,6 +19,54 @@ function publicEditAction(token, id) {
         });
 }
 
+function postImageAction(image) {
+    console.log(`postImageAction`);
+
+    userService.uploadImage(APP_STORE.getToken(),APP_STORE.getId(), image)
+        .then(async (response) => {
+            console.log('postImageAction', response);
+            const json = await response.json();
+            console.log(`postImageAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.PUBLICEDITPROFILE_EVENT.next({"publicEditProfile": json});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
+function putImageAction(image,id) {
+    console.log(`putImageAction`);
+
+    userService.changeImage(APP_STORE.getToken(),APP_STORE.getId(), image,id)
+        .then(async (response) => {
+            console.log('putImageAction', response);
+            const json = await response.json();
+            console.log(`putImageAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.PUBLICEDITPROFILE_EVENT.next({"publicEditProfile": json});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
+function deleteImageAction(image) {
+    console.log(`deleteImageAction`);
+
+    userService.deleteImage(APP_STORE.getToken(),APP_STORE.getId(), image)
+        .then(async (response) => {
+            console.log('deleteImageAction', response);
+            const json = await response.json();
+            console.log(`deleteImageAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.PUBLICEDITPROFILE_EVENT.next({"publicEditProfile": json});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
 function saveProfileAction(token, id, state) {
     console.log(`saveProfile: ${token}, ${id}, ${state}`);
 
@@ -35,4 +83,4 @@ function saveProfileAction(token, id, state) {
         });
 }
 
-export {publicEditAction, saveProfileAction};
+export {publicEditAction, saveProfileAction,putImageAction,postImageAction,deleteImageAction};

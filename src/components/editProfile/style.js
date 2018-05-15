@@ -188,6 +188,11 @@ export default styles = StyleSheet.create({
     height: 80,
     resizeMode: 'cover'
   },
+  meSubImgSin:{
+    width: '100%',
+    height: 80,
+    resizeMode: 'contain'
+  },
   meInfoWrap:{
     flexDirection:'column'
   },

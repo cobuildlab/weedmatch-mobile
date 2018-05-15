@@ -23,8 +23,8 @@ import styles from './style';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import {APP_STORE} from '../../Store';
-import { publicEditAction, saveProfileAction } from './EditProfileActions';
-var meDescription = 'Piolito, nomá'
+import { internet, checkConectivity } from '../../utils';
+import { publicEditAction, saveProfileAction,putImageAction,postImageAction,deleteImageAction } from './EditProfileActions';
 
 export default class EditProfile extends Component {
 
@@ -35,94 +35,120 @@ export default class EditProfile extends Component {
     this.state = {
       isLoading: false,
       sliderOneChanging: false,
-      sliderOneValue: [2],
-      image: '',
+      sliderOneValue: [0],
+      index: 0,
       user: {},
+      images:{},
       username: '',
       description: '',
       name: '',
     };
   }
 
-      componentDidMount(){
+  componentDidMount(){
 
-          this.public = APP_STORE.PUBLICEDITPROFILE_EVENT.subscribe(state => {
-              console.log("Public Edit Profile:componentDidMount:PUBLICEDITPROFILE_EVENT", state);
-              console.log(state);
-              if (state.publicEditProfile) {
-              let newValues = [0];
-              newValues[0] = state.publicEditProfile.distance;
-                  this.setState({
-                      isLoading: true,
-                      user: state.publicEditProfile,
-                      sliderOneValue: newValues,
-                      username: state.publicEditProfile.username,
-                      description: state.publicEditProfile.description,
-                      name: state.publicEditProfile.first_name,
-                      image: state.publicEditProfile.profile_images[0].image
-                  })
-                return;
-              }
-              if (state.error) {
-                Alert.alert(state.error);
-              }
-          });
+    this.public = APP_STORE.PUBLICEDITPROFILE_EVENT.subscribe(state => {
+        console.log("Public Edit Profile:componentDidMount:PUBLICEDITPROFILE_EVENT", state);
+        console.log(state);
+        if (state.publicEditProfile) {
+        let newValues = [0];
+        newValues[0] = state.publicEditProfile.distance;
+          this.setState({
+              isLoading: true,
+              user: state.publicEditProfile,
+              sliderOneValue: newValues,
+              username: state.publicEditProfile.username,
+              description: state.publicEditProfile.description,
+              name: state.publicEditProfile.first_name,
+              images: state.publicEditProfile.profile_images,
+          })
+          return;
+        }
+        if (state.error) {
+          Alert.alert(state.error);
+        }
+    });
 
-          this.saveProfile = APP_STORE.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => {
-            console.log("Public Save Profile:componentDidMount:PUBLIC_SAVE_PROFILE_EVENT", state);
-            console.log(state);
-            if (state) {
-                this.setState({
-                    isLoading: true,
-                })
-                return;
-            }
-            if (state.error) {
-                Alert.alert(state.error);
-            }
-          });
-
-          this._getProfileId();
-
+    this.saveProfile = APP_STORE.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => {
+      console.log("Public Save Profile:componentDidMount:PUBLIC_SAVE_PROFILE_EVENT", state);
+      console.log(state);
+      if (state) {
+          this.setState({
+              isLoading: true,
+          })
+          return;
       }
+      if (state.error) {
+          Alert.alert(state.error);
+      }
+    });
 
-    componentWillUnmount() {
-        console.log("EditProfile:componentWillUmmount");
-        this.public.unsubscribe();
-        this.saveProfile.unsubscribe();
+    this._getProfileId();
 
+  }
+
+  componentWillUnmount() {
+      console.log("EditProfile:componentWillUmmount");
+      this.public.unsubscribe();
+      this.saveProfile.unsubscribe();
+
+  }
+
+  _getProfileId() {
+      publicEditAction(APP_STORE.getToken(), APP_STORE.getId())
+  }
+
+  sliderOneValuesChangeStart = () => {
+    this.setState({
+      sliderOneChanging: true,
+    });
+  }
+
+  sliderOneValuesChange = (values) => {
+    console.log(values);
+    let newValues = [0];
+    newValues[0] = values[0];
+    this.setState({
+      sliderOneValue: newValues,
+    });
+  }
+
+  sliderOneValuesChangeFinish = () => {
+    this.setState({
+      sliderOneChanging: false,
+    });
+  }
+
+  handleImage(index) {
+    this.setState({
+      index: index
+    },() => { 
+      this.ActionSheet.show()
+    })
+  }
+
+    setImageUrl(image,index) {
+
+      if(this.state.user.profile_images.length >= index + 1) {
+        //put
+        var newArr = this.state.images
+        newArr[index].image = image
+        this.setState({
+          images: newArr
+        },() => {
+          this.setState({isLoading: false });
+          putImageAction(image,this.state.images[index].id)
+        })
+      } else {
+        //post
+        this.setState({isLoading: false });
+        postImageAction(image)
+      }
     }
 
-    _getProfileId() {
-        publicEditAction(APP_STORE.getToken(), APP_STORE.getId())
-    }
-
-
-    _logout(){
-      AsyncStorage.removeItem('token');
-      this.props.navigation.navigate('Auth');
-
-    }
-
-    sliderOneValuesChangeStart = () => {
-     this.setState({
-       sliderOneChanging: true,
-     });
-    }
-
-    sliderOneValuesChange = (values) => {
-     console.log(values);
-     let newValues = [0];
-     newValues[0] = values[0];
-     this.setState({
-       sliderOneValue: newValues,
-     });
-    }
-
-    sliderOneValuesChangeFinish = () => {
-     this.setState({
-       sliderOneChanging: false,
-     });
+    deleteImage(index) {
+      this.setState({isLoading: false });
+      deleteImageAction(this.state.images[index].id)
     }
 
     showActivity() {
@@ -141,10 +167,10 @@ export default class EditProfile extends Component {
 
                 switch(index) {
                   case 0:
-                    this._takePhoto();
+                    this._takePhoto(this.state.index);
                     break;
                   case 1:
-                    this._getPhoto();
+                    this._getPhoto(this.state.index);
                     break;
                   default:
                     break;
@@ -155,71 +181,87 @@ export default class EditProfile extends Component {
         );
     }
 
-    _getPhoto() {
-        ImagePicker.openPicker({
-          cropping: false,
-          width: 500,
-          height: 500,
-          compressImageQuality: 0.5,
-          includeExif: true,
-          }).then(image => {
-          console.log('received image', image.path);
-          this.setState({
-            image: image.path
-          });
-        }).catch(e => alert(e));
-    }
+  _getPhoto(index) {
+      ImagePicker.openPicker({
+        cropping: false,
+        width: 500,
+        height: 500,
+        compressImageQuality: 0.5,
+        includeExif: true,
+        }).then(image => {
+          this.setImageUrl(image.path,index)
+      }).catch(e => alert(e));
+  }
 
-    _takePhoto() {
-        ImagePicker.openCamera({
-          cropping: false,
-          width: 500,
-          height: 500,
-          compressImageQuality: 0.5,
-          includeExif: true,
-          }).then(image => {
-          console.log('received image', image.path);
-          this.setState({
-            image: image.path
-          });
+  _takePhoto(index) {
+      ImagePicker.openCamera({
+        cropping: false,
+        width: 500,
+        height: 500,
+        compressImageQuality: 0.5,
+        includeExif: true,
+        }).then(image => {
+          this.setImageUrl(image.path,index)
+      }).catch(e => alert(e));
+  }
 
-        }).catch(e => alert(e));
-    }
+  _setGenero(value) {
+      this.setState(prevState => ({
+          user: {
+            ...prevState.user,
+            genero: value,
+            sex: value
+          }
+      }));
+  }
 
-    _setGenero(value) {
-       this.setState(prevState => ({
-           user: {
+  _setMatch(value) {
+      console.log(value)
+      this.setState(prevState => ({
+          user: {
               ...prevState.user,
-              genero: value,
-              sex: value
-           }
-       }));
-    }
+              match_sex: value
+          }
+      }));
+  }
 
-    _setMatch(value) {
-        console.log(value)
-        this.setState(prevState => ({
-            user: {
-                ...prevState.user,
-                match_sex: value
-            }
-        }));
+  _saveInfo() {
+    if (checkConectivity()) {
+      this.setState({isLoading: false });
+      saveProfileAction(APP_STORE.getToken(), APP_STORE.getId(), this.state)
+    } else {
+      internet();
     }
-
-    _saveInfo() {
-        saveProfileAction(APP_STORE.getToken(), APP_STORE.getId(), this.state)
-    }
-
+  }
 
   setPhoto(index){
 
-    if(this.state.user.profile_images.length == index + 1) {
+    if(index == 0) {
       return (
-        <Image style={styles.meSubImg} source={{uri: url}} />
+        <Image style={styles.mePic} source={{uri: this.state.user.profile_images[index].image}} />
+      );
+      return;
+    }
+
+    if(this.state.images.length >= index + 1) {
+      return (
+        <Image style={styles.meSubImg} source={{uri: this.state.images[index].image}} />
       )
     } else {
       return (
-        <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImg}/>
+        <Image source={require('../../assets/img/image_cover.png')} style={styles.meSubImgSin}/>
+      )
+    }
+  }
+
+  setButton(index){
+
+    if(this.state.images.length >= index + 1) {
+
+      return (
+        <TouchableOpacity style={styles.buttomDelete} onPress={() => this.deleteImage(index)}>
+          <Image source={require('../../assets/img/delete.png')} style={styles.imageMode} />
+        </TouchableOpacity>
       )
     }
   }
@@ -238,39 +280,29 @@ export default class EditProfile extends Component {
         >
         {this.showActivity()}
         <View style={styles.meInfoWrap}>
-          <TouchableOpacity onPress={() => this.ActionSheet.show()  }>
-            {image == '' &&
-              <Image source={require('../../assets/img/upload.png')} style={styles.mePic}/>
-            }
-            {image !== '' &&
-              <Image style={styles.mePic} source={{uri: image}} />
-            }
+          <TouchableOpacity onPress={() => this.handleImage(0)}>
+          {this.setPhoto(0)}
           </TouchableOpacity>
         </View>
         <View style={styles.contentImg}>
            <View style={styles.meSubPic}>
-             <TouchableOpacity style={styles.buttomUploadStyle}>
+             <TouchableOpacity onPress={() => this.handleImage(1)} style={styles.buttomUploadStyle}>
               {this.setPhoto(1)}
              </TouchableOpacity>
-             <TouchableOpacity style={styles.buttomDelete}>
-               <Image source={require('../../assets/img/delete.png')} style={styles.imageMode} />
-             </TouchableOpacity>
+              {this.setButton(1)}
            </View>
            <View style={styles.meSubPic}>
-             <TouchableOpacity style={styles.buttomUploadStyle}>
+             <TouchableOpacity onPress={() => this.handleImage(2)} style={styles.buttomUploadStyle}>
               {this.setPhoto(2)}
              </TouchableOpacity>
-             <TouchableOpacity style={styles.buttomDelete}>
-               <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
-             </TouchableOpacity>
+             {this.setButton(2)}
            </View>
            <View style={styles.meSubPic}>
-             <TouchableOpacity style={styles.buttomUploadStyle}>
+             <TouchableOpacity onPress={() => this.handleImage(3)} style={styles.buttomUploadStyle}>
               {this.setPhoto(3)}
              </TouchableOpacity>
-             <TouchableOpacity style={styles.buttomDelete}>
-               <Image source={require('../../assets/img/delete.png')} style={styles.imageMode}/>
-             </TouchableOpacity>
+             {this.setButton(3)}
+
            </View>
          </View>
          <View style={styles.contentForm}>

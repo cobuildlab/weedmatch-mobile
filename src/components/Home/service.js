@@ -1,4 +1,4 @@
-import { authHeader, catchErrorAndPropagate , URL,LENGUAGE} from '../../utils';
+import { authHeader, catchErrorAndPropagate , URL,LENGUAGE, authHeaderForm} from '../../utils';
 import DeviceInfo from 'react-native-device-info';
 import {APP_STORE} from "../../Store";
 
@@ -37,7 +37,7 @@ function publicImage(token, state) {
 
     const requestOptions = {
         method: 'POST',
-        headers: authHeader(token),
+        headers: authHeaderForm(token),
         body: data
     };
 
