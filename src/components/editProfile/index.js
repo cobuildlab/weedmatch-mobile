@@ -136,7 +136,7 @@ export default class EditProfile extends Component {
   handleImage(index) {
     this.setState({
       index: index
-    },() => { 
+    },() => {
       this.ActionSheet.show()
     })
   }
@@ -270,7 +270,7 @@ export default class EditProfile extends Component {
 
   notificationes() {
     this.setState({
-      notification: !this.state.notification 
+      notification: !this.state.notification
     });
   }
 
@@ -293,8 +293,8 @@ export default class EditProfile extends Component {
 
     if(isLoading) {
       return (
-        <ScrollView 
-          automaticallyAdjustContentInsets={false} 
+        <ScrollView
+          automaticallyAdjustContentInsets={false}
           style={styles.scrollView}
           keyboardShouldPersistTaps={'always'}
         >
@@ -391,8 +391,9 @@ export default class EditProfile extends Component {
           </View>
           <View style={styles.divider} />
             <View style={styles.labelText}>
-              <Text style={styles.textLabel}>Silenciar notificaciones</Text>
+              <Text style={styles.textLabelSwitch}>Silenciar notificaciones</Text>
               <Switch
+                style={styles.switchStyle}
                 onTintColor={"#9605CC"}
                 value={this.state.notification}
                 onValueChange={() => this.notificationes()}
@@ -413,7 +414,7 @@ export default class EditProfile extends Component {
              <TouchableOpacity style={this.state.user.match_sex === 'Mujer' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Mujer') }>
                <Text style={this.state.user.match_sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}>Mujer</Text>
              </TouchableOpacity>
-  
+
            </View>
            <View style={styles.contenGender}>
              <TouchableOpacity style={this.state.user.match_sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Otro') }>
@@ -422,7 +423,7 @@ export default class EditProfile extends Component {
            </View>
          </View>
          <View style={styles.divider} />
-  
+
          <View style={styles.labelTextGender}>
            <Text style={styles.textLabel}>Tu Genero</Text>
          </View>
@@ -444,7 +445,7 @@ export default class EditProfile extends Component {
            </View>
          </View>
          <View style={styles.divider} />
-  
+
          <View style={styles.labelTextComprar}>
            <Text style={styles.textLabelCard}>Comprar Version Pro</Text>
            <TouchableOpacity

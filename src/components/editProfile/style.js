@@ -162,6 +162,17 @@ export default styles = StyleSheet.create({
     marginBottom: 0,
     paddingBottom: 0,
   },
+  textLabelSwitch:{
+    color: '#777',
+    fontSize: 16,
+    marginTop: 5,
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  switchStyle:{
+    marginLeft: 20,
+    marginBottom: 20,
+  },
   textLabelvalue:{
     color: '#777',
     fontSize: 16,
