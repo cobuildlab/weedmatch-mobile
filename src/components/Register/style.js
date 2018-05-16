@@ -19,6 +19,11 @@ export default styles = StyleSheet.create({
         fontSize: 26,
         color: '#9605CC',
         marginBottom: 30,
+        ...Platform.select({
+            android: {
+                marginTop: -30,
+            },
+        }),
     },
     textBold: {
         fontSize: 20,
@@ -62,7 +67,7 @@ export default styles = StyleSheet.create({
         color: '#9605CC',
     },
     buttomRegisterStyle: {
-        marginTop: 15,
+        marginTop: 5,
         marginBottom: 10,
         width: 250,
         marginRight: 5,
@@ -172,6 +177,12 @@ export default styles = StyleSheet.create({
         borderRadius: 50,
         alignItems: 'center',
         backgroundColor: 'transparent',
+        ...Platform.select({
+            android: {
+                paddingTop: 0,
+                paddingBottom: 10, 
+            },
+        }),
     },
     buttonTextCancel: {
         color: '#9605CC',

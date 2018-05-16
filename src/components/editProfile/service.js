@@ -115,7 +115,7 @@ function saveProfile(token, id, state) {
         "match_sex": state.user.match_sex,
         "sex": state.user.sex,
         "distance": state.sliderOneValue.toString(),
-        "notification":"true"
+        "notification": state.notification ? "true" : "false"
     }
 
     const requestOptions = {
