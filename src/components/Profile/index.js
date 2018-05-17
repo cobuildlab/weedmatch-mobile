@@ -30,11 +30,10 @@ export default class Profile extends Component {
         this.state = {
           rowData:{},
           refreshing:false,
-          public420: {},
+          public420: [],
           isLoading: false,
           urlPage: '',
           numPage: 0,
-          dataSource: [],
         };
         console.log('Profile');
     }
@@ -52,12 +51,12 @@ export default class Profile extends Component {
 
       this.props.navigation.setParams({logout: () => this._logout()});
 
-        this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
+        this.public = APP_STORE.PROFILE_EVENT.subscribe(state => {
             console.log("Profile:componentDidMount:PROFILE_EVENT", state);
-            if (state.publicProfile) {
+            if (state.profile) {
                 this.setState({
-                    rowData: state.publicProfile,
-                    country: state.publicProfile.country
+                    rowData: state.profile,
+                    country: state.profile.country
                 })
                 this._get420Images();
                 return;
@@ -67,13 +66,12 @@ export default class Profile extends Component {
             }
         });
 
-      this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
+      this.images420 = APP_STORE.PROFILEIMAGES_EVENT.subscribe(state => {
         console.log("Profile:componentDidMount:images420Suscription", state);
-        if (state.publicImages420) {
+        if (state.profileImages420) {
 
           this.setState(prevState => ({
-            dataSource: appendData(prevState.dataSource, state.publicImages420),
-            public420: this.state.dataSource,
+            public420: appendData(prevState.public420, state.profileImages420),
             isLoading: true,
           }))
 
@@ -86,12 +84,12 @@ export default class Profile extends Component {
         }
       });
 
-        this.images420Page = APP_STORE.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
+        this.images420Page = APP_STORE.PROFILEPAGE_EVENT.subscribe(state => {
           console.log("Profile:componentDidMount:images420PageSuscription", state);
-          if (state.publicImages420Page) {
+          if (state.profileImages420Page) {
 
             this.setState({
-              urlPage: state.publicImages420Page,
+              urlPage: state.profileImages420Page,
               numPage: this.state.numPage + 1
             })
             return;
@@ -166,6 +164,13 @@ export default class Profile extends Component {
       );
     }
 
+    onEndReached = () => {
+      if (!this.onEndReachedCalledDuringMomentum) {
+        this._get420Images();
+        this.onEndReachedCalledDuringMomentum = true;
+      }
+    };
+
     render() {
 
         const {rowData,country,isLoading, isDetail,public420} = this.state;
@@ -179,7 +184,9 @@ export default class Profile extends Component {
                 style={{flex:1}}
                 ListHeaderComponent={this.renderiza()}
                 keyExtractor={( item , index ) => index}
-                // onEndReached={this._get420Images.bind(this)}
+                onEndReachedThreshold={0.5}
+                onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
+                onEndReached={this.onEndReached()}
                 renderItem={({ item, index }) =>
                     <View style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                         <Image style={styles.imageView}

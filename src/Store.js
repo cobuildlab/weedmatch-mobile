@@ -73,6 +73,10 @@ class Store {
             publicImages420: undefined,
             publicImages420Page: undefined,
             swiper: undefined,
+            swiperPage: undefined,
+            profile: undefined,
+            profileImages420: undefined,
+            profileImages420Page: undefined,
         };
         popToken(this.state);
         popId(this.state);
@@ -119,6 +123,30 @@ class Store {
             if (!state)
                 return;
             me.state.page = state.page;
+        });
+        this.PROFILE_EVENT = new Subject();
+        this.PROFILE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.profile = state.profile;
+        });
+        this.PROFILEIMAGES_EVENT = new Subject();
+        this.PROFILEIMAGES_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.profileImages420 = state.profileImages420;
+        });
+        this.PROFILEPAGE_EVENT = new Subject();
+        this.PROFILEPAGE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.profileImages420Page = state.profileImages420Page;
+        });
+        this.SWIPERPAGE_EVENT = new Subject();
+        this.SWIPERPAGE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.swiperPage = state.swiperPage;
         });
         this.LIKE_EVENT = new Subject();
         this.LIKE_EVENT.subscribe(state => {
