@@ -14,7 +14,7 @@ function publicProfileAction(token, id) {
             const json = await response.json();
             console.log(`publicProfileAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.PUBLICPROFILE_EVENT.next({"publicProfile": json});
+                APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
@@ -30,8 +30,8 @@ function publicImages420Action(token, id, pageUrl) {
             const json = await response.json();
             console.log(`publicImages420Action:JSON:`, json);
             if (response.ok) {
-                APP_STORE.PUBLICIMAGES420_EVENT.next({"publicImages420": json.results});
-                APP_STORE.PUBLICIMAGES420PAGE_EVENT.next({"publicImages420Page": json.next});
+                APP_STORE.PROFILEIMAGES_EVENT.next({"profileImages420": json.results});
+                APP_STORE.PROFILEPAGE_EVENT.next({"profileImages420Page": json.next});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});

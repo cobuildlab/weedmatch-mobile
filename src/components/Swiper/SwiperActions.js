@@ -5,7 +5,7 @@ import { authHeader , URL ,LENGUAGE } from '../../utils';
 
 function swiperAction(token, state) {
 
-    console.log(`SwiperAction: ${token}, ${state}`);
+    console.log(`SwiperAction: ${token}, ${state.urlPage}, ${state.numPage}`);
 
     var pagUrl = '';
 
@@ -28,11 +28,21 @@ function getSwiper(token,pagUrl) {
         if (response.ok) {
             console.log(json.results);
             APP_STORE.SWIPER_EVENT.next({"swiper": json.results});
-            // APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
+            APP_STORE.SWIPERPAGE_EVENT.next({"swiperPage": json.next});
             return;
         }
         APP_STORE.APP_EVENT.next({"error": json.detail});
     })
 }
 
-export { swiperAction };
+function appendData(oldData, newData) {
+    oldData.slice();
+
+    newData.map((data) => { 
+        oldData.push(data);
+    });
+
+    return oldData;
+}
+
+export { swiperAction,appendData };

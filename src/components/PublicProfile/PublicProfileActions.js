@@ -20,12 +20,12 @@ function publicProfileAction(token, id,state) {
         });
 }
 
-function publicImages420Action(token, id, pageUrl) {
-    console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`);
+function publicImages420Action(token, pageUrl) {
+    console.log(`publicImages420Action: ${token}, ${pageUrl}`);
 
-    userService.publicImages420(token, id,pageUrl)
+    userService.publicImages420(token,pageUrl)
         .then(async (response) => {
-            console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`, response);
+            console.log(`publicImages420Action: ${token}, ${pageUrl}`, response);
             const json = await response.json();
             console.log(`publicImages420Action:JSON:`, json);
             if (response.ok) {

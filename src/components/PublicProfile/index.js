@@ -33,12 +33,11 @@ export default class PublicProfile extends Component {
           longitud: '',
           rowData:{},
           refreshing:false,
-          public420: {},
+          public420: [],
           isLoading: false,
           isDetail: false,
           urlPage: '',
           numPage: 0,
-          dataSource: [],
         };
         console.log('PublicProfile');
     }
@@ -69,8 +68,7 @@ export default class PublicProfile extends Component {
         if (state.publicImages420) {
 
           this.setState(prevState => ({
-            dataSource: appendData(prevState.dataSource, state.publicImages420),
-            public420: this.state.dataSource,
+            public420: appendData(prevState.public420, state.publicImages420),
             isLoading: true,
           }))
 
@@ -190,7 +188,6 @@ export default class PublicProfile extends Component {
         <ImageSlider
           images={getImages(rowData.profile_images)}
           customSlide={({ index, item, style, width }) => (
-            // It's important to put style here because it's got offset inside
             <View key={index} style={[style, styles.customSlide]}>
               <Image source={{ uri: item }} style={styles.media} />
             </View>
@@ -232,6 +229,13 @@ export default class PublicProfile extends Component {
       );
     }
 
+    onEndReached = () => {
+      if (!this.onEndReachedCalledDuringMomentum) {
+        this._get420Images();
+        this.onEndReachedCalledDuringMomentum = true;
+      }
+    };
+
     render() {
 
         const {rowData,country,isLoading, isDetail,public420} = this.state;
@@ -243,11 +247,13 @@ export default class PublicProfile extends Component {
                 <FlatList
                   horizontal={false}
                   numColumns={3}
+                  onEndReachedThreshold={0.5}
+                  onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   data={getImages(public420)}
                   style={{flex:1}}
                   ListHeaderComponent={this.renderiza()}
                   keyExtractor={( item , index ) => index}
-                  // onEndReached={this._get420Images.bind(this)}
+                  onEndReached={this.onEndReached()}
                   renderItem={({ item, index }) =>
                       <View style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                           <Image style={styles.imageView}

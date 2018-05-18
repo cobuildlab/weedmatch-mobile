@@ -14,7 +14,7 @@ import styles from './style';
 import { internet, checkConectivity } from '../../utils';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { swiperAction } from './SwiperActions'
+import { swiperAction,appendData } from './SwiperActions'
 import TopBar from '../../utils/TopBar';
 import Spinner from 'react-native-spinkit';
 
@@ -45,13 +45,35 @@ export default class SwiperView extends Component {
         console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
         if (state.swiper) {
 
-            this.setState({
-                cards: state.swiper,
-                loading: false,
-                isLoaded: true
-              });
+            this.setState(prevState => ({
+              cards: appendData(prevState.cards, state.swiper),
+              loading: false,
+              isLoaded: true
+            }));
 
           return;
+        }
+        if (state.error) {
+          Alert.alert(state.error);
+        }
+      });
+
+      this.swiperPage = APP_STORE.SWIPERPAGE_EVENT.subscribe(state => {
+        console.log("SwiperView:componentDidMount:swipePageSuscription", state);
+        if (state.swiperPage) {
+
+          this.setState({
+            urlPage: state.swiperPage,
+            numPage: this.state.numPage + 1
+          },() => {
+            this._swiperData();
+          })
+
+        } else {
+          this.setState({
+            urlPage: '',
+        })
+        return;
         }
         if (state.error) {
           Alert.alert(state.error);
@@ -66,6 +88,7 @@ export default class SwiperView extends Component {
   componentWillUnmount() {
     console.log("SwiperView :componentWillUmmount");
     this.swiperData.unsubscribe();
+    this.swiperPage.unsubscribe();
   }
 
   _position() {
