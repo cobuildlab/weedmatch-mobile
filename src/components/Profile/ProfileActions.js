@@ -10,9 +10,9 @@ function publicProfileAction(token, id) {
 
     userService.publicProfile(token, id)
         .then(async (response) => {
-            console.log(`publicProfileAction: ${token}, ${id}`, response);
+            console.log(`ProfileAction: ${token}, ${id}`, response);
             const json = await response.json();
-            console.log(`publicProfileAction:JSON:`, json);
+            console.log(`ProfileAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
