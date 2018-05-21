@@ -4,7 +4,8 @@ import {APP_STORE} from "../../Store";
 
 export const userService = {
     publicProfile,
-    publicImages420
+    publicImages420,
+    swiperAction
 };
 
 /**
@@ -34,4 +35,27 @@ function publicImages420(token,pageUrl) {
         headers: authHeader(token)
     };
     return fetch(pageUrl, requestOptions);
+}
+
+/**
+ * Do the action of swiper (like,dislike,super)
+ * @param token The Token of the user
+ * @param action The Token of the user
+ * @param state The current state of render screen
+ * @returns {Promise<any>}
+ */
+function swiperAction(token,action,id) {
+
+    const data = {
+        "user_match": id.toString(),
+        "action": action,
+    }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(token),
+        body: JSON.stringify(data)
+    };
+
+    return fetch(URL + 'swiper/', requestOptions);
 }

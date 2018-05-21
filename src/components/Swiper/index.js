@@ -14,7 +14,7 @@ import styles from './style';
 import { internet, checkConectivity } from '../../utils';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { swiperAction,appendData } from './SwiperActions'
+import { swiperAction,appendData,swiper } from './SwiperActions'
 import TopBar from '../../utils/TopBar';
 import Spinner from 'react-native-spinkit';
 
@@ -155,20 +155,56 @@ export default class SwiperView extends Component {
     this.cardIndex = this.cardIndex + 1;
   };
 
-  swipeLeft = () => {
-    this.swiper.swipeLeft()
+  swipeLeft(aux) {
+    if(aux) {
+      this.swiper.swipeLeft()
+    } else {
+      if (checkConectivity()) {
+        swiper(APP_STORE.getToken(),'DisLike',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+      } else {
+        internet();
+      }
+    }
   };
 
-  swipeRight = () => {
-    this.swiper.swipeRight();
+  swipeRight(aux) {
+    if(aux) {
+      this.swiper.swipeRight();
+    } else {
+      if (checkConectivity()) {
+        swiper(APP_STORE.getToken(),'Like',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+      } else {
+        internet();
+      }
+    }
   };
 
-  swipeTop = () => {
-    this.swiper.swipeTop();
+  swipeTop(aux) {
+    if(aux) {
+      this.swiper.swipeTop();
+    } else {
+      console.log('Arriba')
+    }
   };
 
   swipeTap = () => {
-    this.props.navigation.navigate('PublicProfile', { userId: this.state.cards[this.swiper.state.firstCardIndex].id_user });
+    this.props.navigation.navigate('PublicProfile', {userId: this.state.cards[this.swiper.state.firstCardIndex].id_user,root: 'Swiper', updateData:this.getData})
+  };
+
+  getData  = (data) => {
+    switch(data) {
+      case 1:
+        this.swipeLeft(true);
+        break;
+      case 2:
+        // this.swipeTop(true);
+        break;
+      case 3:
+        this.swipeRight(true);
+        break;
+      default:
+        break;
+    }
   };
 
   showButtons() {
@@ -176,17 +212,17 @@ export default class SwiperView extends Component {
       return(
         <View style={styles.buttonViewContainer}>
             <View>
-                <TouchableOpacity onPress={this.swipeLeft}>
+                <TouchableOpacity onPress={() => this.swipeLeft(true)}>
                 <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
                 </TouchableOpacity>
             </View>
             <View>
-                <TouchableOpacity onPress={this.swipeTop}>
+                <TouchableOpacity onPress={() => this.swipeTop(true)}>
                 <Image source={require('../../assets/img/actions/like.png')} style={styles.imageSize} />
                 </TouchableOpacity>
             </View>
             <View>
-                <TouchableOpacity onPress={this.swipeRight}>
+                <TouchableOpacity onPress={() => this.swipeRight(true)}>
                 <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
                 </TouchableOpacity>
             </View>
@@ -206,12 +242,10 @@ export default class SwiperView extends Component {
               }}
               disableBottomSwipe={true}
               onTapCard={this.swipeTap}
-
               onSwiped={(cardIndex) => this.onSwipe()}
-              onSwipedLeft={(cardIndex) => this.swipeLeft}
-              onSwipedRight={(cardIndex) => this.swipeRight}
-              onSwipedTop={(cardIndex) => this.swipeTop}
-
+              onSwipedLeft={(cardIndex) => this.swipeLeft(false)}
+              onSwipedRight={(cardIndex) => this.swipeRight(false)}
+              onSwipedTop={(cardIndex) => this.swipeTop(false)}
               cards={this.state.cards}
               cardIndex={this.cardIndex}
               marginTop={-140}

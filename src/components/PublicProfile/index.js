@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './PublicProfileActions';
+import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,swiper } from './PublicProfileActions';
 import {connection, internet, checkConectivity } from '../../utils';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
@@ -48,20 +48,31 @@ export default class PublicProfile extends Component {
 
     componentDidMount(){
 
-        this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
-            if (state.publicProfile) {
-                this.setState({
-                    rowData: state.publicProfile,
-                    country: state.publicProfile.country
-                })
-                this._get420Images();
-                return;
-            }
-            if (state.error) {
-              Alert.alert(state.error);
-            }
-        });
+      this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
+          console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+          if (state.publicProfile) {
+              this.setState({
+                  rowData: state.publicProfile,
+                  country: state.publicProfile.country
+              })
+              this._get420Images();
+              return;
+          }
+          if (state.error) {
+            Alert.alert(state.error);
+          }
+      });
+
+      this.swiper = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
+        console.log("Public Profile:componentDidMount:SWIPERACTION_EVENT", state);
+        if (state.swiperAction) {
+          this.props.navigation.goBack();
+          return;
+        }
+        if (state.error) {
+          Alert.alert(state.error);
+        }
+      });
 
       this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
         console.log("Public Profile:componentDidMount:images420Suscription", state);
@@ -127,6 +138,7 @@ export default class PublicProfile extends Component {
       this.images420.unsubscribe();
       this.images420Page.unsubscribe();
       this.public.unsubscribe();
+      this.swiper.unsubscribe();
     }
 
     _publicProfile() {
@@ -157,21 +169,43 @@ export default class PublicProfile extends Component {
       })
     }
 
+    actionSwiper(val) {
+      if(this.props.navigation.state.params.root) {
+        this.props.navigation.goBack();
+        this.props.navigation.state.params.updateData(val);
+      } else {
+        switch(val) {
+          case 1:
+            swiper(APP_STORE.getToken(),'DisLike',this.props.navigation.state.params.userId)
+            break;
+          case 2:
+            // this.swipeTop(true);
+            break;
+          case 3:
+            swiper(APP_STORE.getToken(),'Like',this.props.navigation.state.params.userId)
+            break;
+          default:
+            break;
+        }
+      }
+
+    }
+
     showButtons() {
       return (
           <View style={styles.buttonViewContainer}>
               <View>
-                <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.actionSwiper(1)}>
                   <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.actionSwiper(2)}>
                   <Image source={require('../../assets/img/actions/like.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.actionSwiper(3)}>
                   <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
