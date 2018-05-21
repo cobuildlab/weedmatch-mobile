@@ -77,6 +77,7 @@ class Store {
             profile: undefined,
             profileImages420: undefined,
             profileImages420Page: undefined,
+            swiperAction: undefined,
         };
         popToken(this.state);
         popId(this.state);
@@ -195,6 +196,12 @@ class Store {
             if (!state)
                 return;
             me.state.swiper = state.swiper;
+        });
+        this.SWIPERACTION_EVENT = new Subject();
+        this.SWIPERACTION_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.swiperAction = state.swiperAction;
         });
     }
 

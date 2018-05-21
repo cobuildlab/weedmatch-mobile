@@ -4,6 +4,22 @@ import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
+function swiper(token,action,id) {
+
+    userService.swiperAction(token,action,id)
+        .then(async (response) => {
+            console.log(`Swiper: ${token}, ${action}, ${id}`, response);
+            const json = await response.json();
+            console.log(`Swiper:JSON:`, json);
+            if (response.ok) {
+                console.log(json.detail);
+                APP_STORE.SWIPERACTION_EVENT.next({"swiperAction": json.detail});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        })
+}
+
 function publicProfileAction(token, id,state) {
     console.log(`publicProfileAction: ${token}, ${id}`);
 
@@ -78,4 +94,4 @@ function getImages(data) {
     return _images;
 }
 
-export { publicProfileAction,getImages,publicImages420Action,appendData,Action420 };
+export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,swiper };

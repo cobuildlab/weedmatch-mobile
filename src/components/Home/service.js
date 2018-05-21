@@ -51,7 +51,7 @@ function publicImageLike(token, id, id_user, like) {
 
     const requestOptions = {
         method: 'PUT',
-        headers: authHeader(token),
+        headers: authHeaderForm(token),
         body: data
     };
 
