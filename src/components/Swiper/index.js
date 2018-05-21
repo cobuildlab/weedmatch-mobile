@@ -112,7 +112,7 @@ export default class SwiperView extends Component {
 
   _swiperData() {
     if (checkConectivity()) {
-      swiperAction(APP_STORE.getToken(), this.state);
+      swiper(APP_STORE.getToken(), this.state);
     } else {
       internet();
     }
@@ -160,7 +160,7 @@ export default class SwiperView extends Component {
       this.swiper.swipeLeft()
     } else {
       if (checkConectivity()) {
-        swiper(APP_STORE.getToken(),'DisLike',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+        swiperAction(APP_STORE.getToken(),'DisLike',this.state.cards[this.swiper.state.firstCardIndex].id_user)
       } else {
         internet();
       }
@@ -172,7 +172,7 @@ export default class SwiperView extends Component {
       this.swiper.swipeRight();
     } else {
       if (checkConectivity()) {
-        swiper(APP_STORE.getToken(),'Like',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+        swiperAction(APP_STORE.getToken(),'Like',this.state.cards[this.swiper.state.firstCardIndex].id_user)
       } else {
         internet();
       }
