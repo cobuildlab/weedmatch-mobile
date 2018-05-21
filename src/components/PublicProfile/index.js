@@ -247,13 +247,14 @@ export default class PublicProfile extends Component {
                 <FlatList
                   horizontal={false}
                   numColumns={3}
+                  bounces={false}
                   onEndReachedThreshold={0.5}
                   onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   data={getImages(public420)}
                   style={{flex:1}}
                   ListHeaderComponent={this.renderiza()}
                   keyExtractor={( item , index ) => index}
-                  onEndReached={this.onEndReached()}
+                  onEndReached={() => this.onEndReached()}
                   renderItem={({ item, index }) =>
                       <View style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                           <Image style={styles.imageView}
