@@ -4,7 +4,7 @@ import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
-function swiper(token,action,id) {
+function swiperAction(token,action,id) {
 
     userService.swiperAction(token,action,id)
         .then(async (response) => {
@@ -94,4 +94,4 @@ function getImages(data) {
     return _images;
 }
 
-export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,swiper };
+export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,swiperAction };

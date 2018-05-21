@@ -3,7 +3,7 @@ import {strings} from '../../i18n';
 import {userService} from './service';
 import { authHeader , URL ,LENGUAGE } from '../../utils';
 
-function swiper(token,action,id) {
+function swiperAction(token,action,id) {
 
     userService.swiperAction(token,action,id)
         .then(async (response) => {
@@ -19,7 +19,7 @@ function swiper(token,action,id) {
         })
 }
 
-function swiperAction(token, state) {
+function swiper(token, state) {
 
     console.log(`SwiperAction: ${token}, ${state.urlPage}, ${state.numPage}`);
 

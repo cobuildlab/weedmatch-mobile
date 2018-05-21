@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,swiper } from './PublicProfileActions';
+import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,swiperAction } from './PublicProfileActions';
 import {connection, internet, checkConectivity } from '../../utils';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
@@ -176,13 +176,13 @@ export default class PublicProfile extends Component {
       } else {
         switch(val) {
           case 1:
-            swiper(APP_STORE.getToken(),'DisLike',this.props.navigation.state.params.userId)
+            swiperAction(APP_STORE.getToken(),'DisLike',this.props.navigation.state.params.userId)
             break;
           case 2:
             // this.swipeTop(true);
             break;
           case 3:
-            swiper(APP_STORE.getToken(),'Like',this.props.navigation.state.params.userId)
+            swiperAction(APP_STORE.getToken(),'Like',this.props.navigation.state.params.userId)
             break;
           default:
             break;
