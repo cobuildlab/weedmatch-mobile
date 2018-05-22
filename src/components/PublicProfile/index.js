@@ -92,19 +92,12 @@ export default class PublicProfile extends Component {
         }
       });
 
-      String.prototype.insert = function (index, string) {
-        if (index > 0)
-          return this.substring(0, index) + string + this.substring(index, this.length);
-        else
-          return string + this;
-      };
-
         this.images420Page = APP_STORE.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
           console.log("Public Profile:componentDidMount:images420PageSuscription", state);
           if (state.publicImages420Page) {
 
             this.setState({
-              urlPage: state.publicImages420Page.insert(4,'s'),
+              urlPage: state.publicImages420Page,
               numPage: this.state.numPage + 1
             })
             return;
