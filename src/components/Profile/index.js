@@ -84,12 +84,19 @@ export default class Profile extends Component {
         }
       });
 
+      String.prototype.insert = function (index, string) {
+        if (index > 0)
+          return this.substring(0, index) + string + this.substring(index, this.length);
+        else
+          return string + this;
+      };
+
         this.images420Page = APP_STORE.PROFILEPAGE_EVENT.subscribe(state => {
           console.log("Profile:componentDidMount:images420PageSuscription", state);
           if (state.profileImages420Page) {
 
             this.setState({
-              urlPage: state.profileImages420Page,
+              urlPage: state.profileImages420Page.insert(4,'s'),
               numPage: this.state.numPage + 1
             })
             return;
