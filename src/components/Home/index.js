@@ -81,12 +81,20 @@ export default class HomePage extends Component {
         }
       });
 
+      String.prototype.insert = function (index, string) {
+        if (index > 0)
+          return this.substring(0, index) + string + this.substring(index, this.length);
+        else
+          return string + this;
+      };
+
       this.feedPage = APP_STORE.FEEDPAGE_EVENT.subscribe(state => {
         console.log("Home420:componentDidMount:feedPageSuscription", state);
         if (state.page) {
 
           this.setState({
-            urlPage: state.page,
+            urlPage: state.page.insert(4, "s"),
+            // urlPage: state.page,
             numPage: this.state.numPage + 1
           });
 
