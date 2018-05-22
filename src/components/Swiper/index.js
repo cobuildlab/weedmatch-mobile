@@ -58,20 +58,12 @@ export default class SwiperView extends Component {
         }
       });
 
-      String.prototype.insert = function (index, string) {
-        if (index > 0)
-          return this.substring(0, index) + string + this.substring(index, this.length);
-        else
-          return string + this;
-      };
-
       this.swiperPage = APP_STORE.SWIPERPAGE_EVENT.subscribe(state => {
         console.log("SwiperView:componentDidMount:swipePageSuscription", state);
         if (state.swiperPage) {
 
           this.setState({
-            urlPage: state.swiperPage.insert(4, "s"),
-            // urlPage: state.swiperPage,
+            urlPage: state.swiperPage,
             numPage: this.state.numPage + 1
           },() => {
             this._swiperData();
