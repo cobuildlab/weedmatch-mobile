@@ -313,9 +313,12 @@ export default class PublicProfile extends Component {
                       {country &&
                           <Text style={styles.textContainer}>{country.name} </Text>
                       }
-                      <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                      </TouchableOpacity>
+                      {
+                        public420.length > 0 &&
+                          <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
+                            <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                          </TouchableOpacity>
+                      }
                     </View>
                     <View style={styles.viewContainer}>
                         <Text style={styles.textContainer}>{rowData.distance} </Text>

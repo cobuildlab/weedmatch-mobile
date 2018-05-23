@@ -109,13 +109,11 @@ export default class HomePage extends Component {
             return;
         }
         if (state.success) {
-            this.setState({load: false});
-            Alert.alert(
-              strings("home.alerta"),
-              state.success,
-              [{ text: 'OK', onPress: () => this.setState({ modalVisible: false })}],
-              { cancelable: false }
-            )
+            this.setState({
+              load: false,
+              modalVisible: false    
+            });
+            this._onRefresh();
         }
     });
 

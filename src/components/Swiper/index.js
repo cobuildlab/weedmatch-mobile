@@ -23,15 +23,11 @@ export default class SwiperView extends Component {
     super(props)
     this.state = {
       cards: [],
-      noCards: false,
       latitud: '',
       longitud: '',
       urlPage: '',
       numPage: 0,
       isLoaded: false,
-      load: false,
-      loading: true,
-      refreshing: false,
     }
 
     this.cardIndex = 0;
@@ -47,7 +43,6 @@ export default class SwiperView extends Component {
 
             this.setState(prevState => ({
               cards: appendData(prevState.cards, state.swiper),
-              loading: false,
               isLoaded: true
             }));
 
@@ -145,9 +140,8 @@ export default class SwiperView extends Component {
   };
 
   onSwipedAllCards() {
-    this.setState({
-        cards: [],
-        noCards: true,
+      this.setState({
+        isLoaded: false,
     });
   }
 
@@ -156,34 +150,47 @@ export default class SwiperView extends Component {
   };
 
   swipeLeft(aux) {
-    if(aux) {
-      this.swiper.swipeLeft()
-    } else {
-      if (checkConectivity()) {
-        swiperAction(APP_STORE.getToken(),'DisLike',this.state.cards[this.swiper.state.firstCardIndex].id_user)
-      } else {
-        internet();
+    if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
+      this.onSwipedAllCards()
+    } else {
+      if(aux) {
+        this.swiper.swipeLeft()
+      } else {
+        if (checkConectivity()) {
+          swiperAction(APP_STORE.getToken(),'DisLike',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+        } else {
+          internet();
+        }
       }
     }
   };
 
   swipeRight(aux) {
-    if(aux) {
-      this.swiper.swipeRight();
-    } else {
-      if (checkConectivity()) {
-        swiperAction(APP_STORE.getToken(),'Like',this.state.cards[this.swiper.state.firstCardIndex].id_user)
-      } else {
-        internet();
+    if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
+      this.onSwipedAllCards()
+    } else {
+      if(aux) {
+        this.swiper.swipeRight();
+      } else {
+        if (checkConectivity()) {
+          swiperAction(APP_STORE.getToken(),'Like',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+        } else {
+          internet();
+        }
       }
     }
   };
 
   swipeTop(aux) {
-    if(aux) {
-      this.swiper.swipeTop();
-    } else {
+    if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
       console.log('Arriba')
+      this.onSwipedAllCards()
+    } else {
+      if(aux) {
+        this.swiper.swipeTop();
+      } else {
+        console.log('Arriba')
+      }
     }
   };
 
@@ -208,7 +215,6 @@ export default class SwiperView extends Component {
   };
 
   showButtons() {
-    if (!this.state.noCards) {
       return(
         <View style={styles.buttonViewContainer}>
             <View>
@@ -228,121 +234,94 @@ export default class SwiperView extends Component {
             </View>
         </View>
       );
-    }
   }
 
   render () {
     if(this.state.isLoaded) {
-      if(!this.state.noCards) {
-        return (
-          <View style={styles.container}>
-            <Swiper
-              ref={swiper => {
-                this.swiper = swiper
-              }}
-              disableBottomSwipe={true}
-              onTapCard={this.swipeTap}
-              onSwiped={(cardIndex) => this.onSwipe()}
-              onSwipedLeft={(cardIndex) => this.swipeLeft(false)}
-              onSwipedRight={(cardIndex) => this.swipeRight(false)}
-              onSwipedTop={(cardIndex) => this.swipeTop(false)}
-              cards={this.state.cards}
-              cardIndex={this.cardIndex}
-              marginTop={-140}
-              cardVerticalMargin={160}
-              renderCard={this.renderCard}
-              onSwipedAll={this.onSwipedAllCards.bind(this)}
-              stackSize={3}
-              backgroundColor={'#fff'}
-              stackSeparation={15}
-              overlayLabels={{
-                // bottom: {
-                //   title: 'BLEAH',
-                //   style: {
-                //     label: {
-                //       backgroundColor: 'black',
-                //       borderColor: 'black',
-                //       color: 'white',
-                //       borderWidth: 1
-                //     },
-                //     wrapper: {
-                //       flexDirection: 'column',
-                //       alignItems: 'center',
-                //       justifyContent: 'center'
-                //     }
-                //   }
-                // },
-                left: {
-                  title: 'NOPE',
-                  style: {
-                    label: {
-                      borderColor: '#dc3644',
-                      color: '#dc3644',
-                      borderWidth: 5,
-                    },
-                    wrapper: {
-                      flexDirection: 'column',
-                      alignItems: 'flex-end',
-                      justifyContent: 'flex-start',
-                      marginTop: 25,
-                      marginLeft: -25,
-                    }
-                  }
-                },
-                right: {
-                  title: 'LIKE',
-                  style: {
-                    label: {
-                      borderColor: '#74c044',
-                      color: '#74c044',
-                      borderWidth: 5,
-                    },
-                    wrapper: {
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      justifyContent: 'flex-start',
-                      marginTop: 25,
-                      marginLeft: 25
-                    }
-                  }
-                },
-                top: {
-                  title: 'SUPER LIKE',
-                  style: {
-                    label: {
-                      borderColor: '#9605CC',
-                      color: '#9605CC',
-                      borderWidth: 5
-                    },
-                    wrapper: {
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }
+      return (
+        <View style={styles.container}>
+          <Swiper
+            ref={swiper => {
+              this.swiper = swiper
+            }}
+            disableBottomSwipe={true}
+            onTapCard={this.swipeTap}
+            onSwiped={(cardIndex) => this.onSwipe()}
+            onSwipedLeft={(cardIndex) => this.swipeLeft(false)}
+            onSwipedRight={(cardIndex) => this.swipeRight(false)}
+            onSwipedTop={(cardIndex) => this.swipeTop(false)}
+            cards={this.state.cards}
+            cardIndex={this.cardIndex}
+            marginTop={-140}
+            cardVerticalMargin={160}
+            renderCard={this.renderCard}
+            stackSize={3}
+            backgroundColor={'#fff'}
+            stackSeparation={15}
+            overlayLabels={{
+              left: {
+                title: 'NOPE',
+                style: {
+                  label: {
+                    borderColor: '#dc3644',
+                    color: '#dc3644',
+                    borderWidth: 5,
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-start',
+                    marginTop: 25,
+                    marginLeft: -25,
                   }
                 }
-              }}
-              animateOverlayLabelsOpacity
-              animateCardOpacity
-            >
-            {this.showButtons()}
-          </Swiper>
-      </View>
-      );
-      } else {
-        return(
-          <View style={styles.containerLoader}>
-            <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'}/>
-            <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
-          </View>
-        );
-      }
+              },
+              right: {
+                title: 'LIKE',
+                style: {
+                  label: {
+                    borderColor: '#74c044',
+                    color: '#74c044',
+                    borderWidth: 5,
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginTop: 25,
+                    marginLeft: 25
+                  }
+                }
+              },
+              top: {
+                title: 'SUPER LIKE',
+                style: {
+                  label: {
+                    borderColor: '#9605CC',
+                    color: '#9605CC',
+                    borderWidth: 5
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }
+                }
+              }
+            }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+          >
+          {this.showButtons()}
+        </Swiper>
+    </View>
+    );
     } else {
-      return (
-        <View style={styles.containerFlex}>
-          <View style={[styles.containerSpinner, styles.horizontal]}>
-            <ActivityIndicator size="large" color="#9605CC" />
-          </View>
+      return(
+        <View style={styles.containerLoader}>
+          <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'}/>
+          <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
+          <Text>Buscando personas cerca de tí</Text>
         </View>
       );
     }
