@@ -9,6 +9,13 @@ import com.beefe.picker.PickerViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.toast.RCTToastPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.beefe.picker.PickerViewPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -45,6 +52,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RCTToastPackage(),
+            new RNSpinkitPackage(),
+            new PickerViewPackage(),
+            new PickerPackage(),
+            new RNI18nPackage(),
+            new FBSDKPackage(),
+            new RNDeviceInfo(),
             new RCTToastPackage(),
             new RNSpinkitPackage(),
             new PickerViewPackage(),
