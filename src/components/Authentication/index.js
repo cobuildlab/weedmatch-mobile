@@ -43,7 +43,7 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        LoginManager.logInWithReadPermissions(["public_profile"]).then(
+        LoginManager.logInWithReadPermissions(["public_profile","email","user_birthday","user_gender"]).then(
             function(result) {
               if (result.isCancelled) {
                 alert('Login cancelled');
