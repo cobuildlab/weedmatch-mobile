@@ -291,7 +291,7 @@ class RegisterPage extends Component {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         if (Platform.OS == 'android') {
             return (
-                <ScrollView 
+                <ScrollView
                     style={styles.scrollContainer}
                     keyboardShouldPersistTaps={'always'}
                 >
@@ -306,10 +306,18 @@ class RegisterPage extends Component {
                   { step == 1 &&
                   <TouchableOpacity
                       style={styles.buttomFacebookStyle}>
-                      <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
+                      <Text style={styles.buttonTextFacebook}>
+                        <Image
+                            style={styles.logoFacebook}
+                            source={require('../../assets/img/facebook-app-logo.png')}
+                        />
+                      {strings("register.facebook")}
+                    </Text>
                   </TouchableOpacity>
                   }
-                  <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                  { step == 1 &&
+                      <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                  }
                   </View>
                   { step == 1 &&
                   <View style={styles.optBox}>
@@ -329,17 +337,27 @@ class RegisterPage extends Component {
                         <Image style={styles.container}
                                 source={require('../../assets/img/logo-b.png')}
                         />
-                        <Text style={styles.textRegister}>
-                            {strings("main.register")}
-                        </Text>
+                        { step == 1 &&
+                          <Text style={styles.textRegister}>
+                              {strings("main.register")}
+                          </Text>
+                        }
+
                         <View style={styles.contentSocial}>
                         { step == 1 &&
                         <TouchableOpacity
                             style={styles.buttomFacebookStyle}>
-                            <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
+                            <Text style={styles.buttonTextFacebook}>
+                              <Image
+                                  style={styles.logoFacebook}
+                                  source={require('../../assets/img/facebook-app-logo.png')}
+                              />
+                              {strings("register.facebook")}</Text>
                         </TouchableOpacity>
                         }
-                        <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                        { step == 1 &&
+                            <Text style={styles.textFacebook}> {strings("register.textFacebook")} </Text>
+                        }
                         </View>
                         { step == 1 &&
                         <View style={styles.optBox}>
@@ -362,7 +380,7 @@ class RegisterPage extends Component {
             body = <View>
                 {this._showActivity()}
                 {step == 1 &&
-                    <View>
+                    <View style={{marginTop: -15,}}>
                         <TextInput
                             style={styles.inputStyle}
                             editable={true}
@@ -404,6 +422,12 @@ class RegisterPage extends Component {
                 }
                 {step == 2 &&
                     <View>
+                      <Text style={styles.textRegisterContinue}>
+                          {strings("main.registerContinue")}
+                      </Text>
+                      <Text style={styles.textIam}>
+                          {strings("main.iAm")}
+                      </Text>
                         <TouchableOpacity
                             onPress={this._maleSelect.bind(this)}
                             style={this.state.sex === 'Hombre' ? styles.buttomRegisterSexOn : styles.buttomRegisterSexOff}>
@@ -434,6 +458,9 @@ class RegisterPage extends Component {
                 }
                 {step == 3 &&
                   <View style={styles.contentSocial}>
+                    <Text style={styles.textIam}>
+                        {strings("register.photo")}
+                    </Text>
                     <TouchableOpacity style={styles.buttomUploadStyle} onPress={() => this.ActionSheet.show() }>
                         {image == '' &&
                             <Image style={styles.buttomUpload}

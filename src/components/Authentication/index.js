@@ -90,7 +90,13 @@ export default class Authentication extends Component {
                     <TouchableOpacity
                         style={styles.buttomFacebookStyle}
                         onPress={this._facebookLogin.bind(this)}>
-                        <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
+                        <Text style={styles.buttonTextFacebook}>
+                          <Image
+                              style={styles.logoFacebook}
+                              source={require('../../assets/img/facebook-app-logo.png')}
+                          />
+                           {strings('login.facebook')}
+                        </Text>
                     </TouchableOpacity>
                 {/*
                     <TouchableOpacity
