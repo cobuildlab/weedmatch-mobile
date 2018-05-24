@@ -25,16 +25,23 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1657894947628619</string>
+				<string>fb195159134438735</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>5</string>
 	<key>FacebookAppID</key>
-	<string>1657894947628619</string>
+	<string>195159134438735</string>
 	<key>FacebookDisplayName</key>
-	<string>WeedMatch app</string>
+	<string>Weedmatch</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

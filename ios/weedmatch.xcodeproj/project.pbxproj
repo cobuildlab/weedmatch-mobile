@@ -39,6 +39,7 @@
 		248D164820A3FA5000B5791C /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 248D164620A3FA5000B5791C /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		248D164A20A3FA5000B5791C /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248D164920A3FA5000B5791C /* QBImagePicker.framework */; };
 		248D164B20A3FA5000B5791C /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 248D164920A3FA5000B5791C /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		24E92D6220B70D89005123BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 24E92D6120B70D88005123BF /* GoogleService-Info.plist */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -470,6 +471,7 @@
 		2408383C20A8F62200FBC63E /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		248D164620A3FA5000B5791C /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		248D164920A3FA5000B5791C /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		24E92D6120B70D88005123BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		24FE648B20ADDC5100684A1D /* weedmatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = weedmatch.entitlements; path = weedmatch/weedmatch.entitlements; sourceTree = "<group>"; };
 		25F099AFC3BE4F338F250AA6 /* libLRDRCTSimpleToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLRDRCTSimpleToast.a; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* weedmatch-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "weedmatch-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -663,6 +665,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				24E92D6120B70D88005123BF /* GoogleService-Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -1482,6 +1485,7 @@
 				405B79EE74D04595B1C87FD7 /* Roboto_medium.ttf in Resources */,
 				0415B08B15E84BF9947E7B72 /* Roboto.ttf in Resources */,
 				1B9502A18B7749B2A5A1A1C7 /* SimpleLineIcons.ttf in Resources */,
+				24E92D6220B70D89005123BF /* GoogleService-Info.plist in Resources */,
 				15657AF303AE4687AFA5A5A8 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
