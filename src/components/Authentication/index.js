@@ -20,16 +20,36 @@ export default class Authentication extends Component {
 
     constructor() {
         super();
-        console.log("Authentication:constructor");
         this.state = {username: null, password: null};
     }
 
     componentDidMount() {
         console.log("Authentication:componentDidMount");
+        this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
+            console.log("Authentication:componentDidMount:tokenSubscription", state);
+        });
+
+        this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
+            console.log("Authentication:componentDidMount:idSubscription", state);
+            this.setState({isLoading: false});
+            if (isValidText(state.id)) {
+                this.props.navigation.navigate('App');
+            }
+        });
+
+        this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
+            console.log("Authentication:componentDidMount:appSubscription", state);
+            this.setState({isLoading: false});
+            if (isValidText(state.error))
+                toastMsg(state.error);
+        });
     }
 
     componentWillUnmount() {
-        console.log("Authentication:componentWillUmmount");
+        console.log("LoginPage:componentWillUmmount");
+        this.tokenSubscription.unsubscribe();
+        this.appSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
     }
 
     static navigationOptions = {header: null};
@@ -43,24 +63,8 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        LoginManager.logInWithReadPermissions(["public_profile","email","user_birthday","user_gender"]).then(
-            function(result) {
-              if (result.isCancelled) {
-                alert('Login cancelled');
-              } else {
-                AccessToken.getCurrentAccessToken().then(
-                    (data) => {
-                        console.log(data.accessToken.toString())
-                    }
-                )
-                console.log(result);
-              }
-            },
-            function(error) {
-              alert('Login fail with error: ' + error);
-            }
-        );
-      }
+        facebookAction()
+    }
 
     render() {
         return (

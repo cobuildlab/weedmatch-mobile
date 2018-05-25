@@ -5,6 +5,7 @@ import {APP_STORE} from "../../Store";
 export const userService = {
     postRegister,
     validateEmail,
+    facebookHandle
 };
 
 /**
@@ -42,4 +43,21 @@ function validateEmail(data) {
     };
 
     return fetch(URL + 'email-verification/', requestOptions)
+}
+
+/**
+ * Login/Register facebook action
+ * @param token The facebook access token
+ * @returns {Promise<any>}
+ */
+function facebookHandle(token) {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': LENGUAGE
+      },
+      body: JSON.stringify({"access_token": token})
+    }
+    return fetch(URL + 'login-facebook/', requestOptions);
 }
