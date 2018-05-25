@@ -16,7 +16,7 @@ export default styles = StyleSheet.create({
         color: '#9605CC',
     },
     textRegister: {
-        fontSize: 26,
+        fontSize: 22,
         color: '#9605CC',
         marginBottom: 30,
         ...Platform.select({
@@ -24,6 +24,29 @@ export default styles = StyleSheet.create({
                 marginTop: -30,
             },
         }),
+    },
+    textRegisterContinue: {
+        fontSize: 22,
+        color: '#9605CC',
+        marginBottom: 30,
+        textAlign: 'center',
+        ...Platform.select({
+            android: {
+                marginTop: -30,
+            },
+        }),
+    },
+    textIam: {
+        fontSize: 18,
+        color: '#333',
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+    textphoto: {
+        fontSize: 18,
+        color: '#333',
+        marginBottom: 0,
+        textAlign: 'center',
     },
     textBold: {
         fontSize: 20,
@@ -79,8 +102,8 @@ export default styles = StyleSheet.create({
 
     },
     buttomUploadStyle: {
-        marginTop: 15,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 15,
         width: 170,
         height: 130,
         justifyContent: 'center',
@@ -134,16 +157,27 @@ export default styles = StyleSheet.create({
     buttomFacebookStyle: {
         marginTop: 5,
         marginBottom: 10,
-        width: 260,
+        width: 250,
         paddingTop: 14,
         paddingBottom: 14,
-        borderRadius: 50,
+        borderRadius: 8,
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#3b5998',
     },
-    textFacebook:{
-      marginBottom: 30,
-      color: '#777',
+    logoFacebook:{
+      width: 18,
+      height: 18,
+      flex: 1,
+      alignItems: 'center',
+      marginTop: 2,
+    },
+    buttonTextFacebook: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '500',
+        paddingLeft: 10,
+        marginTop: -5,
     },
     contentSocial:{
       flexDirection: 'column',
@@ -165,7 +199,7 @@ export default styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 20,
+      marginBottom: 10,
     },
     buttomCancelStyle: {
         marginTop: 0,
@@ -180,7 +214,7 @@ export default styles = StyleSheet.create({
         ...Platform.select({
             android: {
                 paddingTop: 0,
-                paddingBottom: 10, 
+                paddingBottom: 10,
             },
         }),
     },
