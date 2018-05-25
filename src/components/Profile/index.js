@@ -19,7 +19,7 @@ import styles from './style';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {connection, internet, checkConectivity } from '../../utils';
-import { publicProfileAction,getImages, publicImages420Action,appendData,Action420 } from './ProfileActions';
+import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,logOut } from './ProfileActions';
 
 var { height, width } = Dimensions.get('window');
 
@@ -114,8 +114,7 @@ export default class Profile extends Component {
     }
 
     _logout = () => {
-      AsyncStorage.removeItem('token');
-      AsyncStorage.removeItem('id');
+      logOut();
       this.props.navigation.navigate('Auth');
     }
 

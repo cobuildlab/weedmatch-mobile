@@ -15,7 +15,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import { strings } from "../../i18n";
-import { registerAction, createDateData, validateEmail } from "./RegisterActions";
+import { registerAction, createDateData, validateEmail,facebookAction } from "./RegisterActions";
 import { APP_STORE } from "../../Store";
 import styles from './style';
 import { toastMsg, connection, internet, checkConectivity } from "../../utils";
@@ -57,8 +57,8 @@ class RegisterPage extends Component {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
-                    latitud: position.coords.latitude,
-                    longitud: position.coords.longitude
+                    latitud: position.coords.latitude.toFixed(6),
+                    longitud: position.coords.longitude.toFixed(6)
                 })
             },
             (error) => {
@@ -108,6 +108,10 @@ class RegisterPage extends Component {
 
     userTerms() {
         this.props.navigation.navigate('Terms');
+    }
+
+    _facebookLogin() {
+        facebookAction(this.state)
     }
 
     componentWillUnmount() {
@@ -305,7 +309,9 @@ class RegisterPage extends Component {
                   <View style={styles.contentSocial}>
                   { step == 1 &&
                   <TouchableOpacity
-                      style={styles.buttomFacebookStyle}>
+                      style={styles.buttomFacebookStyle}
+                      onPress={this._facebookLogin.bind(this)}      
+                    >
                       <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
                   </TouchableOpacity>
                   }
@@ -335,7 +341,9 @@ class RegisterPage extends Component {
                         <View style={styles.contentSocial}>
                         { step == 1 &&
                         <TouchableOpacity
-                            style={styles.buttomFacebookStyle}>
+                            style={styles.buttomFacebookStyle}
+                            onPress={this._facebookLogin.bind(this)}      
+                            >
                             <Text style={styles.buttonText}>{strings("register.facebook")}</Text>
                         </TouchableOpacity>
                         }

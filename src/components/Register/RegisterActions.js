@@ -157,7 +157,7 @@ function validateEmail(email) {
     });
 }
 
-function facebookAction() {
+function facebookAction(state) {
 
     AccessToken.getCurrentAccessToken().then(
         (data) => {
@@ -174,7 +174,7 @@ function facebookAction() {
                         (data) => {
                             console.log(data.accessToken.toString())
 
-                            userService.facebookHandle(data.accessToken.toString())
+                            userService.facebookHandle(data.accessToken.toString(),state)
                             .then(async (response) => {
                                 console.log(`facebookAction: ${data.accessToken.toString()}`, response);
                                 const json = await response.json();

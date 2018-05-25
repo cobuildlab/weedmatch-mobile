@@ -6,7 +6,7 @@
     "login": "Iniciar Sesión",
     "register": "Crear Cuenta",
     "redes": "Iniciar Sesión con Redes Sociales",
-    "facebook": "Iniciar con Facebook",
+    "facebook": "Inicia Sesión con Facebook",
     "forgot": "Recuperar Contraseña",
     "required_fields_error": "El usuario y la clave son necesarios"
   },

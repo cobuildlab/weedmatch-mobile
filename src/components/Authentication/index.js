@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk';
 import {strings} from '../../i18n';
-import {Logger} from "../../utils";
+import {Logger,isValidText} from "../../utils";
+import {APP_STORE} from '../../Store'
 import styles from './styles'
 import {facebookAction} from './AutheticationActions'
 
@@ -20,11 +21,28 @@ export default class Authentication extends Component {
 
     constructor() {
         super();
-        this.state = {username: null, password: null};
+        this.state = {
+            latitud: '',
+            longitud: '',
+        };
     }
 
     componentDidMount() {
         console.log("Authentication:componentDidMount");
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    latitud: position.coords.latitude.toFixed(6),
+                    longitud: position.coords.longitude.toFixed(6)
+                })
+            },
+            (error) => {
+                console.log(error)
+            },
+            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
+        );
+
         this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
             console.log("Authentication:componentDidMount:tokenSubscription", state);
         });
@@ -63,7 +81,7 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        facebookAction()
+        facebookAction(this.state)
     }
 
     render() {
@@ -86,23 +104,11 @@ export default class Authentication extends Component {
                     <Text style={styles.textBold}>
                           {strings('wmatch')}
                     </Text>
-                {/*    <TouchableOpacity
-                        style={styles.buttomLoginIntagramStyle}
-                        onPress={this.userLogin.bind(this)}>
-                        <Text style={styles.buttonInstagramText}> Inicia Sesión con Instagram </Text>
-                    </TouchableOpacity>*/}
                     <TouchableOpacity
                         style={styles.buttomFacebookStyle}
                         onPress={this._facebookLogin.bind(this)}>
-                        <Text style={styles.buttonTextFacebook}> Inicia Sesión con Facebook </Text>
+                        <Text style={styles.buttonTextFacebook}>{strings('login.facebook')}</Text>
                     </TouchableOpacity>
-                {/*
-                    <TouchableOpacity
-                    <TouchableOpacity
-                        style={styles.buttomLoginStyle}
-                        onPress={this.userLoginPage.bind(this)}>
-                        <Text style={styles.buttonText}>{strings('login.login')}</Text>
-                    </TouchableOpacity> */}
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
                           onPress={this.userRegister.bind(this)}>
