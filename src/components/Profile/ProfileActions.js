@@ -4,6 +4,7 @@ import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import {AsyncStorage } from 'react-native';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
+import { AccessToken, LoginManager} from 'react-native-fbsdk';
 
 function publicProfileAction(token, id) {
     console.log(`publicProfileAction: ${token}, ${id}`);
@@ -64,6 +65,18 @@ function appendData(oldData, newData) {
     return oldData;
 }
 
+function logOut() {
+    AccessToken.getCurrentAccessToken().then(
+        (data) => {
+            if(data) {
+                LoginManager.logOut();
+            }
+        }
+    )
+    AsyncStorage.removeItem('token');
+    AsyncStorage.removeItem('id');
+}
+
 function getImages(data) {
 
     const _images = [];
@@ -75,4 +88,4 @@ function getImages(data) {
     return _images;
 }
 
-export { publicProfileAction,getImages,publicImages420Action,appendData,Action420 };
+export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,logOut };

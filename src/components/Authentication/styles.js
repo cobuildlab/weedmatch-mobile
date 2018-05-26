@@ -22,9 +22,10 @@ export default styles = StyleSheet.create({
     contentLogin: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        marginTop: 25,
+        marginTop: 15,
+        marginBottom: 20,
     },
     textLight: {
         fontSize: 20,
@@ -69,14 +70,24 @@ export default styles = StyleSheet.create({
         width: 260,
         paddingTop: 14,
         paddingBottom: 14,
-        borderRadius: 50,
+        borderRadius: 8,
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#3b5998',
+    },
+    logoFacebook:{
+      width: 18,
+      height: 18,
+      flex: 1,
+      alignItems: 'center',
+      marginTop: 2,
     },
     buttonTextFacebook: {
         color: 'white',
         fontSize: 16,
         fontWeight: '500',
+        paddingLeft: 10,
+        marginTop: -5,
     },
     buttomLoginStyle: {
         marginTop: 5,

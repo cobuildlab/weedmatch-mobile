@@ -70,18 +70,18 @@ export default styles = StyleSheet.create({
     },
     tabContainerStyle: {
 
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
         borderColor: 'transparent',
         ...Platform.select({
             ios: {
-                paddingTop: 35, 
-                paddingBottom: 20, 
-                marginRight: 130, 
-                marginLeft: 130, 
+                paddingTop: 35,
+                paddingBottom: 20,
+                marginRight: 130,
+                marginLeft: 130,
             },
             android: {
-                // marginRight: 130, 
-                // marginLeft: 130, 
+                // marginRight: 130,
+                // marginLeft: 130,
             },
           }),
     },
@@ -92,6 +92,8 @@ export default styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     tabContainer: {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        borderRightColor: '#ccc',
+        borderRightWidth: 2,
     }
 })
