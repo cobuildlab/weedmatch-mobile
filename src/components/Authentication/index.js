@@ -30,6 +30,8 @@ export default class Authentication extends Component {
     componentDidMount() {
         console.log("Authentication:componentDidMount");
 
+        this.suscriptions()
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
@@ -42,6 +44,9 @@ export default class Authentication extends Component {
             },
             {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
         );
+    }
+
+    suscriptions() {
 
         this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
             console.log("Authentication:componentDidMount:tokenSubscription", state);
@@ -74,13 +79,22 @@ export default class Authentication extends Component {
 
     userRegister() {
         this.props.navigation.navigate('Register');
+
+        this.tokenSubscription.unsubscribe();
+        this.appSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
     }
 
     userLoginPage() {
         this.props.navigation.navigate('Login');
+
+        this.tokenSubscription.unsubscribe();
+        this.appSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
     }
 
     _facebookLogin() {
+        this.suscriptions()
         facebookAction(this.state)
     }
 

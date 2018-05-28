@@ -4,6 +4,7 @@ import {APP_STORE} from "../../Store";
 
 export const userService = {
     login,
+    tokenFB
 };
 
 /**
@@ -23,4 +24,21 @@ function login(username, password) {
         body: JSON.stringify({username, password})
     };
     return fetch(URL + 'login/', requestOptions);
+}
+
+/**
+ * Upload the user token
+ * @param token The token of firebase
+ * @returns {Promise<any>}
+ */
+function tokenFB(token) {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(APP_STORE.getToken()),
+        body: JSON.stringify({
+            "registration_id": token,
+        })
+    };
+    return fetch(URL + 'device/', requestOptions);
 }

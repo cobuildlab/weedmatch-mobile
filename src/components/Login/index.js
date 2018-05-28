@@ -10,13 +10,15 @@ import {
     KeyboardAvoidingView,
     ScrollView,
     Platform,
+    Clipboard
 } from 'react-native';
 
 import {APP_STORE} from '../../Store';
-import {loginAction} from './LoginActions';
+import {loginAction,firebaseAction} from './LoginActions';
 import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg, internet, checkConectivity} from "../../utils";
+import firebase from 'react-native-firebase';
 
 export default class LoginPage extends Component {
 
@@ -36,11 +38,26 @@ export default class LoginPage extends Component {
             console.log("LoginPage:componentDidMount:tokenSubscription", state);
         });
 
+        this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
+            console.log("LoginPage:componentDidMount:firebaseSubscription", state);
+            this.setState({isLoading: false});
+        });
+
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:idSubscription", state);
-            this.setState({isLoading: false});
             if (isValidText(state.id)) {
-                this.props.navigation.navigate('App');
+
+            if (firebase.messaging().hasPermission()) {
+                try {
+                    firebase.messaging().requestPermission();
+                } catch(e) {
+                    alert("Failed to grant permission")
+                }
+            }
+            
+                firebase.messaging().getToken().then(token => {
+                    firebaseAction(token)
+                });
             }
         });
 

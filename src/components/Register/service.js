@@ -17,6 +17,7 @@ function postRegister(data) {
     const requestOptions = {
         method: 'POST',
         headers: {
+        'Content-Type': 'multipart/form-data',
         'Accept-Language': LENGUAGE
         },
         body: data

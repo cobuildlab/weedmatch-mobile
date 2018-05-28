@@ -78,6 +78,7 @@ class Store {
             profileImages420: undefined,
             profileImages420Page: undefined,
             swiperAction: undefined,
+            tokenFB: undefined
         };
         popToken(this.state);
         popId(this.state);
@@ -112,6 +113,13 @@ class Store {
                 saveId(state.id);
                 me.state.id = state.id;
             }
+        });
+        this.FIRE_EVENT = new Subject();
+        this.FIRE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.tokenFB = state.tokenFB;
+            
         });
         this.FEED_EVENT = new Subject();
         this.FEED_EVENT.subscribe(state => {
