@@ -327,7 +327,7 @@ export default class EditProfile extends Component {
          </View>
          <View style={styles.contentForm}>
            <View style={styles.labelText}>
-             <Text style={styles.textLabel}>Acerca de ti</Text>
+             <Text style={styles.textLabel}>{strings("register.about")}</Text>
            </View>
            <TextInput
               underlineColorAndroid='transparent'
@@ -341,7 +341,7 @@ export default class EditProfile extends Component {
             />
           <View style={styles.divider} />
           <View style={styles.labelText}>
-            <Text style={styles.textLabel}>Nombre</Text>
+            <Text style={styles.textLabel}>{strings("register.name")}</Text>
           </View>
           <TextInput
              underlineColorAndroid='transparent'
@@ -355,7 +355,7 @@ export default class EditProfile extends Component {
            />
          <View style={styles.divider} />
          <View style={styles.labelText}>
-           <Text style={styles.textLabel}>Usuario</Text>
+           <Text style={styles.textLabel}>{strings("register.username")}</Text>
          </View>
          <TextInput
             underlineColorAndroid='transparent'
@@ -369,7 +369,7 @@ export default class EditProfile extends Component {
           />
           <View style={styles.divider} />
           <View style={styles.labelText}>
-            <Text style={styles.textLabel}>Distancia Máxima</Text>
+            <Text style={styles.textLabel}>{strings("register.distance")}</Text>
             <Text style={styles.textLabelvalue}>{this.state.sliderOneValue + 'Km'}</Text>
           </View>
           <View style={styles.marginView}>
@@ -391,7 +391,7 @@ export default class EditProfile extends Component {
           </View>
           <View style={styles.divider} />
             <View style={styles.labelText}>
-              <Text style={styles.textLabelSwitch}>Silenciar notificaciones</Text>
+              <Text style={styles.textLabelSwitch}>{strings("register.silence")}</Text>
               <View style={styles.viewSwitch}>
               <Switch
                 style={styles.switchStyle}
@@ -427,7 +427,7 @@ export default class EditProfile extends Component {
          <View style={styles.divider} />
 
          <View style={styles.labelTextGender}>
-           <Text style={styles.textLabel}>Tu Genero</Text>
+           <Text style={styles.textLabel}>{strings("register.ownGen")}</Text>
          </View>
          <View style={styles.contentFormGender}>
            <View style={styles.contenGender}>
@@ -449,21 +449,21 @@ export default class EditProfile extends Component {
          <View style={styles.divider} />
 
          <View style={styles.labelTextComprar}>
-           <Text style={styles.textLabelCard}>Comprar Version Pro</Text>
+           <Text style={styles.textLabelCard}>{strings("main.pro")}</Text>
            <TouchableOpacity
                style={styles.buttomCardStyle}>
-               <Text style={styles.buttonTextCard}>Pagar con Tarjeta de Credito</Text>
+               <Text style={styles.buttonTextCard}>{strings("main.pay")}</Text>
            </TouchableOpacity>
          </View>
         <View style={styles.divider} />
       <View style={styles.content}>
           <TouchableOpacity
               style={styles.buttomRegisterStyle} onPress={() => this._saveInfo()}>
-              <Text style={styles.buttonText}>Guardar Cambios</Text>
+              <Text style={styles.buttonText}>{strings("main.changes")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
               style={styles.buttomPassStyle}>
-              <Text style={styles.buttonTextCard}>Cambiar Contraseña</Text>
+              <Text style={styles.buttonTextCard}>{strings("main.password")}</Text>
           </TouchableOpacity>
         </View>
         </ScrollView>

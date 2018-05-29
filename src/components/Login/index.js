@@ -41,6 +41,7 @@ export default class LoginPage extends Component {
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:firebaseSubscription", state);
             this.setState({isLoading: false});
+            this.props.navigation.navigate('App');
         });
 
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
@@ -74,6 +75,7 @@ export default class LoginPage extends Component {
         this.tokenSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
         this.idSubscription.unsubscribe();
+        this.firebaseSubscription.unsubscribe();
     }
 
     static navigationOptions = {header: null};
@@ -85,6 +87,8 @@ export default class LoginPage extends Component {
     _forgotScreen() {
         this.tokenSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
+        this.firebaseSubscription.unsubscribe();
         this.props.navigation.navigate('Forgot');
     }
 

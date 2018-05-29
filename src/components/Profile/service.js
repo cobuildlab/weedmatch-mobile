@@ -4,7 +4,8 @@ import {APP_STORE} from "../../Store";
 
 export const userService = {
     publicProfile,
-    publicImages420
+    publicImages420,
+    tokenFB
 };
 
 /**
@@ -34,4 +35,18 @@ function publicImages420(token,pageUrl) {
         headers: authHeader(token)
     };
     return fetch(pageUrl, requestOptions);
+}
+
+/**
+ * Upload the user token
+ * @param token The token of firebase
+ * @returns {Promise<any>}
+ */
+function tokenFB(token) {
+
+    const requestOptions = {
+        method: 'DELETE',
+        headers: authHeader(APP_STORE.getToken()),
+    };
+    return fetch(URL + 'device/' + APP_STORE.getIdFB() + '/', requestOptions);
 }

@@ -12,10 +12,12 @@ import {
 } from 'react-native';
 import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk';
 import {strings} from '../../i18n';
-import {Logger,isValidText} from "../../utils";
+import {Logger,isValidText,toastMsg} from "../../utils";
 import {APP_STORE} from '../../Store'
 import styles from './styles'
-import {facebookAction} from './AutheticationActions'
+import {facebookAction,firebaseAction} from './AutheticationActions'
+import firebase from 'react-native-firebase';
+
 
 export default class Authentication extends Component {
 
@@ -29,8 +31,6 @@ export default class Authentication extends Component {
 
     componentDidMount() {
         console.log("Authentication:componentDidMount");
-
-        this.suscriptions()
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -52,45 +52,44 @@ export default class Authentication extends Component {
             console.log("Authentication:componentDidMount:tokenSubscription", state);
         });
 
-        this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
-            console.log("Authentication:componentDidMount:idSubscription", state);
-            this.setState({isLoading: false});
-            if (isValidText(state.id)) {
-                this.props.navigation.navigate('App');
-            }
-        });
-
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             console.log("Authentication:componentDidMount:appSubscription", state);
-            this.setState({isLoading: false});
             if (isValidText(state.error))
                 toastMsg(state.error);
         });
-    }
 
-    componentWillUnmount() {
-        console.log("LoginPage:componentWillUmmount");
-        this.tokenSubscription.unsubscribe();
-        this.appSubscription.unsubscribe();
-        this.idSubscription.unsubscribe();
+        this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
+            console.log("Authentication:componentDidMount:firebaseSubscription", state);
+            this.props.navigation.navigate('App');
+        });
+
+        this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
+            console.log("Authentication:componentDidMount:idSubscription", state);
+            if (isValidText(state.id)) {
+
+            if (firebase.messaging().hasPermission()) {
+                try {
+                    firebase.messaging().requestPermission();
+                } catch(e) {
+                    alert("Failed to grant permission")
+                }
+            }
+            
+            firebase.messaging().getToken().then(token => {
+                firebaseAction(token)
+            });
+            }
+        });
     }
 
     static navigationOptions = {header: null};
 
     userRegister() {
         this.props.navigation.navigate('Register');
-
-        this.tokenSubscription.unsubscribe();
-        this.appSubscription.unsubscribe();
-        this.idSubscription.unsubscribe();
     }
 
     userLoginPage() {
         this.props.navigation.navigate('Login');
-
-        this.tokenSubscription.unsubscribe();
-        this.appSubscription.unsubscribe();
-        this.idSubscription.unsubscribe();
     }
 
     _facebookLogin() {

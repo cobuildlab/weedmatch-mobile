@@ -32,7 +32,7 @@ function firebaseAction(token) {
             const json = await response.json();
             console.log(`firebaseAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.FIRE_EVENT.next({"tokenFB": json.detail});
+                APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});

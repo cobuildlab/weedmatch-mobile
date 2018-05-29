@@ -18,7 +18,7 @@ import {
 import styles from './style';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
-import {connection, internet, checkConectivity } from '../../utils';
+import {connection, internet, checkConectivity, toastMsg } from '../../utils';
 import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,logOut } from './ProfileActions';
 
 var { height, width } = Dimensions.get('window');
@@ -51,6 +51,17 @@ export default class Profile extends Component {
 
       this.props.navigation.setParams({logout: () => this._logout()});
 
+      this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
+        console.log("LoginPage:componentDidMount:appSubscription", state);
+        if (state.error) {
+          this.setState({isLoading: true});
+          toastMsg(state.error);
+        return;
+        }
+        if (state.success)
+          this.props.navigation.navigate('Auth');
+        });
+
         this.public = APP_STORE.PROFILE_EVENT.subscribe(state => {
             console.log("Profile:componentDidMount:PROFILE_EVENT", state);
             if (state.profile) {
@@ -62,7 +73,7 @@ export default class Profile extends Component {
                 return;
             }
             if (state.error) {
-              Alert.alert(state.error);
+              toastMsg(state.error);
             }
         });
 
@@ -80,7 +91,7 @@ export default class Profile extends Component {
           return;
         }
         if (state.error) {
-          Alert.alert(state.error);
+          toastMsg(state.error);
         }
       });
 
@@ -110,12 +121,13 @@ export default class Profile extends Component {
       console.log("Profile:componentWillUmmount");
       this.images420.unsubscribe();
       this.images420Page.unsubscribe();
+      this.appSubscription.unsubscribe();
       this.public.unsubscribe();
     }
 
     _logout = () => {
-      logOut();
-      this.props.navigation.navigate('Auth');
+      this.setState({isLoading: false});
+      logOut();      
     }
 
     _publicProfile() {
