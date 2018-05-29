@@ -23,7 +23,7 @@ DerivedData
 project.xcworkspace
 # CocoaPods
 Podfile.lock
-Pods
+Pods/
 *.xcworkspace
 
 
