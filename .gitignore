@@ -5,6 +5,8 @@
 # Xcode
 #
 build/
+Podfile.lock
+Pods/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -21,9 +23,6 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-# CocoaPods
-Podfile.lock
-Pods/
 *.xcworkspace
 
 
