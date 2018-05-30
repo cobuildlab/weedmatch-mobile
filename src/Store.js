@@ -16,13 +16,26 @@ async function saveToken(token) {
 }
 
 /**
- * Synchronous save the token
+ * Synchronous save the id
  * @param id
  * @returns {Promise<void>}
  */
 async function saveId(id) {
     try {
         await AsyncStorage.setItem("id", id);
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+    }
+}
+
+/**
+ * Synchronous save the firebase ID
+ * @param id
+ * @returns {Promise<void>}
+ */
+async function saveFB(id) {
+    try {
+        await AsyncStorage.setItem("idFB", id);
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
     }
@@ -57,6 +70,19 @@ async function popId(state) {
     }
 }
 
+async function popIdFB(state) {
+    try {
+        const id = await AsyncStorage.getItem('idFB');
+        if (isValidText(id)) {
+            console.log("popFB:", id);
+             state.tokenFB = id;
+        }
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
 class Store {
     constructor() {
         this.state = {
@@ -78,9 +104,11 @@ class Store {
             profileImages420: undefined,
             profileImages420Page: undefined,
             swiperAction: undefined,
+            tokenFB: undefined
         };
         popToken(this.state);
         popId(this.state);
+        popIdFB(this.state);
         const me = this;
         this.APP_EVENT = new Subject();
         this.APP_EVENT.subscribe(state => {
@@ -111,6 +139,15 @@ class Store {
             if (isValidText(state.id)) {
                 saveId(state.id);
                 me.state.id = state.id;
+            }
+        });
+        this.FIRE_EVENT = new Subject();
+        this.FIRE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            if (isValidText(state.tokenFB)) {
+                saveFB(state.tokenFB);
+                me.state.tokenFB = state.tokenFB;
             }
         });
         this.FEED_EVENT = new Subject();
@@ -211,6 +248,10 @@ class Store {
 
     getId() {
         return this.state.id;
+    }
+
+    getIdFB() {
+        return this.state.tokenFB;
     }
 }
 

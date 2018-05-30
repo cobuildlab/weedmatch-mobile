@@ -1,7 +1,10 @@
-import { URL ,LENGUAGE} from '../../utils';
+import { URL ,LENGUAGE,authHeader} from '../../utils';
+import DeviceInfo from 'react-native-device-info';
+import {APP_STORE} from "../../Store";
 
 export const userService = {
     facebookHandle,
+    tokenFB
 };
 
 /**
@@ -24,4 +27,21 @@ function facebookHandle(token,state) {
       })
     }
     return fetch(URL + 'login-facebook/', requestOptions);
+}
+
+/**
+ * Upload the user token
+ * @param token The token of firebase
+ * @returns {Promise<any>}
+ */
+function tokenFB(token) {
+
+  const requestOptions = {
+      method: 'POST',
+      headers: authHeader(APP_STORE.getToken()),
+      body: JSON.stringify({
+          "registration_id": token,
+      })
+  };
+  return fetch(URL + 'device/', requestOptions);
 }

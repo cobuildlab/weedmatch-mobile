@@ -15,7 +15,6 @@ function loginAction(username, password) {
             const json = await response.json();
             console.log(`loginAction:JSON:`, json);
             if (response.ok) {
-                //APP_STORE.APP_EVENT.next({"success": strings("login.welcome")});
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
                 APP_STORE.ID_EVENT.next({"id": json.id.toString()});
                 return;
@@ -24,4 +23,20 @@ function loginAction(username, password) {
         });
 }
 
-export {loginAction};
+function firebaseAction(token) {
+    console.log(`firebaseAction: ${token}`);
+
+    userService.tokenFB(token)
+        .then(async (response) => {
+            console.log(`firebaseAction: ${token}`, response);
+            const json = await response.json();
+            console.log(`firebaseAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
+export {loginAction,firebaseAction};

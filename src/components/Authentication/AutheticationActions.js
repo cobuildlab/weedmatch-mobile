@@ -2,6 +2,8 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {userService} from './service';
 import { AccessToken, LoginManager} from 'react-native-fbsdk';
+import firebase from 'react-native-firebase';
+
 
 function facebookAction(state) {
 
@@ -43,4 +45,20 @@ function facebookAction(state) {
     )
 }
 
-export {facebookAction};
+function firebaseAction(token) {
+    console.log(`firebaseAction: ${token}`);
+
+    userService.tokenFB(token)
+        .then(async (response) => {
+            console.log(`firebaseAction: ${token}`, response);
+            const json = await response.json();
+            console.log(`firebaseAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
+export {facebookAction,firebaseAction};

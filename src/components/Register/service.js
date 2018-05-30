@@ -5,7 +5,8 @@ import {APP_STORE} from "../../Store";
 export const userService = {
     postRegister,
     validateEmail,
-    facebookHandle
+    facebookHandle,
+    tokenFB
 };
 
 /**
@@ -17,6 +18,7 @@ function postRegister(data) {
     const requestOptions = {
         method: 'POST',
         headers: {
+        'Content-Type': 'multipart/form-data',
         'Accept-Language': LENGUAGE
         },
         body: data
@@ -65,4 +67,21 @@ function facebookHandle(token,state) {
         })
     }
     return fetch(URL + 'login-facebook/', requestOptions);
+}
+
+/**
+ * Upload the user token
+ * @param token The token of firebase
+ * @returns {Promise<any>}
+ */
+function tokenFB(token) {
+
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(APP_STORE.getToken()),
+        body: JSON.stringify({
+            "registration_id": token,
+        })
+    };
+    return fetch(URL + 'device/', requestOptions);
 }

@@ -16,6 +16,11 @@
     "textFacebook": "No publicamos nada en tu FB",
     "opt": "o también",
     "terms": "Términos y Condiciones",
+    "name": "Nombre",
+    "about": "Acerca de ti",
+    "distance": "Distancia máxima",
+    "silence": "Silenciar notificaciones",
+    "ownGen": "Tu genero",
     "fullName": "Nombre completo",
     "errorFullName": "Nombre completo inválido",
     "password": "Contraseña",
@@ -45,7 +50,11 @@
     "profile": "Perfil",
     "login": "Iniciar Sesión",
     "recover": "Recuperar Contraseña",
-    "internet": "No hay conexión a Internet"
+    "internet": "No hay conexión a Internet",
+    "password": "Cambiar contraseña",
+    "pro": "Comprar version pro",
+    "pay": "Pagar con tarjeta de credito",
+    "changes": "Guardar cambios"
   },
   "home": {
     "actionSheet": "Elija una opción",
@@ -61,5 +70,8 @@
     "code": "Codigo",
     "password": "Password",
     "confirmPassword": "Confirmar Password"
+  },
+  "swiper": {
+    "searching": "Buscando personas cerca de tí"
   }
 }

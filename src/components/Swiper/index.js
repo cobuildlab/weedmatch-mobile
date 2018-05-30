@@ -321,7 +321,7 @@ export default class SwiperView extends Component {
         <View style={styles.containerLoader}>
           <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'}/>
           <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
-          <Text>Buscando personas cerca de tí</Text>
+          <Text>{strings("swiper.searching")}</Text>
         </View>
       );
     }

@@ -15,7 +15,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import { strings } from "../../i18n";
-import { registerAction, createDateData, validateEmail,facebookAction } from "./RegisterActions";
+import { registerAction, createDateData, validateEmail,facebookAction, firebaseAction } from "./RegisterActions";
 import { APP_STORE } from "../../Store";
 import styles from './style';
 import { toastMsg, connection, internet, checkConectivity } from "../../utils";
@@ -24,6 +24,7 @@ import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
+import firebase from 'react-native-firebase';
 
 class RegisterPage extends Component {
 
@@ -66,9 +67,9 @@ class RegisterPage extends Component {
             },
             {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
         );
+
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             if (state.error) {
-                //this.setState({isLoading: false});
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
@@ -84,16 +85,30 @@ class RegisterPage extends Component {
             return;
             }
             if (state.success) {
-                toastMsg(strings("register.successTitle"));
-                this.setState({isLoading: false});
-                this.props.navigation.navigate('App');
+                if (firebase.messaging().hasPermission()) {
+                    try {
+                        firebase.messaging().requestPermission();
+                    } catch(e) {
+                        alert("Failed to grant permission")
+                    }
+                }
+                
+                firebase.messaging().getToken().then(token => {
+                    firebaseAction(token)
+                });
             }
         });
-        this.event = APP_STORE.EMAIL_EVENT.subscribe(state => {
+
+        this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
+            console.log("RegisterPage:componentDidMount:firebaseSubscription", state);
+            this.props.navigation.navigate('App');
+        });
+        
+        this.email = APP_STORE.EMAIL_EVENT.subscribe(state => {
             this.setState({isLoading: true});
             if (state.error) {
                 this.setState({isLoading: false});
-                toastMsg((state.error));
+                toastMsg(state.error);
             return;
             }
             if (state.success) {
@@ -101,7 +116,6 @@ class RegisterPage extends Component {
                this.setState({
                    step: 2
                });
-               this.event.unsubscribe();
             }
         });
     }
@@ -111,6 +125,7 @@ class RegisterPage extends Component {
     }
 
     _facebookLogin() {
+        this.setState({isLoading: true});
         facebookAction(this.state)
     }
 
@@ -118,6 +133,8 @@ class RegisterPage extends Component {
         console.log("RegisterPage:componentWillUmmount");
         Picker.hide();
         this.event.unsubscribe();
+        this.email.unsubscribe();
+        this.firebaseSubscription.unsubscribe();
     }
 
     _registerUser() {

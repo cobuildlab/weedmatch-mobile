@@ -6,8 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "purge": "./node_modules/.bin/react-native-clean-project",
-    "run:ios": "react-native run-ios",
-    "link": "react-native link"
+    "run:ios": "react-native run-ios"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "0.0.14",
@@ -25,10 +24,11 @@
     "react-native-deck-swiper": "^1.5.9",
     "react-native-device-info": "^0.21.5",
     "react-native-fbsdk": "^0.7.0",
+    "react-native-firebase": "^4.2.0",
     "react-native-i18n": "^2.0.12",
     "react-native-image-crop-picker": "^0.20.0",
     "react-native-image-slider": "^2.0.3",
-    "react-native-picker": "4.3.7",
+    "react-native-picker": "^4.3.5",
     "react-native-simple-radio-button": "^2.7.1",
     "react-native-spinkit": "^1.1.1",
     "react-native-toast-native": "^1.2.1",

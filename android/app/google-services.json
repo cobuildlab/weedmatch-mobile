@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "201264225180",
+    "firebase_url": "https://weedmatch-a4ee9.firebaseio.com",
+    "project_id": "weedmatch-a4ee9",
+    "storage_bucket": "weedmatch-a4ee9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201264225180:android:fb6e05edd459eac6",
+        "android_client_info": {
+          "package_name": "co.fourgeeks.weedmatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201264225180-irurado033i0smndqc2dc3lt21pk7cu2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "201264225180-irurado033i0smndqc2dc3lt21pk7cu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsMsUXZ57Azg62U8sh1wjlBjZyuvF4Ows"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
