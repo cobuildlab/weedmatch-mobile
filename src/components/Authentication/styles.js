@@ -76,17 +76,17 @@ export default styles = StyleSheet.create({
         backgroundColor: '#3b5998',
     },
     logoFacebook:{
-      width: 18,
-      height: 18,
-      flex: 1,
-      alignItems: 'center',
-      marginTop: 2,
+      width:16,
+      height: 17,
+      position: 'absolute',
+      top: 11,
+      left: 17,
     },
     buttonTextFacebook: {
         color: 'white',
         fontSize: 16,
         fontWeight: '500',
-        paddingLeft: 10,
+        paddingLeft: 20,
         marginTop: -5,
     },
     buttomLoginStyle: {
