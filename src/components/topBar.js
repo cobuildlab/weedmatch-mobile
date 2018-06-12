@@ -4,7 +4,6 @@ import {
     StyleSheet,
     Text,
     View,
-
     Dimensions,
     TouchableHighlight,
     Image
@@ -26,7 +25,6 @@ export default class topBar extends Component {
     _profile() {
         this.props.navigate('Profile');
     }
-
     _onReder() {
         if (this.props.onPhoto) {
             return (

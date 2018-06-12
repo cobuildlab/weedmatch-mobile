@@ -38,6 +38,9 @@ export default class TopBar extends Component {
   showProfile() {
     this.props.navigation.navigate('Profile');
   }
+  showMessage() {
+    this.props.navigation.navigate('Message');
+  }
 
   showChat() {
     // this.props.navigation.navigate('Chat');
@@ -49,8 +52,7 @@ export default class TopBar extends Component {
         <TouchableOpacity style={styles.buttomIconProfile} onPress={ () => this.showProfile()}>
           <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttomIconMsg}>
+        <TouchableOpacity style={styles.buttomIconMsg} onPress={ () => this.showMessage()}>
           <Image style={styles.imgIconMsg} source={require('../../assets/img/msj.png')}/>
         </TouchableOpacity>
         <Tabs
@@ -64,7 +66,6 @@ export default class TopBar extends Component {
           <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
             <Swiper navigation={this.props.navigation}/>
           </Tab>
-          
           <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
             <Home navigation={this.props.navigation}/>
           </Tab>
