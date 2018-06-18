@@ -1,4 +1,3 @@
-import React, {Component} from 'react';
 import {StackNavigator, SwitchNavigator} from 'react-navigation';
 import Splash from './src/components/Splash';
 import Terms from './src/components/Terms';

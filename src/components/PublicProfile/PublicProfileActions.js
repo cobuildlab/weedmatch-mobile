@@ -3,10 +3,12 @@ import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
+import moment from 'moment';
+import moment_timezone from 'moment-timezone';
 
 function swiperAction(token,action,id) {
 
-    userService.swiperAction(token,action,id)
+    userService.swiperAction(token,action,id,moment().format())
         .then(async (response) => {
             console.log(`Swiper: ${token}, ${action}, ${id}`, response);
             const json = await response.json();

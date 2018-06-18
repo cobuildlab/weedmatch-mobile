@@ -44,11 +44,12 @@ function publicImages420(token,pageUrl) {
  * @param state The current state of render screen
  * @returns {Promise<any>}
  */
-function swiperAction(token,action,id) {
+function swiperAction(token,action,id,time) {
 
     const data = {
         "user_match": id.toString(),
         "action": action,
+        "time": time
     }
 
     const requestOptions = {
