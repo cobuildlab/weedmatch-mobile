@@ -74,7 +74,7 @@ export default class Authentication extends Component {
                     alert("Failed to grant permission")
                 }
             }
-            
+
             firebase.messaging().getToken().then(token => {
                 firebaseAction(token)
             });
@@ -120,11 +120,11 @@ export default class Authentication extends Component {
                     <TouchableOpacity
                         style={styles.buttomFacebookStyle}
                         onPress={this._facebookLogin.bind(this)}>
+                        <Image
+                            style={styles.logoFacebook}
+                            source={require('../../assets/img/facebook-app-logo.png')}
+                        />
                         <Text style={styles.buttonTextFacebook}>
-                          <Image
-                              style={styles.logoFacebook}
-                              source={require('../../assets/img/facebook-app-logo.png')}
-                          />
                            {strings('login.facebook')}
                         </Text>
                     </TouchableOpacity>
@@ -133,14 +133,12 @@ export default class Authentication extends Component {
                           onPress={this.userRegister.bind(this)}>
                         <Text style={styles.buttonText}>{strings('login.register')}</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.contentLogin}>
-                  <TouchableOpacity
-                      style={styles.buttomRegister}
-                      onPress={this.userLoginPage.bind(this)}>
-                      <Text style={styles.buttomTextRegister}>
-                        {strings('login.signup_button')}</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttomRegister}
+                        onPress={this.userLoginPage.bind(this)}>
+                        <Text style={styles.buttomTextRegister}>
+                          {strings('login.signup_button')}</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         );
