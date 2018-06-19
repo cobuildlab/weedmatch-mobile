@@ -43,14 +43,28 @@ export default class Chat extends Component {
     componentWillUnmount() {
     }
 
-    showMeEncanta() {
-      this.props.navigation.navigate('Like');
-    }
-
     render() {
       return (
         <View style={styles.viewContainer}>
           <View style={styles.viewLeft}>
+            <View style={styles.viewTextLeft}>
+              <Text>hola bot que tal!</Text>
+            </View>
+            <View style={styles.viewTextLeft}>
+              <Text>hola bot que tal!</Text>
+            </View>
+            <View style={styles.viewTextLeft}>
+              <Text>hola bot que tal!</Text>
+            </View>
+            <View style={styles.viewTextLeft}>
+              <Text>hola bot que tal!</Text>
+            </View>
+            <View style={styles.viewTextLeft}>
+              <Text>hola bot que tal!</Text>
+            </View>
+            <View style={styles.viewTextLeft}>
+              <Text>hola bot que tal!</Text>
+            </View>
             <View style={styles.viewTextLeft}>
               <Text>hola bot que tal!</Text>
             </View>

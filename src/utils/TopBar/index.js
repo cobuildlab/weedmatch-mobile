@@ -39,7 +39,7 @@ export default class TopBar extends Component {
     this.props.navigation.navigate('Profile');
   }
   showMessage() {
-    this.props.navigation.navigate('Message');
+    this.props.navigation.navigate('Notifications');
   }
 
   showChat() {

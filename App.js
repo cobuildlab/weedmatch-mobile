@@ -14,8 +14,9 @@ import EditProfile from './src/components/EditProfile';
 import PublicProfile from './src/components/PublicProfile';
 import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
+import Notifications from './src/components/Notifications';
 
-const AppStack = StackNavigator({Bar: Topbar, Home: HomePage, Profile: Profile, Message: Message, Chat: Chat, Like: Like, EditProfile: EditProfile, PublicProfile: PublicProfile});
+const AppStack = StackNavigator({Bar: Topbar, Home: HomePage, Profile: Profile, Message: Message, Chat: Chat, Like: Like, EditProfile: EditProfile, PublicProfile: PublicProfile, Notifications: Notifications });
 const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage, Forgot: ForgotPage});
 
 export default SwitchNavigator(

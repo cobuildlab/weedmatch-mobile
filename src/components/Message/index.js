@@ -27,23 +27,11 @@ export default class Message extends Component {
         super(props);
     }
 
-    static navigationOptions = ({ navigation }) => {
-      const {params} = navigation.state;
-
-      return {
-        title: strings('main.message'),
-      };
-    };
-
     componentDidMount(){
 
     }
 
     componentWillUnmount() {
-    }
-
-    showMeEncanta() {
-      this.props.navigation.navigate('Like');
     }
 
     showChat() {
@@ -53,9 +41,6 @@ export default class Message extends Component {
     render() {
       return (
         <View style={styles.viewContainer}>
-          <TouchableOpacity onPress={ () => this.showMeEncanta()}>
-            <Text>me encanta</Text>
-          </TouchableOpacity>
           <FlatList
             horizontal={false}
             data={[{key: 'User Name'}, {key: 'User Name'}, {key: 'User Name'},]}
