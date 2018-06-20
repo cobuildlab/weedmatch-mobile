@@ -50,7 +50,7 @@ export default class Notifications extends Component {
           tabContainerStyle={styles.tabContainerStyle}
           edgeHitWidth={0}
           >
-          <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>Mensajes</Text></TabHeading>}>
+          <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>{strings('main.message')}</Text></TabHeading>}>
             <Tab1 navigation={this.props.navigation}/>
           </Tab>
           <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>Me encanta</Text></TabHeading>}>
