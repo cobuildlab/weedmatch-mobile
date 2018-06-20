@@ -17,7 +17,7 @@ import {
 
 import styles from './style';
 import {strings} from '../../i18n';
-import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import { Container, Tab, Tabs } from 'native-base';
 import Tab1 from '../Message';
 import Tab2 from '../Like';
 
@@ -33,13 +33,6 @@ export default class Notifications extends Component {
         title: strings('main.message'),
       };
     };
-
-    componentDidMount(){
-
-    }
-
-    componentWillUnmount() {
-    }
 
     render() {
       return (

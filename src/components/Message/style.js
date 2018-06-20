@@ -17,10 +17,18 @@ export default styles = StyleSheet.create({
     imgProfileItem:{
       width: 35,
       height: 35,
-      borderRadius: 50,
-
-      resizeMode: 'contain',
-    }
+      borderRadius: 35/2,
+      resizeMode: 'cover',
+    },
+    containers: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    horizontal: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      padding: 10
+    },
 
 
 });

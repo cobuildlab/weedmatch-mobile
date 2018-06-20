@@ -104,7 +104,8 @@ class Store {
             profileImages420: undefined,
             profileImages420Page: undefined,
             swiperAction: undefined,
-            tokenFB: undefined
+            tokenFB: undefined,
+            chats: undefined,
         };
         popToken(this.state);
         popId(this.state);
@@ -239,6 +240,12 @@ class Store {
             if (!state)
                 return;
             me.state.swiperAction = state.swiperAction;
+        });
+        this.CHAT_EVENT = new Subject();
+        this.CHAT_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.chats = state.chats;
         });
     }
 
