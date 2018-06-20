@@ -21,8 +21,6 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {connection, internet, checkConectivity, toastMsg } from '../../utils';
 
-var { height, width } = Dimensions.get('window');
-
 export default class Message extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +34,7 @@ export default class Message extends Component {
 
     componentDidMount() {
       this.chatsVar = APP_STORE.CHAT_EVENT.subscribe(state => {
-        console.log("Profile:componentDidMount:images420Suscription", state);
+        console.log("Messages:componentDidMount:chatsVar", state);
         if (state.chats) {
 
           this.setState({
@@ -67,7 +65,7 @@ export default class Message extends Component {
           <View style={styles.viewContainer}>
             <FlatList
               horizontal={false}
-              keyExtractor={( index ) => index}
+              keyExtractor={( item , index ) => index.toString() }
               data={this.state.chats}
               renderItem={({item}) =>
                 <TouchableOpacity onPress={ () => this.showChat()}>

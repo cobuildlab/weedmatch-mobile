@@ -14,6 +14,7 @@ import {
   Dimensions,
   Platform,
   FlatList,
+  KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
 
