@@ -30,18 +30,23 @@ export default class Notifications extends Component {
       const {params} = navigation.state;
 
       return {
-        title: strings('main.message'),
+        title: strings('main.noti'),
       };
     };
 
     render() {
       return (
-        <Container>
-        <Tabs initialPage={0}>
-          <Tab heading="Tab1">
+        <Container style={styles.tabContainer}>
+        <Tabs
+          initialPage={0}
+          tabBarUnderlineStyle={styles.underLineColor}
+          tabContainerStyle={styles.tabContainerStyle}
+          edgeHitWidth={0}
+          >
+          <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>{strings('main.message')}</Text></TabHeading>}>
             <Tab1 navigation={this.props.navigation}/>
           </Tab>
-          <Tab heading="Tab2">
+          <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>Me encanta</Text></TabHeading>}>
             <Tab2 navigation={this.props.navigation}/>
           </Tab>
         </Tabs>

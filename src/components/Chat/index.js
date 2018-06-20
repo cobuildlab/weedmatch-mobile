@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   TouchableHighlight,
   Dimensions,
+  Platform,
   FlatList,
   ScrollView
 } from 'react-native';
@@ -44,6 +45,25 @@ export default class Chat extends Component {
     }
 
     render() {
+        if (Platform.OS == 'android') {
+            return (
+                <ScrollView
+                    style={styles.scrollContainer}
+                    keyboardShouldPersistTaps={'always'}
+                >
+                  {this.body()}
+             </ScrollView>
+              );
+          } else if (Platform.OS == 'ios') {
+                return (
+                    <KeyboardAvoidingView style={styles.scrollContainer} behavior="padding">
+                      {this.body()}
+                    </KeyboardAvoidingView>
+                    );
+        }
+    }
+
+    body() {
       return (
         <View style={styles.viewContainer}>
           <View style={styles.viewLeft}>
