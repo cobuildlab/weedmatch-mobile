@@ -54,7 +54,16 @@ export default styles = StyleSheet.create({
     },
     Buttom:{
       alignItems: 'center',
-    }
+    },
+    containers: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    horizontal: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      padding: 10
+    },
 
 
 });

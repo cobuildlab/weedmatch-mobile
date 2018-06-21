@@ -104,6 +104,7 @@ class Store {
             profileImages420: undefined,
             profileImages420Page: undefined,
             swiperAction: undefined,
+            likeAction: undefined,
             tokenFB: undefined,
             chats: undefined,
             super: undefined,
@@ -253,6 +254,12 @@ class Store {
             if (!state)
                 return;
             me.state.super = state.super;
+        });
+        this.LIKEACTION_EVENT = new Subject();
+        this.LIKEACTION_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.likeAction = state.likeAction;
         });
     }
 

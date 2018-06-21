@@ -12,11 +12,11 @@ import {
   TouchableHighlight,
   Dimensions,
   FlatList,
-  ScrollView
+  RefreshControl
 } from 'react-native';
 
 import styles from './style';
-import { getSuper } from './LikeActions';
+import { getSuper,calculateTime,likeAction } from './LikeActions';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {connection, internet, checkConectivity, toastMsg } from '../../utils';
@@ -50,6 +50,7 @@ export default class Like extends Component {
           this.setState({
             super: state.super,
             isLoading: true,
+            refreshing: false
           })
           return;
         }
@@ -58,11 +59,40 @@ export default class Like extends Component {
           toastMsg(state.error);
         }
       });
+
+      this.like = APP_STORE.LIKEACTION_EVENT.subscribe(state => {
+        console.log("Like:componentDidMount:like", state);
+        if (state.likeAction) {
+          Alert.alert(state.likeAction);
+          return;
+        }
+        if (state.error) {
+          Alert.alert(state.error);
+        }
+      });
+
       getSuper()
     }
 
+    _onRefresh() {
+      this.setState({
+        super: [],
+        refreshing: true,
+      },() => { 
+        getSuper();
+      })
+    }
+
+    tap(id) {
+      this.props.navigation.navigate('LikeProfile', {id})
+    };
+
     componentWillUnmount() {
       this.superVar.unsubscribe();
+    }
+
+    likeTap(action,id) {
+      likeAction(action,id)
     }
 
     render() {
@@ -74,28 +104,36 @@ export default class Like extends Component {
             keyExtractor={( item , index ) => index.toString() }
             data={this.state.super}
             renderItem={({item}) =>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.tap(item.id_user)}>
               <View style={styles.viewMsg}>
-                <Image style={styles.imgProfileItem} source={require('../../assets/img/profile.png')}/>
+              <Image style={styles.imgProfileItem}
+                source={{uri: item.image_profile}}
+              />
               <View style={styles.viewTexts}>
-                    <Text style={styles.textUser}>{item.key} quiere contactar</Text>
+                    <Text style={styles.textUser}>{item.username} quiere contactar</Text>
                   <Text style={styles.textUser}>contigo</Text>
-                <Text style={styles.textTime}>24h.</Text>
+                <Text style={styles.textTime}>Hace {calculateTime(item.time)}</Text>
                 </View>
                 <View style={styles.viewOption}>
                   <View style={styles.viewButtom}>
-                    <TouchableOpacity style={styles.Buttom}>
-                    <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
+                    <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("True",item.id)}>
+                      <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.viewButtom}>
-                    <TouchableOpacity style={styles.Buttom}>
-                    <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
+                    <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("False",item.id)}>
+                      <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
                     </TouchableOpacity>
                   </View>
                 </View>
               </View>
             </TouchableOpacity>
+            }
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => this._onRefresh()}
+              />
             }
           />
           </View>
