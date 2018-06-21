@@ -35,6 +35,11 @@ export default styles = StyleSheet.create({
         width: '100%',
         marginBottom: 30,
         marginTop: 30,
+        ...Platform.select({
+            ios: {
+                marginTop: 35,
+            },
+        }),
     },
     textRegisterContinue: {
         fontSize: 22,
@@ -76,6 +81,11 @@ export default styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 12,
         marginBottom: 10,
+        ...Platform.select({
+            ios: {
+                paddingTop: 0,
+            },
+        }),
     },
     inputStyleFecha: {
         backgroundColor: '#ffffff',
