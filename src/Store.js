@@ -106,6 +106,7 @@ class Store {
             swiperAction: undefined,
             tokenFB: undefined,
             chats: undefined,
+            super: undefined,
         };
         popToken(this.state);
         popId(this.state);
@@ -246,6 +247,12 @@ class Store {
             if (!state)
                 return;
             me.state.chats = state.chats;
+        });
+        this.SUPER_EVENT = new Subject();
+        this.SUPER_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.super = state.super;
         });
     }
 

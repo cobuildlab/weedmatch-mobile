@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import { getChat,getImages } from './MessageActions';
+import { getChat } from './MessageActions';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {connection, internet, checkConectivity, toastMsg } from '../../utils';

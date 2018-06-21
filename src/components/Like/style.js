@@ -17,9 +17,8 @@ export default styles = StyleSheet.create({
     imgProfileItem:{
       width: 35,
       height: 35,
-      borderRadius: 50,
-
-      resizeMode: 'contain',
+      borderRadius: 35/2,
+      resizeMode: 'cover',
     }
 
 
