@@ -43,7 +43,7 @@ export default class Message extends Component {
           })
           return;
         }
-        
+
         if (state.error) {
           toastMsg(state.error);
         }
@@ -70,14 +70,12 @@ export default class Message extends Component {
               renderItem={({item}) =>
                 <TouchableOpacity onPress={ () => this.showChat()}>
                 <View style={styles.viewMsg}>
-                  <Image style={styles.imgProfileItem} 
+                  <Image style={styles.imgProfileItem}
                     source={{uri: item.image_profile}}
                   />
-                  <View style={{flex: 1,
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',}}>
-                    <Text style={{marginLeft: 12, fontWeight: '500', fontSize: 16,}}>{item.user}</Text>
-                  <Text style={{marginLeft: 12, fontSize: 14,}}>{item.message}</Text>
+                <View style={styles.viewTexts}>
+                    <Text style={styles.textUser}>{item.user}</Text>
+                  <Text style={styles.textChat}>chat...</Text>
                   </View>
                 </View>
                 </TouchableOpacity>

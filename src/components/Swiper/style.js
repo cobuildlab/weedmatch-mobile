@@ -16,6 +16,11 @@ export default styles = StyleSheet.create({
       backgroundColor: 'white',
       paddingBottom: 10,
       marginBottom: 30,
+      ...Platform.select({
+          ios: {
+              marginBottom: 12,
+          },
+      }),
     },
     text: {
       textAlign: 'center',

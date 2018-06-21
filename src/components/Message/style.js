@@ -29,6 +29,20 @@ export default styles = StyleSheet.create({
       justifyContent: 'space-around',
       padding: 10
     },
+    viewTexts:{
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
+    textUser:{
+      marginLeft: 12,
+      fontWeight: '500',
+      fontSize: 16,
+    },
+    textChat:{
+      marginLeft: 12,
+      fontSize: 14,
+    },
 
 
 });

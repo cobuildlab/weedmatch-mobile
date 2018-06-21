@@ -17,9 +17,43 @@ export default styles = StyleSheet.create({
     imgProfileItem:{
       width: 35,
       height: 35,
-      borderRadius: 50,
-
-      resizeMode: 'contain',
+      borderRadius: 35/2,
+      resizeMode: 'cover',
+    },
+    imageSize: {
+      width: 28,
+      height: 28,
+      marginLeft: 20,
+    },
+    viewTexts:{
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
+    textUser:{
+      marginLeft: 12,
+      fontWeight: '400',
+      fontSize: 16,
+    },
+    textTime:{
+      marginLeft: 12,
+      fontWeight: '400',
+      fontSize: 12,
+      color: '#777'
+    },
+    viewOption:{
+      flex: 1,
+      flexDirection: 'row',
+      right: 10,
+      top: 38,
+      position: 'absolute'
+    },
+    viewButtom:{
+      width: 50,
+      height: 50,
+    },
+    Buttom:{
+      alignItems: 'center',
     }
 
 
