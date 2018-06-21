@@ -368,7 +368,7 @@ class RegisterPage extends Component {
                                 source={require('../../assets/img/logo-b.png')}
                         /> */}
                         { step == 1 &&
-                          <Text style={styles.textRegister}>
+                          <Text style={styles.textRegister2}>
                               {strings("main.register")}
                           </Text>
                         }
