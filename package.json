@@ -6,7 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "purge": "./node_modules/.bin/react-native-clean-project",
-    "run:ios": "react-native run-ios"
+    "run:ios": "react-native run-ios",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "0.0.14",
@@ -34,7 +36,8 @@
     "react-native-toast-native": "^1.2.1",
     "react-navigation": "^1.4.0",
     "rxjs": "^5.5.8",
-    "validate.js": "^0.12.0"
+    "validate.js": "^0.12.0",
+    "snyk": "^1.87.0"
   },
   "devDependencies": {
     "babel-jest": "22.4.1",
@@ -59,5 +62,6 @@
       "node_modules",
       "bower_components"
     ]
-  }
+  },
+  "snyk": true
 }
