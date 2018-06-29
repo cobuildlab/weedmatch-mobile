@@ -25,96 +25,84 @@ import {connection, internet, checkConectivity, toastMsg } from '../../utils';
 
 var { height, width } = Dimensions.get('window');
 
-export default class Chat extends Component {
-    constructor(props) {
-        super(props);
+import { GiftedChat } from 'react-native-gifted-chat'
+
+export default class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      messages: [],
+      open: false,
+      connected: false
     }
 
-    static navigationOptions = ({ navigation }) => {
-      const {params} = navigation.state;
+    const { navigation } = this.props;
+    const chat_id = navigation.getParam('chat_id', '0');
 
-      return {
-        title: 'Chat Persona',
-      };
-    };
-
-    componentDidMount(){
-
+    this.socket = new WebSocket("ws://dev-api.weedmatch.cl:8888/ws?"+'id_user='+APP_STORE.getId()+'&'+'username='+"danialepaco"+'&'+'chat_id='+chat_id+'&'+'token='+APP_STORE.getToken());
+    this.socket.onopen = () => {
+      this.setState({connected:true})
+      this.testPusher()
+    }; 
+    this.socket.onmessage = (data) => {
+      Alert.alert(data);
     }
-
-    componentWillUnmount() {
-    }
-
-    render() {
-        if (Platform.OS == 'android') {
-            return (
-                <ScrollView
-                    style={styles.scrollContainer}
-                    keyboardShouldPersistTaps={'always'}
-                >
-                  {this.body()}
-             </ScrollView>
-              );
-          } else if (Platform.OS == 'ios') {
-                return (
-                    <KeyboardAvoidingView style={styles.scrollContainer} behavior="padding">
-                      {this.body()}
-                    </KeyboardAvoidingView>
-                    );
-        }
-    }
-
-    body() {
-      return (
-        <View style={styles.viewContainer}>
-          <View style={styles.viewLeft}>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-            <View style={styles.viewTextLeft}>
-              <Text>hola bot que tal!</Text>
-            </View>
-          </View>
-          <View style={styles.viewRight}>
-            <View style={styles.viewTextRight}>
-              <Text style={styles.styleTextRight}>hola</Text>
-            </View>
-          </View>
-          <View style={styles.viewContainerInput}>
-            <View style={styles.viewInput}>
-              <TextInput
-                  style={styles.inputStyle}
-                  underlineColorAndroid='transparent'
-                  editable={true}
-                  multiline = {true}
-                  numberOfLines = {4}
-                  placeholder='Escribe un mensaje'
-                  returnKeyType = {"send"}
-                  onSubmitEditing={() => { this.passwordInput.focus(); }}
-                  blurOnSubmit={false}
-              />
-            <TouchableOpacity style={styles.viewIconSend}>
-                <Image style={styles.iconSend} source={require('../../assets/img/send.png')}/>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-      );
-    }
+    // this.socket.onmessage = ({data}) => Alert.alert(data);
+    this.testPusher = this.testPusher.bind(this);
+    console.log('Chat');
 }
+
+  testPusher() {
+    console.log('testPusher');
+    if( this.state.connected ) {
+        // this.socket.send(JSON.stringify({
+        //     messgaes: 'hello~!~!~!',
+        // }))
+        this.socket.send("~~~hello")
+        this.setState(prevState => ({ open: !prevState.open }))
+    }
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillMount() { 
+    
+    this.setState({
+      messages: [
+        {
+          _id: 1,
+          text: 'Hello developer',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        },
+      ],
+    })
+  }
+
+  onSend(messages = []) {
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }))
+  }
+
+  render() {
+    return (
+      <GiftedChat
+        renderAvatar={null}
+        messages={this.state.messages}
+        onSend={messages => this.onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
+    )
+  }
+}
+
