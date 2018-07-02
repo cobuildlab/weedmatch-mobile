@@ -57,7 +57,8 @@
     "password": "Change password",
     "pro": "Buy pro version",
     "pay": "Pay with credit card",
-    "changes": "Save changes"
+    "changes": "Save changes",
+    "error": "Server error, sorry try again later"
   },
   "home": {
     "actionSheet": "Pick one option",

@@ -44,9 +44,17 @@ export default class Chat extends Component {
       this.onReceive(json.message)
     }
 
-    this.socket.onerror = ({data}) => {
-      const json = JSON.parse(data)
-      Alert.alert(json.message)
+    this.socket.onerror = (e) => {
+      Alert.alert(
+        strings('home.alerta'),
+        strings('main.error'),
+        [
+          {text: 'OK', onPress: () => 
+          this.props.navigation.goBack()
+        },
+        ],
+        { cancelable: false }
+      )
     }
 
     this.socket.onclose = (e) => {

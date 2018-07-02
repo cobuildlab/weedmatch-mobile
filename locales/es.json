@@ -57,7 +57,8 @@
     "password": "Cambiar contraseña",
     "pro": "Comprar version pro",
     "pay": "Pagar con tarjeta de credito",
-    "changes": "Guardar cambios"
+    "changes": "Guardar cambios",
+    "error": "Error del servidor, lo siento intente de nuevo más tarde"
   },
   "home": {
     "actionSheet": "Elija una opción",
