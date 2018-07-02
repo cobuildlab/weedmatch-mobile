@@ -16,6 +16,19 @@ async function saveToken(token) {
 }
 
 /**
+ * Synchronous save the username
+ * @param username
+ * @returns {Promise<void>}
+ */
+async function saveUser(user) {
+    try {
+        await AsyncStorage.setItem("username", user);
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+    }
+}
+
+/**
  * Synchronous save the id
  * @param id
  * @returns {Promise<void>}
@@ -57,6 +70,19 @@ async function popToken(state) {
     }
 }
 
+async function popUser(state) {
+    try {
+        const user = await AsyncStorage.getItem('username');
+        if (isValidText(user)) {
+            console.log("popUser:", user);
+             state.username = user;
+        }
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
 async function popId(state) {
     try {
         const id = await AsyncStorage.getItem('id');
@@ -89,6 +115,7 @@ class Store {
             error: undefined,
             success: undefined,
             token: undefined,
+            username: undefined,
             id: undefined,
             feed: undefined,
             page: undefined,
@@ -108,10 +135,13 @@ class Store {
             tokenFB: undefined,
             chats: undefined,
             super: undefined,
+            chatMsg: undefined,
+            chatMsgPage: undefined,
         };
         popToken(this.state);
         popId(this.state);
         popIdFB(this.state);
+        popUser(this.state);
         const me = this;
         this.APP_EVENT = new Subject();
         this.APP_EVENT.subscribe(state => {
@@ -133,6 +163,15 @@ class Store {
             if (isValidText(state.token)) {
                 saveToken(state.token);
                 me.state.token = state.token;
+            }
+        });
+        this.USER_EVENT = new Subject();
+        this.USER_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            if (isValidText(state.username)) {
+                saveUser(state.username);
+                me.state.username = state.username;
             }
         });
         this.ID_EVENT = new Subject();
@@ -261,6 +300,18 @@ class Store {
                 return;
             me.state.likeAction = state.likeAction;
         });
+        this.CHATMSG_EVENT = new Subject();
+        this.CHATMSG_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.chatMsg = state.chatMsg;
+        });
+        this.CHATPAGE = new Subject();
+        this.CHATPAGE.subscribe(state => {
+            if (!state)
+                return;
+            me.state.chatMsgPage = state.chatMsgPage;
+        });
     }
 
     getToken() {
@@ -273,6 +324,11 @@ class Store {
 
     getIdFB() {
         return this.state.tokenFB;
+    }
+
+
+    getUser() {
+        return this.state.username;
     }
 }
 

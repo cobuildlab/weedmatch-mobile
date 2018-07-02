@@ -55,9 +55,10 @@ export default class Message extends Component {
       this.chatsVar.unsubscribe();
     }
 
-    showChat(id) {
+    showChat(id,user) {
       this.props.navigation.navigate('Chat', {
         chat_id: id,
+        otherUser: user,
       });
     }
 
@@ -70,7 +71,7 @@ export default class Message extends Component {
               keyExtractor={( item , index ) => index.toString() }
               data={this.state.chats}
               renderItem={({item}) =>
-                <TouchableOpacity onPress={ () => this.showChat(item.id)}>
+                <TouchableOpacity onPress={ () => this.showChat(item.id,item.id_user)}>
                 <View style={styles.viewMsg}>
                   <Image style={styles.imgProfileItem}
                     source={{uri: item.image_profile}}
