@@ -37,7 +37,7 @@ function chatAction(state,chatID) {
     }
 }
 
-function appendData(oldData, newData) {
+function appendData(oldData, newData,id) {
     oldData.slice();
 
     newData.map((data) => {
@@ -63,7 +63,7 @@ function appendData(oldData, newData) {
                 text: data.text,
                 createdAt: new Date(),
                 user: {
-                  _id: "17",
+                  _id: id,
                   name: data.user,
                   avatar: '',
                 },

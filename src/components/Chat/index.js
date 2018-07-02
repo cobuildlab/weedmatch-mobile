@@ -68,12 +68,12 @@ componentDidMount() {
 
       if(this.state.numPage > 0) {
         this.setState(prevState => ({
-          messages: GiftedChat.prepend([], appendData(prevState.messages, state.chatMsg)),
+          messages: GiftedChat.prepend([], appendData(prevState.messages, state.chatMsg,this.getOtherID)),
           isLoading: false,
         }))
       } else {
         this.setState(prevState => ({
-          messages: GiftedChat.append([], appendData(prevState.messages, state.chatMsg)),
+          messages: GiftedChat.append([], appendData(prevState.messages, state.chatMsg,this.getOtherID)),
           isLoading: false,
         }))
       }
@@ -121,6 +121,10 @@ close() {
 
 getOtherUser() {
   return this.props.navigation.getParam('otherUser', '0')
+}
+
+getOtherID() {
+  return this.props.navigation.getParam('otherID', '0')
 }
 
 getChatID() {
