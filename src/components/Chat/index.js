@@ -49,6 +49,8 @@ export default class Chat extends Component {
     }
 
     this.socket.onclose = (e) => {
+      console.log(e)
+      Alert.alert(e)
       this.close()
     };
 
