@@ -70,6 +70,7 @@ class RegisterPage extends Component {
 
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             if (state.error) {
+                this.setState({isLoading: false});
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
