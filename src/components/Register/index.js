@@ -170,7 +170,7 @@ class RegisterPage extends Component {
                     }else{
                         day = pickedValue[2];
                     }
-                    let dateAge = pickedValue[0] + '-' + month + '-' + day
+                    let dateAge = pickedValue[0] + '/' + month + '/' + day
                     this.setState({age: dateAge})
                 },
                 onPickerCancel: (pickedValue, pickedIndex) => {
