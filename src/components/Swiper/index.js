@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Swiper from 'react-native-deck-swiper'
 import { Button,
-         StyleSheet,
+         AsyncStorage,
          Text,
          View,
          Alert,
@@ -14,7 +14,8 @@ import styles from './style';
 import { internet, checkConectivity } from '../../utils';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import { swiperAction,appendData,swiper } from './SwiperActions'
+import moment from 'moment';
+import { swiperAction,appendData,swiper,saveHour } from './SwiperActions'
 import TopBar from '../../utils/TopBar';
 import Spinner from 'react-native-spinkit';
 
@@ -36,6 +37,15 @@ export default class SwiperView extends Component {
   componentDidMount() {
       console.log("SwiperView: componentDidMount");
       console.log(this.props.navigation);
+
+      this.bad = APP_STORE.BAD_EVENT.subscribe(state => {
+        console.log("SwiperView:componentDidMount:BAD_EVENT", state);
+        if (state.bad) {
+
+          this.swiper.swipeBack( () => {})
+          return;
+        }
+      });
 
       this.swiperData = APP_STORE.SWIPER_EVENT.subscribe(state => {
         console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
@@ -189,7 +199,12 @@ export default class SwiperView extends Component {
       if(aux) {
         this.swiper.swipeTop();
       } else {
-        console.log('Arriba')
+        
+        if (checkConectivity()) {
+          saveHour(this.state.cards[this.swiper.state.firstCardIndex].id_user)
+        } else {
+          internet();
+        }
       }
     }
   };
@@ -204,7 +219,7 @@ export default class SwiperView extends Component {
         this.swipeLeft(true);
         break;
       case 2:
-        // this.swipeTop(true);
+        this.swipeTop(true);
         break;
       case 3:
         this.swipeRight(true);
@@ -244,6 +259,7 @@ export default class SwiperView extends Component {
             ref={swiper => {
               this.swiper = swiper
             }}
+            // goBackToPreviousCardOnSwipeBottom={true}
             disableBottomSwipe={true}
             onTapCard={this.swipeTap}
             onSwiped={(cardIndex) => this.onSwipe()}

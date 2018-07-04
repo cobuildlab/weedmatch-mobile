@@ -137,6 +137,7 @@ class Store {
             super: undefined,
             chatMsg: undefined,
             chatMsgPage: undefined,
+            bad: undefined,
         };
         popToken(this.state);
         popId(this.state);
@@ -311,6 +312,12 @@ class Store {
             if (!state)
                 return;
             me.state.chatMsgPage = state.chatMsgPage;
+        });
+        this.BAD_EVENT = new Subject();
+        this.BAD_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.bad = state.bad;
         });
     }
 

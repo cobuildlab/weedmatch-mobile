@@ -76,7 +76,9 @@
     "confirmPassword": "Confirmar Password"
   },
   "swiper": {
-    "searching": "Buscando personas cerca de tí"
+    "searching": "Buscando personas cerca de tí",
+    "hours": " horas y ",
+    "minutes": " minutos para volver a realizar esta acción."
   },
   "chat": {
     "reconnect": "Reconectando"
