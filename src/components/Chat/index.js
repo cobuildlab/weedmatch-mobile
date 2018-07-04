@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import {
   Alert,
-  Dimensions,
-  AppState
 } from 'react-native';
 
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
-import {connection, internet, checkConectivity, toastMsg } from '../../utils';
-
-var { height, width } = Dimensions.get('window');
+import { internet, checkConectivity, toastMsg } from '../../utils';
 
 import { GiftedChat } from 'react-native-gifted-chat'
 import { chatAction,appendData } from './ChatActions'
@@ -23,7 +19,6 @@ export default class Chat extends Component {
       messages: [],
       open: false,
       connected: false,
-      appState: AppState.currentState,
 
       urlPage: '',
       numPage: 0,
@@ -67,8 +62,15 @@ export default class Chat extends Component {
     console.log('Chat');
 }
 
+   static navigationOptions = ({ navigation }) => {
+      const {params} = navigation.state;
+
+      return {
+        title: navigation.getParam('otherUser', '0'),
+      };
+    };
+
 componentDidMount() {
-  AppState.addEventListener('change', this._handleAppStateChange);
 
   this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
     console.log("Chat:componentDidMount:chatMsgSuscription", state);
@@ -78,12 +80,12 @@ componentDidMount() {
 
       if(this.state.numPage > 0) {
         this.setState(prevState => ({
-          messages: GiftedChat.prepend([], appendData(prevState.messages, state.chatMsg,this.getOtherID)),
+          messages: GiftedChat.prepend([], appendData(prevState.messages, state.chatMsg,this.getOtherUser)),
           isLoading: false,
         }))
       } else {
         this.setState(prevState => ({
-          messages: GiftedChat.append([], appendData(prevState.messages, state.chatMsg,this.getOtherID)),
+          messages: GiftedChat.append([], appendData(prevState.messages, state.chatMsg,this.getOtherUser)),
           isLoading: false,
         }))
       }
@@ -122,7 +124,6 @@ componentWillUnmount() {
   this.chatMsg.unsubscribe();
   this.chatPage.unsubscribe();
   this.close()
-  AppState.removeEventListener('change', this._handleAppStateChange);
 }
 
 close() {
@@ -150,13 +151,6 @@ getEarlyMessages() {
   }
 }
 
-  _handleAppStateChange = (nextAppState) => {
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!')
-    }
-    this.setState({appState: nextAppState});
-  }
-
   onReceive(messages) {
 
     const message = {
@@ -164,7 +158,7 @@ getEarlyMessages() {
       text: messages,
       createdAt: new Date(),
       user: {
-        _id: this.getOtherUser(),
+        _id: this.getOtherID(),
         name: 'React Native',
         avatar: '',
       },
@@ -181,7 +175,7 @@ getEarlyMessages() {
       var payload = {
         "message": messages[0].text,
         "user": APP_STORE.getUser(),
-        "id_user_send": this.getOtherUser(),
+        "id_user_send": this.getOtherID(),
         "chat_id": this.getChatID(),
     }
     this.socket.send(JSON.stringify(payload));
