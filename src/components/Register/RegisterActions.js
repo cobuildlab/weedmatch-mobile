@@ -69,13 +69,15 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image) {
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(image)[1];
 
+    const birth = age.split('/').join('-');
+
     data.append('first_name', firstName);
-    data.append('email', email);
+    data.append('email', email.toLowerCase());
     data.append('password', password);
     data.append('latitud', lat);
     data.append('longitud', lon);
     data.append('sex', sex);
-    data.append('age', age);
+    data.append('age', birth);
     data.append('image', {
         uri: image,
         type: 'image/' + ext,
@@ -96,7 +98,7 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image) {
             return;
             }
                         
-            APP_STORE.APP_EVENT.next({error: json.detail})
+            APP_STORE.APP_EVENT.next({error: json})
     });
 }
 

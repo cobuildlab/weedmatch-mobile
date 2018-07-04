@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,swiperAction } from './PublicProfileActions';
+import { publicProfileAction,getImages, publicImages420Action,appendData,Action420,swiperAction,saveHour } from './PublicProfileActions';
 import {connection, internet, checkConectivity } from '../../utils';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
@@ -179,7 +179,7 @@ export default class PublicProfile extends Component {
             swiperAction(APP_STORE.getToken(),'DisLike',this.props.navigation.state.params.userId)
             break;
           case 2:
-            // this.swipeTop(true);
+            saveHour(this.props.navigation.state.params.userId)
             break;
           case 3:
             swiperAction(APP_STORE.getToken(),'Like',this.props.navigation.state.params.userId)

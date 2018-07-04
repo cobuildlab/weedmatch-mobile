@@ -3,10 +3,12 @@ import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
+import moment from 'moment';
+import { AsyncStorage, Alert} from 'react-native'
 
 function swiperAction(token,action,id) {
 
-    userService.swiperAction(token,action,id)
+    userService.swiperAction(token,action,id,moment().format())
         .then(async (response) => {
             console.log(`Swiper: ${token}, ${action}, ${id}`, response);
             const json = await response.json();
@@ -79,10 +81,6 @@ function appendData(oldData, newData) {
     return oldData;
 }
 
-function renderImage(image) {
-    return image == '' ? '../../assets/img/plus.png' : image;
-}
-
 function getImages(data) {
 
     const _images = [];
@@ -94,4 +92,45 @@ function getImages(data) {
     return _images;
 }
 
-export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,swiperAction };
+async function saveHour(id) {
+
+    var today = new Date();
+    var tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+
+    try {
+      const day = await AsyncStorage.getItem('day');
+      if (day) {
+
+        if (moment().diff(day, 'minutes') < 0) {
+
+          startTime = "00:00"
+          minutes = moment().diff(day, 'minutes') * -1
+          h = Math.floor(minutes / 60)
+          m = minutes % 60 + parseInt(startTime.substring(3,4));
+          newtime = h + strings("swiper.hours") + m + strings("swiper.minutes");
+
+          Alert.alert(newtime)
+
+        } else {
+          try {
+            await AsyncStorage.setItem("day", tomorrow);
+            swiperAction(APP_STORE.getToken(),'SuperLike',id)
+        } catch (error) {
+            console.error('AsyncStorage error: ' + error.message);
+          }
+        }
+      } else {
+        try {
+          await AsyncStorage.setItem("day", tomorrow);
+          swiperAction(APP_STORE.getToken(),'SuperLike',id)
+      } catch (error) {
+          console.error('AsyncStorage error: ' + error.message);
+        }
+      }
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
+export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,swiperAction,saveHour };
