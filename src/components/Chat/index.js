@@ -19,58 +19,74 @@ export default class Chat extends Component {
       messages: [],
       open: false,
       connected: false,
-
       urlPage: '',
       numPage: 0,
       isLoading: true,
     }
-
-    const { navigation } = this.props;
-    const chat_id = navigation.getParam('chat_id', '0');
-
-    this.socket = new WebSocket("ws://dev-api.weedmatch.cl:8888/ws?"+'id_user='+APP_STORE.getId()+'&'+'username='+APP_STORE.getUser()+'&'+'chat_id='+chat_id+'&'+'token='+APP_STORE.getToken());
-    // this.socket = new WebSocket("ws://192.168.0.18:8888/ws?"+'id_user='+APP_STORE.getId()+'&'+'username='+APP_STORE.getUser()+'&'+'chat_id='+chat_id+'&'+'token='+APP_STORE.getToken());
-    this.socket.onopen = () => {
-      this.setState({connected:true})
-    }; 
-
-    this.socket.onmessage = ({data}) => {
-      const json = JSON.parse(data)
-      this.onReceive(json.message)
-    }
-
-    this.socket.onerror = (e) => {
-      Alert.alert(
-        strings('home.alerta'),
-        strings('main.error'),
-        [
-          {text: 'OK', onPress: () => 
-          this.props.navigation.goBack()
-        },
-        ],
-        { cancelable: false }
-      )
-    }
-
-    this.socket.onclose = (e) => {
-      console.log(e)
-      this.close()
-    };
-
-    this.onReceive = this.onReceive.bind(this);
-    this.close = this.close.bind(this);
-    console.log('Chat');
 }
 
    static navigationOptions = ({ navigation }) => {
       const {params} = navigation.state;
 
       return {
-        title: navigation.getParam('otherUser', '0'),
+        // title: navigation.getParam('otherUser', '0'),
+        title: params.name,
       };
     };
 
+
+_handleWebSocketSetup() {
+
+  const { navigation } = this.props;
+  const chat_id = navigation.getParam('chat_id', '0');
+  this.socket = new WebSocket("ws://dev-api.weedmatch.cl:8888/ws?"+'id_user='+APP_STORE.getId()+'&'+'username='+APP_STORE.getUser()+'&'+'chat_id='+chat_id+'&'+'token='+APP_STORE.getToken());
+
+  this.socket.onopen = () => {
+    this.setState({connected:true})
+    this.props.navigation.setParams({
+      name: this.getOtherUser()
+    });
+  }; 
+
+  this.socket.onmessage = ({data}) => {
+    const json = JSON.parse(data)
+    this.onReceive(json.message)
+  }
+
+  this.socket.onerror = (e) => {
+    Alert.alert(
+      strings('home.alerta'),
+      strings('main.error'),
+      [
+        {text: 'OK', onPress: () => 
+        this.props.navigation.goBack()
+      },
+      ],
+      { cancelable: false }
+    )
+  }
+
+  this.socket.onclose = (e) => {
+    console.log(e)
+    this.props.navigation.setParams({
+      name: strings("chat.reconnect")
+    });
+
+    setTimeout(() => {
+      this._handleWebSocketSetup()
+    }, 3000)
+  };
+}
+
+componentWillMount() {
+  this.props.navigation.setParams({
+    name: this.getOtherUser()
+  });
+}
+
 componentDidMount() {
+
+  this._handleWebSocketSetup()
 
   this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
     console.log("Chat:componentDidMount:chatMsgSuscription", state);
@@ -171,6 +187,7 @@ getEarlyMessages() {
 
   onSend(messages = []) {
     if( this.state.connected ) {
+      this.close()
       console.log('SOCKET CONNECTED');
       var payload = {
         "message": messages[0].text,

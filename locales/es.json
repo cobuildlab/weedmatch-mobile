@@ -77,5 +77,8 @@
   },
   "swiper": {
     "searching": "Buscando personas cerca de tí"
+  },
+  "chat": {
+    "reconnect": "Reconectando"
   }
 }
