@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import {
-  Alert,
+  TouchableOpacity,
+  View,
+  Image
 } from 'react-native';
 
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import { internet, checkConectivity, toastMsg } from '../../utils';
 
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat,Bubble,Send } from 'react-native-gifted-chat'
 import { chatAction,appendData } from './ChatActions'
 
 
@@ -23,6 +25,8 @@ export default class Chat extends Component {
       numPage: 0,
       isLoading: true,
     }
+
+    this.reconnect = true
 }
 
    static navigationOptions = ({ navigation }) => {
@@ -54,27 +58,21 @@ _handleWebSocketSetup() {
   }
 
   this.socket.onerror = (e) => {
-    Alert.alert(
-      strings('home.alerta'),
-      strings('main.error'),
-      [
-        {text: 'OK', onPress: () => 
-        this.props.navigation.goBack()
-      },
-      ],
-      { cancelable: false }
-    )
+
   }
 
   this.socket.onclose = (e) => {
-    console.log(e)
-    this.props.navigation.setParams({
-      name: strings("chat.reconnect")
-    });
 
-    setTimeout(() => {
-      this._handleWebSocketSetup()
-    }, 3000)
+    if( this.reconnect ) {
+      console.log(e)
+      this.props.navigation.setParams({
+        name: strings("chat.reconnect")
+      });
+  
+      setTimeout(() => {
+        this._handleWebSocketSetup()
+      }, 3000)
+    }
   };
 }
 
@@ -143,6 +141,7 @@ componentWillUnmount() {
 }
 
 close() {
+  this.reconnect = false
   this.socket.close()
 }
 
@@ -187,7 +186,7 @@ getEarlyMessages() {
 
   onSend(messages = []) {
     if( this.state.connected ) {
-      this.close()
+
       console.log('SOCKET CONNECTED');
       var payload = {
         "message": messages[0].text,
@@ -203,13 +202,38 @@ getEarlyMessages() {
     }
   }
 
+  renderBubble(props) { return ( <Bubble {...props} 
+    wrapperStyle={{
+        left: {
+          backgroundColor: 'white',
+        },
+        right: {
+          backgroundColor: '#9605CC'
+        }
+      }}/>
+  )}
+
+  renderSend(props) {
+    return (
+        <Send
+            {...props}
+        >
+            <View style={{marginRight: 5, marginBottom: -10}}>
+                <Image source={require('../../assets/img/send.png')} resizeMode={'center'}/>
+            </View>
+        </Send>
+    );
+  }
+
   render() {
     return (
       <GiftedChat
         renderAvatar={null}
         loadEarlier={true}
+        renderBubble={this.renderBubble}
         onLoadEarlier={ () => this.getEarlyMessages()}
         isLoadingEarlier={this.state.isLoading}
+        renderSend={this.renderSend}
         messages={this.state.messages}
         onSend={messages => this.onSend(messages)}
         user={{
