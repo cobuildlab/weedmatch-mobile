@@ -24,7 +24,9 @@ import Tab2 from '../Like';
 export default class Notifications extends Component {
     constructor(props) {
         super(props);
-    }
+
+
+      }
 
     static navigationOptions = ({ navigation }) => {
       const {params} = navigation.state;
@@ -38,7 +40,7 @@ export default class Notifications extends Component {
       return (
         <Container style={styles.tabContainer}>
         <Tabs
-          initialPage={0}
+          initialPage={1}
           tabBarUnderlineStyle={styles.underLineColor}
           tabContainerStyle={styles.tabContainerStyle}
           edgeHitWidth={0}

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Tab, Tabs,TabHeading,Text, Left, Body, Right, Button, Icon, Title } from 'native-base';
-import { Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { Container, Tab, Tabs,TabHeading } from 'native-base';
+import { Image, TouchableOpacity,AsyncStorage } from 'react-native';
+import {changeToken} from './TopBarActions'
+import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import Swiper from '../../components/Swiper';
-import Profile from '../../components/Profile';
 import styles from './style';
+// Optional: Flow type
+import type { Notification, NotificationOpen } from 'react-native-firebase';
 
 export default class TopBar extends Component {
 
@@ -13,23 +16,81 @@ export default class TopBar extends Component {
   constructor() {
     super();
     this.state = {
-      activePage: 0
+      activePage: 0,
     };
   }
 
+  componentDidMount() {
+
+    this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+      console.log('FCM: ' + fcmToken)
+
+      this.validateToken(fcmToken)
+
+    });
+
+    this.fcmMessageListener = firebase.messaging().onMessage(message => {
+      console.log('onMessage:', message)
+    })
+
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen: NotificationOpen) => {
+        if (notificationOpen) {
+          // App was opened by a notification
+          // Get the action triggered by the notification being opened
+          const action = notificationOpen.action;
+          // Get information about the notification that was opened
+          const notification: Notification = notificationOpen.notification;  
+        }
+      });
+
+    this.notificationListener = firebase.notifications().onNotification(notification => {
+      firebase.notifications().displayNotification(notification)
+      console.log('onNotification:', notification)
+    })
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
+      console.log('onNotificationOpened:', notificationOpen)
+    })
+
+    this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
+      console.log('onNotificationDisplayed:', notification)
+    })
+  }
+
+  async validateToken(newToken) {
+    try {
+        const token = await AsyncStorage.getItem('firebase');
+        if (token) {
+            console.log("Firebase Token:", token);
+
+            if (token != newToken) {
+              changeToken(newToken)
+            }
+        }
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
+  componentWillUnmount() {
+    this.fcmMessageListener()
+    this.notificationListener()
+    this.notificationDisplayedListener()
+    this.notificationOpenedListener()
+    this.onTokenRefreshListener();
+  }
+
   getSwiperImage(){
-
     const image = this.state.activePage == 0 ? <Image source={require('../../assets/img/mariOn.png')} style={styles.imageContainerLeft} /> : <Image source={require('../../assets/img/mari.png')} style={styles.imageContainerLeft} />;
-
     return (
       image
     )
   }
 
   getFeedImage(){
-
     const image = this.state.activePage == 1 ? <Image source={require('../../assets/img/420On.png')} style={styles.imageContainerRight} /> : <Image source={require('../../assets/img/420.png')} style={styles.imageContainerRight} />;
-
     return (
       image
     )
@@ -40,10 +101,6 @@ export default class TopBar extends Component {
   }
   showMessage() {
     this.props.navigation.navigate('Notifications');
-  }
-
-  showChat() {
-    // this.props.navigation.navigate('Chat');
   }
 
   render() {
