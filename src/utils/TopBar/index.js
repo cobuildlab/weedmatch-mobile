@@ -6,6 +6,7 @@ import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import Swiper from '../../components/Swiper';
 import styles from './style';
+import {NavigationActions} from 'react-navigation'
 // Optional: Flow type
 import type { Notification, NotificationOpen } from 'react-native-firebase';
 
@@ -39,8 +40,10 @@ export default class TopBar extends Component {
           // App was opened by a notification
           // Get the action triggered by the notification being opened
           const action = notificationOpen.action;
+
           // Get information about the notification that was opened
           const notification: Notification = notificationOpen.notification;  
+
         }
       });
 
@@ -51,12 +54,27 @@ export default class TopBar extends Component {
 
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
       console.log('onNotificationOpened:', notificationOpen)
+
+      this.props.navigation.popToTop()
+      this.notifHandler(notificationOpen.notification.data)
+      // this.props.navigation.dispatch(NavigationActions.back( this.notifHandler(notificationOpen.notification.data) ))
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
       console.log('onNotificationDisplayed:', notification)
     })
   }
+
+  notifHandler(data) {
+    console.log(data)
+    switch(data.type_notification) {
+      case "ME":
+        this.props.navigation.navigate('Notifications', { tabIndex: 1 });
+        break;
+      default:
+        break;
+    }
+}
 
   async validateToken(newToken) {
     try {

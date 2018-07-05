@@ -24,8 +24,6 @@ import Tab2 from '../Like';
 export default class Notifications extends Component {
     constructor(props) {
         super(props);
-
-
       }
 
     static navigationOptions = ({ navigation }) => {
@@ -36,11 +34,16 @@ export default class Notifications extends Component {
       };
     };
 
+    componentDidMount() {
+      this._tabs.goToPage(this.props.navigation.getParam('tabIndex', 0));
+    }
+
     render() {
       return (
         <Container style={styles.tabContainer}>
         <Tabs
-          initialPage={1}
+          initialPage={0}
+          ref={(index) => this._tabs = index}
           tabBarUnderlineStyle={styles.underLineColor}
           tabContainerStyle={styles.tabContainerStyle}
           edgeHitWidth={0}

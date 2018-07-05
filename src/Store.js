@@ -138,6 +138,7 @@ class Store {
             chatMsg: undefined,
             chatMsgPage: undefined,
             bad: undefined,
+            face: undefined,
         };
         popToken(this.state);
         popId(this.state);
@@ -318,6 +319,12 @@ class Store {
             if (!state)
                 return;
             me.state.bad = state.bad;
+        });
+        this.FACE_EVENT = new Subject();
+        this.FACE_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.face = state.face;
         });
     }
 

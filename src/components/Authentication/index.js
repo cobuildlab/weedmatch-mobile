@@ -48,8 +48,13 @@ export default class Authentication extends Component {
 
     suscriptions() {
 
-        this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
-            console.log("Authentication:componentDidMount:tokenSubscription", state);
+        this.face = APP_STORE.FACE_EVENT.subscribe(state => {
+            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+            if (state.face) {
+                this.appSubscription.unsubscribe()
+                this.firebaseSubscription.unsubscribe()
+                this.idSubscription.unsubscribe()
+            }
         });
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
