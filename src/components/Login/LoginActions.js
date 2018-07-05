@@ -2,6 +2,7 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
+import {AsyncStorage} from 'react-native';
 
 function loginAction(username, password) {
     console.log(`loginAction: ${username}, ${password}`);
@@ -34,10 +35,19 @@ function firebaseAction(token) {
             console.log(`firebaseAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
+                saveFirebase(token)
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         });
+}
+
+async function saveFirebase(token) {
+    try {
+        await AsyncStorage.setItem("firebase", token);
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+    }
 }
 
 export {loginAction,firebaseAction};

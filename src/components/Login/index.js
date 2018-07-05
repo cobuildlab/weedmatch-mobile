@@ -56,9 +56,9 @@ export default class LoginPage extends Component {
                 }
             }
             
-                firebase.messaging().getToken().then(token => {
-                    firebaseAction(token)
-                });
+            firebase.messaging().getToken().then(token => {
+                firebaseAction(token)
+            });
             }
         });
 

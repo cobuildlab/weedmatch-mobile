@@ -1943,7 +1943,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"~/Documents/FacebookSDK",
+					"$(inherited)/Bolts.framework",
+					"$(inherited)/FBSDKCoreKit.framework",
+					"$(inherited)/FBSDKLoginKit.framework",
+					"$(inherited)/FBSDKShareKit.framework",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1984,7 +1987,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"~/Documents/FacebookSDK",
+					"$(inherited)/Bolts.framework",
+					"$(inherited)/FBSDKCoreKit.framework",
+					"$(inherited)/FBSDKLoginKit.framework",
+					"$(inherited)/FBSDKShareKit.framework",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
