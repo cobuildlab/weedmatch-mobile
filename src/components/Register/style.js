@@ -15,13 +15,29 @@ export default styles = StyleSheet.create({
         fontSize: 20,
         color: '#9605CC',
     },
+    boxTitle:{
+      backgroundColor: '#9605CC',
+      alignItems: 'center',
+      marginBottom: 25,
+      borderBottomLeftRadius: 200,
+      borderBottomRightRadius: 200,
+    },
     textRegister: {
-        fontSize: 22,
-        color: '#9605CC',
+        fontSize: 26,
+        color: '#fff',
         marginBottom: 30,
+        marginTop: 30,
+    },
+    textRegister2: {
+        fontSize: 26,
+        textAlign: 'center',
+        color: '#9605CC',
+        width: '100%',
+        marginBottom: 30,
+        marginTop: 30,
         ...Platform.select({
-            android: {
-                marginTop: -30,
+            ios: {
+                marginTop: 35,
             },
         }),
     },
@@ -56,14 +72,20 @@ export default styles = StyleSheet.create({
     },
     inputStyle: {
         backgroundColor: '#ffffff',
-        height: 40,
+        height: 45,
         width: 250,
         borderColor: '#ccc',
         borderRadius: 50,
         borderWidth: 1,
         paddingLeft: 20,
         paddingRight: 10,
+        paddingTop: 12,
         marginBottom: 10,
+        ...Platform.select({
+            ios: {
+                paddingTop: 0,
+            },
+        }),
     },
     inputStyleFecha: {
         backgroundColor: '#ffffff',
@@ -166,17 +188,17 @@ export default styles = StyleSheet.create({
         backgroundColor: '#3b5998',
     },
     logoFacebook:{
-      width: 18,
-      height: 18,
-      flex: 1,
-      alignItems: 'center',
-      marginTop: 2,
+      width:16,
+      height: 17,
+      position: 'absolute',
+      top: 11,
+      left: 17,
     },
     buttonTextFacebook: {
         color: 'white',
         fontSize: 16,
         fontWeight: '500',
-        paddingLeft: 10,
+        paddingLeft: 18,
         marginTop: -5,
     },
     contentSocial:{
@@ -199,7 +221,8 @@ export default styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 10,
+      marginTop: 20,
+      marginBottom: 30,
     },
     buttomCancelStyle: {
         marginTop: 0,
@@ -223,8 +246,8 @@ export default styles = StyleSheet.create({
         fontSize: 16,
     },
     buttonTextTerms: {
-        color: '#333',
-        fontSize: 16,
+        color: '#777',
+        fontSize: 15,
     },
     buttonText: {
         color: '#ffffff',

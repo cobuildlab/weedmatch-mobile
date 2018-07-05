@@ -70,6 +70,7 @@ class RegisterPage extends Component {
 
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             if (state.error) {
+                this.setState({isLoading: false});
                 if(state.error.detail){
                     Object.keys(state.error.detail).map(function(objectKey, index) {
                         var value = state.error.detail[objectKey];
@@ -92,7 +93,7 @@ class RegisterPage extends Component {
                         alert("Failed to grant permission")
                     }
                 }
-                
+
                 firebase.messaging().getToken().then(token => {
                     firebaseAction(token)
                 });
@@ -103,7 +104,7 @@ class RegisterPage extends Component {
             console.log("RegisterPage:componentDidMount:firebaseSubscription", state);
             this.props.navigation.navigate('App');
         });
-        
+
         this.email = APP_STORE.EMAIL_EVENT.subscribe(state => {
             this.setState({isLoading: true});
             if (state.error) {
@@ -170,7 +171,7 @@ class RegisterPage extends Component {
                     }else{
                         day = pickedValue[2];
                     }
-                    let dateAge = pickedValue[0] + '-' + month + '-' + day
+                    let dateAge = pickedValue[0] + '/' + month + '/' + day
                     this.setState({age: dateAge})
                 },
                 onPickerCancel: (pickedValue, pickedIndex) => {
@@ -317,23 +318,30 @@ class RegisterPage extends Component {
                     keyboardShouldPersistTaps={'always'}
                 >
                 <View style={styles.teclado}>
-                  <Image style={styles.container}
+                  { step == 1 &&
+
+                    <Text style={styles.textRegister2}>
+                        {strings("main.register")}
+                    </Text>
+
+                  }
+                  {/* <Image style={styles.container}
                          source={require('../../assets/img/logo-b.png')}
-                  />
-                  <Text style={styles.textRegister}>
-                      {strings("main.register")}
-                  </Text>
+
+                  /> */}
+
                   <View style={styles.contentSocial}>
                   { step == 1 &&
                   <TouchableOpacity
                       style={styles.buttomFacebookStyle}
-                      onPress={this._facebookLogin.bind(this)}      
+                      onPress={this._facebookLogin.bind(this)}
                     >
+                      <Image
+                          style={styles.logoFacebook}
+                          source={require('../../assets/img/facebook-app-logo.png')}
+                      />
                       <Text style={styles.buttonTextFacebook}>
-                        <Image
-                            style={styles.logoFacebook}
-                            source={require('../../assets/img/facebook-app-logo.png')}
-                        />
+
                       {strings("register.facebook")}
                     </Text>
                   </TouchableOpacity>
@@ -357,11 +365,11 @@ class RegisterPage extends Component {
                 return (
                     <KeyboardAvoidingView style={styles.scrollContainer} behavior="padding">
                         <View style={styles.teclado}>
-                        <Image style={styles.container}
+                        {/* <Image style={styles.container}
                                 source={require('../../assets/img/logo-b.png')}
-                        />
+                        /> */}
                         { step == 1 &&
-                          <Text style={styles.textRegister}>
+                          <Text style={styles.textRegister2}>
                               {strings("main.register")}
                           </Text>
                         }
@@ -370,13 +378,14 @@ class RegisterPage extends Component {
                         { step == 1 &&
                         <TouchableOpacity
                             style={styles.buttomFacebookStyle}
-                            onPress={this._facebookLogin.bind(this)}      
+                            onPress={this._facebookLogin.bind(this)}
                             >
-                            <Text style={styles.buttonTextFacebook}>
                               <Image
                                   style={styles.logoFacebook}
                                   source={require('../../assets/img/facebook-app-logo.png')}
                               />
+                            <Text style={styles.buttonTextFacebook}>
+
                               {strings("register.facebook")}</Text>
                         </TouchableOpacity>
                         }
@@ -405,7 +414,7 @@ class RegisterPage extends Component {
             body = <View>
                 {this._showActivity()}
                 {step == 1 &&
-                    <View style={{marginTop: -15,}}>
+                    <View style={{marginTop: -5,}}>
                         <TextInput
                             style={styles.inputStyle}
                             editable={true}
@@ -447,9 +456,12 @@ class RegisterPage extends Component {
                 }
                 {step == 2 &&
                     <View>
-                      <Text style={styles.textRegisterContinue}>
-                          {strings("main.registerContinue")}
-                      </Text>
+
+                        <Text style={styles.textRegister2}>
+                            {strings("main.registerContinue")}
+                        </Text>
+
+
                       <Text style={styles.textIam}>
                           {strings("main.iAm")}
                       </Text>
@@ -483,7 +495,7 @@ class RegisterPage extends Component {
                 }
                 {step == 3 &&
                   <View style={styles.contentSocial}>
-                    <Text style={styles.textIam}>
+                    <Text style={styles.textRegister2}>
                         {strings("register.photo")}
                     </Text>
                     <TouchableOpacity style={styles.buttomUploadStyle} onPress={() => this.ActionSheet.show() }>
@@ -511,12 +523,13 @@ class RegisterPage extends Component {
                     onPress={this._registerCancel.bind(this)}>
                     <Text style={styles.buttonTextCancel}> {strings("home.cancel")} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttomCancelStyle}
-                    onPress={this.userTerms.bind(this)}>
-                    <Text style={styles.buttonTextTerms}> {strings("register.terms")} </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                      style={styles.buttomCancelStyle}
+                      onPress={this.userTerms.bind(this)}>
+                      <Text style={styles.buttonTextTerms}> {strings("register.terms")} </Text>
+                  </TouchableOpacity>
             </View>
+
         }
         return (
             <View style={styles.scrollContainer}>

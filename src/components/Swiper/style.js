@@ -14,7 +14,13 @@ export default styles = StyleSheet.create({
       borderColor: '#E8E8E8',
       justifyContent: 'center',
       backgroundColor: 'white',
-      paddingBottom: 20,
+      paddingBottom: 10,
+      marginBottom: 30,
+      ...Platform.select({
+          ios: {
+              marginBottom: 12,
+          },
+      }),
     },
     text: {
       textAlign: 'center',
@@ -77,14 +83,14 @@ export default styles = StyleSheet.create({
       marginTop: 25,
     },
     textName: {
-      marginTop: 15,
+      marginTop: 0,
       paddingLeft: 20,
       fontSize: 18,
       color: '#333',
     },
     textContainer: {
       paddingLeft: 20,
-      marginTop: 15,
+      marginTop: 2,
       fontSize: 14,
       color: '#777'
     },

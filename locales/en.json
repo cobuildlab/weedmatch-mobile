@@ -48,13 +48,17 @@
     "registerContinue": "Continue register",
     "iAm": "I am...",
     "profile": "Profile",
+    "noti": "Notifications",
+    "message": "Chats",
+    "like": "Love it",
     "login": "Log In",
     "recover": "Recover Password",
     "internet": "No Internet Connection",
     "password": "Change password",
     "pro": "Buy pro version",
     "pay": "Pay with credit card",
-    "changes": "Save changes"
+    "changes": "Save changes",
+    "error": "Server error, sorry try again later"
   },
   "home": {
     "actionSheet": "Pick one option",
@@ -72,6 +76,11 @@
     "confirmPassword": "Confirm Password"
   },
   "swiper": {
-    "searching": "Looking for people near you"
+    "searching": "Looking for people near you",
+    "hours": " hours and ",
+    "minutes": " minutes to do this action again."
+  },
+  "chat": {
+    "reconnect": "Reconnecting"
   }
 }
