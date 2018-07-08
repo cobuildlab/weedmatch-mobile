@@ -71,6 +71,15 @@ export default class TopBar extends Component {
       case "ME":
         this.props.navigation.navigate('Notifications', { tabIndex: 1 });
         break;
+      case "MC":
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
+        break;  
+      case "AC":
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
+        break;  
+      case "MS":
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
+        break; 
       default:
         break;
     }

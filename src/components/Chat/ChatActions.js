@@ -50,7 +50,7 @@ function appendData(oldData, newData,id) {
             message = {
                 _id: data.id,
                 text: data.text,
-                createdAt: new Date(),
+                createdAt: data.created,
                 user: {
                   _id: APP_STORE.getId(),
                   name: APP_STORE.getUser(),
@@ -61,7 +61,7 @@ function appendData(oldData, newData,id) {
             message = {
                 _id: data.id,
                 text: data.text,
-                createdAt: new Date(),
+                createdAt: data.created,
                 user: {
                   _id: id,
                   name: data.user,

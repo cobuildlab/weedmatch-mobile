@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity,
+  ActivityIndicator,
   View,
   Image
 } from 'react-native';
@@ -8,7 +8,7 @@ import {
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import { internet, checkConectivity, toastMsg } from '../../utils';
-
+import styles from './style';
 import { GiftedChat,Bubble,Send } from 'react-native-gifted-chat'
 import { chatAction,appendData } from './ChatActions'
 
@@ -23,7 +23,9 @@ export default class Chat extends Component {
       connected: false,
       urlPage: '',
       numPage: 0,
+      morePages: false,
       isLoading: true,
+      refreshing: true
     }
 
     this.reconnect = true
@@ -99,6 +101,7 @@ componentDidMount() {
         }))
       } else {
         this.setState(prevState => ({
+          refreshing: false,
           messages: GiftedChat.append([], appendData(prevState.messages, state.chatMsg,this.getOtherUser)),
           isLoading: false,
         }))
@@ -118,18 +121,21 @@ componentDidMount() {
 
         this.setState({
           urlPage: state.chatMsgPage,
-          numPage: this.state.numPage + 1
+          numPage: this.state.numPage + 1,
+          morePages: true
         })
         return;
       } else {
         this.setState({
           urlPage: '',
+          morePages: false
         })
       }
       if (state.error) {
         toastMsg(state.error);
       }
     });
+
     this.getEarlyMessages()
 }
 
@@ -213,6 +219,8 @@ getEarlyMessages() {
       }}/>
   )}
 
+  renderTime(props) { return (null)}
+
   renderSend(props) {
     return (
         <Send
@@ -226,21 +234,30 @@ getEarlyMessages() {
   }
 
   render() {
-    return (
-      <GiftedChat
-        renderAvatar={null}
-        loadEarlier={true}
-        renderBubble={this.renderBubble}
-        onLoadEarlier={ () => this.getEarlyMessages()}
-        isLoadingEarlier={this.state.isLoading}
-        renderSend={this.renderSend}
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-        user={{
-          _id: APP_STORE.getId(),
-        }}
-      />
-    )
+    if (this.state.refreshing) {
+      return (
+        <View style={[styles.containers, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#9605CC" />
+        </View>
+      )
+    } else {
+      return (
+        <GiftedChat
+          renderAvatar={null}
+          loadEarlier={this.state.morePages}
+          // renderTime={this.renderTime}
+          renderBubble={this.renderBubble}
+          onLoadEarlier={ () => this.getEarlyMessages()}
+          isLoadingEarlier={this.state.isLoading}
+          renderSend={this.renderSend}
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+          user={{
+            _id: APP_STORE.getId(),
+          }}
+        />
+      )
+    }
   }
 }
 
