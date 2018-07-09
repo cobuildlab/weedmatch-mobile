@@ -6,7 +6,6 @@ import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import Swiper from '../../components/Swiper';
 import styles from './style';
-import {NavigationActions} from 'react-navigation'
 // Optional: Flow type
 import type { Notification, NotificationOpen } from 'react-native-firebase';
 
@@ -57,7 +56,6 @@ export default class TopBar extends Component {
 
       this.props.navigation.popToTop()
       this.notifHandler(notificationOpen.notification.data)
-      // this.props.navigation.dispatch(NavigationActions.back( this.notifHandler(notificationOpen.notification.data) ))
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
