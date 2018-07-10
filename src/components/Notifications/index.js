@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   Text,
-  View,
-  Image,
-  AsyncStorage,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-  SafeAreaView,
-  TouchableHighlight,
-  Dimensions,
-  FlatList,
-  ScrollView
+  Platform
 } from 'react-native';
 
 import styles from './style';
@@ -24,6 +13,9 @@ import Tab2 from '../Like';
 export default class Notifications extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+          index: 0,
+        };
       }
 
     static navigationOptions = ({ navigation }) => {
@@ -35,14 +27,18 @@ export default class Notifications extends Component {
     };
 
     componentDidMount() {
-      this._tabs.goToPage(this.props.navigation.getParam('tabIndex', 0));
+
+      setTimeout(()=>{
+        this.setState({index: this.props.navigation.getParam('tabIndex', 0)})
+      },0)
     }
 
     render() {
       return (
         <Container style={styles.tabContainer}>
         <Tabs
-          initialPage={0}
+          locked
+          page={this.state.index}
           ref={(index) => this._tabs = index}
           tabBarUnderlineStyle={styles.underLineColor}
           tabContainerStyle={styles.tabContainerStyle}

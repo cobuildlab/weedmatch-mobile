@@ -19,7 +19,7 @@ import styles from './style';
 import { getSuper,calculateTime,likeAction } from './LikeActions';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
-import {connection, internet, checkConectivity, toastMsg } from '../../utils';
+import { internet, checkConectivity, toastMsg } from '../../utils';
 
 var { height, width } = Dimensions.get('window');
 
@@ -63,10 +63,12 @@ export default class Like extends Component {
       this.like = APP_STORE.LIKEACTION_EVENT.subscribe(state => {
         console.log("Like:componentDidMount:like", state);
         if (state.likeAction) {
+          this._onRefresh()
           Alert.alert(state.likeAction);
           return;
         }
         if (state.error) {
+          this._onRefresh()
           Alert.alert(state.error);
         }
       });
@@ -92,7 +94,11 @@ export default class Like extends Component {
     }
 
     likeTap(action,id) {
-      likeAction(action,id)
+      if (checkConectivity()) {
+        likeAction(action,id)
+      } else {
+        internet();
+      }
     }
 
     render() {
