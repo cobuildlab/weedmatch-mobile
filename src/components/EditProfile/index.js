@@ -448,23 +448,23 @@ export default class EditProfile extends Component {
          </View>
          <View style={styles.divider} />
 
-         <View style={styles.labelTextComprar}>
+         {/* <View style={styles.labelTextComprar}>
            <Text style={styles.textLabelCard}>{strings("main.pro")}</Text>
            <TouchableOpacity
                style={styles.buttomCardStyle}>
                <Text style={styles.buttonTextCard}>{strings("main.pay")}</Text>
            </TouchableOpacity>
-         </View>
+         </View> */}
         <View style={styles.divider} />
       <View style={styles.content}>
           <TouchableOpacity
               style={styles.buttomRegisterStyle} onPress={() => this._saveInfo()}>
               <Text style={styles.buttonText}>{strings("main.changes")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
               style={styles.buttomPassStyle}>
               <Text style={styles.buttonTextCard}>{strings("main.password")}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         </ScrollView>
       );
