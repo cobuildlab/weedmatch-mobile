@@ -16,7 +16,7 @@ function facebookAction(state) {
             LoginManager.logInWithReadPermissions(["public_profile","email","user_birthday","user_gender"]).then(
                 function(result) {
                     if (result.isCancelled) {
-                        return
+                        APP_STORE.FACE_EVENT.next({"face":true})
                     }
                     AccessToken.getCurrentAccessToken().then(
                         (data) => {

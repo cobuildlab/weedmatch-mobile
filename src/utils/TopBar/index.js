@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Tab, Tabs,TabHeading } from 'native-base';
-import { Image, TouchableOpacity,AsyncStorage } from 'react-native';
+import { Image, TouchableOpacity,AsyncStorage,Platform } from 'react-native';
 import {changeToken} from './TopBarActions'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
@@ -22,6 +22,13 @@ export default class TopBar extends Component {
 
   componentDidMount() {
 
+    const channel = new firebase.notifications.Android.Channel(
+      "general",
+      "General Notifications",
+      firebase.notifications.Android.Importance.Default
+    ).setDescription("General Notifications")
+    firebase.notifications().android.createChannel(channel)
+
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
       console.log('FCM: ' + fcmToken)
 
@@ -39,24 +46,67 @@ export default class TopBar extends Component {
           // App was opened by a notification
           // Get the action triggered by the notification being opened
           const action = notificationOpen.action;
+
           // Get information about the notification that was opened
           const notification: Notification = notificationOpen.notification;  
+
         }
       });
 
     this.notificationListener = firebase.notifications().onNotification(notification => {
-      firebase.notifications().displayNotification(notification)
+
+      if (Platform.OS === 'android') {
+        const localNotification = new 
+        firebase.notifications.Notification({
+                 sound: 'default',
+                 show_in_foreground: true,
+             })
+                 .setNotificationId(notification.notificationId)
+                 .setTitle(notification.title)
+                 .setSubtitle(notification.subtitle)
+                 .setBody(notification.body)
+                 .setData(notification.data)
+                 .android.setChannelId('general')
+                 .android.setPriority(firebase.notifications.Android.Priority.High);
+        firebase.notifications().displayNotification(localNotification)
+      } else {
+        firebase.notifications().displayNotification(notification)
+      }
+      
       console.log('onNotification:', notification)
     })
 
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
       console.log('onNotificationOpened:', notificationOpen)
+
+      this.props.navigation.popToTop()
+      this.notifHandler(notificationOpen.notification.data)
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
       console.log('onNotificationDisplayed:', notification)
     })
   }
+
+  notifHandler(data) {
+    console.log(data)
+    switch(data.type_notification) {
+      case "ME":
+        this.props.navigation.navigate('Notifications', { tabIndex: 1 });
+        break;
+      case "MC":
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
+        break;  
+      case "AC":
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
+        break;  
+      case "MS":
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
+        break; 
+      default:
+        break;
+    }
+}
 
   async validateToken(newToken) {
     try {

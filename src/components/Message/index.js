@@ -79,7 +79,7 @@ export default class Message extends Component {
                   />
                 <View style={styles.viewTexts}>
                     <Text style={styles.textUser}>{item.user}</Text>
-                  <Text style={styles.textChat}>chat...</Text>
+                  <Text style={styles.textChat}>{item.message ? item.message : strings("chat.write")}</Text>
                   </View>
                 </View>
                 </TouchableOpacity>
@@ -90,7 +90,7 @@ export default class Message extends Component {
       } else {
           return (
               <View style={[styles.containers, styles.horizontal]}>
-                  <ActivityIndicator size="large" color="#9605CC" />
+                <ActivityIndicator size="large" color="#9605CC" />
               </View>
           )
       }

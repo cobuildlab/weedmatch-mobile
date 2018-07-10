@@ -81,6 +81,7 @@
     "minutes": " minutes to do this action again."
   },
   "chat": {
-    "reconnect": "Reconnecting"
+    "reconnect": "Reconnecting",
+    "write": "Be the first to write a message"
   }
 }

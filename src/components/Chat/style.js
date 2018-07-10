@@ -69,8 +69,14 @@ export default styles = StyleSheet.create({
       position: 'absolute',
       right: 10,
       top: 11,
-    }
-
-
-
+    },
+    containers: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    horizontal: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      padding: 10
+    },
 });
