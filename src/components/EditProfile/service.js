@@ -109,9 +109,9 @@ function deleteImage(token,id, image) {
 function saveProfile(token, id, state) {
 
     const value = {
-        "username": state.user.username,
-        "first_name": state.user.first_name,
-        "description": state.user.description,
+        "username": state.username,
+        "first_name": state.name,
+        "description": state.description,
         "match_sex": state.user.match_sex,
         "sex": state.user.sex,
         "distance": state.sliderOneValue.toString(),
