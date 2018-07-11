@@ -43,12 +43,25 @@ async function saveId(id) {
 
 /**
  * Synchronous save the firebase ID
- * @param id
+ * @param idFB
  * @returns {Promise<void>}
  */
 async function saveFB(id) {
     try {
         await AsyncStorage.setItem("idFB", id);
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+    }
+}
+
+/**
+ * Synchronous save the notif Boolean
+ * @param notif
+ * @returns {Promise<void>}
+ */
+async function saveNoti(noti) {
+    try {
+        await AsyncStorage.setItem("noti", JSON.stringify(noti));
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
     }
@@ -109,6 +122,19 @@ async function popIdFB(state) {
     }
 }
 
+async function popNoti(state) {
+    try {
+        const noti = await AsyncStorage.getItem('noti').then((value) => {
+            console.log("popNotification:", value);
+            state.noti = value;
+        });
+        
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
 class Store {
     constructor() {
         this.state = {
@@ -139,11 +165,13 @@ class Store {
             chatMsgPage: undefined,
             bad: undefined,
             face: undefined,
+            noti: undefined,
         };
         popToken(this.state);
         popId(this.state);
         popIdFB(this.state);
         popUser(this.state);
+        popNoti(this.state);
         const me = this;
         this.APP_EVENT = new Subject();
         this.APP_EVENT.subscribe(state => {
@@ -165,6 +193,15 @@ class Store {
             if (isValidText(state.token)) {
                 saveToken(state.token);
                 me.state.token = state.token;
+            }
+        });
+        this.NOTI_EVENT = new Subject();
+        this.NOTI_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            if (state.noti) {
+                saveNoti(state.noti);
+                me.state.noti = state.noti;
             }
         });
         this.USER_EVENT = new Subject();
@@ -343,6 +380,10 @@ class Store {
 
     getUser() {
         return this.state.username;
+    }
+
+    getNoti() {
+        return this.state.noti;
     }
 }
 

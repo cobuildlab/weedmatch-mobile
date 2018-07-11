@@ -6,6 +6,7 @@ import {
 
 import styles from './style';
 import {strings} from '../../i18n';
+import {APP_STORE} from '../../Store';
 import { Container, Tab, Tabs,TabHeading } from 'native-base';
 import Tab1 from '../Message';
 import Tab2 from '../Like';
@@ -17,7 +18,7 @@ export default class Notifications extends Component {
           index: 0,
         };
       }
-
+  
     static navigationOptions = ({ navigation }) => {
       const {params} = navigation.state;
 
@@ -27,8 +28,9 @@ export default class Notifications extends Component {
     };
 
     componentDidMount() {
-
+      
       setTimeout(()=>{
+        APP_STORE.NOTI_EVENT.next({"noti": false});
         this.setState({index: this.props.navigation.getParam('tabIndex', 0)})
       },0)
     }

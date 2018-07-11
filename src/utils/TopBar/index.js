@@ -4,6 +4,7 @@ import { Image, TouchableOpacity,AsyncStorage,Platform } from 'react-native';
 import {changeToken} from './TopBarActions'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
+import {APP_STORE} from '../../Store';
 import Swiper from '../../components/Swiper';
 import styles from './style';
 // Optional: Flow type
@@ -17,10 +18,18 @@ export default class TopBar extends Component {
     super();
     this.state = {
       activePage: 0,
+      notification: false
     };
   }
 
   componentDidMount() {
+
+    this.setState({notification: APP_STORE.getNoti()})
+
+    this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
+      console.log("TopBar:componentDidMount:noti", state);
+      this.setState({notification: state.noti})
+    });
 
     const channel = new firebase.notifications.Android.Channel(
       "general",
@@ -72,7 +81,7 @@ export default class TopBar extends Component {
       } else {
         firebase.notifications().displayNotification(notification)
       }
-      
+      APP_STORE.NOTI_EVENT.next({"noti": true});
       console.log('onNotification:', notification)
     })
 
@@ -130,6 +139,7 @@ export default class TopBar extends Component {
     this.notificationDisplayedListener()
     this.notificationOpenedListener()
     this.onTokenRefreshListener();
+    this.noti.unsubscribe();
   }
 
   getSwiperImage(){
@@ -160,7 +170,7 @@ export default class TopBar extends Component {
           <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttomIconMsg} onPress={ () => this.showMessage()}>
-          <Image style={styles.imgIconMsg} source={require('../../assets/img/msj.png')}/>
+          <Image style={styles.imgIconMsg} source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
         </TouchableOpacity>
         <Tabs
           initialPage={0}
