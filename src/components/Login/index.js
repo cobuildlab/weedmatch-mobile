@@ -17,7 +17,7 @@ import {APP_STORE} from '../../Store';
 import {loginAction,firebaseAction} from './LoginActions';
 import styles from './style';
 import {strings} from '../../i18n';
-import {isValidText, toastMsg, internet, checkConectivity} from "../../utils";
+import {isValidText, internet, checkConectivity,parseError, toastMsg} from "../../utils";
 import firebase from 'react-native-firebase';
 
 export default class LoginPage extends Component {
@@ -65,8 +65,9 @@ export default class LoginPage extends Component {
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
-            if (isValidText(state.error))
-                toastMsg(state.error);
+            if (state.error) {
+                toastMsg(state.error)
+            }
         });
     }
 

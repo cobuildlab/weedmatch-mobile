@@ -24,7 +24,6 @@ import {connection, internet, checkConectivity, toastMsg } from '../../utils';
 export default class Message extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
           refreshing:false,
           chats: [],
@@ -33,6 +32,9 @@ export default class Message extends Component {
     }
 
     componentDidMount() {
+
+      this.showChatNotif()
+
       this.chatsVar = APP_STORE.CHAT_EVENT.subscribe(state => {
         console.log("Messages:componentDidMount:chatsVar", state);
         if (state.chats) {
@@ -49,6 +51,13 @@ export default class Message extends Component {
         }
       });
       getChat()
+    }
+
+    showChatNotif() {
+      if(this.props.navigation.getParam('data', undefined) != null) {
+        const data = this.props.navigation.getParam('data', undefined)
+        this.showChat(data.chat_id,data.id,data.username)
+      }
     }
 
     componentWillUnmount() {

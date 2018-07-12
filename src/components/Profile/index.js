@@ -52,7 +52,7 @@ export default class Profile extends Component {
       this.props.navigation.setParams({logout: () => this._logout()});
 
       this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-        console.log("LoginPage:componentDidMount:appSubscription", state);
+        console.log("Profile:componentDidMount:appSubscription", state);
         if (state.error) {
           this.setState({isLoading: true});
           toastMsg(state.error);
@@ -126,6 +126,18 @@ export default class Profile extends Component {
     }
 
     _logout = () => {
+
+      this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
+        console.log("Profile:componentDidMount:appSubscription", state);
+        if (state.error) {
+          this.setState({isLoading: true});
+          toastMsg(state.error);
+        return;
+        }
+        if (state.success)
+          this.props.navigation.navigate('Auth');
+        });
+
       this.setState({isLoading: false});
       logOut();      
     }
@@ -147,6 +159,7 @@ export default class Profile extends Component {
     }
 
     _editProfile() {
+      this.appSubscription.unsubscribe();
       this.props.navigation.navigate('EditProfile');
     }
 

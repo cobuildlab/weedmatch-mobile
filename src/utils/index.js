@@ -25,6 +25,19 @@ async function checkConectivity() {
     return response
 }
 
+function parseError(val) {
+    Object.keys(val).map((objectKey) => {
+        var value = val[objectKey];
+        if(typeof value == 'object'){
+            value.forEach((msg) => {
+                toastMsg(msg);
+            });
+        } else {
+            toastMsg(value);
+        }
+    });
+}
+
 function internet() {
     return Alert.alert(strings("main.internet"));
 }
@@ -74,7 +87,7 @@ function authHeaderForm(token) {
  * @throws {Error} the error that receives
  */
 function catchErrorAndPropagate(err) {
-    APP_STATE.next({error: String(err)});
+    APP_STATE.next({error: err.toString()});
     throw err;
 }
 
@@ -82,18 +95,18 @@ function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet,authHeaderForm, URL, LENGUAGE, checkConectivity }
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet,authHeaderForm, URL, LENGUAGE, checkConectivity,parseError }
 
 
 const style={
     backgroundColor: "#333333",
     width: 300,
-    height: Platform.OS === ("ios") ? 50 : 130,
+    height: Platform.OS === ("ios") ? 50 : 200,
     color: "#ffffff",
     paddingLeft: 50,
     paddingRight: 50,
     fontSize: 12,
-    borderRadius: Platform.OS === ("ios") ? 25 : 55,
+    borderRadius: Platform.OS === ("ios") ? 25 : 50,
     fontWeight: "normal",
     yOffset: 60
 };
