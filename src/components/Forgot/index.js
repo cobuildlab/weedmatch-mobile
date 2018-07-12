@@ -72,7 +72,7 @@ class ForgotPage extends ValidationComponent {
         });
         if (this.isFormValid()) {
             this.setState({isLoading: true});
-            forgotAction(this.state.email);
+            forgotAction(this.state.email.toString());
         } else {
             if (this.isFieldInError('email')) {
                 this.getErrorsInField('email').map((result) => toastMsg(result))

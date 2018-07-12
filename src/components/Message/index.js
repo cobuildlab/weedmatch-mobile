@@ -54,6 +54,7 @@ export default class Message extends Component {
     }
 
     showChatNotif() {
+      getChat()
       if(this.props.navigation.getParam('data', undefined) != null) {
         const data = this.props.navigation.getParam('data', undefined)
         this.showChat(data.chat_id,data.id,data.username)
