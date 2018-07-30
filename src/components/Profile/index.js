@@ -12,7 +12,7 @@ import {
   TouchableHighlight,
   Dimensions,
   FlatList,
-  ScrollView
+  AppState
 } from 'react-native';
 
 import styles from './style';
@@ -48,8 +48,8 @@ export default class Profile extends Component {
     };
 
     componentDidMount(){
-
       this.props.navigation.setParams({logout: () => this._logout()});
+      this.props.navigation.setParams({update: () => this.update ()});
 
       this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
         console.log("Profile:componentDidMount:appSubscription", state);
@@ -125,6 +125,15 @@ export default class Profile extends Component {
       this.public.unsubscribe();
     }
 
+    update = () => {
+      this.setState({isLoading: false});
+      if (checkConectivity()) {
+        publicProfileAction(APP_STORE.getToken(), APP_STORE.getId())
+      } else {
+        internet();
+      }
+    }
+
     _logout = () => {
 
       this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
@@ -135,6 +144,7 @@ export default class Profile extends Component {
         return;
         }
         if (state.success)
+          APP_STORE.NOTI_EVENT.next({"noti": false});
           this.props.navigation.navigate('Auth');
         });
 
@@ -160,7 +170,7 @@ export default class Profile extends Component {
 
     _editProfile() {
       this.appSubscription.unsubscribe();
-      this.props.navigation.navigate('EditProfile');
+      this.props.navigation.navigate('EditProfile',{refresh: this.update});
     }
 
     renderiza() {
@@ -189,7 +199,7 @@ export default class Profile extends Component {
     }
 
     onEndReached = () => {
-      if (!this.onEndReachedCalledDuringMomentum) {
+      if (!this.onEndReachedCalledDuringMomentum && this.state.numPage > 0) {
         this._get420Images();
         this.onEndReachedCalledDuringMomentum = true;
       }

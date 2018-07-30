@@ -95,6 +95,7 @@ export default class EditProfile extends Component {
 
   componentWillUnmount() {
       console.log("EditProfile:componentWillUmmount");
+      this.props.navigation.state.params.refresh()
       this.public.unsubscribe();
       this.saveProfile.unsubscribe();
 
@@ -367,7 +368,7 @@ export default class EditProfile extends Component {
                 backgroundColor: '#9605CC',
               }}
               min={2}
-              max={201}
+              max={200}
               unselectedStyle={{
                 backgroundColor: '#ccc',
               }}
@@ -409,7 +410,7 @@ export default class EditProfile extends Component {
            </View>
            <View style={styles.contenGender}>
              <TouchableOpacity style={this.state.user.match_sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Otro') }>
-               <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
+               <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Todos</Text>
              </TouchableOpacity>
            </View>
          </View>

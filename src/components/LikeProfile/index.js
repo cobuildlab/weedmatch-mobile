@@ -242,7 +242,7 @@ export default class PublicProfile extends Component {
     }
 
     onEndReached = () => {
-      if (!this.onEndReachedCalledDuringMomentum) {
+      if (!this.onEndReachedCalledDuringMomentum && this.state.numPage > 0) {
         this._get420Images();
         this.onEndReachedCalledDuringMomentum = true;
       }

@@ -111,6 +111,7 @@ export default class HomePage extends Component {
         if (state.success) {
             this.setState({
               load: false,
+              comment: '',
               modalVisible: false    
             });
             this._onRefresh();

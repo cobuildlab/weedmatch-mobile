@@ -47,6 +47,15 @@ export default class SwiperView extends Component {
         }
       });
 
+      this.action = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
+        console.log("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
+        if (state.swiperAction) {
+          if (this.swiper.state.firstCardIndex == 0) {
+            this.onSwipedAllCards()
+          }
+        }
+      });
+
       this.swiperData = APP_STORE.SWIPER_EVENT.subscribe(state => {
         console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
         if (state.swiper) {
@@ -193,8 +202,11 @@ export default class SwiperView extends Component {
 
   swipeTop(aux) {
     if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
-      console.log('Arriba')
-      this.onSwipedAllCards()
+      if (checkConectivity()) {
+        saveHour(this.state.cards[this.swiper.state.firstCardIndex].id_user)
+      } else {
+        internet();
+      }
     } else {
       if(aux) {
         this.swiper.swipeTop();

@@ -81,10 +81,6 @@ function appendData(oldData, newData) {
     return oldData;
 }
 
-function renderImage(image) {
-    return image == '' ? '../../assets/img/plus.png' : image;
-}
-
 function getImages(data) {
 
     const _images = [];
