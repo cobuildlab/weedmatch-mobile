@@ -75,28 +75,36 @@ export default class Message extends Component {
 
     render() {
       if(this.state.isLoading) {
-        return (
-          <View style={styles.viewContainer}>
-            <FlatList
-              horizontal={false}
-              keyExtractor={( item , index ) => index.toString() }
-              data={this.state.chats}
-              renderItem={({item}) =>
-                <TouchableOpacity onPress={ () => this.showChat(item.id,item.id_user,item.user)}>
-                <View style={styles.viewMsg}>
-                  <Image style={styles.imgProfileItem}
-                    source={{uri: item.image_profile}}
-                  />
-                <View style={styles.viewTexts}>
-                    <Text style={styles.textUser}>{item.user}</Text>
-                  <Text style={styles.textChat}>{item.message ? item.message : strings("chat.write")}</Text>
+        if (this.state.chats.length > 0) {
+          return (
+            <View style={styles.viewContainer}>
+              <FlatList
+                horizontal={false}
+                keyExtractor={( item , index ) => index.toString() }
+                data={this.state.chats}
+                renderItem={({item}) =>
+                  <TouchableOpacity onPress={ () => this.showChat(item.id,item.id_user,item.user)}>
+                  <View style={styles.viewMsg}>
+                    <Image style={styles.imgProfileItem}
+                      source={{uri: item.image_profile}}
+                    />
+                  <View style={styles.viewTexts}>
+                      <Text style={styles.textUser}>{item.user}</Text>
+                    <Text style={styles.textChat}>{item.message ? item.message : strings("chat.write")}</Text>
+                    </View>
                   </View>
-                </View>
-                </TouchableOpacity>
-              }
-            />
-          </View>
-        );
+                  </TouchableOpacity>
+                }
+              />
+            </View>
+          );
+        } else {
+          return(
+            <View style={styles.containerLoader}>
+              <Text>{strings("chat.nomsg")}</Text>
+            </View>
+          );
+        }
       } else {
           return (
               <View style={[styles.containers, styles.horizontal]}>

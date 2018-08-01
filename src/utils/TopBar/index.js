@@ -75,6 +75,7 @@ export default class TopBar extends Component {
                  .setSubtitle(notification.subtitle)
                  .setBody(notification.body)
                  .setData(notification.data)
+                //  .android.setSmallIcon('icon')
                  .android.setChannelId('general')
                  .android.setPriority(firebase.notifications.Android.Priority.High);
         firebase.notifications().displayNotification(localNotification)
