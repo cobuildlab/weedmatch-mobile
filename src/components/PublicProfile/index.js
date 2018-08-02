@@ -44,7 +44,7 @@ export default class PublicProfile extends Component {
 
     static navigationOptions = {
       title: strings('main.profile'),
-    };  
+    };
 
     componentDidMount(){
 
