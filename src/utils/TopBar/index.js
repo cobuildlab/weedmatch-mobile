@@ -68,6 +68,7 @@ export default class TopBar extends Component {
         const localNotification = new 
         firebase.notifications.Notification({
                  sound: 'default',
+                 icon: "ic_launcher",
                  show_in_foreground: true,
              })
                  .setNotificationId(notification.notificationId)
