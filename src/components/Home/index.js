@@ -205,16 +205,37 @@ export default class HomePage extends Component {
 
   _likeHandlePress(idImage,id_user,like,row) {
 
-    this.showBigHeart(row)
+    const now = new Date().getTime();
+      
+    if (this.lastImagePress && (now - this.lastImagePress) < 300) {
+      delete this.lastImagePress;
+      this.showBigHeart(row)
 
-    if (checkConectivity()) {
-      handleImagePress(idImage,id_user,like,row)
-    } else {
-      internet();
+      if (checkConectivity()) {
+        likeAction(idImage,id_user,like,row)
+      } else {
+        internet();
+      }
+    } else {
+      this.lastImagePress = now;
     }
   }
 
   showBigHeart(row) {
+    var newDs = []
+    newDs = this.state.feedData._dataBlob.s1.slice()
+    newDs[row].flag = newDs[row].flag == true ? false : true
+
+    this.setState({
+      feedData: this.ds1.cloneWithRows(newDs)
+    },() => {
+      setTimeout(() => {
+        this.hideBigHeart(row)
+      }, 500)
+    })
+  }
+
+  hideBigHeart(row) {
     var newDs = []
     newDs = this.state.feedData._dataBlob.s1.slice()
     newDs[row].flag = newDs[row].flag == true ? false : true
@@ -391,18 +412,18 @@ export default class HomePage extends Component {
 
             <TouchableWithoutFeedback onPress = {() => this._likeHandlePress(rowData.id,rowData.id_user,!rowData.band,sectionID)}>
               <View>
-              <Image
-                style={styles.media}
-                source={{uri: rowData.image}}
-              />
-
-            <View style={styles.heartLike}>
-              <Image
-                style={styles.positionHeart}
-                source={require('../../assets/img/big-heart.png')}
-              />
-            </View>
-
+                <Image
+                  style={styles.media}
+                  source={{uri: rowData.image}}
+                />
+                { rowData.flag &&
+                  <View style={styles.heartLike}>
+                  <Image
+                    style={styles.positionHeart}
+                    source={require('../../assets/img/big-heart.png')}
+                  />
+                  </View>
+                }
             </View>
             </TouchableWithoutFeedback>
 
