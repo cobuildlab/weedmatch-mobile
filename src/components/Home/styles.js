@@ -32,10 +32,11 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-start',
       position: 'relative',
-      top: -305,
+      top: -230,
     },
     positionHeart:{
       position: 'absolute',
+
     },
     container: {
       flex: 1,

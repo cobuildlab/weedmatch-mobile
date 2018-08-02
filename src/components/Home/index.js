@@ -399,7 +399,7 @@ export default class HomePage extends Component {
             <View style={styles.heartLike}>
               <Image
                 style={styles.positionHeart}
-                source={require('../../assets/img/big-heart.png')}
+                source={require('../../assets/img/heartLike.png')}
               />
             </View>
 
