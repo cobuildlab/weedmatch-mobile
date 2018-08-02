@@ -204,11 +204,23 @@ export default class HomePage extends Component {
     }
 
   _likeHandlePress(idImage,id_user,like,row) {
+
+    this.showBigHeart(row)
+
     if (checkConectivity()) {
       handleImagePress(idImage,id_user,like,row)
     } else {
       internet();
     }
+  }
+
+  showBigHeart(row) {
+    var newDs = []
+    newDs = this.state.feedData._dataBlob.s1.slice()
+    newDs[row].flag = newDs[row].flag == true ? false : true
+    this.setState({
+      feedData: this.ds1.cloneWithRows(newDs)
+    })
   }
 
   _like(idImage,id_user,like,row) {
