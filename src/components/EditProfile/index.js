@@ -19,13 +19,12 @@ import {
 } from 'react-native';
 
 import { strings } from "../../i18n";
-import { StackNavigator } from 'react-navigation';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles from './style';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import {APP_STORE} from '../../Store';
-import { internet, checkConectivity } from '../../utils';
+import { internet, checkConectivity,parseError, toastMsg } from '../../utils';
 import { publicEditAction, saveProfileAction,putImageAction,postImageAction,deleteImageAction } from './EditProfileActions';
 
 export default class EditProfile extends Component {
@@ -68,9 +67,6 @@ export default class EditProfile extends Component {
           })
           return;
         }
-        if (state.error) {
-          Alert.alert(state.error);
-        }
     });
 
     this.saveProfile = APP_STORE.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => {
@@ -82,18 +78,14 @@ export default class EditProfile extends Component {
           })
           return;
       }
-      if (state.error) {
-          this.setState({isLoading: true})
-          Alert.alert(state.error);
-      }
     });
 
     this.event = APP_STORE.APP_EVENT.subscribe(state => {
       this.setState({isLoading: true});
+      console.log("Edit Profile:componentDidMount:APP_EVENT", state);
       console.log(state);
       if (state.error) {
-        Alert.alert(state.error);
-          return;
+        parseError(state.error)
       }
   });
 
@@ -103,6 +95,7 @@ export default class EditProfile extends Component {
 
   componentWillUnmount() {
       console.log("EditProfile:componentWillUmmount");
+      this.props.navigation.state.params.refresh()
       this.public.unsubscribe();
       this.saveProfile.unsubscribe();
 
@@ -254,10 +247,7 @@ export default class EditProfile extends Component {
       return (
         <Image style={styles.mePic} source={{uri: this.state.user.profile_images[index].image}} />
       );
-      return;
-    }
-
-    if(this.state.images.length >= index + 1) {
+    } else if(this.state.images.length >= index + 1) {
       return (
         <Image style={styles.meSubImg} source={{uri: this.state.images[index].image}} />
       )
@@ -378,7 +368,7 @@ export default class EditProfile extends Component {
                 backgroundColor: '#9605CC',
               }}
               min={2}
-              max={201}
+              max={200}
               unselectedStyle={{
                 backgroundColor: '#ccc',
               }}
@@ -420,7 +410,7 @@ export default class EditProfile extends Component {
            </View>
            <View style={styles.contenGender}>
              <TouchableOpacity style={this.state.user.match_sex === 'Otro' ? styles.buttomEditSexOn : styles.buttomEditSexOff } onPress={() => this._setMatch('Otro') }>
-               <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Otro</Text>
+               <Text style={this.state.user.match_sex === 'Otro' ? styles.buttonTextOn : styles.buttonTextOff}>Todos</Text>
              </TouchableOpacity>
            </View>
          </View>

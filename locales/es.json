@@ -76,11 +76,12 @@
     "confirmPassword": "Confirmar Password"
   },
   "swiper": {
-    "searching": "Buscando personas cerca de tí",
+    "searching": "Buscando personas cerca de ti",
     "hours": " horas y ",
     "minutes": " minutos para volver a realizar esta acción."
   },
   "chat": {
+    "nomsg": "No tienes conversaciones activas",
     "reconnect": "Reconectando",
     "write": "Se el primero en escribir un mensaje"
   }

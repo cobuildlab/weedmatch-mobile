@@ -81,6 +81,7 @@
     "minutes": " minutes to do this action again."
   },
   "chat": {
+    "nomsg": "You do not have active conversations",
     "reconnect": "Reconnecting",
     "write": "Be the first to write a message"
   }

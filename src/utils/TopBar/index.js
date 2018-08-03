@@ -68,6 +68,7 @@ export default class TopBar extends Component {
         const localNotification = new 
         firebase.notifications.Notification({
                  sound: 'default',
+                 icon: "ic_launcher",
                  show_in_foreground: true,
              })
                  .setNotificationId(notification.notificationId)
@@ -75,6 +76,7 @@ export default class TopBar extends Component {
                  .setSubtitle(notification.subtitle)
                  .setBody(notification.body)
                  .setData(notification.data)
+                //  .android.setSmallIcon('icon')
                  .android.setChannelId('general')
                  .android.setPriority(firebase.notifications.Android.Priority.High);
         firebase.notifications().displayNotification(localNotification)
@@ -103,16 +105,8 @@ export default class TopBar extends Component {
       case "ME":
         this.props.navigation.navigate('Notifications', { tabIndex: 1 });
         break;
-      case "MC":
-        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
-        break;  
-      case "AC":
-        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
-        break;  
-      case "MS":
-        this.props.navigation.navigate('Notifications', { tabIndex: 0, chat_id: data.chat_id });
-        break; 
       default:
+        this.props.navigation.navigate('Notifications', { tabIndex: 0, data: data });
         break;
     }
 }

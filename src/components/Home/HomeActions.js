@@ -91,8 +91,7 @@ function handleImagePress(idImage,id_user,like,row) {
     if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
       delete this.lastImagePress;
       likeAction(idImage,id_user,like,row);
-    }
-    else {
+    } else {
       this.lastImagePress = now;
     }
 }

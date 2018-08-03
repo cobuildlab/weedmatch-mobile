@@ -47,6 +47,15 @@ export default class SwiperView extends Component {
         }
       });
 
+      this.action = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
+        console.log("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
+        if (state.swiperAction) {
+          if (this.swiper.state.firstCardIndex == 0) {
+            this.onSwipedAllCards()
+          }
+        }
+      });
+
       this.swiperData = APP_STORE.SWIPER_EVENT.subscribe(state => {
         console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
         if (state.swiper) {
@@ -161,7 +170,11 @@ export default class SwiperView extends Component {
 
   swipeLeft(aux) {
     if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
-      this.onSwipedAllCards()
+      if (checkConectivity()) {
+        swiperAction(APP_STORE.getToken(),'DisLike',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+      } else {
+        internet();
+      }
     } else {
       if(aux) {
         this.swiper.swipeLeft()
@@ -177,7 +190,11 @@ export default class SwiperView extends Component {
 
   swipeRight(aux) {
     if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
-      this.onSwipedAllCards()
+      if (checkConectivity()) {
+        swiperAction(APP_STORE.getToken(),'Like',this.state.cards[this.swiper.state.firstCardIndex].id_user)
+      } else {
+        internet();
+      }
     } else {
       if(aux) {
         this.swiper.swipeRight();
@@ -193,8 +210,11 @@ export default class SwiperView extends Component {
 
   swipeTop(aux) {
     if (this.swiper.state.firstCardIndex == this.state.cards.length-1) {
-      console.log('Arriba')
-      this.onSwipedAllCards()
+      if (checkConectivity()) {
+        saveHour(this.state.cards[this.swiper.state.firstCardIndex].id_user)
+      } else {
+        internet();
+      }
     } else {
       if(aux) {
         this.swiper.swipeTop();
@@ -252,7 +272,7 @@ export default class SwiperView extends Component {
   }
 
   render () {
-    if(this.state.isLoaded) {
+    if(this.state.isLoaded && this.state.cards.length > 0) {
       return (
         <View style={styles.container}>
           <Swiper

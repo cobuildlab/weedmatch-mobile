@@ -28,6 +28,16 @@ export default styles = StyleSheet.create({
       width: 100,
       height: 50,
     },
+    heartLike:{
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      position: 'relative',
+      top: -230,
+    },
+    positionHeart:{
+      position: 'absolute',
+
+    },
     container: {
       flex: 1,
       justifyContent: 'center',
@@ -203,9 +213,9 @@ export default styles = StyleSheet.create({
       justifyContent: 'flex-end',
     },
     containerViewSpace: {
-      height: 0.5, 
-      backgroundColor: '#B2B2B2', 
-      marginBottom: 8,  
+      height: 0.5,
+      backgroundColor: '#B2B2B2',
+      marginBottom: 8,
       marginTop: 5
     },
     containerFlex: {
@@ -213,11 +223,11 @@ export default styles = StyleSheet.create({
     },
     imageSize: {
       width: width,
-      height: width,  
+      height: width,
     },
-    userContainer: { 
-      flex: 1, 
-      flexDirection: 'column', 
+    userContainer: {
+      flex: 1,
+      flexDirection: 'column',
       justifyContent: 'flex-start'
     }
   });
