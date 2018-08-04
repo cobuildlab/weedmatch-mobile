@@ -92,44 +92,39 @@ function getImages(data) {
     return _images;
 }
 
+async function saveSuper(id,tomorrow) {
+    try {
+        await AsyncStorage.setItem("day", tomorrow);
+        swiperAction(APP_STORE.getToken(),'SuperLike',id)
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+    }
+}
+
 async function saveHour(id) {
 
     var today = new Date();
     var tomorrow = new Date(today.getTime() + (1000 * 60 * 60 * 24));
 
-    try {
-      const day = await AsyncStorage.getItem('day');
-      if (day) {
 
+    const day = await AsyncStorage.getItem('day');
+
+    if (day != null) {
         if (moment().diff(day, 'minutes') < 0) {
 
-          startTime = "00:00"
-          minutes = moment().diff(day, 'minutes') * -1
-          h = Math.floor(minutes / 60)
-          m = minutes % 60 + parseInt(startTime.substring(3,4));
-          newtime = h + strings("swiper.hours") + m + strings("swiper.minutes");
+            startTime = "00:00"
+            minutes = moment().diff(day, 'minutes') * -1
+            h = Math.floor(minutes / 60)
+            m = minutes % 60 + parseInt(startTime.substring(3,4));
+            newtime = h + strings("swiper.hours") + m + strings("swiper.minutes");
 
-          Alert.alert(newtime)
+            Alert.alert(newtime)
 
         } else {
-          try {
-            await AsyncStorage.setItem("day", tomorrow);
-            swiperAction(APP_STORE.getToken(),'SuperLike',id)
-        } catch (error) {
-            console.error('AsyncStorage error: ' + error.message);
-          }
+            saveSuper(id,tomorrow)
         }
-      } else {
-        try {
-          await AsyncStorage.setItem("day", tomorrow);
-          swiperAction(APP_STORE.getToken(),'SuperLike',id)
-      } catch (error) {
-          console.error('AsyncStorage error: ' + error.message);
-        }
-      }
-    } catch (error) {
-        console.error('AsyncStorage error: ' + error.message);
-        return undefined;
+    } else {
+        saveSuper(id,tomorrow)
     }
 }
 

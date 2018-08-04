@@ -86,6 +86,7 @@ function logOut() {
                     )
                     AsyncStorage.removeItem('token');
                     AsyncStorage.removeItem('id');
+                    AsyncStorage.removeItem('day');
                     AsyncStorage.removeItem('idFB');
                     APP_STORE.APP_EVENT.next({"success": json.detail});
                     return;

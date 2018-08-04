@@ -42,7 +42,10 @@ export default class SwiperView extends Component {
         console.log("SwiperView:componentDidMount:BAD_EVENT", state);
         if (state.bad) {
 
-          this.swiper.swipeBack( () => {})
+          if (this.swiper != null) {
+            this.swiper.swipeBack( () => {})
+          }
+
           return;
         }
       });
@@ -50,8 +53,10 @@ export default class SwiperView extends Component {
       this.action = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
         console.log("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
         if (state.swiperAction) {
-          if (this.swiper.state.firstCardIndex == 0) {
-            this.onSwipedAllCards()
+          if (this.swiper != null) {
+            if (this.swiper.state.firstCardIndex == 0) {
+              this.onSwipedAllCards()
+            }
           }
         }
       });
