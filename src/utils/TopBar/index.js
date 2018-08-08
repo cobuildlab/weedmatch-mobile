@@ -22,9 +22,22 @@ export default class TopBar extends Component {
     };
   }
 
+async popNoti() {
+    try {
+        await AsyncStorage.getItem('noti').then((value) => {
+            console.log("popNotification:", value);
+            this.setState({notification: value})
+          });
+        
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
+
   componentDidMount() {
 
-    this.setState({notification: APP_STORE.getNoti()})
+    this.popNoti()
 
     this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
       console.log("TopBar:componentDidMount:noti", state);

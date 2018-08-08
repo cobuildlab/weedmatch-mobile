@@ -91,6 +91,7 @@ export default class Like extends Component {
 
     componentWillUnmount() {
       this.superVar.unsubscribe();
+      this.like.unsubscribe();
     }
 
     likeTap(action,id) {
