@@ -23,6 +23,15 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         right: 30,
     },
+    TouchableOpacityPlus: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        top: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+    },
     ShowDetail: {
         resizeMode: 'contain',
         width: 25,
@@ -65,8 +74,19 @@ export default styles = StyleSheet.create({
     },
     media: {
         width:width,
-        height:width
+        height:width,
+        // ...Platform.select({
+        //   android: {
+        //     width: width,
+        //     height: 300,
+        //   },
+        //   ios: {
+        //     width: width,
+        //     height: 150,
+        //   },
+        // }),
     },
+
     mediaUser: {
         alignItems: 'center',
         padding:10,
@@ -190,8 +210,36 @@ export default styles = StyleSheet.create({
         fontSize: 18,
         color: '#333',
     },
+    textNameDetails: {
+        marginTop: -32,
+        marginBottom: 15,
+        paddingLeft: 20,
+        fontSize: 18,
+        color: '#333',
+    },
     textContainer: {
         marginTop: 15,
+        paddingLeft: 20,
+        fontSize: 15,
+        color: '#777'
+    },
+    textCountry: {
+        marginTop: -5,
+        marginBottom: 10,
+        paddingLeft: 20,
+        fontSize: 15,
+        color: '#777'
+    },
+    textDistance: {
+        marginTop: 0,
+        marginBottom: 10,
+        paddingLeft: 20,
+        fontSize: 15,
+        color: '#777'
+    },
+    textDescription: {
+        marginTop: 0,
+        marginBottom: 20,
         paddingLeft: 20,
         fontSize: 15,
         color: '#777'

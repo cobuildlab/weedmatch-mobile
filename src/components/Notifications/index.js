@@ -18,7 +18,7 @@ export default class Notifications extends Component {
           index: 0,
         };
       }
-  
+
     static navigationOptions = ({ navigation }) => {
       const {params} = navigation.state;
 
@@ -28,7 +28,7 @@ export default class Notifications extends Component {
     };
 
     componentDidMount() {
-      
+
       setTimeout(()=>{
         APP_STORE.NOTI_EVENT.next({"noti": "false"});
         this.setState({index: this.props.navigation.getParam('tabIndex', 0)})

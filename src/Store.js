@@ -128,7 +128,7 @@ async function popNoti(state) {
             console.log("popNotification:", value);
             state.noti = value;
         });
-        
+
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
         return undefined;

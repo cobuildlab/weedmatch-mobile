@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Tab, Tabs,TabHeading } from 'native-base';
-import { Image, TouchableOpacity,AsyncStorage,Platform } from 'react-native';
+import { Image, TouchableOpacity,AsyncStorage,Platform,Alert } from 'react-native';
 import {changeToken} from './TopBarActions'
+import {NavigationActions} from 'react-navigation'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import {APP_STORE} from '../../Store';
@@ -18,8 +19,11 @@ export default class TopBar extends Component {
     super();
     this.state = {
       activePage: 0,
-      notification: "false"
+      initialApp: false,
+      notification: "false",
     };
+
+    this.data = undefined
   }
 
 async popNoti() {
@@ -28,7 +32,7 @@ async popNoti() {
             console.log("popNotification:", value);
             this.setState({notification: value})
           });
-        
+
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
@@ -65,20 +69,19 @@ async popNoti() {
     firebase.notifications().getInitialNotification()
       .then((notificationOpen: NotificationOpen) => {
         if (notificationOpen) {
-          // App was opened by a notification
-          // Get the action triggered by the notification being opened
-          const action = notificationOpen.action;
 
-          // Get information about the notification that was opened
-          const notification: Notification = notificationOpen.notification;  
-
+          if(!this.state.initialApp) {
+            this.data = notificationOpen.notification.data
+            this.setState({initialApp: true})
+            this.notifData(notificationOpen.notification.data)
+          }
         }
       });
 
     this.notificationListener = firebase.notifications().onNotification(notification => {
 
       if (Platform.OS === 'android') {
-        const localNotification = new 
+        const localNotification = new
         firebase.notifications.Notification({
                  sound: 'default',
                  icon: "ic_launcher",
@@ -103,13 +106,35 @@ async popNoti() {
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
       console.log('onNotificationOpened:', notificationOpen)
 
-      this.props.navigation.popToTop()
-      this.notifHandler(notificationOpen.notification.data)
+      if(!this.state.initialApp) {
+        this.data = notificationOpen.notification.data
+        this.notifData(notificationOpen.notification.data)
+      }
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
       console.log('onNotificationDisplayed:', notification)
     })
+  }
+
+   notifData(data) {
+     this.firstFunction(this.secondFunction.bind(this))
+  }
+
+  firstFunction(callback) {
+    // do some asynchronous work
+    // and when the asynchronous stuff is complete
+    this.props.navigation.popToTop()
+    callback();
+  }
+
+  secondFunction(){
+      // call first function and spass in a callback function which
+      // first function runs when it has completed
+      this.firstFunction(() => {
+        Alert.alert('huzzadone!')
+      })
+          // this.notifHandler(this.data)
   }
 
   notifHandler(data) {
