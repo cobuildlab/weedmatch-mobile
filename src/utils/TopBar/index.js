@@ -18,7 +18,7 @@ export default class TopBar extends Component {
     super();
     this.state = {
       activePage: 0,
-      notification: false
+      notification: "false"
     };
   }
 
@@ -177,7 +177,7 @@ async popNoti() {
           <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttomIconMsg} onPress={ () => this.showMessage()}>
-          <Image style={styles.imgIconMsg} source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
+          <Image style={styles.imgIconMsg} source={this.state.notification == "true" ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
         </TouchableOpacity>
         <Tabs
           initialPage={0}

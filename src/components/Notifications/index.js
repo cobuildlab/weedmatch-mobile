@@ -30,7 +30,7 @@ export default class Notifications extends Component {
     componentDidMount() {
       
       setTimeout(()=>{
-        APP_STORE.NOTI_EVENT.next({"noti": false});
+        APP_STORE.NOTI_EVENT.next({"noti": "false"});
         this.setState({index: this.props.navigation.getParam('tabIndex', 0)})
       },0)
     }
