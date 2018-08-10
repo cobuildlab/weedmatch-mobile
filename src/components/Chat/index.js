@@ -79,12 +79,16 @@ _handleWebSocketSetup() {
 }
 
 componentWillMount() {
+  APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": ""});
+
   this.props.navigation.setParams({
     name: this.getOtherUser()
   });
 }
 
 componentDidMount() {
+  
+  APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": this.getOtherUser()});
 
   this._handleWebSocketSetup()
 

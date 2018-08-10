@@ -43,12 +43,12 @@ export default class Like extends Component {
     };
 
     componentWillUnmount() {
-      APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "false"});
+      // APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "false"});
     }
 
     componentDidMount(){
 
-      APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "true"});
+      // APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "true"});
 
       this.superVar = APP_STORE.SUPER_EVENT.subscribe(state => {
         console.log("Like:componentDidMount:superVar", state);

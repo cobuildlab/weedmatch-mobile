@@ -20,7 +20,8 @@ export default class TopBar extends Component {
     this.state = {
       activePage: 0,
       notification: "false",
-      like: "false"
+      like: "false",
+      chat: ""
     };
 
   }
@@ -42,9 +43,9 @@ async popNoti() {
 
     this.popNoti()
 
-    this.like = APP_STORE.LIKENOTIF_EVENT.subscribe(state => {
-      if (state.likeNotif) {
-        this.setState({like: state.likeNotif})
+    this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
+      if (state.chatNotif) {
+        this.setState({chat: state.chatNotif})
         return;
       }
     });
@@ -124,8 +125,10 @@ async popNoti() {
           break;
         }
       default:
+      if (this.state.chat != data.username) {
         this.props.navigation.navigate('Notifications', { tabIndex: 0, data: data });
         break;
+      }
     }
 }
 
@@ -152,6 +155,7 @@ async popNoti() {
     this.notificationOpenedListener()
     this.onTokenRefreshListener();
     this.noti.unsubscribe();
+    this.chatUser.unsubscribe();
   }
 
   getSwiperImage(){
