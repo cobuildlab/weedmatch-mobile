@@ -44,7 +44,7 @@ async popNoti() {
 
     this.like = APP_STORE.LIKENOTIF_EVENT.subscribe(state => {
       if (state.likeNotif) {
-        this.setState({like: "true"})
+        this.setState({like: state.likeNotif})
         return;
       }
     });
@@ -119,8 +119,10 @@ async popNoti() {
     console.log(data)
     switch(data.type_notification) {
       case "ME":
-        this.props.navigation.navigate('Notifications', { tabIndex: 1 });
-        break;
+        if (this.state.like == "false") {
+          this.props.navigation.navigate('Notifications', { tabIndex: 1 });
+          break;
+        }
       default:
         this.props.navigation.navigate('Notifications', { tabIndex: 0, data: data });
         break;
