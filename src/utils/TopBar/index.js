@@ -73,7 +73,7 @@ async popNoti() {
           if(!this.state.initialApp) {
             this.data = notificationOpen.notification.data
             this.setState({initialApp: true})
-            this.notifData(notificationOpen.notification.data)
+            this.notifHandler(notificationOpen.notification.data)
           }
         }
       });
@@ -107,34 +107,13 @@ async popNoti() {
       console.log('onNotificationOpened:', notificationOpen)
 
       if(!this.state.initialApp) {
-        this.data = notificationOpen.notification.data
-        this.notifData(notificationOpen.notification.data)
+        this.notifHandler(notificationOpen.notification.data)
       }
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
       console.log('onNotificationDisplayed:', notification)
     })
-  }
-
-   notifData(data) {
-     this.firstFunction(this.secondFunction.bind(this))
-  }
-
-  firstFunction(callback) {
-    // do some asynchronous work
-    // and when the asynchronous stuff is complete
-    this.props.navigation.popToTop()
-    callback();
-  }
-
-  secondFunction(){
-      // call first function and spass in a callback function which
-      // first function runs when it has completed
-      this.firstFunction(() => {
-        Alert.alert('huzzadone!')
-      })
-          // this.notifHandler(this.data)
   }
 
   notifHandler(data) {
