@@ -166,7 +166,9 @@ class Store {
             bad: undefined,
             face: undefined,
             noti: undefined,
-            upload: undefined
+            upload: undefined,
+            chatNotif: undefined,
+            likeNotif: undefined
         };
         popToken(this.state);
         popId(this.state);
@@ -369,6 +371,18 @@ class Store {
             if (!state)
                 return;
             me.state.upload = state.upload;
+        });
+        this.CHATNOTIF_EVENT = new Subject();
+        this.CHATNOTIF_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.chatNotif = state.chatNotif;
+        });
+        this.LIKENOTIF_EVENT = new Subject();
+        this.LIKENOTIF_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.likeNotif = state.likeNotif;
         });
     }
 
