@@ -155,7 +155,6 @@ async popNoti() {
     this.notificationOpenedListener()
     this.onTokenRefreshListener();
     this.noti.unsubscribe();
-    this.setState({chat: ""})
     this.chatUser.unsubscribe();
   }
 
