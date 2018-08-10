@@ -101,20 +101,21 @@ export default class HomePage extends Component {
         }
       });
 
-      this.event = APP_STORE.APP_EVENT.subscribe(state => {
+      this.event = APP_STORE.UPLOAD_EVENT.subscribe(state => {
         this.setState({isLoading: true});
         console.log(state);
         if (state.error) {
           Alert.alert(state.error);
             return;
         }
-        if (state.success) {
-            this.setState({
-              load: false,
-              comment: '',
-              modalVisible: false
-            });
+        if (state.upload) {
+          this.setState({
+            load: false,
+            comment: '',
+            modalVisible: false
+          },() => {
             this._onRefresh();
+          })
         }
     });
 

@@ -166,6 +166,7 @@ class Store {
             bad: undefined,
             face: undefined,
             noti: undefined,
+            upload: undefined
         };
         popToken(this.state);
         popId(this.state);
@@ -362,6 +363,12 @@ class Store {
             if (!state)
                 return;
             me.state.face = state.face;
+        });
+        this.UPLOAD_EVENT = new Subject();
+        this.UPLOAD_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.upload = state.upload;
         });
     }
 
