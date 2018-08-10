@@ -20,6 +20,7 @@ export default class TopBar extends Component {
     this.state = {
       activePage: 0,
       notification: "false",
+      like: "false"
     };
 
   }
@@ -40,6 +41,13 @@ async popNoti() {
   componentDidMount() {
 
     this.popNoti()
+
+    this.like = APP_STORE.LIKENOTIF_EVENT.subscribe(state => {
+      if (state.likeNotif) {
+        this.setState({like: "true"})
+        return;
+      }
+    });
 
     this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
       console.log("TopBar:componentDidMount:noti", state);
