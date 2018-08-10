@@ -19,11 +19,9 @@ export default class TopBar extends Component {
     super();
     this.state = {
       activePage: 0,
-      initialApp: false,
       notification: "false",
     };
 
-    this.data = undefined
   }
 
 async popNoti() {
@@ -69,12 +67,7 @@ async popNoti() {
     firebase.notifications().getInitialNotification()
       .then((notificationOpen: NotificationOpen) => {
         if (notificationOpen) {
-
-          if(!this.state.initialApp) {
-            this.data = notificationOpen.notification.data
-            this.setState({initialApp: true})
-            this.notifHandler(notificationOpen.notification.data)
-          }
+          this.notifHandler(notificationOpen.notification.data)
         }
       });
 
@@ -92,7 +85,7 @@ async popNoti() {
                  .setSubtitle(notification.subtitle)
                  .setBody(notification.body)
                  .setData(notification.data)
-                //  .android.setSmallIcon('icon')
+                 .android.setSmallIcon('ic_launcher')
                  .android.setChannelId('general')
                  .android.setPriority(firebase.notifications.Android.Priority.High);
         firebase.notifications().displayNotification(localNotification)
@@ -106,9 +99,7 @@ async popNoti() {
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
       console.log('onNotificationOpened:', notificationOpen)
 
-      if(!this.state.initialApp) {
         this.notifHandler(notificationOpen.notification.data)
-      }
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
