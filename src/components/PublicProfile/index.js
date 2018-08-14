@@ -317,7 +317,7 @@ export default class PublicProfile extends Component {
                         <Text style={styles.textCountry}>{country.name} </Text>
                       }
                       <Text style={styles.textDistance}>{rowData.distance} </Text>
-                    <Text style={styles.textDescription}>{rowData.description} </Text>
+                      <Text style={styles.textDescription}>{rowData.description} </Text>
                     </View>
                     {
                       public420.length > 0 &&

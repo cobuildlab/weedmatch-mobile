@@ -34,15 +34,16 @@ export default class Authentication extends Component {
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                this.setState({
-                    latitud: position.coords.latitude.toFixed(6),
-                    longitud: position.coords.longitude.toFixed(6)
-                })
+              console.log(position)
+              this.setState({
+                latitud: position.coords.latitude.toFixed(6),
+                longitud: position.coords.longitude.toFixed(6)
+              })
             },
             (error) => {
-                console.log(error)
+              Alert.alert(error.message)
             },
-            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
+            {enableHighAccuracy: false, timeout: 5000}
         );
     }
 
