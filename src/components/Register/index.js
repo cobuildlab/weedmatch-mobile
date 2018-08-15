@@ -143,7 +143,7 @@ class RegisterPage extends Component {
                 (error) => {
                     Alert.alert(error.message)
                 },
-                {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
+                {enableHighAccuracy: false, timeout: 5000}
             );
         } else {
             internet();

@@ -111,47 +111,55 @@ export default class Like extends Component {
 
     render() {
       if(this.state.isLoading) {
-        return (
-          <View style={styles.viewContainer}>
-          <FlatList
-            horizontal={false}
-            keyExtractor={( item , index ) => index.toString() }
-            data={this.state.super}
-            renderItem={({item}) =>
-              <TouchableOpacity onPress={() => this.tap(item.id_user)}>
-              <View style={styles.viewMsg}>
-              <Image style={styles.imgProfileItem}
-                source={{uri: item.image_profile}}
-              />
-              <View style={styles.viewTexts}>
-                    <Text style={styles.textUser}>{item.username} quiere contactar</Text>
-                  <Text style={styles.textUser}>contigo</Text>
-                <Text style={styles.textTime}>Hace {calculateTime(item.time)}</Text>
-                </View>
-                <View style={styles.viewOption}>
-                  <View style={styles.viewButtom}>
-                    <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("True",item.id)}>
-                      <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
-                    </TouchableOpacity>
+        if (this.state.super.length > 0) {
+          return (
+            <View style={styles.viewContainer}>
+            <FlatList
+              horizontal={false}
+              keyExtractor={( item , index ) => index.toString() }
+              data={this.state.super}
+              renderItem={({item}) =>
+                <TouchableOpacity onPress={() => this.tap(item.id_user)}>
+                <View style={styles.viewMsg}>
+                <Image style={styles.imgProfileItem}
+                  source={{uri: item.image_profile}}
+                />
+                <View style={styles.viewTexts}>
+                      <Text style={styles.textUser}>{item.username} quiere contactar</Text>
+                    <Text style={styles.textUser}>contigo</Text>
+                  <Text style={styles.textTime}>Hace {calculateTime(item.time)}</Text>
                   </View>
-                  <View style={styles.viewButtom}>
-                    <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("False",item.id)}>
-                      <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
-                    </TouchableOpacity>
+                  <View style={styles.viewOption}>
+                    <View style={styles.viewButtom}>
+                      <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("True",item.id)}>
+                        <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.viewButtom}>
+                      <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("False",item.id)}>
+                        <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-            }
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={() => this._onRefresh()}
-              />
-            }
-          />
-          </View>
-        );
+              </TouchableOpacity>
+              }
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={() => this._onRefresh()}
+                />
+              }
+            />
+            </View>
+          );
+        } else {
+          return(
+            <View style={styles.containerLoader}>
+              <Text>{strings("chat.noLike")}</Text>
+            </View>
+          );
+        }
       } else {
           return (
               <View style={[styles.containers, styles.horizontal]}>

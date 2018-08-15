@@ -82,6 +82,7 @@
   },
   "chat": {
     "nomsg": "You do not have active conversations",
+    "noLike": "You do not have new notifications",
     "reconnect": "Reconnecting",
     "write": "Be the first to write a message"
   }

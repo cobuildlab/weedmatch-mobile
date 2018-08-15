@@ -14,6 +14,11 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
       padding: 15,
     },
+    containerLoader: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     imgProfileItem:{
       width: 35,
       height: 35,
