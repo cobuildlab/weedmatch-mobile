@@ -96,12 +96,14 @@ async popNoti() {
                  .setData(notification.data)
                  .android.setSmallIcon('ic_launcher')
                  .android.setChannelId('general')
+                 .android.setAutoCancel(true)
+                 .android.setColor('#000000')
                  .android.setPriority(firebase.notifications.Android.Priority.High);
         firebase.notifications().displayNotification(localNotification)
       } else {
         firebase.notifications().displayNotification(notification)
       }
-      APP_STORE.NOTI_EVENT.next({"noti": true});
+      APP_STORE.NOTI_EVENT.next({"noti": "true"});
       console.log('onNotification:', notification)
     })
 
