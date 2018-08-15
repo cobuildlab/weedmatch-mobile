@@ -33,7 +33,7 @@ export default styles = StyleSheet.create({
         right: 30,
         ...Platform.select({
           ios: {
-            top: 0,
+            top: -50,
           },
         }),
     },
