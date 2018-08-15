@@ -27,10 +27,15 @@ export default styles = StyleSheet.create({
         position: 'absolute',
         width: 50,
         height: 50,
-        top: 0,
+        top: -50,
         alignItems: 'center',
         justifyContent: 'center',
         right: 30,
+        ...Platform.select({
+          ios: {
+            top: 0,
+          },
+        }),
     },
     ShowDetail: {
         resizeMode: 'contain',
