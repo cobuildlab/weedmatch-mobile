@@ -55,18 +55,6 @@ class RegisterPage extends Component {
 
     componentDidMount() {
         console.log("RegisterPage:componentDidMount");
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setState({
-                    latitud: position.coords.latitude.toFixed(6),
-                    longitud: position.coords.longitude.toFixed(6)
-                })
-            },
-            (error) => {
-                console.log(error)
-            },
-            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
-        );
 
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             if (state.error) {
@@ -140,10 +128,23 @@ class RegisterPage extends Component {
 
     _registerUser() {
         console.log('RegisterUser');
-        this.setState({isLoading: true});
         if (checkConectivity()) {
-            registerAction(this.state.full_name, this.state.email, this.state.password,
-                parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age, this.state.image)
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    this.setState({
+                        latitud: position.coords.latitude.toFixed(6),
+                        longitud: position.coords.longitude.toFixed(6),
+                        isLoading: true
+                    },() => {
+                        registerAction(this.state.full_name, this.state.email, this.state.password,
+                            parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6), this.state.sex, this.state.age, this.state.image)
+                    })
+                },
+                (error) => {
+                    Alert.alert(error.message)
+                },
+                {enableHighAccuracy: false, timeout: 5000}
+            );
         } else {
             internet();
         }

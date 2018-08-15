@@ -126,7 +126,10 @@ export default class Profile extends Component {
     }
 
     update = () => {
-      this.setState({isLoading: false});
+      this.setState({isLoading: false,
+                     public420: [],
+                     urlPage: '',
+                     numPage: 0});
       if (checkConectivity()) {
         publicProfileAction(APP_STORE.getToken(), APP_STORE.getId())
       } else {
@@ -144,7 +147,7 @@ export default class Profile extends Component {
         return;
         }
         if (state.success)
-          APP_STORE.NOTI_EVENT.next({"noti": false});
+          APP_STORE.NOTI_EVENT.next({"noti": "false"});
           this.props.navigation.navigate('Auth');
         });
 

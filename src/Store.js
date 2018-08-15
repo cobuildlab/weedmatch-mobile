@@ -124,11 +124,11 @@ async function popIdFB(state) {
 
 async function popNoti(state) {
     try {
-        const noti = await AsyncStorage.getItem('noti').then((value) => {
+        await AsyncStorage.getItem('noti').then((value) => {
             console.log("popNotification:", value);
             state.noti = value;
         });
-        
+
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
@@ -166,6 +166,9 @@ class Store {
             bad: undefined,
             face: undefined,
             noti: undefined,
+            upload: undefined,
+            chatNotif: undefined,
+            likeNotif: undefined
         };
         popToken(this.state);
         popId(this.state);
@@ -362,6 +365,24 @@ class Store {
             if (!state)
                 return;
             me.state.face = state.face;
+        });
+        this.UPLOAD_EVENT = new Subject();
+        this.UPLOAD_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.upload = state.upload;
+        });
+        this.CHATNOTIF_EVENT = new Subject();
+        this.CHATNOTIF_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.chatNotif = state.chatNotif;
+        });
+        this.LIKENOTIF_EVENT = new Subject();
+        this.LIKENOTIF_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.likeNotif = state.likeNotif;
         });
     }
 

@@ -7,6 +7,8 @@ import firebase from 'react-native-firebase';
 
 function facebookAction(state) {
 
+  console.log(state)
+
     AccessToken.getCurrentAccessToken().then(
         (data) => {
             if(data) {

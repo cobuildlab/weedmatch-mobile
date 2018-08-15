@@ -61,7 +61,7 @@ function uploadAction(token, state) {
             const json = await response.json();
             console.log(`uploadAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.APP_EVENT.next({"success": json.detail});
+                APP_STORE.UPLOAD_EVENT.next({"upload": json.detail});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});

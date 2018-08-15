@@ -121,7 +121,7 @@ export default class PublicProfile extends Component {
            this.setState({
              latitud: position.coords.latitude.toFixed(6),
              longitud: position.coords.longitude.toFixed(6),
-           },() => { 
+           },() => {
              this._publicProfile();
            })
        },
@@ -217,7 +217,7 @@ export default class PublicProfile extends Component {
       const {rowData, country} = this.state;
 
       return (
-        <View>
+        <View style={styles.viewFlex}>
         <View style={styles.viewBackground}>
         <ImageSlider
           images={getImages(rowData.profile_images)}
@@ -247,14 +247,17 @@ export default class PublicProfile extends Component {
           />
           </View>
           <View style={styles.viewContainer}>
-            <View style={styles.viewContainerPlus}>
-              <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
-                {country &&
-                    <Text style={styles.textContainer}>{country.name} </Text>
-                }
-              <Text style={styles.textContainer}>{rowData.distance} </Text>
-              <Text style={styles.textContainer}>{rowData.description} </Text>
+            <View style={styles.viewContainer}>
+              <Text style={styles.textNameDetails}>{rowData.first_name}, {rowData.age} </Text>
             </View>
+            <View>
+              {country &&
+                <Text style={styles.textCountry}>{country.name} </Text>
+              }
+              <Text style={styles.textDistance}>{rowData.distance} </Text>
+              <Text style={styles.textDescription}>{rowData.description} </Text>
+            </View>
+
               <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
                 <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic} />
               </TouchableOpacity>
@@ -311,21 +314,14 @@ export default class PublicProfile extends Component {
                     </View>
                     <View style={styles.viewContainer}>
                       {country &&
-                          <Text style={styles.textContainer}>{country.name} </Text>
+                        <Text style={styles.textCountry}>{country.name} </Text>
                       }
-                      {
-                        public420.length > 0 &&
-                          <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle} onPress={this._changeView}>
-                            <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                          </TouchableOpacity>
-                      }
+                      <Text style={styles.textDistance}>{rowData.distance} </Text>
+                      <Text style={styles.textDescription}>{rowData.description} </Text>
                     </View>
-                    <View style={styles.viewContainer}>
-                        <Text style={styles.textContainer}>{rowData.distance} </Text>
-                    </View>
-                    <View style={styles.viewContainer}>
-                        <Text style={styles.textContainer}>{rowData.description} </Text>
-                    </View>
+                      <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityPlus} onPress={this._changeView}>
+                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                      </TouchableOpacity>
                   </View>
                     {this.showButtons()}
                 </View>

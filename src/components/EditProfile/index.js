@@ -45,6 +45,8 @@ export default class EditProfile extends Component {
       name: '',
       notification: true
     };
+
+    this.helper = false
   }
 
   componentDidMount(){
@@ -73,10 +75,9 @@ export default class EditProfile extends Component {
       console.log("Public Save Profile:componentDidMount:PUBLIC_SAVE_PROFILE_EVENT", state);
       console.log(state);
       if (state.saveProfile) {
-          this.setState({
-              isLoading: true,
-          })
-          return;
+        this.helper = true
+        this.props.navigation.pop()
+        return;
       }
     });
 
@@ -95,7 +96,9 @@ export default class EditProfile extends Component {
 
   componentWillUnmount() {
       console.log("EditProfile:componentWillUmmount");
-      this.props.navigation.state.params.refresh()
+      if (this.helper) {
+        this.props.navigation.state.params.refresh()
+      }
       this.public.unsubscribe();
       this.saveProfile.unsubscribe();
 

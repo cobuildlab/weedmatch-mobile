@@ -85,6 +85,8 @@ componentWillMount() {
 }
 
 componentDidMount() {
+  
+  APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": this.getOtherUser()});
 
   this._handleWebSocketSetup()
 
@@ -141,6 +143,7 @@ componentDidMount() {
 
 componentWillUnmount() {
   console.log("Chat:componentWillUmmount");
+  APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": ""});
   this.chatMsg.unsubscribe();
   this.chatPage.unsubscribe();
   this.close()

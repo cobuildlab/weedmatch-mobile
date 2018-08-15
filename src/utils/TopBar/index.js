@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Tab, Tabs,TabHeading } from 'native-base';
-import { Image, TouchableOpacity,AsyncStorage,Platform } from 'react-native';
+import { Image, TouchableOpacity,AsyncStorage,Platform,Alert } from 'react-native';
 import {changeToken} from './TopBarActions'
+import {NavigationActions} from 'react-navigation'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import {APP_STORE} from '../../Store';
@@ -18,13 +19,36 @@ export default class TopBar extends Component {
     super();
     this.state = {
       activePage: 0,
-      notification: false
+      notification: "false",
+      like: "false",
+      chat: ""
     };
+
   }
+
+async popNoti() {
+    try {
+        await AsyncStorage.getItem('noti').then((value) => {
+            console.log("popNotification:", value);
+            this.setState({notification: value})
+          });
+
+    } catch (error) {
+        console.error('AsyncStorage error: ' + error.message);
+        return undefined;
+    }
+}
 
   componentDidMount() {
 
-    this.setState({notification: APP_STORE.getNoti()})
+    this.popNoti()
+
+    this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
+      if (state.chatNotif) {
+        this.setState({chat: state.chatNotif})
+        return;
+      }
+    });
 
     this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
       console.log("TopBar:componentDidMount:noti", state);
@@ -52,20 +76,14 @@ export default class TopBar extends Component {
     firebase.notifications().getInitialNotification()
       .then((notificationOpen: NotificationOpen) => {
         if (notificationOpen) {
-          // App was opened by a notification
-          // Get the action triggered by the notification being opened
-          const action = notificationOpen.action;
-
-          // Get information about the notification that was opened
-          const notification: Notification = notificationOpen.notification;  
-
+          this.notifHandler(notificationOpen.notification.data)
         }
       });
 
     this.notificationListener = firebase.notifications().onNotification(notification => {
 
       if (Platform.OS === 'android') {
-        const localNotification = new 
+        const localNotification = new
         firebase.notifications.Notification({
                  sound: 'default',
                  icon: "ic_launcher",
@@ -76,22 +94,23 @@ export default class TopBar extends Component {
                  .setSubtitle(notification.subtitle)
                  .setBody(notification.body)
                  .setData(notification.data)
-                //  .android.setSmallIcon('icon')
+                 .android.setSmallIcon('ic_launcher')
                  .android.setChannelId('general')
+                 .android.setAutoCancel(true)
+                 .android.setColor('#000000')
                  .android.setPriority(firebase.notifications.Android.Priority.High);
         firebase.notifications().displayNotification(localNotification)
       } else {
         firebase.notifications().displayNotification(notification)
       }
-      APP_STORE.NOTI_EVENT.next({"noti": true});
+      APP_STORE.NOTI_EVENT.next({"noti": "true"});
       console.log('onNotification:', notification)
     })
 
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
       console.log('onNotificationOpened:', notificationOpen)
 
-      this.props.navigation.popToTop()
-      this.notifHandler(notificationOpen.notification.data)
+        this.notifHandler(notificationOpen.notification.data)
     })
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
@@ -103,11 +122,15 @@ export default class TopBar extends Component {
     console.log(data)
     switch(data.type_notification) {
       case "ME":
-        this.props.navigation.navigate('Notifications', { tabIndex: 1 });
-        break;
+        if (this.state.like == "false") {
+          this.props.navigation.navigate('Notifications', { tabIndex: 1 });
+          break;
+        }
       default:
+      if (this.state.chat != data.username) {
         this.props.navigation.navigate('Notifications', { tabIndex: 0, data: data });
         break;
+      }
     }
 }
 
@@ -134,6 +157,7 @@ export default class TopBar extends Component {
     this.notificationOpenedListener()
     this.onTokenRefreshListener();
     this.noti.unsubscribe();
+    this.chatUser.unsubscribe();
   }
 
   getSwiperImage(){
@@ -164,7 +188,7 @@ export default class TopBar extends Component {
           <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttomIconMsg} onPress={ () => this.showMessage()}>
-          <Image style={styles.imgIconMsg} source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
+          <Image style={styles.imgIconMsg} source={this.state.notification == "true" ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
         </TouchableOpacity>
         <Tabs
           initialPage={0}

@@ -18,7 +18,7 @@ import Toast from 'react-native-toast-native';
  */
 const LENGUAGE = I18n.currentLocale().slice(0,2);
 const URL = "https://dev-api.weedmatch.cl/";
-// const URL = "http://192.168.0.29:8080/";
+// const URL = "http://192.168.0.16:8080/";
 
 async function checkConectivity() {
     let response = await NetInfo.isConnected.fetch()

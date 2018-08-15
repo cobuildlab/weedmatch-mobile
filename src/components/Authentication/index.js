@@ -31,19 +31,6 @@ export default class Authentication extends Component {
 
     componentDidMount() {
         console.log("Authentication:componentDidMount");
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setState({
-                    latitud: position.coords.latitude.toFixed(6),
-                    longitud: position.coords.longitude.toFixed(6)
-                })
-            },
-            (error) => {
-                console.log(error)
-            },
-            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
-        );
     }
 
     suscriptions() {
@@ -98,8 +85,24 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        this.suscriptions()
-        facebookAction(this.state)
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+              console.log(position)
+
+              this.setState({
+                latitud: position.coords.latitude.toFixed(6),
+                longitud: position.coords.longitude.toFixed(6)
+              },() => {
+                this.suscriptions()
+                facebookAction(this.state)
+              })
+            },
+            (error) => {
+              Alert.alert(error.message)
+            },
+            {enableHighAccuracy: false, timeout: 5000}
+        );
     }
 
     render() {
