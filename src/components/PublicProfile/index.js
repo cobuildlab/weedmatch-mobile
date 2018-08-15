@@ -319,12 +319,9 @@ export default class PublicProfile extends Component {
                       <Text style={styles.textDistance}>{rowData.distance} </Text>
                       <Text style={styles.textDescription}>{rowData.description} </Text>
                     </View>
-                    {
-                      public420.length > 0 &&
-                        <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityPlus} onPress={this._changeView}>
-                          <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                        </TouchableOpacity>
-                    }
+                      <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityPlus} onPress={this._changeView}>
+                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
+                      </TouchableOpacity>
                   </View>
                     {this.showButtons()}
                 </View>
