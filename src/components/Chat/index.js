@@ -45,7 +45,7 @@ _handleWebSocketSetup() {
 
   const { navigation } = this.props;
   const chat_id = navigation.getParam('chat_id', '0');
-  this.socket = new WebSocket("ws://192.168.0.16:8888/ws?"+'id_user='+APP_STORE.getId()+'&'+'username='+APP_STORE.getUser()+'&'+'chat_id='+chat_id+'&'+'token='+APP_STORE.getToken());
+  this.socket = new WebSocket("ws://dev-api.weedmatch.cl:8888/ws?"+'id_user='+APP_STORE.getId()+'&'+'username='+APP_STORE.getUser()+'&'+'chat_id='+chat_id+'&'+'token='+APP_STORE.getToken());
 
   this.socket.onopen = () => {
     this.setState({connected:true})
