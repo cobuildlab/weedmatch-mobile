@@ -313,5 +313,11 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-      }
+      },
+      activeButton: {
+          opacity: 1
+      },
+      disactiveButton: {
+        opacity: 0.5
+    }
 });
