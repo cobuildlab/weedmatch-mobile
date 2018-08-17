@@ -38,7 +38,15 @@ export default class PublicProfile extends Component {
           isDetail: false,
           urlPage: '',
           numPage: 0,
+          like: false,
+          disLike: false,
+          super: false,
         };
+
+        this.like = false
+        this.dislike = false
+        this.superLike = false
+
         console.log('PublicProfile');
     }
 
@@ -51,10 +59,31 @@ export default class PublicProfile extends Component {
       this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
           console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
           if (state.publicProfile) {
+
+            switch(state.publicProfile.weed_action) {
+              case true || "SuperLike":
+               this.like = true
+               this.dislike = true
+               this.superLike = true
+               break;
+              case "Like":
+               this.like = true
+                break;
+              case "DisLike":
+               this.dislike = true
+                break;
+              default:
+                break;
+            }
+
               this.setState({
                   rowData: state.publicProfile,
-                  country: state.publicProfile.country
+                  country: state.publicProfile.country,
+                  like: this.like,
+                  disLike: this.dislike,
+                  super: this.superLike,
               })
+
               this._get420Images();
               return;
           }
@@ -192,20 +221,21 @@ export default class PublicProfile extends Component {
     }
 
     showButtons() {
+      console.log(this.state)
       return (
           <View style={styles.buttonViewContainer}>
               <View>
-              <TouchableOpacity onPress={() => this.actionSwiper(1)}>
+              <TouchableOpacity onPress={() => this.actionSwiper(1)}  disabled={this.state.disLike} style={!this.state.disLike ? styles.activeButton : styles.disactiveButton}>
                   <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
               <View>
-              <TouchableOpacity onPress={() => this.actionSwiper(2)}>
+              <TouchableOpacity onPress={() => this.actionSwiper(2)} disabled={this.state.super} style={!this.state.super ? styles.activeButton : styles.disactiveButton}>
                   <Image source={require('../../assets/img/actions/like.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity onPress={() => this.actionSwiper(3)}>
+                <TouchableOpacity onPress={() => this.actionSwiper(3)} disabled={this.state.like} style={!this.state.like ? styles.activeButton : styles.disactiveButton}>
                   <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
