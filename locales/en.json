@@ -28,6 +28,8 @@
     "female": "Woman",
     "email": "Email",
     "age": "Date of birth",
+    "all": "Everyone",
+    "other": "Other",
     "allInputs": "All inputs required",
     "errorFullName": "Invalid full name",
     "errorEmail": "Invalid email",
