@@ -18,6 +18,8 @@ function publicProfileAction(token, id) {
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
+            } else if (response.status === 401) {
+                logOut()
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         });
@@ -71,7 +73,7 @@ function logOut() {
 
     firebase.messaging().getToken().then((token) => {
         if (token) {
-            userService.tokenFB(token)
+            userService.tokenFB()
             .then(async (response) => {
                 console.log(`logOut:`, response);
                 const json = await response.json();
@@ -87,7 +89,8 @@ function logOut() {
                 AsyncStorage.removeItem('id');
                 AsyncStorage.removeItem('day');
                 AsyncStorage.removeItem('idFB');
-                APP_STORE.APP_EVENT.next({"success": true});
+                APP_STORE.NOTI_EVENT.next({"noti": "false"});
+                this.props.navigation.navigate('Auth');
                 return;
             });
         }
