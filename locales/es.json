@@ -29,6 +29,8 @@
     "female": "Mujer",
     "email": "Correo eléctronico",
     "age": "Tu cumpleaños es ...",
+    "all": "Todos",
+    "other": "Otro",
     "allInputs": "Todos los campos son requeridos",
     "errorEmail": "Corre Inválido",
     "errorPassword": "Contraseña inválida",

@@ -148,6 +148,13 @@ export default class HomePage extends Component {
       this.feedPage.unsubscribe();
     }
 
+    onEndReached = () => {
+      if (!this.onEndReachedCalledDuringMomentum && this.state.numPage > 0) {
+        this._feedData();
+        this.onEndReachedCalledDuringMomentum = true;
+      }
+    };
+
     _feedData() {
       if (checkConectivity()) {
         feedAction(APP_STORE.getToken(), this.state);
@@ -350,7 +357,9 @@ export default class HomePage extends Component {
               enableEmptySections={true}
               dataSource={this.state.feedData}
               renderRow={this._renderRow.bind(this)}
-              onEndReached={this._feedData.bind(this)}
+              onEndReached={this.onEndReached.bind(this)}
+              onEndReachedThreshold={0.5}
+              onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
               // stickyHeaderIndices = {[0]}
               //renderSectionHeader={this.sectionHeader}
               // stickySectionHeadersEnabled={true}
