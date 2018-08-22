@@ -5,6 +5,7 @@ import {userService} from './service';
 import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
+import { logOut } from '../Profile/ProfileActions';
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
 const DOUBLE_PRESS_DELAY = 300;
@@ -36,6 +37,8 @@ function getFeed(token, state,pagUrl) {
             APP_STORE.FEED_EVENT.next({"feed": json.results});
             APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
             return;
+        } else if (response.status === 401) {
+            logOut()
         }
         APP_STORE.APP_EVENT.next({"error": json.detail});
     })

@@ -76,22 +76,19 @@ function logOut() {
                 console.log(`logOut:`, response);
                 const json = await response.json();
                 console.log(`logOut:JSON:`, json);
-                if (response.ok) {
-                    AccessToken.getCurrentAccessToken().then(
-                        (data) => {
-                            if(data) {
-                                LoginManager.logOut();
-                            }
+                AccessToken.getCurrentAccessToken().then(
+                    (data) => {
+                        if(data) {
+                            LoginManager.logOut();
                         }
-                    )
-                    AsyncStorage.removeItem('token');
-                    AsyncStorage.removeItem('id');
-                    AsyncStorage.removeItem('day');
-                    AsyncStorage.removeItem('idFB');
-                    APP_STORE.APP_EVENT.next({"success": json.detail});
-                    return;
-                }
-                APP_STORE.APP_EVENT.next({"error": json.detail});
+                    }
+                )
+                AsyncStorage.removeItem('token');
+                AsyncStorage.removeItem('id');
+                AsyncStorage.removeItem('day');
+                AsyncStorage.removeItem('idFB');
+                APP_STORE.APP_EVENT.next({"success": true});
+                return;
             });
         }
       });
