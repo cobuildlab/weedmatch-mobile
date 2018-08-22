@@ -73,7 +73,7 @@ function logOut() {
 
     firebase.messaging().getToken().then((token) => {
         if (token) {
-            userService.tokenFB(token)
+            userService.tokenFB()
             .then(async (response) => {
                 console.log(`logOut:`, response);
                 const json = await response.json();

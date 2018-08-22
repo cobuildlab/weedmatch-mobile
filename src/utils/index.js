@@ -68,6 +68,13 @@ function authHeader(token) {
     }
 }
 
+function authHeaderLogout() {
+    return {
+        'Accept-Language': LENGUAGE,
+        'Content-Type': 'application/json',
+    }
+}
+
 /**
  * Headers for Authorization
  * LENGUAGE this cellphone
@@ -95,7 +102,7 @@ function toastMsg(msg){
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet,authHeaderForm, URL, LENGUAGE, checkConectivity,parseError }
+export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet,authHeaderForm,authHeaderLogout, URL, LENGUAGE, checkConectivity,parseError }
 
 
 const style={

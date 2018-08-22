@@ -42,11 +42,11 @@ function publicImages420(token,pageUrl) {
  * @param token The token of firebase
  * @returns {Promise<any>}
  */
-function tokenFB(token) {
+function tokenFB() {
 
     const requestOptions = {
         method: 'DELETE',
-        headers: authHeader(APP_STORE.getToken()),
+        headers: authHeaderLogout(),
     };
     return fetch(URL + 'device/' + APP_STORE.getIdFB() + '/', requestOptions);
 }
