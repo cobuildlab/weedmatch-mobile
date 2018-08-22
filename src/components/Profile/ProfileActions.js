@@ -89,7 +89,8 @@ function logOut() {
                 AsyncStorage.removeItem('id');
                 AsyncStorage.removeItem('day');
                 AsyncStorage.removeItem('idFB');
-                APP_STORE.APP_EVENT.next({"success": true});
+                APP_STORE.NOTI_EVENT.next({"noti": "false"});
+                this.props.navigation.navigate('Auth');
                 return;
             });
         }
