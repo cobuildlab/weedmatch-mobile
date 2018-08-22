@@ -18,6 +18,8 @@ function publicProfileAction(token, id) {
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
+            } else if (response.status === 401) {
+                logOut()
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         });
