@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Weedmatch
 
 Weedmatch uniendo amantes del cannabis
@@ -9,7 +10,7 @@ Weedmatch uniendo amantes del cannabis
 * $ react-native link
 * $ cd ios
 * $ pod install
-
+=======
 ### Mac OSX. changing java version:
 
 You don't need to down grade. You can run more than one version of Java on MacOS. You can set the version of your terminal with this command in MacOS.
@@ -31,3 +32,4 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
 
 # Java 1.6
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)
+>>>>>>> notiHandler
