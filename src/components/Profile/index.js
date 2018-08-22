@@ -140,17 +140,6 @@ export default class Profile extends Component {
     _logout = () => {
 
         if (checkConectivity()) {
-          this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-            console.log("Profile:componentDidMount:appSubscription", state);
-            if (state.error) {
-              this.setState({isLoading: true});
-              toastMsg(state.error);
-            return;
-            }
-            if (state.success)
-              APP_STORE.NOTI_EVENT.next({"noti": "false"});
-              this.props.navigation.navigate('Auth');
-          });
           this.setState({isLoading: false});
           logOut();      
         } else {
