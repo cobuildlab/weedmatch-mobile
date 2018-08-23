@@ -2,9 +2,9 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
-import {AsyncStorage } from 'react-native';
-import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
-import { AccessToken, LoginManager} from 'react-native-fbsdk';
+import {AsyncStorage} from 'react-native';
+import {authHeader, catchErrorAndPropagate, URL, LENGUAGE} from '../../utils';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
 
 function publicProfileAction(token, id) {
@@ -18,7 +18,7 @@ function publicProfileAction(token, id) {
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
-            } else if (response.status === 401) {
+            } else if (response.status === 401) {
                 logOut()
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
@@ -28,7 +28,7 @@ function publicProfileAction(token, id) {
 function publicImages420Action(token, id, pageUrl) {
     console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`);
 
-    userService.publicImages420(token, id,pageUrl)
+    userService.publicImages420(token, id, pageUrl)
         .then(async (response) => {
             console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`, response);
             const json = await response.json();
@@ -42,26 +42,26 @@ function publicImages420Action(token, id, pageUrl) {
         });
 }
 
-function Action420(token, state,userId) {
+function Action420(token, state, userId) {
 
     console.log(`Action420: ${token}, ${state}, ${userId}`);
 
     var pagUrl = '';
 
-    if (state.urlPage != '' && state.numPage > 0) {
+    if (state.urlPage != '' && state.numPage > 0) {
         pagUrl = state.urlPage;
-        publicImages420Action(token,pagUrl);
+        publicImages420Action(token, pagUrl);
 
-    } else if (state.numPage == 0){
+    } else if (state.numPage == 0) {
         pagUrl = URL + 'public-image/' + userId + '/';
-        publicImages420Action(token,pagUrl);
+        publicImages420Action(token, pagUrl);
     }
 }
 
-function appendData(oldData, newData) {
+function appendData(oldData, newData) {
     oldData.slice();
 
-    newData.map((data) => { 
+    newData.map((data) => {
         oldData.push(data);
     });
 
@@ -69,43 +69,47 @@ function appendData(oldData, newData) {
 }
 
 function logOut() {
-    console.log(`logOut`);
-
-    firebase.messaging().getToken().then((token) => {
-        if (token) {
-            userService.tokenFB()
-            .then(async (response) => {
-                console.log(`logOut:`, response);
-                const json = await response.json();
-                console.log(`logOut:JSON:`, json);
-                AccessToken.getCurrentAccessToken().then(
-                    (data) => {
-                        if(data) {
-                            LoginManager.logOut();
-                        }
-                    }
-                )
-                AsyncStorage.removeItem('token');
-                AsyncStorage.removeItem('id');
-                AsyncStorage.removeItem('day');
-                AsyncStorage.removeItem('idFB');
-                APP_STORE.NOTI_EVENT.next({"noti": "false"});
-                this.props.navigation.navigate('Auth');
-                return;
-            });
+    console.log(`ProfileActions:logOut`);
+    AccessToken.getCurrentAccessToken().then(
+        (data) => {
+            if (data) {
+                LoginManager.logOut();
+            }
         }
-      });
+    ).catch(err => console.error(`ProfileActions:logOut:AccessToken:${JSON.stringify(err)}`));
+
+    firebase.messaging().getToken().then(async (token) => {
+        if (token) {
+            const response = await userService.tokenFB();
+            console.log(`ProfileActions:logOut:firebase.messaging:response${response}`);
+            const json = await response.json();
+            console.log(`ProfileActions:logOut:firebase.messaging:responseJSON${JSON.stringify(json)}`);
+        }
+        _cleanStorage();
+        APP_STORE.NOTI_EVENT.next({"noti": "false"});
+    }).catch(err => {
+        console.error(`ProfileActions:logOut:firebase.messaging:${JSON.stringify(err)}`);
+        _cleanStorage();
+        APP_STORE.NOTI_EVENT.next({"noti": "false"});
+    });
 }
 
-function getImages(data) {
+const _cleanStorage = () => {
+    AsyncStorage.removeItem('token');
+    AsyncStorage.removeItem('id');
+    AsyncStorage.removeItem('day');
+    AsyncStorage.removeItem('idFB');
+}
+
+function getImages(data) {
 
     const _images = [];
 
-    data.map((image) => {
-      _images.push(image.image);
+    data.map((image) => {
+        _images.push(image.image);
     });
 
     return _images;
 }
 
-export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,logOut };
+export {publicProfileAction, getImages, publicImages420Action, appendData, Action420, logOut};

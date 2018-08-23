@@ -13,14 +13,16 @@ import {strings} from '../i18n';
 import {APP_STATE} from "../Store";
 import I18n from 'react-native-i18n';
 import Toast from 'react-native-toast-native';
+
 /**
  * Detects the lenguange and keeps in constant
  */
-const LENGUAGE = I18n.currentLocale().slice(0,2);
+const LENGUAGE = I18n.currentLocale().slice(0, 2);
 const URL = "https://api.weedmatch.cl/";
+
 // const URL = "http://192.168.0.16:8080/";
 
-async function checkConectivity() {
+async function checkConectivity() {
     let response = await NetInfo.isConnected.fetch()
     return response
 }
@@ -28,7 +30,7 @@ async function checkConectivity() {
 function parseError(val) {
     Object.keys(val).map((objectKey) => {
         var value = val[objectKey];
-        if(typeof value == 'object'){
+        if (typeof value == 'object') {
             value.forEach((msg) => {
                 toastMsg(msg);
             });
@@ -38,7 +40,7 @@ function parseError(val) {
     });
 }
 
-function internet() {
+function internet() {
     return Alert.alert(strings("main.internet"));
 }
 
@@ -98,14 +100,26 @@ function catchErrorAndPropagate(err) {
     throw err;
 }
 
-function toastMsg(msg){
+function toastMsg(msg) {
     Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
 }
 
-export {isValidText, authHeader, catchErrorAndPropagate, toastMsg, internet,authHeaderForm,authHeaderLogout, URL, LENGUAGE, checkConectivity,parseError }
+export {
+    isValidText,
+    authHeader,
+    catchErrorAndPropagate,
+    toastMsg,
+    internet,
+    authHeaderForm,
+    authHeaderLogout,
+    URL,
+    LENGUAGE,
+    checkConectivity,
+    parseError
+}
 
 
-const style={
+const style = {
     backgroundColor: "#333333",
     width: 300,
     height: Platform.OS === ("ios") ? 50 : 200,
