@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-native';
  */
 const LENGUAGE = I18n.currentLocale().slice(0, 2);
 const URL = "https://api.weedmatch.cl/";
+const WS_URL = "ws://api.weedmatch.cl:8888/ws";
 
 // const URL = "http://192.168.0.16:8080/";
 
@@ -113,6 +114,7 @@ export {
     authHeaderForm,
     authHeaderLogout,
     URL,
+    WS_URL,
     LENGUAGE,
     checkConectivity,
     parseError

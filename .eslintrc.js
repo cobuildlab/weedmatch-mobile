@@ -1,7 +1,7 @@
 module.exports = {
     "extends": "google",
     "rules": {
-        "object-curly-spacing": "always"
+        "object-curly-spacing": "0"
     },
     "parserOptions": {
         "ecmaVersion": 7,

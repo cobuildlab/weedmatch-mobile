@@ -5,13 +5,13 @@ import {APP_STORE} from "../../Store";
 import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
 
 function getChatMessages(pageUrl) {
-    console.log(`getChatMessagesAction: ${pageUrl}`);
+    // console.log(`getChatMessagesAction: ${pageUrl}`);
 
     userService.chats(pageUrl)
         .then(async (response) => {
-            console.log(`getChatMessagesAction: ${pageUrl}`, response);
+            // console.log(`getChatMessagesAction: ${pageUrl}`, response);
             const json = await response.json();
-            console.log(`getChatMessagesAction:JSON:`, json);
+            // console.log(`getChatMessagesAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.CHATMSG_EVENT.next({"chatMsg": json.results});
                 APP_STORE.CHATPAGE.next({"chatMsgPage": json.next});
@@ -23,7 +23,7 @@ function getChatMessages(pageUrl) {
 
 function chatAction(state,chatID) {
 
-    console.log(`CHATMSG: ${state}, ${chatID}`);
+    // console.log(`CHATMSG: ${state}, ${chatID}`);
 
     var pagUrl = '';
 
