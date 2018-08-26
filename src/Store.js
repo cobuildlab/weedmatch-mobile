@@ -29,7 +29,7 @@ async function saveUser(user) {
 }
 
 /**
- * Synchronous save the id
+ * Save the User id
  * @param id
  * @returns {Promise<void>}
  */
@@ -390,6 +390,10 @@ class Store {
         return this.state.token;
     }
 
+    /**
+     * Get the Logged User ID
+     * @return {undefined|*}
+     */
     getId() {
         return this.state.id;
     }

@@ -42,7 +42,7 @@ function appendData(oldData, newData,id) {
 
     newData.map((data) => {
 
-        console.log(data)
+        // console.log(data)
 
         var message = null
 

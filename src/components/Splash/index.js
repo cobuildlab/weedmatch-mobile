@@ -3,6 +3,7 @@ import {Image, View, AsyncStorage} from 'react-native';
 import {APP_STORE} from "../../Store";
 import {isValidText} from "../../utils";
 import styles from './style';
+import {Alert} from 'react-native';
 
 export default class Splash extends Component {
     constructor() {
@@ -16,23 +17,25 @@ export default class Splash extends Component {
     }
 
     async popToken() {
+        let token;
         try {
-            const token = await AsyncStorage.getItem('token');
-            const id = APP_STORE.getId();
-            console.log("TOKEN", token);
-            console.log("ID", id);
-            if (!isValidText(token)) {
-                console.log(this.props.navigation);
-                this.props.navigation.navigate('Auth');
-                return;
-            }
-            console.log(this.props.navigation);
-            this.props.navigation.navigate('App');
-
+            token = await AsyncStorage.getItem('token');
         } catch (error) {
-            console.error('AsyncStorage error: ' + error.message);
-            return undefined;
+            console.error('Splash:AsyncStorage:error: ' + error.message);
+            Alert.alert(error.message);
+            return;
         }
+
+        const id = APP_STORE.getId();
+        console.log("Splash:TOKEN", token);
+        console.log("Splash:USER-ID", id);
+        if (!isValidText(token)) {
+            // To Authentication Page
+            this.props.navigation.navigate('Auth');
+            return;
+        }
+        // A user is logged in
+        this.props.navigation.navigate('App');
     }
 
     render() {

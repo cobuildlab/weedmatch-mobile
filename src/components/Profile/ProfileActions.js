@@ -72,25 +72,32 @@ function logOut() {
     console.log(`ProfileActions:logOut`);
     AccessToken.getCurrentAccessToken().then(
         (data) => {
+            console.log(`ProfileActions:logOut`, data);
             if (data) {
                 LoginManager.logOut();
             }
         }
-    ).catch(err => console.error(`ProfileActions:logOut:AccessToken:${JSON.stringify(err)}`));
+    ).catch(err => console.log(`ProfileActions:logOut:AccessToken`, JSON.stringify(err)));
 
+    console.log(`ProfileActions:logOut: Trying to obtain Firebase Token`);
     firebase.messaging().getToken().then(async (token) => {
+        console.log("1")
         if (token) {
+            console.log("2")
             const response = await userService.tokenFB();
             console.log(`ProfileActions:logOut:firebase.messaging:response${response}`);
             const json = await response.json();
             console.log(`ProfileActions:logOut:firebase.messaging:responseJSON${JSON.stringify(json)}`);
         }
+        console.log("3")
         _cleanStorage();
-        APP_STORE.NOTI_EVENT.next({"noti": "false"});
+        // Tell the system there is no more notifications
+        APP_STORE.NOTI_EVENT.next({"noti": false});
     }).catch(err => {
-        console.error(`ProfileActions:logOut:firebase.messaging:${JSON.stringify(err)}`);
+        console.log(`ProfileActions:logOut:firebase.messaging:error`,JSON.stringify(err));
         _cleanStorage();
-        APP_STORE.NOTI_EVENT.next({"noti": "false"});
+        // Tell the system there is no more notifications
+        APP_STORE.NOTI_EVENT.next({"noti": false});
     });
 }
 

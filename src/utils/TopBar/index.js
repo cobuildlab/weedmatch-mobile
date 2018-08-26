@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Image, TouchableOpacity, AsyncStorage, Platform, Alert} from 'react-native';
-import {changeToken} from './TopBarActions'
+import {changeToken, validateToken} from './TopBarActions'
 import {NavigationActions} from 'react-navigation'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
@@ -21,7 +21,7 @@ export default class TopBar extends Component {
             activePage: 0,
             notification: "false",
             like: "false",
-            chat: ""
+            currentChatUsername: ""
         };
 
     }
@@ -36,18 +36,24 @@ export default class TopBar extends Component {
     }
 
     componentDidMount() {
-        // TODO: Algo de aqui esta fallando
         this.popNoti();
 
+        // this event gets trigger when the user open a chats
         this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
-            this.setState({chat: state.chatNotif})
+            this.setState({currentChatUsername: state.chatNotif})
         });
 
+        // This is when a notification arrives
         this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
-            console.log("TopBar:componentDidMount:noti", state);
             this.setState({notification: state.noti})
         });
 
+        // This is for refreshing the token if FIREBASE dares to change it
+        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+            validateToken(fcmToken)
+        });
+
+        // For Android we need to create this channel
         const channel = new firebase.notifications.Android.Channel(
             "general",
             "General Notifications",
@@ -56,33 +62,27 @@ export default class TopBar extends Component {
 
         firebase.notifications().android.createChannel(channel);
 
-        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
-            console.log("TopBar:componentDidMount:onTokenRefresh", fcmToken);
+        // Do we need this here? REALLY?
+        // this.fcmMessageListener = firebase.messaging().onMessage(message => {
+        //     console.log("TopBar:componentDidMount:onMessague", message);
+        // });
 
-            this.validateToken(fcmToken)
-        });
-
-        this.fcmMessageListener = firebase.messaging().onMessage(message => {
-            console.log("TopBar:componentDidMount:onMessague", message);
-        })
-
+        // This initialNotification if for when the App it's opened from tapping in a notification
         firebase.notifications().getInitialNotification()
             .then((notificationOpen: NotificationOpen) => {
                 console.log("TOPBAR:getInitialNotification", notificationOpen);
-                console.log("TOPBAR:getInitialNotification", NotificationOpen);
                 if (notificationOpen) {
-                    this.notifHandler(notificationOpen.notification.data)
-                } else {
-                    console.error("TOPBAR:getInitialNotification", "No notificacion");
+                    this.notifHandler(notificationOpen.notification.data);
                 }
             });
 
+        // When we recive a notification
         this.notificationListener = firebase.notifications().onNotification(notification => {
-            console.log("TOPBAR:onNotification");
+            console.log("TOPBAR:onNotification", notification.data);
 
+            let localNotification = notification;
             if (Platform.OS === 'android') {
-                console.log("TOPBAR:onNotification:Android");
-                const localNotification = new
+                localNotification = new
                 firebase.notifications.Notification({
                     sound: 'default',
                     icon: "ic_launcher",
@@ -98,34 +98,35 @@ export default class TopBar extends Component {
                     .android.setAutoCancel(true)
                     .android.setColor('#000000')
                     .android.setPriority(firebase.notifications.Android.Priority.High);
-
-                if (this.state.chat != localNotification.data.username) {
-                    firebase.notifications().displayNotification(localNotification)
-                } else {
-                    console.log("TOPBAR:onNotification:Android", "In chat, won't show")
-                }
-            } else {
-                if (this.state.chat != notification.data.username) {
-                    firebase.notifications().displayNotification(notification)
-                }
             }
-            APP_STORE.NOTI_EVENT.next({"noti": "true"});
+
+            // if i'm talking with this guy, don't show it
+            if (this.state.currentChatUsername === notification.data.username) {
+                return;
+            }
+
+            // Any other scenario, show the notification
+            firebase.notifications().displayNotification(localNotification);
+            // A signal to tell the system there is a new notification
+            APP_STORE.NOTI_EVENT.next({"noti": true});
             // console.log('onNotification:', notification)
         });
 
+        // this is when someone taps on the notification
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
-            console.log("TopBar:componentDidMount:onNotificationOpen", notificationOpen);
-
-            this.notifHandler(notificationOpen.notification.data)
+            console.log("TOPBAR:OnNotificationopen", notificationOpen);
+            this.notifHandler(notificationOpen.notification.data);
+            // And i need to remove it
+            // Better, let's remove it all
+            firebase.notifications().removeAllDeliveredNotifications();
         });
 
-        this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
-            console.log("TopBar:componentDidMount:onNotificationDisplayed", notification);
-        });
+        // this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
+        //     // console.log("TopBar:componentDidMount:onNotificationDisplayed", notification);
+        // });
     }
 
     notifHandler(data) {
-        console.log(data)
         switch (data.type_notification) {
             case "ME":
                 if (this.state.like == "false") {
@@ -133,34 +134,20 @@ export default class TopBar extends Component {
                     break;
                 }
             default:
-                if (this.state.chat != data.username) {
+                if (this.state.currentChatUsername != data.username) {
                     this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
                     break;
                 }
         }
+        APP_STORE.NOTI_EVENT.next({"noti": false});
     }
 
-    async validateToken(newToken) {
-        try {
-            const token = await AsyncStorage.getItem('firebase');
-            if (token) {
-                console.log("Firebase Token:", token);
-
-                if (token != newToken) {
-                    changeToken(newToken)
-                }
-            }
-        } catch (error) {
-            console.error('AsyncStorage error: ' + error.message);
-            return undefined;
-        }
-    }
 
     componentWillUnmount() {
-        this.fcmMessageListener()
-        this.notificationListener()
-        this.notificationDisplayedListener()
-        this.notificationOpenedListener()
+        // this.fcmMessageListener();
+        this.notificationListener();
+        this.notificationDisplayedListener();
+        this.notificationOpenedListener();
         this.onTokenRefreshListener();
         this.noti.unsubscribe();
         this.chatUser.unsubscribe();
@@ -200,7 +187,7 @@ export default class TopBar extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttomIconMsg} onPress={() => this.showMessage()}>
                     <Image style={styles.imgIconMsg}
-                           source={this.state.notification == "true" ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
+                           source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
                 </TouchableOpacity>
                 <Tabs
                     initialPage={0}

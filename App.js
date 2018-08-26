@@ -17,8 +17,25 @@ import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
 
-const AppStack = StackNavigator({Bar: Topbar, Home: HomePage, Profile: Profile, Message: Message, Chat: Chat, Like: Like, EditProfile: EditProfile, PublicProfile: PublicProfile, Notifications: Notifications, LikeProfile: LikeProfile });
-const AuthStack = StackNavigator({SignIn: Authentication, Register: RegisterPage, Terms: Terms, Login: LoginPage, Forgot: ForgotPage});
+const AppStack = StackNavigator({
+    Bar: Topbar,
+    Home: HomePage,
+    Profile: Profile,
+    Message: Message,
+    Chat: Chat,
+    Like: Like,
+    EditProfile: EditProfile,
+    PublicProfile: PublicProfile,
+    Notifications: Notifications,
+    LikeProfile: LikeProfile
+});
+const AuthStack = StackNavigator({
+    SignIn: Authentication,
+    Register: RegisterPage,
+    Terms: Terms,
+    Login: LoginPage,
+    Forgot: ForgotPage
+});
 
 export default SwitchNavigator(
     {

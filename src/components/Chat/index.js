@@ -11,7 +11,8 @@ import {strings} from '../../i18n';
 import {internet, checkConectivity, toastMsg} from '../../utils';
 import styles from './style';
 import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat'
-import {chatAction, appendData} from './ChatActions'
+import {chatAction, appendData} from './ChatActions';
+import WS from 'react-native-websocket';
 
 
 export default class Chat extends Component {
@@ -57,7 +58,7 @@ export default class Chat extends Component {
         };
 
         this.socket.onmessage = ({data}) => {
-            console.log("CHAT:_handleWebSocketSetup:onmesage", JSON.stringify(data));
+            console.log("CHAT:_handleWebSocketSetup:onmesage", data);
             const json = JSON.parse(data);
             this.onReceive(json.message)
         }
@@ -89,10 +90,9 @@ export default class Chat extends Component {
     }
 
     componentDidMount() {
-
         APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": this.getOtherUser()});
 
-        this._handleWebSocketSetup();
+        // this._handleWebSocketSetup();
 
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
             console.log("Chat:componentDidMount:CHATMSG_EVENT");
@@ -147,7 +147,7 @@ export default class Chat extends Component {
         APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": ""});
         this.chatMsg.unsubscribe();
         this.chatPage.unsubscribe();
-        this.close()
+        // this.close()
     }
 
     close() {
@@ -195,20 +195,18 @@ export default class Chat extends Component {
     }
 
     onSend(messages = []) {
-        if (this.state.connected) {
-            console.log('onSend:SOCKET CONNECTED');
-            const payload = {
-                "message": messages[0].text,
-                "user": APP_STORE.getUser(),
-                "id_user_send": this.getOtherID(),
-                "chat_id": this.getChatID(),
-            }
-            this.socket.send(JSON.stringify(payload));
-            // this.setState(prevState => ({open: !prevState.open}));
-            this.setState(previousState => ({
-                messages: GiftedChat.append(previousState.messages, messages),
-            }))
+        console.log('onSend:SOCKET CONNECTED');
+        const payload = {
+            "message": messages[0].text,
+            "user": APP_STORE.getUser(),
+            "id_user_send": this.getOtherID(),
+            "chat_id": this.getChatID(),
         }
+        this.WS.send(JSON.stringify(payload));
+        // this.setState(prevState => ({open: !prevState.open}))
+        this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, messages),
+        }))
     }
 
     renderBubble(props) {
@@ -248,21 +246,55 @@ export default class Chat extends Component {
                 </View>
             )
         } else {
+            const {navigation} = this.props;
+            const chat_id = navigation.getParam('chat_id', '0');
+            let queryString = 'id_user=' + APP_STORE.getId() + '&' + 'username=' + APP_STORE.getUser() + '&' + 'chat_id=' + chat_id + '&' + 'token=' + APP_STORE.getToken();
+            const url = WS_URL + "?" + queryString;
+            const that = this;
+
             return (
-                <GiftedChat
-                    renderAvatar={null}
-                    loadEarlier={this.state.morePages}
-                    // renderTime={this.renderTime}
-                    renderBubble={this.renderBubble}
-                    onLoadEarlier={() => this.getEarlyMessages()}
-                    isLoadingEarlier={this.state.isLoading}
-                    renderSend={this.renderSend}
-                    messages={this.state.messages}
-                    onSend={messages => this.onSend(messages)}
-                    user={{
-                        _id: APP_STORE.getId(),
-                    }}
-                />
+                <View style={{flex: 1}}>
+                    <WS
+                        ref={ref => {
+                            this.ws = ref;
+                            that.WS = ref;
+                        }}
+                        url={url}
+                        onOpen={() => {
+                            console.log('Open!')
+                            // const payload = {
+                            //     "message": "HOLA",
+                            //     "user": APP_STORE.getUser(),
+                            //     "id_user_send": that.getOtherID(),
+                            //     "chat_id": that.getChatID(),
+                            // }
+                            // this.ws.send(JSON.stringify(payload));
+                        }}
+                        onMessage={data => {
+                            console.log("CHAT:_handleWebSocketSetup:onmesage", data);
+                            console.log("CHAT:_handleWebSocketSetup:onmesage", data.data);
+                            const json = JSON.parse(data.data);
+                            that.onReceive(json.message)
+                        }}
+                        onError={console.error}
+                        onClose={console.log}
+                        reconnect // Will try to reconnect onClose
+                    />
+                    <GiftedChat
+                        renderAvatar={null}
+                        loadEarlier={this.state.morePages}
+                        // renderTime={this.renderTime}
+                        renderBubble={this.renderBubble}
+                        onLoadEarlier={() => this.getEarlyMessages()}
+                        isLoadingEarlier={this.state.isLoading}
+                        renderSend={this.renderSend}
+                        messages={this.state.messages}
+                        onSend={messages => this.onSend(messages)}
+                        user={{
+                            _id: APP_STORE.getId(),
+                        }}
+                    />
+                </View>
             )
         }
     }
