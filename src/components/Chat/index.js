@@ -92,6 +92,7 @@ export default class Chat extends Component {
     componentDidMount() {
         APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": this.getOtherUser()});
 
+        // For some reason this stop working so i change it to a plugin
         // this._handleWebSocketSetup();
 
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {

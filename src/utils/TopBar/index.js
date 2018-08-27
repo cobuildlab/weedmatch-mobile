@@ -146,7 +146,7 @@ export default class TopBar extends Component {
     componentWillUnmount() {
         // this.fcmMessageListener();
         this.notificationListener();
-        this.notificationDisplayedListener();
+        // this.notificationDisplayedListener();
         this.notificationOpenedListener();
         this.onTokenRefreshListener();
         this.noti.unsubscribe();
