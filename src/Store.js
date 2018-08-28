@@ -125,6 +125,7 @@ async function popIdFB(state) {
 async function popNoti(state) {
     try {
         await AsyncStorage.getItem('noti').then((value) => {
+            value = (value === "true") ? true : false;
             console.log("popNotification:", value);
             state.noti = value;
         });

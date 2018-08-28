@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
-import {Image, TouchableOpacity, AsyncStorage, Platform, Alert} from 'react-native';
+import {Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState} from 'react-native';
 import {changeToken, validateToken} from './TopBarActions'
 import {NavigationActions} from 'react-navigation'
 import firebase from 'react-native-firebase';
@@ -29,14 +29,28 @@ export default class TopBar extends Component {
     popNoti() {
         AsyncStorage.getItem('noti').then((value) => {
             console.log("TopBar:popNotification:", value);
+            value = (value === "true") ? true : false;
             this.setState({notification: value})
         }).catch(err => {
             console.error("TopBar:popNotification:", err);
         });
     }
 
+    _handleAppStateChange = (nextAppState) => {
+        console.log("TOPBAR:_handleAppStateChange", nextAppState);
+        if (nextAppState == "active")
+            firebase.notifications().removeAllDeliveredNotifications();
+    };
+
     componentDidMount() {
+        // check if there is unread messages
         this.popNoti();
+
+        // console.log("TOPBAR:componentDidMount", AppState.currentState);
+        AppState.addEventListener('change', this._handleAppStateChange);
+
+        // Clean all indications of notifications when we start the App
+        firebase.notifications().removeAllDeliveredNotifications();
 
         // this event gets trigger when the user open a chats
         this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
@@ -76,7 +90,7 @@ export default class TopBar extends Component {
                 }
             });
 
-        // When we recive a notification
+        // When we receive a notification
         this.notificationListener = firebase.notifications().onNotification(notification => {
             console.log("TOPBAR:onNotification", notification.data);
 
@@ -98,6 +112,7 @@ export default class TopBar extends Component {
                     .android.setAutoCancel(true)
                     .android.setColor('#000000')
                     .android.setPriority(firebase.notifications.Android.Priority.High);
+
             }
 
             // if i'm talking with this guy, don't show it
@@ -110,6 +125,14 @@ export default class TopBar extends Component {
             // A signal to tell the system there is a new notification
             APP_STORE.NOTI_EVENT.next({"noti": true});
             // console.log('onNotification:', notification)
+
+            // If the App is open, clear the notifications tray
+            if (AppState.currentState === "active") {
+                setTimeout(() => {
+                    firebase.notifications().removeAllDeliveredNotifications();
+                }, 1000);
+            }
+
         });
 
         // this is when someone taps on the notification
@@ -151,6 +174,9 @@ export default class TopBar extends Component {
         this.onTokenRefreshListener();
         this.noti.unsubscribe();
         this.chatUser.unsubscribe();
+
+
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     getSwiperImage() {

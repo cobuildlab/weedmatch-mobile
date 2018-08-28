@@ -31,3 +31,19 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
 
 # Java 1.6
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)
+
+NOTA: actualment la version para Android solo se puede compilar con Java 8 (Java 9 / Java 10 no estan soportados por ReactNative)
+
+
+## Compilar version para Android
+
+- Actualizar la version en el app.gradle
+- cd android 
+- ./gradlew assembleRelease --info  
+
+
+## compilar la version para IOS
+
+- abrir el archivo .xcodeproject de la carpeta /ios
+- Actualizar la version en el INFO.plist
+- Generar y firmar la aplicacion con XCODE

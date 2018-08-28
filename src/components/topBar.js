@@ -11,6 +11,10 @@ import {
 import {StackNavigator} from 'react-navigation';
 
 var width = Dimensions.get('window').width;
+/**
+ * Unused class for legacy purposes
+ * I try to delete, but the app stop working, so i put it again
+ */
 export default class topBar extends Component {
     constructor(props) {
         super(props);

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     ActivityIndicator,
     View,
-    Image
+    Image, AppState
 } from 'react-native';
 import {WS_URL} from '../../utils';
 
@@ -13,6 +13,7 @@ import styles from './style';
 import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat'
 import {chatAction, appendData} from './ChatActions';
 import WS from 'react-native-websocket';
+import firebase from "react-native-firebase";
 
 
 export default class Chat extends Component {
@@ -83,10 +84,18 @@ export default class Chat extends Component {
         };
     }
 
+    _handleAppStateChange = (nextAppState) => {
+        console.log("TOPBAR:_handleAppStateChange", nextAppState);
+        if (nextAppState == "active")
+            this.getEarlyMessages();
+    };
+
+
     componentWillMount() {
         this.props.navigation.setParams({
             name: this.getOtherUser()
         });
+
     }
 
     componentDidMount() {
@@ -94,6 +103,8 @@ export default class Chat extends Component {
 
         // For some reason this stop working so i change it to a plugin
         // this._handleWebSocketSetup();
+
+        AppState.addEventListener('change', this._handleAppStateChange);
 
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
             console.log("Chat:componentDidMount:CHATMSG_EVENT");
@@ -140,7 +151,7 @@ export default class Chat extends Component {
             }
         });
 
-        this.getEarlyMessages()
+        this.getEarlyMessages();
     }
 
     componentWillUnmount() {
@@ -149,6 +160,7 @@ export default class Chat extends Component {
         this.chatMsg.unsubscribe();
         this.chatPage.unsubscribe();
         // this.close()
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     close() {
