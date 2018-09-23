@@ -126,7 +126,7 @@ async function popNoti(state) {
     try {
         await AsyncStorage.getItem('noti').then((value) => {
             value = (value === "true") ? true : false;
-            console.log("popNotification:", value);
+            console.log("STORE:popNotification:", value);
             state.noti = value;
         });
 
@@ -203,7 +203,7 @@ class Store {
         this.NOTI_EVENT.subscribe(state => {
             if (!state)
                 return;
-            if (state.noti) {
+            if (state.noti !== undefined && state.noti !== null) {
                 saveNoti(state.noti);
                 me.state.noti = state.noti;
             }

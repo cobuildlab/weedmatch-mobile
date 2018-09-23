@@ -50,7 +50,7 @@ export default class TopBar extends Component {
         AppState.addEventListener('change', this._handleAppStateChange);
 
         // Clean all indications of notifications when we start the App
-        firebase.notifications().removeAllDeliveredNotifications();
+        firebase.notifications().removeAllDeliveredNotifications().then(some => console.log("TopBar:componentDidMount", some));
 
         // this event gets trigger when the user open a chats
         this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
@@ -135,7 +135,7 @@ export default class TopBar extends Component {
 
         });
 
-        // this is when someone taps on the notification
+        // this is when someone taps on the notification with the app Open
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
             console.log("TOPBAR:OnNotificationopen", notificationOpen);
             this.notifHandler(notificationOpen.notification.data);

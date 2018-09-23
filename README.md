@@ -47,3 +47,10 @@ NOTA: actualment la version para Android solo se puede compilar con Java 8 (Java
 - abrir el archivo .xcodeproject de la carpeta /ios
 - Actualizar la version en el INFO.plist
 - Generar y firmar la aplicacion con XCODE
+
+
+## React native 0.57.0 Xcode 10
+cd node-modules/react-native/scripts
+./ios-install-third-party.sh 
+cd node_modules/react-native/third-party/glog-0.3.5
+../../scripts/ios-configure-glog.sh  

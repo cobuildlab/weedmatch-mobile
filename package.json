@@ -16,11 +16,11 @@
     "immutable": "^3.8.2",
     "moment": "^2.22.0",
     "moment-timezone": "^0.5.14",
-    "native-base": "^2.4.3",
+    "native-base": "^2.7.0",
     "npm": "^5.7.1",
     "prop-types": "^15.6.1",
-    "react": "16.2.0",
-    "react-native": "0.53.3",
+    "react": "16.4.1",
+    "react-native": "0.57.1",
     "react-native-actionsheet": "^2.4.0",
     "react-native-ci-tools": "^1.1.0",
     "react-native-deck-swiper": "^1.5.9",
@@ -38,15 +38,17 @@
     "react-native-websocket": "^1.0.2",
     "react-navigation": "^1.4.0",
     "rxjs": "^5.5.8",
-    "snyk": "^1.87.0",
+    "snyk": "^1.97.0",
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
     "babel-jest": "22.4.1",
-    "babel-preset-react-native": "4.0.0",
+    "babel-preset-react-native": "5.0.2",
     "eslint-config-google": "^0.9.1",
     "jest": "22.4.2",
-    "react-test-renderer": "16.2.0"
+    "react-test-renderer": "16.2.0",
+    "schedule": "^0.4.0"
   },
   "jest": {
     "preset": "react-native",
