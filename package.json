@@ -47,6 +47,7 @@
     "babel-preset-react-native": "5.0.2",
     "eslint-config-google": "^0.9.1",
     "jest": "22.4.2",
+    "metro-react-native-babel-preset": "^0.45.6",
     "react-test-renderer": "16.2.0",
     "schedule": "^0.4.0"
   },
