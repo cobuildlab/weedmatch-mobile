@@ -279,7 +279,7 @@ export default class EditProfile extends Component {
     }
   }
 
-  static navigationOptions = { title: 'Editar Perfil' };
+  static navigationOptions = { title: strings("register.editProfile") };
 
   render() {
     const { image, user, isLoading } = this.state;
@@ -371,7 +371,7 @@ export default class EditProfile extends Component {
                 backgroundColor: '#9605CC',
               }}
               min={2}
-              max={200}
+              max={2000}
               unselectedStyle={{
                 backgroundColor: '#ccc',
               }}

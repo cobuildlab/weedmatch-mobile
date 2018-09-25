@@ -20,6 +20,9 @@ import {strings} from '../../i18n';
 import {isValidText, internet, checkConectivity, parseError, toastMsg} from "../../utils";
 import firebase from 'react-native-firebase';
 
+/**
+ * Screen to Login the User
+ */
 export default class LoginPage extends Component {
 
     constructor() {
@@ -41,7 +44,15 @@ export default class LoginPage extends Component {
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
             console.log("LoginPage:componentDidMount:firebaseSubscription", state);
             this.setState({isLoading: false});
-            this.props.navigation.navigate('App');
+            // Initialization session on Firebase
+            firebase.auth().signInAnonymouslyAndRetrieveData()
+                .then((user) => {
+                    console.log("LoginPage:componentDidMount:firebaseAuth", user);
+                    const username = APP_STORE.getUser();
+                    console.log("LoginPage:componentDidMount:firebaseAuth", username);
+                    firebase.analytics().setUserId(username);
+                    this.props.navigation.navigate('App');
+                }).catch(err => console.error("LoginPage:componentDidMount:firebaseAuth", err));
         });
 
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
@@ -72,7 +83,7 @@ export default class LoginPage extends Component {
     }
 
     componentWillUnmount() {
-        console.log("LoginPage:componentWillUmmount");
+        console.log("LoginPage:componentWillUnmount");
         this.tokenSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
         this.idSubscription.unsubscribe();

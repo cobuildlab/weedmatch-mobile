@@ -42,7 +42,8 @@
     "photo": "Your photo",
     "sexRequired": "Invalid sex, is required",
     "imageRequired": "Image is required",
-    "ageRequired": "Date of birth is required"
+    "ageRequired": "Date of birth is required",
+    "editProfile" : "Edit Profile"
   },
   "main": {
     "title": "LINKING LOVERS OF THE",

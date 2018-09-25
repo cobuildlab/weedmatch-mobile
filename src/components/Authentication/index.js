@@ -12,13 +12,15 @@ import {
 } from 'react-native';
 import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk';
 import {strings} from '../../i18n';
-import {Logger,isValidText,toastMsg} from "../../utils";
+import {Logger, isValidText, toastMsg} from "../../utils";
 import {APP_STORE} from '../../Store'
 import styles from './styles'
-import {facebookAction,firebaseAction} from './AutheticationActions'
+import {facebookAction, firebaseAction} from './AutheticationActions'
 import firebase from 'react-native-firebase';
 
-
+/**
+ * Authentication Screen
+ */
 export default class Authentication extends Component {
 
     constructor() {
@@ -29,11 +31,7 @@ export default class Authentication extends Component {
         };
     }
 
-    componentDidMount() {
-        console.log("Authentication:componentDidMount");
-    }
-
-    suscriptions() {
+    subscription() {
 
         this.face = APP_STORE.FACE_EVENT.subscribe(state => {
             console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
@@ -59,17 +57,17 @@ export default class Authentication extends Component {
             console.log("Authentication:componentDidMount:idSubscription", state);
             if (isValidText(state.id)) {
 
-            if (firebase.messaging().hasPermission()) {
-                try {
-                    firebase.messaging().requestPermission();
-                } catch(e) {
-                    alert("Failed to grant permission")
+                if (firebase.messaging().hasPermission()) {
+                    try {
+                        firebase.messaging().requestPermission();
+                    } catch (e) {
+                        alert("Failed to grant permission")
+                    }
                 }
-            }
 
-            firebase.messaging().getToken().then(token => {
-                firebaseAction(token)
-            });
+                firebase.messaging().getToken().then(token => {
+                    firebaseAction(token)
+                });
             }
         });
     }
@@ -88,18 +86,17 @@ export default class Authentication extends Component {
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
-              console.log(position)
-
-              this.setState({
-                latitud: position.coords.latitude.toFixed(6),
-                longitud: position.coords.longitude.toFixed(6)
-              },() => {
-                this.suscriptions()
-                facebookAction(this.state)
-              })
+                console.log(position);
+                this.setState({
+                    latitud: position.coords.latitude.toFixed(6),
+                    longitud: position.coords.longitude.toFixed(6)
+                }, () => {
+                    this.subscription();
+                    facebookAction(this.state)
+                })
             },
             (error) => {
-              Alert.alert(error.message)
+                Alert.alert(error.message)
             },
             {enableHighAccuracy: false, timeout: 5000}
         );
@@ -123,7 +120,7 @@ export default class Authentication extends Component {
                         {strings("main.title")}
                     </Text>
                     <Text style={styles.textBold}>
-                          {strings('wmatch')}
+                        {strings('wmatch')}
                     </Text>
                     <TouchableOpacity
                         style={styles.buttomFacebookStyle}
@@ -133,19 +130,19 @@ export default class Authentication extends Component {
                             source={require('../../assets/img/facebook-app-logo.png')}
                         />
                         <Text style={styles.buttonTextFacebook}>
-                           {strings('login.facebook')}
+                            {strings('login.facebook')}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.buttomLoginStyle}
-                          onPress={this.userRegister.bind(this)}>
+                        onPress={this.userRegister.bind(this)}>
                         <Text style={styles.buttonText}>{strings('login.register')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.buttomRegister}
                         onPress={this.userLoginPage.bind(this)}>
                         <Text style={styles.buttomTextRegister}>
-                          {strings('login.signup_button')}</Text>
+                            {strings('login.signup_button')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

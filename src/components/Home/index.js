@@ -15,9 +15,7 @@ import {
       TextInput,
       Alert,
       } from 'react-native';
-
 import moment from 'moment';
-import moment_timezone from 'moment-timezone';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import { internet, checkConectivity } from '../../utils';
@@ -25,6 +23,7 @@ import styles from './styles';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
 import { feedAction, uploadAction, likeAction, calculateTime, appendData,handleImagePress } from './HomeActions'
+import firebase from "react-native-firebase";
 
 export default class HomePage extends Component {
 
@@ -185,6 +184,9 @@ export default class HomePage extends Component {
       },() => {
         console.log(this.state.time);
         if (checkConectivity()) {
+
+          firebase.analytics().logEvent("upload_photo");
+
           uploadAction(APP_STORE.getToken(), this.state)
         } else {
           internet();
@@ -214,13 +216,13 @@ export default class HomePage extends Component {
   _likeHandlePress(idImage,id_user,like,row) {
 
     const now = new Date().getTime();
-      
+
     if (this.lastImagePress && (now - this.lastImagePress) < 300) {
       delete this.lastImagePress;
       this.showBigHeart(row)
 
       if (checkConectivity()) {
-        likeAction(idImage,id_user,like,row)
+        this._like(idImage,id_user,like,row)
       } else {
         internet();
       }
@@ -254,6 +256,7 @@ export default class HomePage extends Component {
 
   _like(idImage,id_user,like,row) {
     if (checkConectivity()) {
+      firebase.analytics().logEvent("420hoy_like");
       likeAction(idImage,id_user,like,row)
     } else {
       internet();

@@ -25,6 +25,10 @@ function loginAction(username, password) {
         });
 }
 
+/**
+ * Register the token in the server for Push Notifications
+ * @param token
+ */
 function firebaseAction(token) {
     console.log(`firebaseAction: ${token}`);
 
@@ -35,7 +39,7 @@ function firebaseAction(token) {
             console.log(`firebaseAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
-                saveFirebase(token)
+                saveFirebase(token);
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
-import {Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState} from 'react-native';
+import {Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
 import {changeToken, validateToken} from './TopBarActions'
 import {NavigationActions} from 'react-navigation'
 import firebase from 'react-native-firebase';
@@ -152,12 +152,13 @@ export default class TopBar extends Component {
     notifHandler(data) {
         switch (data.type_notification) {
             case "ME":
-                if (this.state.like == "false") {
+                if (this.state.like == "false") { // Like notification
                     this.props.navigation.navigate('Notifications', {tabIndex: 1});
                     break;
                 }
             default:
-                if (this.state.currentChatUsername != data.username) {
+                if (this.state.currentChatUsername != data.username) { // Match Notification
+                    firebase.analytics().logEvent("user_match");
                     this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
                     break;
                 }
@@ -207,32 +208,37 @@ export default class TopBar extends Component {
 
     render() {
         return (
-            <Container style={styles.bgColor}>
-                <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>
-                    <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttomIconMsg} onPress={() => this.showMessage()}>
-                    <Image style={styles.imgIconMsg}
-                           source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
-                </TouchableOpacity>
-                <Tabs
-                    initialPage={0}
-                    locked={true}
-                    onChangeTab={(event) => {
-                        this.setState({activePage: event.i})
-                    }}
-                    tabBarUnderlineStyle={styles.containerColor}
-                    tabContainerStyle={styles.tabContainerStyle}
-                    edgeHitWidth={0}
-                >
-                    <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
-                        <Swiper navigation={this.props.navigation}/>
-                    </Tab>
-                    <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
-                        <Home navigation={this.props.navigation}/>
-                    </Tab>
-                </Tabs>
-            </Container>
+            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <Container style={styles.bgColor}>
+
+                    <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>
+                        <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttomIconMsg} onPress={() => this.showMessage()}>
+                        <Image style={styles.imgIconMsg}
+                               source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
+                    </TouchableOpacity>
+                    <Tabs
+                        initialPage={0}
+                        locked={true}
+                        onChangeTab={(event) => {
+                            this.setState({activePage: event.i})
+                        }}
+                        tabBarUnderlineStyle={styles.containerColor}
+                        tabContainerStyle={styles.tabContainerStyle}
+                        edgeHitWidth={0}
+                    >
+                        <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
+                            <Swiper navigation={this.props.navigation}/>
+                        </Tab>
+                        <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
+                            <Home navigation={this.props.navigation}/>
+                        </Tab>
+                    </Tabs>
+
+                </Container>
+            </SafeAreaView>
+
         );
     }
 }

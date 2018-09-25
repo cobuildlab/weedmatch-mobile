@@ -42,7 +42,8 @@
     "photo": "Tu foto",
     "sexRequired": "Sexo es requerido",
     "imageRequired": "Imagen es requerida",
-    "ageRequired": "Fecha de nacimiento es requerida"
+    "ageRequired": "Fecha de nacimiento es requerida",
+    "editProfile" : "Editar Perfil"
   },
   "main": {
     "title": "UNIENDO AMANTES DEL",
