@@ -1,0 +1,92 @@
+{
+  "wmatch": "CANNABIS",
+  "login": {
+    "welcome": "Welcome {{name}} to our localized app!",
+    "signup_button": "You are a member? Log In",
+    "login": "Log In",
+    "register": "Create account",
+    "redes": "Log In with social networks",
+    "facebook": "Continue with Facebook",
+    "forgot": "Forgot password",
+    "required_fields_error": "Username and password are required"
+  },
+  "register": {
+    "paso1": "Continue",
+    "facebook": "Continue with Facebook",
+    "textFacebook": "We don't publish on your FB account",
+    "opt": "OR",
+    "terms": "Terms and Conditions",
+    "name": "Name",
+    "about": "About you",
+    "distance": "Maximum distance",
+    "silence": "Mute Me Encanta notifications",
+    "ownGen": "Your gender",
+    "fullName": "Full name",
+    "password": "Password",
+    "username": "Username",
+    "male": "Man",
+    "female": "Woman",
+    "email": "Email",
+    "age": "Date of birth",
+    "all": "Everyone",
+    "other": "Other",
+    "allInputs": "All inputs required",
+    "errorFullName": "Invalid full name",
+    "errorEmail": "Invalid email",
+    "errorPassword": "Invalid password",
+    "errorUsername": "Invalid username",
+    "errorSex": "Invalid sex",
+    "errorAge": "Invalid age",
+    "errorTitle": "Register fail",
+    "successTitle": "Succesfully registered",
+    "photo": "Your photo",
+    "sexRequired": "Invalid sex, is required",
+    "imageRequired": "Image is required",
+    "ageRequired": "Date of birth is required",
+    "editProfile" : "Edit Profile"
+  },
+  "main": {
+    "title": "LINKING LOVERS OF THE",
+    "register": "Register",
+    "registerContinue": "Continue register",
+    "iAm": "I am...",
+    "profile": "Profile",
+    "noti": "Notifications",
+    "message": "Chats",
+    "like": "Love it",
+    "login": "Log In",
+    "recover": "Recover Password",
+    "internet": "No Internet Connection",
+    "password": "Change password",
+    "pro": "Buy pro version",
+    "pay": "Pay with credit card",
+    "changes": "Save changes",
+    "error": "Server error, sorry try again later"
+  },
+  "home": {
+    "actionSheet": "Pick one option",
+    "camera": "Camera",
+    "biblio": "Library",
+    "cancel": "Cancel",
+    "alerta": "Alert",
+    "upload": "Upload Image",
+    "comment": "Comment"
+  },
+  "forgot": {
+    "send": "Send",
+    "code": "Code",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "swiper": {
+    "searching": "Looking for people near you",
+    "hours": " hours and ",
+    "minutes": " minutes to do this action again."
+  },
+  "chat": {
+    "nomsg": "You do not have active conversations",
+    "noLike": "You do not have new notifications",
+    "reconnect": "Reconnecting",
+    "write": "Be the first to write a message"
+  }
+}

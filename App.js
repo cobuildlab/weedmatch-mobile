@@ -1,58 +1,49 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import {StackNavigator, SwitchNavigator} from 'react-navigation';
+import Splash from './src/components/Splash';
+import Terms from './src/components/Terms';
+import Authentication from './src/components/Authentication/index';
+import LoginPage from './src/components/Login';
+import RegisterPage from './src/components/Register';
+import HomePage from './src/components/Home';
+import SwiperView from './src/components/Swiper';
+import Profile from './src/components/Profile';
+import Message from './src/components/Message';
+import Chat from './src/components/Chat';
+import Like from './src/components/Like';
+import EditProfile from './src/components/EditProfile';
+import PublicProfile from './src/components/PublicProfile';
+import LikeProfile from './src/components/LikeProfile';
+import ForgotPage from './src/components/Forgot';
+import Topbar from './src/utils/TopBar';
+import Notifications from './src/components/Notifications';
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+const AppStack = StackNavigator({
+    Bar: Topbar,
+    Home: HomePage,
+    Profile: Profile,
+    Message: Message,
+    Chat: Chat,
+    Like: Like,
+    EditProfile: EditProfile,
+    PublicProfile: PublicProfile,
+    Notifications: Notifications,
+    LikeProfile: LikeProfile
+});
+const AuthStack = StackNavigator({
+    SignIn: Authentication,
+    Register: RegisterPage,
+    Terms: Terms,
+    Login: LoginPage,
+    Forgot: ForgotPage
 });
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+export default SwitchNavigator(
+    {
+        AuthLoading: Splash,
+        App: AppStack,
+        Auth: AuthStack,
+    },
+    {
+        initialRouteName: 'AuthLoading',
+    }
+);

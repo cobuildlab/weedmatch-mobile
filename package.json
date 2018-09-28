@@ -1,23 +1,72 @@
 {
-  "name": "albums",
+  "name": "weedmatch",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "purge": "./node_modules/.bin/react-native-clean-project",
+    "run:ios": "react-native run-ios",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "react": "16.2.0",
-    "react-native": "0.53.3"
+    "@ptomasroos/react-native-multi-slider": "0.0.14",
+    "eslint": "^4.19.1",
+    "immutable": "^3.8.2",
+    "moment": "^2.22.0",
+    "moment-timezone": "^0.5.14",
+    "native-base": "^2.7.0",
+    "npm": "^5.7.1",
+    "prop-types": "^15.6.1",
+    "react": "16.4.1",
+    "react-native": "0.57.1",
+    "react-native-actionsheet": "^2.4.0",
+    "react-native-ci-tools": "^1.1.0",
+    "react-native-deck-swiper": "^1.5.9",
+    "react-native-device-info": "^0.22.4",
+    "react-native-fbsdk": "^0.7.0",
+    "react-native-firebase": "^4.2.0",
+    "react-native-gifted-chat": "^0.4.3",
+    "react-native-i18n": "^2.0.12",
+    "react-native-image-crop-picker": "^0.20.0",
+    "react-native-image-slider": "^2.0.3",
+    "react-native-picker": "4.3.7",
+    "react-native-simple-radio-button": "^2.7.1",
+    "react-native-spinkit": "^1.1.1",
+    "react-native-toast-native": "^1.2.1",
+    "react-native-websocket": "^1.0.2",
+    "react-navigation": "^1.4.0",
+    "rxjs": "^5.5.8",
+    "snyk": "^1.97.0",
+    "validate.js": "^0.12.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
     "babel-jest": "22.4.1",
-    "babel-preset-react-native": "4.0.0",
+    "babel-preset-react-native": "5.0.2",
+    "eslint-config-google": "^0.9.1",
     "jest": "22.4.2",
-    "react-test-renderer": "16.2.0"
+    "metro-react-native-babel-preset": "^0.45.6",
+    "react-test-renderer": "16.2.0",
+    "schedule": "^0.4.0"
   },
   "jest": {
-    "preset": "react-native"
-  }
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-navigation|react-native-router)"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "bower_components"
+    ]
+  },
+  "snyk": true
 }
