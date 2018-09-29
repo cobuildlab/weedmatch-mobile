@@ -1,6 +1,3 @@
-def googlePlayServicesVersion = project.googlePlayServicesVersion
-
-
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -97,20 +94,20 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "co.fourgeeks.weedmatch"
-        minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 15
-        versionName "1.4.0"
-        vectorDrawables.useSupportLibrary = true
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+
     signingConfigs {
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -121,6 +118,7 @@ android {
             }
         }
     }
+
     splits {
         abi {
             reset()
@@ -151,43 +149,43 @@ android {
     }
 }
 
+
 subprojects {
-  project.configurations.all {
-      afterEvaluate {project ->
-        if (project.hasProperty("android")) {
-            android {
-                compileSdkVersion 27
-                buildToolsVersion '28.0.2'
+    project.configurations.all {
+        afterEvaluate {project ->
+            if (project.hasProperty("android")) {
+                android {
+                    compileSdkVersion rootProject.ext.compileSdkVersion
+                    buildToolsVersion rootProject.ext.buildToolsVersion
+                }
+            }
+        }
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion rootProject.ext.buildToolsVersion
             }
         }
     }
-     resolutionStrategy.eachDependency { details ->
-        if (details.requested.group == 'com.android.support'
-              && !details.requested.name.contains('multidex') ) {
-           details.useVersion "28.0.2"
-        }
-     }
-  }
 }
 
 dependencies {
-    implementation project(':react-native-firebase')
-    implementation "com.google.android.gms:play-services-base:15.0.1"
-    implementation "com.google.firebase:firebase-core:15.0.2"
-    implementation "com.google.firebase:firebase-messaging:15.0.2"
-    implementation "com.google.firebase:firebase-auth:16.0.3"
-    // implementation "com.google.firebase:firebase-notifications:15.0.2"
-    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation project(':react-native-toast-native')
     implementation project(':react-native-spinkit')
     implementation project(':react-native-picker')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
+    implementation project(':react-native-firebase')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-device-info')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:27.1.1"
-    implementation "com.facebook.react:react-native:+"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    // Firebase dependencies
+    implementation "com.google.android.gms:play-services-base:15.0.0"
+    implementation "com.google.firebase:firebase-core:15.0.2"
+    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
 }
 
 // Run this once to be able to run the application with BUCK
@@ -198,5 +196,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
-
-//com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
