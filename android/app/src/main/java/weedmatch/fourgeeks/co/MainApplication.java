@@ -8,6 +8,7 @@ import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 
 import com.toast.RCTToastPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
@@ -17,6 +18,7 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage; // <-- Add this line
+import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -64,7 +66,9 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNI18nPackage(),
                     new RNDeviceInfo(),
                     new FBSDKPackage(mCallbackManager),
-                    new RNFirebaseAnalyticsPackage() // <-- Add this line
+                    new RNFirebaseAnalyticsPackage(), // <-- Add this line
+                    new RNFirebaseAuthPackage(),
+                    new RNFirebaseCrashlyticsPackage()
             );
         }
 
