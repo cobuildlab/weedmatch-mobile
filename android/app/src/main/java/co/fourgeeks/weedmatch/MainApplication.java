@@ -17,13 +17,14 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage; // <-- Add this line
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
+
 
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
@@ -64,7 +65,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNI18nPackage(),
                     new RNDeviceInfo(),
                     new FBSDKPackage(mCallbackManager),
-                    new RNFirebaseAnalyticsPackage() // <-- Add this line
+                    new RNFirebaseAnalyticsPackage(),
+                    new RNFirebaseAuthPackage()
             );
         }
 
