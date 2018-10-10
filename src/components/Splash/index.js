@@ -30,7 +30,7 @@ export default class Splash extends Component {
         console.log("Splash:TOKEN", token);
         console.log("Splash:USER-ID", id);
         if (!isValidText(token)) {
-            // To Authentication Page
+            // To MatchUsersScreen Page
             this.props.navigation.navigate('Auth');
             return;
         }

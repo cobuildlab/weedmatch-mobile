@@ -16,6 +16,7 @@ import LikeProfile from './src/components/LikeProfile';
 import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
+import MatchUsersScreen from "./src/screens/swiper/MatchUsersScreen";
 
 const AppStack = StackNavigator({
     Bar: Topbar,
@@ -26,6 +27,7 @@ const AppStack = StackNavigator({
     Like: Like,
     EditProfile: EditProfile,
     PublicProfile: PublicProfile,
+    MatchUsersScreen: MatchUsersScreen,
     Notifications: Notifications,
     LikeProfile: LikeProfile
 });

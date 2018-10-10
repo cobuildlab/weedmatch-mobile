@@ -36,17 +36,13 @@ export default class SwiperView extends Component {
 
     componentDidMount() {
         console.log("SwiperView: componentDidMount");
-        console.log(this.props.navigation);
-
         this.bad = APP_STORE.BAD_EVENT.subscribe(state => {
             console.log("SwiperView:componentDidMount:BAD_EVENT", state);
             if (state.bad) {
-
                 if (this.swiper != null) {
                     this.swiper.swipeBack(() => {
                     })
                 }
-
                 return;
             }
         });
@@ -65,12 +61,10 @@ export default class SwiperView extends Component {
         this.swiperData = APP_STORE.SWIPER_EVENT.subscribe(state => {
             console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
             if (state.swiper) {
-
                 this.setState(prevState => ({
                     cards: appendData(prevState.cards, state.swiper),
                     isLoaded: true
                 }));
-
                 return;
             }
             if (state.error) {
@@ -81,25 +75,22 @@ export default class SwiperView extends Component {
         this.swiperPage = APP_STORE.SWIPERPAGE_EVENT.subscribe(state => {
             console.log("SwiperView:componentDidMount:swipePageSuscription", state);
             if (state.swiperPage) {
-
                 this.setState({
                     urlPage: state.swiperPage,
                     numPage: this.state.numPage + 1
                 }, () => {
                     this._swiperData();
-                })
-
+                });
             } else {
                 this.setState({
                     urlPage: '',
-                })
+                });
                 return;
             }
             if (state.error) {
                 Alert.alert(state.error);
             }
         });
-
         this._position()
     }
 
@@ -114,7 +105,6 @@ export default class SwiperView extends Component {
     _position() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-
                 this.setState({
                     latitud: position.coords.latitude.toFixed(6),
                     longitud: position.coords.longitude.toFixed(6),
@@ -307,7 +297,7 @@ export default class SwiperView extends Component {
                         renderCard={this.renderCard}
                         stackSize={3}
                         backgroundColor={'#fff'}
-                        stackSeparation={15}
+                        stackSeparation={5}
                         overlayLabels={{
                             left: {
                                 title: 'NOPE',

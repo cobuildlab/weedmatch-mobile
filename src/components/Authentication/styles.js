@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default styles = StyleSheet.create({
     headerLogin: {
@@ -75,12 +75,12 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#3b5998',
     },
-    logoFacebook:{
-      width:16,
-      height: 17,
-      position: 'absolute',
-      top: 11,
-      left: 17,
+    logoFacebook: {
+        width: 16,
+        height: 17,
+        position: 'absolute',
+        top: 11,
+        left: 17,
     },
     buttonTextFacebook: {
         color: 'white',
@@ -105,30 +105,30 @@ export default styles = StyleSheet.create({
         height: '100%'
     },
 
-    buttomIconProfile:{
-    position: 'absolute',
-    top: 22,
-    left: 15,
-    width: 10,
-    height: 10,
-    zIndex: 999,
+    buttomIconProfile: {
+        position: 'absolute',
+        top: 22,
+        left: 15,
+        width: 10,
+        height: 10,
+        zIndex: 999,
     },
-    imgIconProfile:{
-      width: 28,
-      height: 28,
+    imgIconProfile: {
+        width: 28,
+        height: 28,
     },
 
-    buttomIconMsg:{
-      position: 'absolute',
-      top: 22,
-      right: 35,
-      width: 10,
-      height: 10,
-      zIndex: 999,
+    buttomIconMsg: {
+        position: 'absolute',
+        top: 22,
+        right: 35,
+        width: 10,
+        height: 10,
+        zIndex: 999,
     },
-    imgIconMsg:{
-      width: 30,
-      height: 27,
+    imgIconMsg: {
+        width: 30,
+        height: 27,
     },
 
 });

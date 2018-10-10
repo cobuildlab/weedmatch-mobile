@@ -19,7 +19,7 @@ import {facebookAction, firebaseAction} from './AutheticationActions'
 import firebase from 'react-native-firebase';
 
 /**
- * Authentication Screen
+ * MatchUsersScreen Screen
  */
 export default class Authentication extends Component {
 
@@ -43,18 +43,18 @@ export default class Authentication extends Component {
         });
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-            console.log("Authentication:componentDidMount:appSubscription", state);
+            console.log("MatchUsersScreen:componentDidMount:appSubscription", state);
             if (isValidText(state.error))
                 toastMsg(state.error);
         });
 
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
-            console.log("Authentication:componentDidMount:firebaseSubscription", state);
+            console.log("MatchUsersScreen:componentDidMount:firebaseSubscription", state);
             this.props.navigation.navigate('App');
         });
 
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
-            console.log("Authentication:componentDidMount:idSubscription", state);
+            console.log("MatchUsersScreen:componentDidMount:idSubscription", state);
             if (isValidText(state.id)) {
 
                 if (firebase.messaging().hasPermission()) {

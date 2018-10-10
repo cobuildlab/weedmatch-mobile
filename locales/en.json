@@ -38,7 +38,7 @@
     "errorSex": "Invalid sex",
     "errorAge": "Invalid age",
     "errorTitle": "Register fail",
-    "successTitle": "Succesfully registered",
+    "successTitle": "Successfully registered",
     "photo": "Your photo",
     "sexRequired": "Invalid sex, is required",
     "imageRequired": "Image is required",
@@ -79,6 +79,9 @@
     "confirmPassword": "Confirm Password"
   },
   "swiper": {
+    "match": "{{name}} and you like each other!",
+    "hi": "Say Hi!",
+    "continue": "Continue",
     "searching": "Looking for people near you",
     "hours": " hours and ",
     "minutes": " minutes to do this action again."

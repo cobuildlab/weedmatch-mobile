@@ -79,6 +79,9 @@
     "confirmPassword": "Confirmar Password"
   },
   "swiper": {
+    "match": "¡{{name}} y tu se gustan!",
+    "hi": "¡Dile Hola!",
+    "continue": "Continuar",
     "searching": "Buscando personas cerca de ti",
     "hours": " horas y ",
     "minutes": " minutos para volver a realizar esta acción."

@@ -14,11 +14,11 @@ I18n.translations = {
     es,
 };
 
-const currentLocale = I18n.currentLocale().slice(0,2);
+const currentLocale = I18n.currentLocale().slice(0, 2);
 
 // Is it a RTL language?
-export const isRTL = currentLocale.indexOf('he') === 0 || 
-currentLocale.indexOf('ar') === 0;
+export const isRTL = currentLocale.indexOf('he') === 0 ||
+    currentLocale.indexOf('ar') === 0;
 
 // Allow RTL alignment in RTL languages
 ReactNative.I18nManager.allowRTL(isRTL);

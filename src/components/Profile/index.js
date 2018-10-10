@@ -206,8 +206,8 @@ export default class Profile extends Component {
     };
 
     render() {
-
         const {rowData, country, isLoading, isDetail, public420} = this.state;
+
         if (isLoading) {
             return (
                 <View style={styles.viewFlex}>

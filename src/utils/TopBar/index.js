@@ -199,7 +199,7 @@ export default class TopBar extends Component {
     }
 
     showProfile() {
-        this.props.navigation.navigate('Profile');
+        this.props.navigation.navigate('MatchUsersScreen');
     }
 
     showMessage() {
