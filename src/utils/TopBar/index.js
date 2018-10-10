@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
-import {Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
+import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
 import {changeToken, validateToken} from './TopBarActions'
-import {NavigationActions} from 'react-navigation'
+import {NavigationActions} from 'react-navigation';
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import {APP_STORE} from '../../Store';
@@ -10,6 +10,7 @@ import Swiper from '../../components/Swiper';
 import styles from './style';
 // Optional: Flow type
 import type {Notification, NotificationOpen} from 'react-native-firebase';
+import MatchUsersScreen from "../../screens/swiper/MatchUsersScreen";
 
 export default class TopBar extends Component {
 
@@ -21,7 +22,9 @@ export default class TopBar extends Component {
             activePage: 0,
             notification: "false",
             like: "false",
-            currentChatUsername: ""
+            currentChatUsername: "",
+            modalVisible: false,
+            matchData: {},
         };
 
     }
@@ -159,7 +162,7 @@ export default class TopBar extends Component {
             default:
                 if (this.state.currentChatUsername != data.username) { // Match Notification
                     firebase.analytics().logEvent("user_match");
-                    this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
+                    this.setState({modalVisible: true, matchData: data});
                     break;
                 }
         }
@@ -199,7 +202,7 @@ export default class TopBar extends Component {
     }
 
     showProfile() {
-        this.props.navigation.navigate('MatchUsersScreen');
+        this.props.navigation.navigate('Profile');
     }
 
     showMessage() {
@@ -236,6 +239,17 @@ export default class TopBar extends Component {
                         </Tab>
                     </Tabs>
 
+                    {/*MATCHM MODAL*/}
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {}}>
+                        <MatchUsersScreen
+                            data={this.state.matchData}
+                            onPress={() => this.props.navigation.navigate('Notifications', {tabIndex: 0, data})}
+                            onClose={() => this.setState({modalVisible: false})}/>
+                    </Modal>
                 </Container>
             </SafeAreaView>
 

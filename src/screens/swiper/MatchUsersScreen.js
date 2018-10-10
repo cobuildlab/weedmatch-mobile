@@ -33,6 +33,7 @@ export default class MatchUsersScreen extends Component {
 
     render() {
         const name = "Angel";
+        const {onClose, onPress, data} = this.props;
 
         return (
             <SafeAreaView style={styles.container}>
@@ -44,14 +45,16 @@ export default class MatchUsersScreen extends Component {
                     <Image source={p2} style={[styles.image]}/>
                 </View>
                 <View style={[styles.buttonContainer, {flex: 2, height: 100}]}>
-                    <Button rounded large style={[buttonStyles.purpleButton]}>
+                    <Button rounded large style={[buttonStyles.purpleButton]}
+                            onPress={() => onPress()}>
                         <Text>{strings("swiper.hi")}</Text>
                     </Button>
                 </View>
                 <View style={[styles.footerContainer, {flex: 2, height: 100}]}>
                 </View>
                 <View style={[styles.footerContainer, {flex: 1, height: 100}]}>
-                    <Button rounded iconRight style={[buttonStyles.transparentIconButton]}>
+                    <Button rounded iconRight style={[buttonStyles.transparentIconButton]}
+                            onPress={() => onClose()}>
                         <Text>{strings("swiper.continue")}</Text>
                         <Icon name="chevron-right" size={20} color={white}/>
                     </Button>

@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
         width: '100%',
         alignItems: 'stretch',
         backgroundColor: black,
-        opacity: 0.7
+        opacity: 0.9
     },
     titleContainer: {
         justifyContent: 'flex-end',
@@ -43,7 +43,8 @@ export default styles = StyleSheet.create({
         justifyContent: 'flex-end',
         width: '100%',
         alignItems: 'flex-start',
-        paddingRight: 10
+        paddingRight: 10,
+        paddingBottom: 20
     },
     fontMatchTitle: {
         textAlign: 'center',
