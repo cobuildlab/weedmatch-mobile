@@ -8,8 +8,8 @@ import styles from './style';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
-import Tab1 from '../Message';
-import Tab2 from '../Like';
+import Chats from '../Message';
+import ILikedNotifications from '../Like';
 
 export default class Notifications extends Component {
     constructor(props) {
@@ -62,10 +62,10 @@ export default class Notifications extends Component {
                 >
                     <Tab heading={<TabHeading style={styles.tabContainer}><Text
                         style={styles.textTab}>{strings('main.message')}</Text></TabHeading>}>
-                        <Tab1 navigation={this.props.navigation}/>
+                        <Chats navigation={this.props.navigation}/>
                     </Tab>
                     <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>Me encanta</Text></TabHeading>}>
-                        <Tab2 navigation={this.props.navigation}/>
+                        <ILikedNotifications navigation={this.props.navigation}/>
                     </Tab>
                 </Tabs>
             </Container>

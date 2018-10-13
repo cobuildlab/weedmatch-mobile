@@ -24,7 +24,7 @@ const WS_URL = "ws://api.weedmatch.cl:8888/ws";
 // const URL = "http://192.168.0.16:8080/";
 
 async function checkConectivity() {
-    let response = await NetInfo.isConnected.fetch()
+    let response = await NetInfo.isConnected.fetch();
     return response
 }
 

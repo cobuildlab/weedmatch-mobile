@@ -371,7 +371,7 @@ export default class EditProfile extends Component {
                 backgroundColor: '#9605CC',
               }}
               min={2}
-              max={2000}
+              max={5000}
               unselectedStyle={{
                 backgroundColor: '#ccc',
               }}

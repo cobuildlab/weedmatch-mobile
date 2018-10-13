@@ -23,7 +23,7 @@
     "react-native": "0.57.1",
     "react-native-actionsheet": "^2.4.0",
     "react-native-ci-tools": "^1.1.0",
-    "react-native-deck-swiper": "^1.5.9",
+    "react-native-deck-swiper": "^1.5.22",
     "react-native-device-info": "^0.22.6",
     "react-native-fbsdk": "^0.7.0",
     "react-native-firebase": "^4.2.0",

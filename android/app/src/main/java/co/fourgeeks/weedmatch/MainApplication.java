@@ -10,7 +10,9 @@ import com.react.rnspinkit.RNSpinkitPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+
 import io.invertase.firebase.RNFirebasePackage;
+
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
@@ -64,15 +66,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new VectorIconsPackage(),
-            new RCTToastPackage(),
-            new RNSpinkitPackage(),
-            new PickerViewPackage(),
-            new PickerPackage(),
-            new RNI18nPackage(),
-            new RNFirebasePackage(),
-            new FBSDKPackage(),
-            new RNDeviceInfo(),
+                    new VectorIconsPackage(),
                     new RNFirebasePackage(),
                     new RNFirebaseNotificationsPackage(),
                     new RNFirebaseMessagingPackage(),

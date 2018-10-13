@@ -15,7 +15,7 @@ import styles from './style';
 import {internet, checkConectivity} from '../../utils';
 import {strings} from '../../i18n';
 import {APP_STORE} from '../../Store'
-import {swiperAction, appendData, swiper, saveHour} from './SwiperActions'
+import {swiperAction, appendData, swiper, swiperListAction} from './SwiperActions'
 import Spinner from 'react-native-spinkit';
 import firebase from "react-native-firebase";
 
@@ -36,6 +36,12 @@ export default class SwiperView extends Component {
 
     componentDidMount() {
         console.log("SwiperView: componentDidMount");
+
+        this.errorSubscription = APP_STORE.ERROR_EVENT.subscribe(state => {
+            if (state)
+                Alert.alert(strings("main.internet"));
+        });
+
         this.bad = APP_STORE.BAD_EVENT.subscribe(state => {
             console.log("SwiperView:componentDidMount:BAD_EVENT", state);
             if (state.bad) {
@@ -100,6 +106,7 @@ export default class SwiperView extends Component {
         console.log("SwiperView :componentWillUmmount");
         this.swiperData.unsubscribe();
         this.swiperPage.unsubscribe();
+        this.errorSubscription.unsubscribe();
     }
 
     _position() {
@@ -122,7 +129,7 @@ export default class SwiperView extends Component {
 
     _swiperData() {
         if (checkConectivity()) {
-            swiper(APP_STORE.getToken(), this.state);
+            swiperListAction(APP_STORE.getToken(), this.state);
         } else {
             internet();
         }
@@ -130,29 +137,23 @@ export default class SwiperView extends Component {
 
     renderCard = card => {
         return (
-            <View style={styles.card}>
-                <View style={styles.viewFlex}>
-                    <View style={styles.viewBackground}>
+            <View style={[styles.card]}>
+                <View style={[styles.viewFlex]}>
+                    <View style={[styles.viewBackground]}>
                         <Image style={styles.media} source={{uri: card.image_profile}}/>
                     </View>
-                    <View>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textName}>{card.first_name}, {card.age} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
+                    <View style={[{flex: 2}]}>
+                        <View style={[styles.viewContainer]}>
+                            <Text style={styles.textName}>{card.first_name}, {card.age}</Text>
                             <Text style={styles.textContainer}>{card.country.name}</Text>
-                        </View>
-                        <View style={styles.viewContainer}>
                             <Text style={styles.textContainer}>{card.distance} </Text>
-                        </View>
-                        <View style={styles.viewContainer}>
-                            <Text style={styles.textContainer}>{card.description} </Text>
                         </View>
                     </View>
                 </View>
             </View>
         )
     };
+
 
     onSwipedAllCards() {
         this.setState({
@@ -208,25 +209,10 @@ export default class SwiperView extends Component {
         }
     };
 
-    swipeTop(aux) {
-        if (this.swiper.state.firstCardIndex == this.state.cards.length - 1) {
-            if (checkConectivity()) {
-                saveHour(this.state.cards[this.swiper.state.firstCardIndex].id_user)
-            } else {
-                internet();
-            }
-        } else {
-            if (aux) {
-                this.swiper.swipeTop();
-            } else {
-
-                if (checkConectivity()) {
-                    saveHour(this.state.cards[this.swiper.state.firstCardIndex].id_user)
-                } else {
-                    internet();
-                }
-            }
-        }
+    async swipeTop() {
+        console.log("Swiper:swipeTop");
+        const swiperId = this.state.cards[this.swiper.state.firstCardIndex].id_user;
+        await swiperAction(APP_STORE.getToken(), 'SuperLike', swiperId);
     };
 
     swipeTap = () => {
@@ -279,7 +265,9 @@ export default class SwiperView extends Component {
         if (this.state.isLoaded && this.state.cards.length > 0) {
             return (
                 <View style={styles.container}>
+
                     <Swiper
+                        containerStyle={styles.swiper}
                         ref={swiper => {
                             this.swiper = swiper
                         }}
@@ -352,8 +340,19 @@ export default class SwiperView extends Component {
                         animateOverlayLabelsOpacity
                         animateCardOpacity
                     >
-                        {this.showButtons()}
                     </Swiper>
+
+                    <View style={[styles.buttonViewContainer]}>
+                        <TouchableOpacity onPress={() => this.swiper.swipeLeft()}>
+                            <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.swiper.swipeTop()}>
+                            <Image source={require('../../assets/img/actions/like.png')} style={styles.imageSize}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.swiper.swipeRight()}>
+                            <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             );
         } else {

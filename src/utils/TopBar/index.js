@@ -9,7 +9,7 @@ import {APP_STORE} from '../../Store';
 import Swiper from '../../components/Swiper';
 import styles from './style';
 // Optional: Flow type
-import type {Notification, NotificationOpen} from 'react-native-firebase';
+import {Notification, NotificationOpen} from 'react-native-firebase';
 import MatchUsersScreen from "../../screens/swiper/MatchUsersScreen";
 
 export default class TopBar extends Component {
@@ -123,9 +123,16 @@ export default class TopBar extends Component {
                 return;
             }
 
+            // If the notification is about a Match
+            if (notification.data.type_notification === "MC") {
+                firebase.analytics().logEvent("user_match");
+                this.setState({modalVisible: true, matchData: notification.data});
+                return;
+            }
+
             // Any other scenario, show the notification
             firebase.notifications().displayNotification(localNotification);
-            // A signal to tell the system there is a new notification
+            // A signal to tell the APP there is a new notification
             APP_STORE.NOTI_EVENT.next({"noti": true});
             // console.log('onNotification:', notification)
 
@@ -150,21 +157,40 @@ export default class TopBar extends Component {
         // this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
         //     // console.log("TopBar:componentDidMount:onNotificationDisplayed", notification);
         // });
+
+        // this.notifHandler({
+        //     type_notification:"IL",
+        //     image_profile : "https://weedmatch-mobile.sfo2.digitaloceanspaces.com/mobile/users/profile/99/125/99-alacret_396-2018-10-08_213613.jpg",
+        //     username_match : "alacret_test",
+        //     image_profile_match : "https://weedmatch-mobile.sfo2.digitaloceanspaces.com/mobile/users/profile/99/125/99-alacret_396-2018-10-08_213613.jpg",
+        //     chat_id:1
+        // });
     }
 
+    /**
+     * Method to handle the touch of a notification
+     **/
     notifHandler(data) {
+        console.log("TopBar:index:notifHandler", data);
         switch (data.type_notification) {
-            case "ME":
+            case "ME": // I like it Notification
                 if (this.state.like == "false") { // Like notification
                     this.props.navigation.navigate('Notifications', {tabIndex: 1});
                     break;
                 }
-            default:
+            case "MC": // Match notification
+                firebase.analytics().logEvent("user_match");
+                this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
+                break;
+
+            case "AC": // Accept I love
+                Alert(`ACCEPT I LOVE IT: ${JSON.stringify(data)}`);
                 if (this.state.currentChatUsername != data.username) { // Match Notification
-                    firebase.analytics().logEvent("user_match");
                     this.setState({modalVisible: true, matchData: data});
                     break;
                 }
+            default:
+                console.warn("UNHANDLED NOTIFICATION TYPE:", JSON.stringify(data));
         }
         APP_STORE.NOTI_EVENT.next({"noti": false});
     }
@@ -244,10 +270,17 @@ export default class TopBar extends Component {
                         animationType="slide"
                         transparent={true}
                         visible={this.state.modalVisible}
-                        onRequestClose={() => {}}>
+                        onRequestClose={() => {
+                        }}>
                         <MatchUsersScreen
                             data={this.state.matchData}
-                            onPress={() => this.props.navigation.navigate('Notifications', {tabIndex: 0, data})}
+                            onPress={() => {
+                                this.props.navigation.navigate('Notifications', {
+                                    tabIndex: 0,
+                                    data: this.state.matchData
+                                });
+                                this.setState({modalVisible: false});
+                            }}
                             onClose={() => this.setState({modalVisible: false})}/>
                     </Modal>
                 </Container>

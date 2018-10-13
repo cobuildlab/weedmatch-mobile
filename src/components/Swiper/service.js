@@ -1,4 +1,4 @@
-import {authHeader, catchErrorAndPropagate , URL, LENGUAGE} from '../../utils';
+import {authHeader, catchErrorAndPropagate, URL, LENGUAGE} from '../../utils';
 import DeviceInfo from 'react-native-device-info';
 import {APP_STORE} from "../../Store";
 
@@ -13,7 +13,7 @@ export const userService = {
  * @param pagUrl The url of the object the get
  * @returns {Promise<any>}
  */
-function swiper(token,pagUrl) {
+function swiper(token, pagUrl) {
 
     const requestOptions = {
         method: 'GET',
@@ -30,7 +30,7 @@ function swiper(token,pagUrl) {
  * @param state The current state of render screen
  * @returns {Promise<any>}
  */
-function swiperAction(token,action,id,time) {
+function swiperAction(token, action, id, time) {
 
     const data = {
         "user_match": id.toString(),
