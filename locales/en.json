@@ -24,6 +24,7 @@
     "fullName": "Full name",
     "password": "Password",
     "username": "Username",
+    "username_or_email": "Username or Email",
     "male": "Man",
     "female": "Woman",
     "email": "Email",

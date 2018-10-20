@@ -6,8 +6,7 @@ target 'weedmatch' do
   # use_frameworks!
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
-  pod 'FBSDKLoginKit'
-  pod 'FBSDKShareKit'
+  pod 'FacebookSDK'
   pod 'Firebase/Auth', '~> 5.3.0'
   # Pods for weedmatch
 

@@ -321,6 +321,12 @@ class Store {
                 return;
             me.state.email = state.email;
         });
+        this.USERNAME_EVENT = new Subject();
+        this.USERNAME_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.username = state.username;
+        });
         this.SWIPER_EVENT = new Subject();
         this.SWIPER_EVENT.subscribe(state => {
             if (!state)

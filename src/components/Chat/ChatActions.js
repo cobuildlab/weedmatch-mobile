@@ -2,7 +2,7 @@ import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import {APP_STORE} from "../../Store";
-import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
+import { authHeader, catchErrorAndPropagate , URL } from '../../utils';
 
 function getChatMessages(pageUrl) {
     // console.log(`getChatMessagesAction: ${pageUrl}`);

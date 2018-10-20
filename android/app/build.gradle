@@ -73,7 +73,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js"
+        entryFile: "index.js"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -101,8 +101,8 @@ android {
         applicationId "co.fourgeeks.weedmatch"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 22
-        versionName "1.5.1"
+        versionCode 25
+        versionName "1.5.4"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -138,7 +138,7 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -150,7 +150,7 @@ android {
 
 subprojects {
     project.configurations.all {
-        afterEvaluate {project ->
+        afterEvaluate { project ->
             if (project.hasProperty("android")) {
                 android {
                     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -160,7 +160,7 @@ subprojects {
         }
         resolutionStrategy.eachDependency { details ->
             if (details.requested.group == 'com.android.support'
-                    && !details.requested.name.contains('multidex') ) {
+                    && !details.requested.name.contains('multidex')) {
                 details.useVersion rootProject.ext.buildToolsVersion
             }
         }
@@ -178,20 +178,20 @@ dependencies {
     compile project(':react-native-fbsdk')
     compile project(':react-native-device-info')
     implementation project(':react-native-firebase')
-        implementation "com.google.android.gms:play-services-base:15.0.0"
-        implementation "com.google.firebase:firebase-core:15.0.2"
-        implementation "com.google.firebase:firebase-messaging:15.0.2"
-        implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
+    implementation "com.google.android.gms:play-services-base:15.0.0"
+    implementation "com.google.firebase:firebase-core:15.0.2"
+    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation project(':react-native-toast-native')
     implementation project(':react-native-spinkit')
     implementation project(':react-native-picker')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-i18n')
-    implementation project(':react-native-fbsdk')
     implementation project(':react-native-device-info')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
+    implementation project(':react-native-fbsdk')
     implementation "com.google.firebase:firebase-auth:16.0.3"
 }
 
