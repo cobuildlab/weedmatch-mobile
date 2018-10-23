@@ -25,7 +25,7 @@ export default function validate(fieldName, value) {
             presence: true,
             length: {
                 minimum: 3,
-                maximum: 20,
+                maximum: 30,
                 message: 'Invalid Full Name',
             },
         },
@@ -36,7 +36,6 @@ export default function validate(fieldName, value) {
 
     let formFields = {};
     formFields[fieldName] = constraints[fieldName];
-
 
     const result = validation(formValues, formFields);
 

@@ -17,6 +17,7 @@ import {APP_STORE} from '../../Store'
 import styles from './styles'
 import {facebookAction, firebaseAction} from './AutheticationActions'
 import firebase from 'react-native-firebase';
+import VersionCheck from "react-native-version-check";
 
 /**
  * MatchUsersScreen Screen
@@ -102,21 +103,24 @@ export default class Authentication extends Component {
         );
     }
 
+    _showCurrentVersion(){
+        Alert.alert(VersionCheck.getCurrentVersion());
+    };
+
     render() {
         return (
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.headerLogin}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <View style={styles.imageStyle}>
-                            <Image
-                                style={styles.container}
+                            <Image style={styles.container}
                                 source={require('../../assets/img/logo-login.png')}
                             />
                         </View>
                     </View>
                 </View>
                 <View style={styles.contentLogin}>
-                    <Text style={styles.textLight}>
+                    <Text style={styles.textLight} onPress={this._showCurrentVersion.bind(this)}>
                         {strings("main.title")}
                     </Text>
                     <Text style={styles.textBold}>

@@ -160,7 +160,7 @@ export default class LoginPage extends Component {
                             underlineColorAndroid='transparent'
                             editable={true}
                             onChangeText={(username) => this.setState({username})}
-                            placeholder={strings('register.username')}
+                            placeholder={strings('register.username_or_email')}
                             returnKeyType={"next"}
                             ref='username'
                             onSubmitEditing={() => {

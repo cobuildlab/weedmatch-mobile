@@ -458,6 +458,7 @@ class RegisterPage extends Component {
                         onChangeText={(full_name) => this.setState({full_name})}
                         placeholder={strings("register.fullName")}
                         returnKeyType={"next"}
+                        maxLength={30}
                         value={this.state.full_name}
                         onSubmitEditing={() => {
                             this.emailInput.focus();
@@ -540,7 +541,7 @@ class RegisterPage extends Component {
                         </TouchableWithoutFeedback>
                     </View>
                     <Text style={styles.textIam}>
-                        {"Username"}
+                        {strings("register.username")}
                     </Text>
                     <TextInput
                         style={loginStyles.inputStyle}

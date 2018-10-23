@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactApplication;
+import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.toast.RCTToastPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
@@ -66,6 +67,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNVersionCheckPackage(),
                     new VectorIconsPackage(),
                     new RNFirebasePackage(),
                     new RNFirebaseNotificationsPackage(),

@@ -122,7 +122,7 @@ function toastMsg(msg) {
  * @param username
  */
 const generateUsernameFromFullName = (username, addNumber = false) => {
-    const newUsername = new String(username).replace(" ", "").toLocaleLowerCase();
+    const newUsername = new String(username).replace(/ /g, "").toLocaleLowerCase();
     if (!addNumber)
         return newUsername;
     const randonNumber = Math.floor((Math.random() * 1000) + 1);
