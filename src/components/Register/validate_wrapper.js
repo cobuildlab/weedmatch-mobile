@@ -1,13 +1,13 @@
-import validation from 'validate.js'
+import validation from 'validate.js';
 
 export default function validate(fieldName, value) {
-    var constraints = {
+    let constraints = {
         email: {
             presence: true,
             format: {
                 pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: 'Invalid email',
-            }
+            },
         },
         password: {
             presence: true,
@@ -15,33 +15,32 @@ export default function validate(fieldName, value) {
                 minimum: 6,
                 maximum: 20,
                 message: 'Invalid Password',
-            }
+            },
         },
         confirmPassword: {
             presence: true,
-            equality: 'password'
+            equality: 'password',
         },
         full_name: {
             presence: true,
             length: {
-                minimum: 6,
-                maximum: 20,
+                minimum: 3,
+                maximum: 30,
                 message: 'Invalid Full Name',
-            }
+            },
         },
     };
 
-    var formValues = {}
-    formValues[fieldName] = value
+    let formValues = {};
+    formValues[fieldName] = value;
 
-    var formFields = {}
-    formFields[fieldName] = constraints[fieldName]
+    let formFields = {};
+    formFields[fieldName] = constraints[fieldName];
 
-
-    const result = validation(formValues, formFields)
+    const result = validation(formValues, formFields);
 
     if (result) {
-	return result[fieldName][0]
+        return result[fieldName][0];
     }
-    return null
+    return null;
 }

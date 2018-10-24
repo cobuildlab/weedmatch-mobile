@@ -1,4 +1,4 @@
-package weedmatch.fourgeeks.co;
+package co.fourgeeks.weedmatch;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;

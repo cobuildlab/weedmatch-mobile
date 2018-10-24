@@ -17,6 +17,7 @@ import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
 
+
 const AppStack = StackNavigator({
     Bar: Topbar,
     Home: HomePage,

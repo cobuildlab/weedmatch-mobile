@@ -1,9 +1,21 @@
-package weedmatch.fourgeeks.co;
+package co.fourgeeks.weedmatch;
 
 import android.app.Application;
 
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactApplication;
+import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.toast.RCTToastPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.beefe.picker.PickerViewPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+
+import io.invertase.firebase.RNFirebasePackage;
+
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
@@ -17,13 +29,14 @@ import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage; // <-- Add this line
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
+
 
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
@@ -40,7 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Use AppEventsLogger to log custom events.
+        SoLoader.init(this, /* native exopackage */ false);
         AppEventsLogger.activateApp(this);
     }
 
@@ -54,6 +67,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNVersionCheckPackage(),
+                    new VectorIconsPackage(),
                     new RNFirebasePackage(),
                     new RNFirebaseNotificationsPackage(),
                     new RNFirebaseMessagingPackage(),
@@ -64,7 +79,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNI18nPackage(),
                     new RNDeviceInfo(),
                     new FBSDKPackage(mCallbackManager),
-                    new RNFirebaseAnalyticsPackage() // <-- Add this line
+                    new RNFirebaseAnalyticsPackage(),
+                    new RNFirebaseAuthPackage()
             );
         }
 

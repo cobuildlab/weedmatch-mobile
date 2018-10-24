@@ -1,9 +1,21 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        buildToolsVersion = "27.0.3"
+        minSdkVersion = 21
+        compileSdkVersion = 27
+        targetSdkVersion = 26
+        supportLibVersion = "27.1.1"
+    }
     repositories {
-        jcenter()
+        mavenLocal()
         google()
+        jcenter()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
     }
     dependencies {
         classpath 'com.google.gms:google-services:3.2.1'
@@ -13,29 +25,34 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+subprojects { subproject ->
+    afterEvaluate{
+        if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                buildToolsVersion rootProject.ext.buildToolsVersion
+            }
+        }
+    }
+}
 
 allprojects {
     repositories {
+        // Add jitpack repository (added by react-native-spinkit)
+        maven { url "https://jitpack.io" }
         mavenLocal()
+        google()
         jcenter()
-        configurations.all {
-            resolutionStrategy {
-                force 'com.facebook.android:facebook-android-sdk:4.28.0'
-            }
-        }
-        maven {
-            url "https://maven.google.com"
-        }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
-        maven {
-            url "https://jitpack.io"
-        }
-        google()
-
 
     }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+    distributionUrl = distributionUrl.replace("bin", "all")
 }

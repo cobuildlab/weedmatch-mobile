@@ -75,7 +75,7 @@ async function popToken(state) {
         const token = await AsyncStorage.getItem('token');
         if (isValidText(token)) {
             console.log("popToken:", token);
-             state.token = token;
+            state.token = token;
         }
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
@@ -88,7 +88,7 @@ async function popUser(state) {
         const user = await AsyncStorage.getItem('username');
         if (isValidText(user)) {
             console.log("popUser:", user);
-             state.username = user;
+            state.username = user;
         }
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
@@ -101,7 +101,7 @@ async function popId(state) {
         const id = await AsyncStorage.getItem('id');
         if (isValidText(id)) {
             console.log("popId:", id);
-             state.id = id;
+            state.id = id;
         }
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
@@ -114,7 +114,7 @@ async function popIdFB(state) {
         const id = await AsyncStorage.getItem('idFB');
         if (isValidText(id)) {
             console.log("popFB:", id);
-             state.tokenFB = id;
+            state.tokenFB = id;
         }
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
@@ -177,6 +177,14 @@ class Store {
         popUser(this.state);
         popNoti(this.state);
         const me = this;
+        this.ERROR_EVENT = new Subject();
+        this.ERROR_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            if (isValidText(state)) {
+                me.state.error = state;
+            }
+        });
         this.APP_EVENT = new Subject();
         this.APP_EVENT.subscribe(state => {
             if (!state)
@@ -312,6 +320,12 @@ class Store {
             if (!state)
                 return;
             me.state.email = state.email;
+        });
+        this.USERNAME_EVENT = new Subject();
+        this.USERNAME_EVENT.subscribe(state => {
+            if (!state)
+                return;
+            me.state.username = state.username;
         });
         this.SWIPER_EVENT = new Subject();
         this.SWIPER_EVENT.subscribe(state => {

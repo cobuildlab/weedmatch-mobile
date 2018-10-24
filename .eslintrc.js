@@ -1,13 +1,23 @@
+const reactVersion = require('./package.json').dependencies.react;
+
 module.exports = {
-    "extends": "google",
-    "rules": {
-        "object-curly-spacing": 0
+    extends: [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:react-native/all',
+        'eslint-config-prettier',
+    ],
+    plugins: ['react', 'react-native'],
+    env: {
+        'react-native/react-native': true,
     },
-    "parserOptions": {
-        "ecmaVersion": 7,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true,
-        }
+    rules: {
+        'sort-keys': 2,
     },
+    settings: {
+        react: {
+            version: reactVersion,
+        },
+    },
+    parser: 'babel-eslint',
 };

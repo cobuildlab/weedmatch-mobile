@@ -5,15 +5,16 @@ import {isValidText} from "../../utils";
 import styles from './style';
 import {Alert} from 'react-native';
 
+
 export default class Splash extends Component {
     constructor() {
         super();
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.popToken()
-        }, 1000)
+        setTimeout(async () => {
+            await this.popToken();
+        }, 2000)
     }
 
     async popToken() {
@@ -30,7 +31,7 @@ export default class Splash extends Component {
         console.log("Splash:TOKEN", token);
         console.log("Splash:USER-ID", id);
         if (!isValidText(token)) {
-            // To Authentication Page
+            // To MatchUsersScreen Page
             this.props.navigation.navigate('Auth');
             return;
         }
@@ -40,7 +41,9 @@ export default class Splash extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.container} onLongPress={() => {
+                Alert.alert("EUREKA");
+            }}>
                 <Image source={require('../../assets/img/splash.png')} style={styles.imageStyle}/>
             </View>
         );

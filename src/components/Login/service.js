@@ -1,5 +1,4 @@
 import {authHeader, catchErrorAndPropagate , URL,LENGUAGE} from '../../utils';
-import DeviceInfo from 'react-native-device-info';
 import {APP_STORE} from "../../Store";
 
 export const userService = {

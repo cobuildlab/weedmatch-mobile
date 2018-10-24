@@ -1,12 +1,10 @@
 import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
-import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
-import { logOut } from '../Profile/ProfileActions';
-import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
+import {logOut} from '../Profile/ProfileActions';
+import {URL} from '../../utils';
 
 const DOUBLE_PRESS_DELAY = 300;
 
@@ -16,38 +14,38 @@ function feedAction(token, state) {
 
     var pagUrl = '';
 
-    if (state.urlPage != '' && state.numPage > 0) {
+    if (state.urlPage != '' && state.numPage > 0) {
         pagUrl = state.urlPage;
-        getFeed(token, state,pagUrl);
+        getFeed(token, state, pagUrl);
 
-    } else if (state.numPage == 0) {
+    } else if (state.numPage == 0) {
         pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
-        getFeed(token, state,pagUrl);
+        getFeed(token, state, pagUrl);
     }
 }
 
-function getFeed(token, state,pagUrl) {
-    userService.feed(token, state,pagUrl)
-    .then(async (response) => {
-        console.log(`homeAction: ${token}, ${state}`, response);
-        const json = await response.json();
-        console.log(`homeAction:JSON:`, json);
-        if (response.ok) {
-            console.log(json.results);
-            APP_STORE.FEED_EVENT.next({"feed": json.results});
-            APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
-            return;
-        } else if (response.status === 401) {
-            logOut()
-        }
-        APP_STORE.APP_EVENT.next({"error": json.detail});
-    })
+function getFeed(token, state, pagUrl) {
+    userService.feed(token, state, pagUrl)
+        .then(async (response) => {
+            console.log(`homeAction: ${token}, ${state}`, response);
+            const json = await response.json();
+            console.log(`homeAction:JSON:`, json);
+            if (response.ok) {
+                console.log(json.results);
+                APP_STORE.FEED_EVENT.next({"feed": json.results});
+                APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
+                return;
+            } else if (response.status === 401) {
+                logOut()
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        })
 }
 
-function appendData(oldData, newData) {
+function appendData(oldData, newData) {
     oldData.slice();
 
-    newData.map((data) => { 
+    newData.map((data) => {
         oldData.push(data);
     });
 
@@ -71,7 +69,7 @@ function uploadAction(token, state) {
         });
 }
 
-function likeAction(id, id_user, like,row) {
+function likeAction(id, id_user, like, row) {
 
     console.log(`likeAction: ${id}, ${id_user}, ${like}`);
 
@@ -88,36 +86,36 @@ function likeAction(id, id_user, like,row) {
         });
 }
 
-function handleImagePress(idImage,id_user,like,row) {
+function handleImagePress(idImage, id_user, like, row) {
     const now = new Date().getTime();
-    
+
     if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
-      delete this.lastImagePress;
-      likeAction(idImage,id_user,like,row);
+        delete this.lastImagePress;
+        likeAction(idImage, id_user, like, row);
     } else {
-      this.lastImagePress = now;
+        this.lastImagePress = now;
     }
 }
 
-function calculateTime(rowData) {
+function calculateTime(rowData) {
     var start = moment(rowData.time).tz(DeviceInfo.getTimezone());
     var end = moment();
 
     var minutes = parseInt(moment.duration(end.diff(start)).asMinutes());
 
-    if (minutes < 60) {
+    if (minutes < 60) {
         return minutes + ' m'
     }
 
     var hours = parseInt(moment.duration(end.diff(start)).asHours());
 
-    if (hours < 24) {
+    if (hours < 24) {
         return hours + ' h'
     }
 
     var day = parseInt(moment.duration(end.diff(start)).asDays());
 
-    if (day < 31) {
+    if (day < 31) {
         return day + ' d'
     }
 
@@ -125,4 +123,4 @@ function calculateTime(rowData) {
 
 }
 
-export { feedAction, uploadAction, likeAction, calculateTime, appendData,handleImagePress };
+export {feedAction, uploadAction, likeAction, calculateTime, appendData, handleImagePress};
