@@ -21,6 +21,13 @@ const styleSheet = StyleSheet.create({
         paddingRight: 15,
         paddingTop: 5,
     },
+    root: {
+        flex: 1,
+    },
+    sendInnerView: {
+        marginRight: 5,
+        marginBottom: -10,
+    },
     styleTextRight: {
         color: '#fff',
     },

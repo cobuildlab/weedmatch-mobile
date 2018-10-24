@@ -281,7 +281,7 @@ export default class Chat extends Component {
     renderSend(props) {
         return (
             <Send {...props}>
-                <View style={{ marginRight: 5, marginBottom: -10 }}>
+                <View style={styles.sendInnerView}>
                     <Image
                         source={require('../../assets/img/send.png')}
                         resizeMode={'center'}
@@ -317,7 +317,7 @@ export default class Chat extends Component {
             const that = this;
 
             return (
-                <View style={{ flex: 1 }}>
+                <View style={styles.root}>
                     <WS
                         ref={ref => {
                             this.ws = ref;
