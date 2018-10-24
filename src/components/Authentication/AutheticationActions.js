@@ -1,66 +1,81 @@
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
-import {userService} from './service';
-import { AccessToken, LoginManager} from 'react-native-fbsdk';
-import firebase from 'react-native-firebase';
+import { APP_STORE } from '../../Store';
+import { userService } from './service';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 
+export function facebookAction(state) {
+    // eslint-disable-next-line no-console
+    console.log(state);
 
-function facebookAction(state) {
-
-  console.log(state)
-
-    AccessToken.getCurrentAccessToken().then(
-        (data) => {
-            if(data) {
-                LoginManager.logOut();
-                return
-            }
-            LoginManager.logInWithReadPermissions(["public_profile","email","user_birthday","user_gender"]).then(
-                function(result) {
-                    if (result.isCancelled) {
-                        APP_STORE.FACE_EVENT.next({"face":true})
-                    }
-                    AccessToken.getCurrentAccessToken().then(
-                        (data) => {
-                            console.log(data.accessToken.toString())
-
-                            userService.facebookHandle(data.accessToken.toString(),state)
-                            .then(async (response) => {
-                                console.log(`facebookAction: ${data.accessToken.toString()}`, response);
-                                const json = await response.json();
-                                console.log(`facebookAction:JSON:`, json);
-                                if (response.ok) {
-                                    APP_STORE.TOKEN_EVENT.next({"token": json.token});
-                                    APP_STORE.ID_EVENT.next({"id": json.id.toString()});
-                                    return;
-                                }
-                                APP_STORE.APP_EVENT.next({"error": json.detail});
-                            });
-                        }
-                    )
-                },
-                function(error) {
-                  alert('Login fail with error: ' + error);
-                }
-            );
+    AccessToken.getCurrentAccessToken().then(data => {
+        if (data) {
+            LoginManager.logOut();
+            return;
         }
-    )
+        LoginManager.logInWithReadPermissions([
+            'public_profile',
+            'email',
+            'user_birthday',
+            'user_gender',
+        ]).then(
+            function(result) {
+                if (result.isCancelled) {
+                    APP_STORE.FACE_EVENT.next({ face: true });
+                }
+                AccessToken.getCurrentAccessToken().then(data => {
+                    // eslint-disable-next-line no-console
+                    console.log(data.accessToken.toString());
+
+                    userService
+                        .facebookHandle(data.accessToken.toString(), state)
+                        .then(async response => {
+                            // eslint-disable-next-line no-console
+                            console.log(
+                                `facebookAction: ${data.accessToken.toString()}`,
+                                response
+                            );
+
+                            const json = await response.json();
+
+                            // eslint-disable-next-line no-console
+                            console.log(`facebookAction:JSON:`, json);
+
+                            if (response.ok) {
+                                APP_STORE.TOKEN_EVENT.next({
+                                    token: json.token,
+                                });
+                                APP_STORE.ID_EVENT.next({
+                                    id: json.id.toString(),
+                                });
+                                return;
+                            }
+                            APP_STORE.APP_EVENT.next({ error: json.detail });
+                        });
+                });
+            },
+            function(error) {
+                alert('Login fail with error: ' + error);
+            }
+        );
+    });
 }
 
-function firebaseAction(token) {
+export function firebaseAction(token) {
+    // eslint-disable-next-line no-console
     console.log(`firebaseAction: ${token}`);
 
-    userService.tokenFB(token)
-        .then(async (response) => {
-            console.log(`firebaseAction: ${token}`, response);
-            const json = await response.json();
-            console.log(`firebaseAction:JSON:`, json);
-            if (response.ok) {
-                APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
-                return;
-            }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
-}
+    userService.tokenFB(token).then(async response => {
+        // eslint-disable-next-line no-console
+        console.log(`firebaseAction: ${token}`, response);
 
-export {facebookAction,firebaseAction};
+        const json = await response.json();
+
+        // eslint-disable-next-line no-console
+        console.log(`firebaseAction:JSON:`, json);
+
+        if (response.ok) {
+            APP_STORE.FIRE_EVENT.next({ tokenFB: json.id.toString() });
+            return;
+        }
+        APP_STORE.APP_EVENT.next({ error: json.detail });
+    });
+}

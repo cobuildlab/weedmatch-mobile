@@ -1,134 +1,141 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
-    headerLogin: {
-        backgroundColor: '#9605CC',
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        width: '100%',
-        resizeMode: 'contain',
-    },
-    imageStyle: {
-        height: 300,
-        flex: 2,
-        width: null,
-    },
-    contentLogin: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        marginTop: 15,
-        marginBottom: 20,
-    },
-    textLight: {
-        fontSize: 20,
-        color: '#9605CC',
-    },
-    textBold: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#9605CC',
-        marginBottom: 40,
-    },
+const BLUE = '#3B5998';
+const MAGENTA = '#9605CC';
+const PLEASANT_TEXT_BLACK = '#333333';
+const WHITE = '#FFFFFF';
 
-    buttomLoginIntagramStyle: {
-        marginTop: 5,
+const styleSheet = StyleSheet.create({
+    buttomFacebookStyle: {
+        alignItems: 'center',
+        backgroundColor: BLUE,
+        borderRadius: 8,
+        justifyContent: 'center',
         marginBottom: 10,
-        width: 300,
-        paddingTop: 14,
+        marginTop: 5,
         paddingBottom: 14,
-        borderRadius: 50,
-        alignItems: 'center',
-        backgroundColor: '#9605CC',
+        paddingTop: 14,
+        width: 260,
     },
-    buttonInstagramText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
+    buttomIconMsg: {
+        height: 10,
+        position: 'absolute',
+        right: 35,
+        top: 22,
+        width: 10,
+        zIndex: 999,
+    },
+    buttomIconProfile: {
+        height: 10,
+        left: 15,
+        position: 'absolute',
+        top: 22,
+        width: 10,
+        zIndex: 999,
+    },
+    buttomLoginIntagramStyle: {
+        alignItems: 'center',
+        backgroundColor: MAGENTA,
+        borderRadius: 50,
+        marginBottom: 10,
+        marginTop: 5,
+        paddingBottom: 14,
+        paddingTop: 14,
+        width: 300,
+    },
+    buttomLoginStyle: {
+        alignItems: 'center',
+        backgroundColor: MAGENTA,
+        // backgroundColor: '#c646b6',
+        borderRadius: 50,
+        marginBottom: 10,
+        marginTop: 5,
+        paddingBottom: 14,
+        paddingTop: 14,
+        width: 240,
     },
     buttomRegister: {
         marginTop: 20,
     },
-    buttonTextRegister: {
-        color: '#333333',
+    buttonInstagramText: {
+        color: WHITE,
         fontSize: 16,
+        fontWeight: 'bold',
     },
     buttonText: {
-        color: '#FFFFFF',
+        color: WHITE,
         fontSize: 16,
-    },
-    buttomFacebookStyle: {
-        marginTop: 5,
-        marginBottom: 10,
-        width: 260,
-        paddingTop: 14,
-        paddingBottom: 14,
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#3b5998',
-    },
-    logoFacebook: {
-        width: 16,
-        height: 17,
-        position: 'absolute',
-        top: 11,
-        left: 17,
     },
     buttonTextFacebook: {
-        color: 'white',
+        color: WHITE,
         fontSize: 16,
         fontWeight: '500',
-        paddingLeft: 20,
         marginTop: -5,
+        paddingLeft: 20,
     },
-    buttomLoginStyle: {
-        marginTop: 5,
-        marginBottom: 10,
-        width: 240,
-        paddingTop: 14,
-        paddingBottom: 14,
-        borderRadius: 50,
+    buttonTextRegister: {
+        color: PLEASANT_TEXT_BLACK,
+        fontSize: 16,
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        resizeMode: 'contain',
+        width: '100%',
+    },
+    contentLogin: {
         alignItems: 'center',
-        // backgroundColor: '#c646b6',
-        backgroundColor: '#9605CC',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        marginBottom: 20,
+        marginTop: 15,
     },
-    scrollContainer: {
-        backgroundColor: '#fff',
-        height: '100%'
+    headerImageHolder: {
+        flex: 1,
+        flexDirection: 'row',
     },
-
-    buttomIconProfile: {
-        position: 'absolute',
-        top: 22,
-        left: 15,
-        width: 10,
-        height: 10,
-        zIndex: 999,
+    headerLogin: {
+        alignItems: 'center',
+        backgroundColor: MAGENTA,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
     },
-    imgIconProfile: {
-        width: 28,
-        height: 28,
-    },
-
-    buttomIconMsg: {
-        position: 'absolute',
-        top: 22,
-        right: 35,
-        width: 10,
-        height: 10,
-        zIndex: 999,
+    imageStyle: {
+        flex: 2,
+        height: 300,
+        width: null,
     },
     imgIconMsg: {
-        width: 30,
         height: 27,
+        width: 30,
     },
-
+    imgIconProfile: {
+        height: 28,
+        width: 28,
+    },
+    logoFacebook: {
+        height: 17,
+        left: 17,
+        position: 'absolute',
+        top: 11,
+        width: 16,
+    },
+    scrollContainer: {
+        backgroundColor: WHITE,
+        height: '100%',
+    },
+    textBold: {
+        color: MAGENTA,
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 40,
+    },
+    textLight: {
+        color: MAGENTA,
+        fontSize: 20,
+    },
 });
+
+export default styleSheet;
