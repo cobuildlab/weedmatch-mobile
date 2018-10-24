@@ -11,7 +11,9 @@ module.exports = {
     env: {
         'react-native/react-native': true,
     },
-    rules: {},
+    rules: {
+        'sort-keys': 2,
+    },
     settings: {
         react: {
             version: reactVersion,
