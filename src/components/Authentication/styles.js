@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 
-export const BLUE = '#3B5998';
-export const GRAY = '#F3F3F3';
-export const MAGENTA = '#9605CC';
-export const PLEASANT_TEXT_BLACK = '#333333';
-export const WHITE = '#FFFFFF';
+const BLUE = '#3B5998';
+const MAGENTA = '#9605CC';
+const PLEASANT_TEXT_BLACK = '#333333';
+const WHITE = '#FFFFFF';
 
 const styleSheet = StyleSheet.create({
     buttomFacebookStyle: {
@@ -34,11 +33,6 @@ const styleSheet = StyleSheet.create({
         width: 10,
         zIndex: 999,
     },
-    buttonInstagramText: {
-        color: WHITE,
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
     buttomLoginIntagramStyle: {
         alignItems: 'center',
         backgroundColor: MAGENTA,
@@ -62,6 +56,11 @@ const styleSheet = StyleSheet.create({
     },
     buttomRegister: {
         marginTop: 20,
+    },
+    buttonInstagramText: {
+        color: WHITE,
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     buttonText: {
         color: WHITE,
