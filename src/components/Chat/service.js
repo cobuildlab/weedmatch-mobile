@@ -1,9 +1,5 @@
-import {authHeader} from '../../utils';
-import {APP_STORE} from '../../Store';
-
-export const userService = {
-    chats,
-};
+import { authHeader } from '../../utils';
+import { APP_STORE } from '../../Store';
 
 function chats(pagUrl) {
     const requestOptions = {
@@ -13,3 +9,7 @@ function chats(pagUrl) {
 
     return fetch(pagUrl, requestOptions);
 }
+
+export const userService = {
+    chats,
+};

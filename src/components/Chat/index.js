@@ -1,20 +1,14 @@
-import React, {Component} from 'react';
-import {
-    ActivityIndicator,
-    View,
-    Image, AppState
-} from 'react-native';
-import {WS_URL} from '../../utils';
+import React, { Component } from 'react';
+import { ActivityIndicator, View, Image, AppState } from 'react-native';
+import { WS_URL } from '../../utils';
 
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
-import {internet, checkConectivity, toastMsg} from '../../utils';
+import { APP_STORE } from '../../Store';
+import { strings } from '../../i18n';
+import { internet, checkConectivity, toastMsg } from '../../utils';
 import styles from './style';
-import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat'
-import {chatAction, appendData} from './ChatActions';
+import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
+import { chatAction, appendData } from './ChatActions';
 import WS from 'react-native-websocket';
-import firebase from "react-native-firebase";
-
 
 export default class Chat extends Component {
     constructor(props) {
@@ -28,14 +22,14 @@ export default class Chat extends Component {
             numPage: 0,
             morePages: false,
             isLoading: true,
-            refreshing: true
-        }
+            refreshing: true,
+        };
 
-        this.reconnect = true
+        this.reconnect = true;
     }
 
-    static navigationOptions = ({navigation}) => {
-        const {params} = navigation.state;
+    static navigationOptions = ({ navigation }) => {
+        const { params } = navigation.state;
 
         return {
             // title: navigation.getParam('otherUser', '0'),
@@ -43,63 +37,85 @@ export default class Chat extends Component {
         };
     };
 
-
     _handleWebSocketSetup() {
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         const chat_id = navigation.getParam('chat_id', '0');
-        let queryString = 'id_user=' + APP_STORE.getId() + '&' + 'username=' + APP_STORE.getUser() + '&' + 'chat_id=' + chat_id + '&' + 'token=' + APP_STORE.getToken();
-        this.socket = new WebSocket(WS_URL + "?" + queryString);
+        let queryString =
+            'id_user=' +
+            APP_STORE.getId() +
+            '&' +
+            'username=' +
+            APP_STORE.getUser() +
+            '&' +
+            'chat_id=' +
+            chat_id +
+            '&' +
+            'token=' +
+            APP_STORE.getToken();
+        this.socket = new WebSocket(WS_URL + '?' + queryString);
 
         this.socket.onopen = () => {
-            console.log("CHAT:_handleWebSocketSetup:onopen");
-            this.setState({connected: true});
+            // eslint-disable-next-line no-console
+            console.log('CHAT:_handleWebSocketSetup:onopen');
+
+            this.setState({ connected: true });
             this.props.navigation.setParams({
-                name: this.getOtherUser()
+                name: this.getOtherUser(),
             });
         };
 
-        this.socket.onmessage = ({data}) => {
-            console.log("CHAT:_handleWebSocketSetup:onmesage", data);
+        this.socket.onmessage = ({ data }) => {
+            // eslint-disable-next-line no-console
+            console.log('CHAT:_handleWebSocketSetup:onmesage', data);
+
             const json = JSON.parse(data);
-            this.onReceive(json.message)
-        }
 
-        this.socket.onerror = (e) => {
-            console.error("CHAT:_handleWebSocketSetup:onerror", e);
-            console.error("CHAT:_handleWebSocketSetup:onerror", JSON.stringify(e));
-        }
+            this.onReceive(json.message);
+        };
 
-        this.socket.onclose = (e) => {
-            console.log("CHAT:_handleWebSocketSetup:onclose");
+        this.socket.onerror = e => {
+            // eslint-disable-next-line no-console
+            console.error('CHAT:_handleWebSocketSetup:onerror', e);
+            // eslint-disable-next-line no-console
+            console.error(
+                'CHAT:_handleWebSocketSetup:onerror',
+                JSON.stringify(e)
+            );
+        };
+
+        this.socket.onclose = e => {
+            // eslint-disable-next-line no-console
+            console.log('CHAT:_handleWebSocketSetup:onclose');
+            // eslint-disable-next-line no-console
             console.log(e.code, e.reason);
+
             if (this.reconnect) {
                 this.props.navigation.setParams({
-                    name: strings("chat.reconnect")
+                    name: strings('chat.reconnect'),
                 });
 
                 setTimeout(() => {
-                    this._handleWebSocketSetup()
-                }, 3000)
+                    this._handleWebSocketSetup();
+                }, 3000);
             }
         };
     }
 
-    _handleAppStateChange = (nextAppState) => {
-        console.log("TOPBAR:_handleAppStateChange", nextAppState);
-        if (nextAppState == "active")
-            this.getEarlyMessages();
+    _handleAppStateChange = nextAppState => {
+        // eslint-disable-next-line no-console
+        console.log('TOPBAR:_handleAppStateChange', nextAppState);
+
+        if (nextAppState == 'active') this.getEarlyMessages();
     };
 
-
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.navigation.setParams({
-            name: this.getOtherUser()
+            name: this.getOtherUser(),
         });
-
     }
 
     componentDidMount() {
-        APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": this.getOtherUser()});
+        APP_STORE.CHATNOTIF_EVENT.next({ chatNotif: this.getOtherUser() });
 
         // For some reason this stop working so i change it to a plugin
         // this._handleWebSocketSetup();
@@ -107,20 +123,36 @@ export default class Chat extends Component {
         AppState.addEventListener('change', this._handleAppStateChange);
 
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
-            console.log("Chat:componentDidMount:CHATMSG_EVENT");
+            // eslint-disable-next-line no-console
+            console.log('Chat:componentDidMount:CHATMSG_EVENT');
+
             if (state.chatMsg) {
                 // console.log(this.state);
                 if (this.state.numPage > 0) {
                     this.setState(prevState => ({
-                        messages: GiftedChat.prepend([], appendData(prevState.messages, state.chatMsg, this.getOtherUser)),
+                        messages: GiftedChat.prepend(
+                            [],
+                            appendData(
+                                prevState.messages,
+                                state.chatMsg,
+                                this.getOtherUser
+                            )
+                        ),
                         isLoading: false,
-                    }))
+                    }));
                 } else {
                     this.setState(prevState => ({
                         refreshing: false,
-                        messages: GiftedChat.append([], appendData(prevState.messages, state.chatMsg, this.getOtherUser)),
+                        messages: GiftedChat.append(
+                            [],
+                            appendData(
+                                prevState.messages,
+                                state.chatMsg,
+                                this.getOtherUser
+                            )
+                        ),
                         isLoading: false,
-                    }))
+                    }));
                 }
 
                 return;
@@ -131,20 +163,21 @@ export default class Chat extends Component {
         });
 
         this.chatPage = APP_STORE.CHATPAGE.subscribe(state => {
-            console.log("Chat:componentDidMount:CHATPAGE");
-            if (state.chatMsgPage) {
+            // eslint-disable-next-line no-console
+            console.log('Chat:componentDidMount:CHATPAGE');
 
+            if (state.chatMsgPage) {
                 this.setState({
                     urlPage: state.chatMsgPage,
                     numPage: this.state.numPage + 1,
-                    morePages: true
-                })
+                    morePages: true,
+                });
                 return;
             } else {
                 this.setState({
                     urlPage: '',
-                    morePages: false
-                })
+                    morePages: false,
+                });
             }
             if (state.error) {
                 toastMsg(state.error);
@@ -155,8 +188,10 @@ export default class Chat extends Component {
     }
 
     componentWillUnmount() {
-        console.log("Chat:componentWillUmmount");
-        APP_STORE.CHATNOTIF_EVENT.next({"chatNotif": ""});
+        // eslint-disable-next-line no-console
+        console.log('Chat:componentWillUmmount');
+
+        APP_STORE.CHATNOTIF_EVENT.next({ chatNotif: '' });
         this.chatMsg.unsubscribe();
         this.chatPage.unsubscribe();
         // this.close()
@@ -164,25 +199,25 @@ export default class Chat extends Component {
     }
 
     close() {
-        this.reconnect = false
-        this.socket.close()
+        this.reconnect = false;
+        this.socket.close();
     }
 
     getOtherUser() {
-        return this.props.navigation.getParam('otherUser', '0')
+        return this.props.navigation.getParam('otherUser', '0');
     }
 
     getOtherID() {
-        return this.props.navigation.getParam('otherID', '0')
+        return this.props.navigation.getParam('otherID', '0');
     }
 
     getChatID() {
-        return this.props.navigation.getParam('chat_id', '0')
+        return this.props.navigation.getParam('chat_id', '0');
     }
 
     getEarlyMessages() {
         if (checkConectivity()) {
-            this.setState({isLoading: true})
+            this.setState({ isLoading: true });
             chatAction(this.state, this.getChatID());
         } else {
             internet();
@@ -190,7 +225,6 @@ export default class Chat extends Component {
     }
 
     onReceive(messages) {
-
         const message = {
             _id: Math.round(Math.random() * 1000000),
             text: messages,
@@ -200,52 +234,58 @@ export default class Chat extends Component {
                 name: 'React Native',
                 avatar: '',
             },
-        }
+        };
 
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, message),
-        }))
+        }));
     }
 
     onSend(messages = []) {
+        // eslint-disable-next-line no-console
         console.log('onSend:SOCKET CONNECTED');
+
         const payload = {
-            "message": messages[0].text,
-            "user": APP_STORE.getUser(),
-            "id_user_send": this.getOtherID(),
-            "chat_id": this.getChatID(),
-        }
+            message: messages[0].text,
+            user: APP_STORE.getUser(),
+            id_user_send: this.getOtherID(),
+            chat_id: this.getChatID(),
+        };
         this.WS.send(JSON.stringify(payload));
         // this.setState(prevState => ({open: !prevState.open}))
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
-        }))
+        }));
     }
 
     renderBubble(props) {
-        return (<Bubble {...props}
-                        wrapperStyle={{
-                            left: {
-                                backgroundColor: 'white',
-                            },
-                            right: {
-                                backgroundColor: '#9605CC'
-                            }
-                        }}/>
-        )
+        return (
+            <Bubble
+                {...props}
+                wrapperStyle={{
+                    left: {
+                        backgroundColor: 'white',
+                    },
+                    right: {
+                        backgroundColor: '#9605CC',
+                    },
+                }}
+            />
+        );
     }
 
-    renderTime(props) {
-        return (null)
+    renderTime() {
+        return null;
     }
 
     renderSend(props) {
         return (
-            <Send
-                {...props}
-            >
-                <View style={{marginRight: 5, marginBottom: -10}}>
-                    <Image source={require('../../assets/img/send.png')} resizeMode={'center'}/>
+            <Send {...props}>
+                <View style={{ marginRight: 5, marginBottom: -10 }}>
+                    <Image
+                        source={require('../../assets/img/send.png')}
+                        resizeMode={'center'}
+                    />
                 </View>
             </Send>
         );
@@ -255,18 +295,29 @@ export default class Chat extends Component {
         if (this.state.refreshing) {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC"/>
+                    <ActivityIndicator size="large" color="#9605CC" />
                 </View>
-            )
+            );
         } else {
-            const {navigation} = this.props;
+            const { navigation } = this.props;
             const chat_id = navigation.getParam('chat_id', '0');
-            let queryString = 'id_user=' + APP_STORE.getId() + '&' + 'username=' + APP_STORE.getUser() + '&' + 'chat_id=' + chat_id + '&' + 'token=' + APP_STORE.getToken();
-            const url = WS_URL + "?" + queryString;
+            let queryString =
+                'id_user=' +
+                APP_STORE.getId() +
+                '&' +
+                'username=' +
+                APP_STORE.getUser() +
+                '&' +
+                'chat_id=' +
+                chat_id +
+                '&' +
+                'token=' +
+                APP_STORE.getToken();
+            const url = WS_URL + '?' + queryString;
             const that = this;
 
             return (
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                     <WS
                         ref={ref => {
                             this.ws = ref;
@@ -274,7 +325,8 @@ export default class Chat extends Component {
                         }}
                         url={url}
                         onOpen={() => {
-                            console.log('Open!')
+                            // eslint-disable-next-line no-console
+                            console.log('Open!');
                             // const payload = {
                             //     "message": "HOLA",
                             //     "user": APP_STORE.getUser(),
@@ -284,12 +336,22 @@ export default class Chat extends Component {
                             // this.ws.send(JSON.stringify(payload));
                         }}
                         onMessage={data => {
-                            console.log("CHAT:_handleWebSocketSetup:onmesage", data);
-                            console.log("CHAT:_handleWebSocketSetup:onmesage", data.data);
+                            // eslint-disable-next-line no-console
+                            console.log(
+                                'CHAT:_handleWebSocketSetup:onmesage',
+                                data
+                            );
+                            // eslint-disable-next-line no-console
+                            console.log(
+                                'CHAT:_handleWebSocketSetup:onmesage',
+                                data.data
+                            );
                             const json = JSON.parse(data.data);
-                            that.onReceive(json.message)
+                            that.onReceive(json.message);
                         }}
+                        // eslint-disable-next-line no-console
                         onError={console.error}
+                        // eslint-disable-next-line no-console
                         onClose={console.log}
                         reconnect // Will try to reconnect onClose
                     />
@@ -308,8 +370,7 @@ export default class Chat extends Component {
                         }}
                     />
                 </View>
-            )
+            );
         }
     }
 }
-

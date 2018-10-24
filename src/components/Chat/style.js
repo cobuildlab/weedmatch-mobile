@@ -1,82 +1,82 @@
-import { StyleSheet, Platform, Dimensions } from 'react-native';
-var width = Dimensions.get('window').width;
+import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
-
-    viewContainer: {
-      backgroundColor: '#fff',
-      flex: 1,
-      flexDirection: 'column',
-    },
-    viewMsg: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 15,
-    },
-    viewLeft:{
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'flex-end',
-      alignItems: 'flex-start',
-    },
-    viewTextLeft:{
-      width: 'auto',
-      padding: 15,
-      marginBottom: 15,
-      marginLeft: 25,
-      borderRadius: 10,
-      backgroundColor: '#f3f3f3'
-    },
-    viewRight:{
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
-    },
-    viewTextRight:{
-      width: 'auto',
-      padding: 15,
-      marginBottom: 15,
-      marginRight: 25,
-      borderRadius: 10,
-      marginLeft: 80,
-      backgroundColor: '#9605CC',
-    },
-    styleTextRight:{
-      color: '#fff',
-    },
-    viewContainerInput:{
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-    inputStyle:{
-      maxHeight: 200,
-      height: 55,
-      paddingLeft: 10,
-      paddingRight: 15,
-      paddingTop: 5,
-    },
-    viewInput:{
-      width: '100%',
-      borderWidth: 2,
-      borderTopColor: '#9605CC',
-    },
-    iconSend:{
-      width: 30,
-      height: 30,
-    },
-    viewIconSend:{
-      position: 'absolute',
-      right: 10,
-      top: 11,
-    },
+const styleSheet = StyleSheet.create({
     containers: {
-      flex: 1,
-      justifyContent: 'center'
+        flex: 1,
+        justifyContent: 'center',
     },
     horizontal: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      padding: 10
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+    },
+    iconSend: {
+        height: 30,
+        width: 30,
+    },
+    inputStyle: {
+        height: 55,
+        maxHeight: 200,
+        paddingLeft: 10,
+        paddingRight: 15,
+        paddingTop: 5,
+    },
+    styleTextRight: {
+        color: '#fff',
+    },
+    viewContainer: {
+        backgroundColor: '#fff',
+        flex: 1,
+        flexDirection: 'column',
+    },
+    viewContainerInput: {
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    viewIconSend: {
+        position: 'absolute',
+        right: 10,
+        top: 11,
+    },
+    viewInput: {
+        borderTopColor: '#9605CC',
+        borderWidth: 2,
+        width: '100%',
+    },
+    viewLeft: {
+        alignItems: 'flex-start',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+    },
+    viewMsg: {
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        padding: 15,
+    },
+    viewRight: {
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    viewTextLeft: {
+        backgroundColor: '#f3f3f3',
+        borderRadius: 10,
+        marginBottom: 15,
+        marginLeft: 25,
+        padding: 15,
+        width: 'auto',
+    },
+    viewTextRight: {
+        backgroundColor: '#9605CC',
+        borderRadius: 10,
+        marginBottom: 15,
+        marginLeft: 80,
+        marginRight: 25,
+        padding: 15,
+        width: 'auto',
     },
 });
+
+export default styleSheet;
