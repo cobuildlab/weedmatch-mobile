@@ -15,7 +15,7 @@ import {
 
 import { strings } from '../../i18n';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import styles from './style';
+import styles, { LIGHT_GRAY, MAGENTA } from './style';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import { APP_STORE } from '../../Store';
@@ -34,16 +34,16 @@ export default class EditProfile extends Component {
         console.log('EditProfile:constructor');
 
         this.state = {
-            isLoading: false,
-            sliderOneChanging: false,
-            sliderOneValue: [0],
-            index: 0,
-            user: {},
-            images: {},
-            username: '',
             description: '',
+            images: {},
+            index: 0,
+            isLoading: false,
             name: '',
             notification: true,
+            sliderOneChanging: false,
+            sliderOneValue: [0],
+            user: {},
+            username: '',
         };
 
         this.helper = false;
@@ -60,14 +60,14 @@ export default class EditProfile extends Component {
                 let newValues = [0];
                 newValues[0] = state.publicEditProfile.distance;
                 this.setState({
-                    isLoading: true,
-                    user: state.publicEditProfile,
-                    sliderOneValue: newValues,
-                    username: state.publicEditProfile.username,
                     description: state.publicEditProfile.description,
-                    name: state.publicEditProfile.first_name,
                     images: state.publicEditProfile.profile_images,
+                    isLoading: true,
+                    name: state.publicEditProfile.first_name,
                     notification: state.publicEditProfile.notification,
+                    sliderOneValue: newValues,
+                    user: state.publicEditProfile,
+                    username: state.publicEditProfile.username,
                 });
                 return;
             }
@@ -202,11 +202,11 @@ export default class EditProfile extends Component {
 
     _getPhoto(index) {
         ImagePicker.openPicker({
-            cropping: false,
-            width: 500,
-            height: 500,
             compressImageQuality: 0.5,
+            cropping: false,
+            height: 500,
             includeExif: true,
+            width: 500,
         })
             .then(image => {
                 this.setImageUrl(image.path, index);
@@ -216,11 +216,11 @@ export default class EditProfile extends Component {
 
     _takePhoto(index) {
         ImagePicker.openCamera({
-            cropping: false,
-            width: 500,
-            height: 500,
             compressImageQuality: 0.5,
+            cropping: false,
+            height: 500,
             includeExif: true,
+            width: 500,
         })
             .then(image => {
                 this.setImageUrl(image.path, index);
@@ -432,12 +432,12 @@ export default class EditProfile extends Component {
                         <View style={styles.marginView}>
                             <MultiSlider
                                 selectedStyle={{
-                                    backgroundColor: '#9605CC',
+                                    backgroundColor: MAGENTA,
                                 }}
                                 min={2}
                                 max={5000}
                                 unselectedStyle={{
-                                    backgroundColor: '#ccc',
+                                    backgroundColor: LIGHT_GRAY,
                                 }}
                                 values={this.state.sliderOneValue}
                                 sliderLength={300}
@@ -458,7 +458,7 @@ export default class EditProfile extends Component {
                             <View style={styles.viewSwitch}>
                                 <Switch
                                     style={styles.switchStyle}
-                                    onTintColor={'#9605CC'}
+                                    onTintColor={MAGENTA}
                                     value={this.state.notification}
                                     onValueChange={() => this.notificationes()}
                                 />

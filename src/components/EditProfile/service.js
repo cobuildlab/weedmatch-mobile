@@ -7,10 +7,10 @@ import I18n from 'react-native-i18n';
 const LENGUAGE = I18n.currentLocale().slice(0, 2);
 
 export const userService = {
-    publicProfile,
-    saveProfile,
     changeImage,
     deleteImage,
+    publicProfile,
+    saveProfile,
     uploadImage,
 };
 
@@ -22,8 +22,8 @@ export const userService = {
  */
 function publicProfile(token, id) {
     const requestOptions = {
-        method: 'GET',
         headers: authHeader(token),
+        method: 'GET',
     };
 
     return fetch(URL + 'profile/' + id + '/', requestOptions);
@@ -43,15 +43,15 @@ function uploadImage(token, id, image) {
     const data = new FormData();
 
     data.append('image', {
-        uri: image,
-        type: 'image/' + ext,
         name: 'photo.' + ext,
+        type: 'image/' + ext,
+        uri: image,
     });
 
     const requestOptions = {
-        method: 'POST',
-        headers: authHeaderForm(token),
         body: data,
+        headers: authHeaderForm(token),
+        method: 'POST',
     };
 
     return fetch(URL + 'profile/' + id + '/upload-image/', requestOptions);
@@ -71,15 +71,15 @@ function changeImage(token, id, image, imageID) {
     const data = new FormData();
 
     data.append('image', {
-        uri: image,
-        type: 'image/' + ext,
         name: 'photo.' + ext,
+        type: 'image/' + ext,
+        uri: image,
     });
 
     const requestOptions = {
-        method: 'PUT',
-        headers: authHeaderForm(token),
         body: data,
+        headers: authHeaderForm(token),
+        method: 'PUT',
     };
 
     return fetch(
@@ -97,8 +97,8 @@ function changeImage(token, id, image, imageID) {
  */
 function deleteImage(token, id, image) {
     const requestOptions = {
-        method: 'DELETE',
         headers: authHeader(token),
+        method: 'DELETE',
     };
 
     return fetch(
@@ -109,23 +109,23 @@ function deleteImage(token, id, image) {
 
 function saveProfile(token, id, state) {
     const value = {
-        username: state.username,
-        first_name: state.name,
         description: state.description,
-        match_sex: state.user.match_sex,
-        sex: state.user.sex,
         distance: state.sliderOneValue.toString(),
+        first_name: state.name,
+        match_sex: state.user.match_sex,
         notification: state.notification ? 'true' : 'false',
+        sex: state.user.sex,
+        username: state.username,
     };
 
     const requestOptions = {
-        method: 'PUT',
+        body: JSON.stringify(value),
         headers: {
-            'Content-Type': 'application/json',
             'Accept-Language': LENGUAGE,
             Authorization: 'Token ' + token,
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(value),
+        method: 'PUT',
     };
 
     return fetch(URL + 'profile/' + id + '/', requestOptions);
