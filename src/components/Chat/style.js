@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native';
 
+export const GRAY = '#F3F3F3';
+export const MAGENTA = '#9605CC';
+export const WHITE = '#FFFFFF';
+
 const styleSheet = StyleSheet.create({
     containers: {
         flex: 1,
@@ -29,10 +33,10 @@ const styleSheet = StyleSheet.create({
         marginBottom: -10,
     },
     styleTextRight: {
-        color: '#fff',
+        color: WHITE,
     },
     viewContainer: {
-        backgroundColor: '#fff',
+        backgroundColor: WHITE,
         flex: 1,
         flexDirection: 'column',
     },
@@ -46,7 +50,7 @@ const styleSheet = StyleSheet.create({
         top: 11,
     },
     viewInput: {
-        borderTopColor: '#9605CC',
+        borderTopColor: MAGENTA,
         borderWidth: 2,
         width: '100%',
     },
@@ -68,7 +72,7 @@ const styleSheet = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     viewTextLeft: {
-        backgroundColor: '#f3f3f3',
+        backgroundColor: GRAY,
         borderRadius: 10,
         marginBottom: 15,
         marginLeft: 25,
@@ -76,7 +80,7 @@ const styleSheet = StyleSheet.create({
         width: 'auto',
     },
     viewTextRight: {
-        backgroundColor: '#9605CC',
+        backgroundColor: MAGENTA,
         borderRadius: 10,
         marginBottom: 15,
         marginLeft: 80,
