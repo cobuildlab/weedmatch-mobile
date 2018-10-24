@@ -1,20 +1,27 @@
 import { StyleSheet, Platform } from 'react-native';
 
-export default (styles = StyleSheet.create({
+const COOL_GRAY = '#B2B2B2';
+const LIGHT_GRAY = '#CCCCCC';
+const MAGENTA = '#9605CC';
+const MEDIUM_GRAY = '#777777';
+const STANDARD_GRAY = '#9D9D9C';
+const WHITE = '#FFFFFF';
+
+const styleSheet = StyleSheet.create({
     scrollView: {
-        backgroundColor: '#fff',
+        backgroundColor: WHITE,
         marginBottom: 0,
         flex: 1,
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: WHITE,
     },
     mePic: {
         width: '100%',
         height: 300,
         resizeMode: 'cover',
-        backgroundColor: '#ccc',
+        backgroundColor: LIGHT_GRAY,
     },
     meSubPic: {
         width: '30%',
@@ -29,7 +36,7 @@ export default (styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFF',
+        backgroundColor: WHITE,
     },
     horizontal: {
         flexDirection: 'row',
@@ -73,13 +80,13 @@ export default (styles = StyleSheet.create({
         width: '100%',
         paddingTop: 10,
         paddingBottom: 10,
-        borderColor: '#ccc',
+        borderColor: LIGHT_GRAY,
         borderRadius: 50,
         borderWidth: 1,
         alignItems: 'center',
     },
     buttonTextOff: {
-        color: '#ccc',
+        color: LIGHT_GRAY,
         fontSize: 16,
     },
     buttomEditSexOn: {
@@ -87,13 +94,13 @@ export default (styles = StyleSheet.create({
         width: '100%',
         paddingTop: 10,
         paddingBottom: 10,
-        borderColor: '#9605CC',
+        borderColor: MAGENTA,
         borderRadius: 50,
         borderWidth: 1,
         alignItems: 'center',
     },
     buttonTextOn: {
-        color: '#9605CC',
+        color: MAGENTA,
         fontSize: 16,
     },
     buttomRegisterStyle: {
@@ -105,14 +112,14 @@ export default (styles = StyleSheet.create({
         paddingBottom: 10,
         borderRadius: 50,
         alignItems: 'center',
-        backgroundColor: '#9605CC',
+        backgroundColor: MAGENTA,
     },
     buttonText: {
         color: '#ffffff',
         fontSize: 16,
     },
     buttonTextCard: {
-        color: '#9605CC',
+        color: MAGENTA,
         fontSize: 16,
     },
     buttomCardStyle: {
@@ -124,7 +131,7 @@ export default (styles = StyleSheet.create({
         alignItems: 'center',
     },
     textLabelCard: {
-        color: '#777',
+        color: MEDIUM_GRAY,
         fontSize: 16,
         marginLeft: 15,
         marginBottom: 0,
@@ -157,13 +164,13 @@ export default (styles = StyleSheet.create({
         paddingBottom: 0,
     },
     textLabel: {
-        color: '#777',
+        color: MEDIUM_GRAY,
         fontSize: 16,
         marginBottom: 0,
         paddingBottom: 0,
     },
     textLabelSwitch: {
-        color: '#777',
+        color: MEDIUM_GRAY,
         fontSize: 16,
         marginTop: 5,
         marginBottom: 0,
@@ -178,7 +185,7 @@ export default (styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     textLabelvalue: {
-        color: '#777',
+        color: MEDIUM_GRAY,
         fontSize: 16,
         marginBottom: 0,
         marginLeft: 30,
@@ -196,7 +203,7 @@ export default (styles = StyleSheet.create({
         paddingBottom: 0,
     },
     buttomUploadStyle: {
-        backgroundColor: '#fff',
+        backgroundColor: WHITE,
     },
     meSubImg: {
         width: '100%',
@@ -234,7 +241,7 @@ export default (styles = StyleSheet.create({
     meNameOther: {
         fontWeight: '300',
         fontSize: 14,
-        color: '#9D9D9C',
+        color: STANDARD_GRAY,
         paddingTop: 5,
     },
     data: {
@@ -269,7 +276,7 @@ export default (styles = StyleSheet.create({
     },
     edit: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: LIGHT_GRAY,
         borderRadius: 3,
         alignItems: 'center',
         margin: 15,
@@ -295,7 +302,7 @@ export default (styles = StyleSheet.create({
     divider: {
         height: 0.5,
         width: '100%',
-        backgroundColor: '#B2B2B2',
+        backgroundColor: COOL_GRAY,
         marginBottom: 0,
         paddingLeft: 30,
         paddingRight: 30,
@@ -307,4 +314,6 @@ export default (styles = StyleSheet.create({
         marginRight: 50,
         alignItems: 'center',
     },
-}));
+});
+
+export default styleSheet;

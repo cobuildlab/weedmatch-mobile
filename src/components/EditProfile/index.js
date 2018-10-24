@@ -372,6 +372,7 @@ export default class EditProfile extends Component {
                             }
                             blurOnSubmit={false}
                             returnKeyType={'next'}
+                            // TODO: fix deprecated ref style
                             ref="descripcion"
                             onSubmitEditing={() => {
                                 this.nombre.focus();
