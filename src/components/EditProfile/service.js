@@ -1,19 +1,24 @@
-import {authHeader, catchErrorAndPropagate , URL,authHeaderForm} from '../../utils';
+import {
+    authHeader,
+    catchErrorAndPropagate,
+    URL,
+    authHeaderForm,
+} from '../../utils';
 import DeviceInfo from 'react-native-device-info';
-import {APP_STORE} from "../../Store";
+import { APP_STORE } from '../../Store';
 
 import I18n from 'react-native-i18n';
 /**
  * Detects the lenguange and keeps in constant
  */
-const LENGUAGE = I18n.currentLocale().slice(0,2);
+const LENGUAGE = I18n.currentLocale().slice(0, 2);
 
 export const userService = {
     publicProfile,
     saveProfile,
     changeImage,
     deleteImage,
-    uploadImage
+    uploadImage,
 };
 
 /**
@@ -25,7 +30,7 @@ export const userService = {
 function publicProfile(token, id) {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader(token)
+        headers: authHeader(token),
     };
 
     return fetch(URL + 'profile/' + id + '/', requestOptions);
@@ -38,8 +43,7 @@ function publicProfile(token, id) {
  * @param image The path of the image to upload
  * @returns {Promise<any>}
  */
-function uploadImage(token,id, image) {
-
+function uploadImage(token, id, image) {
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(image)[1];
 
@@ -48,13 +52,13 @@ function uploadImage(token,id, image) {
     data.append('image', {
         uri: image,
         type: 'image/' + ext,
-        name: 'photo.' + ext
+        name: 'photo.' + ext,
     });
 
     const requestOptions = {
         method: 'POST',
         headers: authHeaderForm(token),
-        body: data
+        body: data,
     };
 
     return fetch(URL + 'profile/' + id + '/upload-image/', requestOptions);
@@ -67,8 +71,7 @@ function uploadImage(token,id, image) {
  * @param image The path of the image to upload
  * @returns {Promise<any>}
  */
-function changeImage(token,id, image, imageID) {
-
+function changeImage(token, id, image, imageID) {
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(image)[1];
 
@@ -77,16 +80,19 @@ function changeImage(token,id, image, imageID) {
     data.append('image', {
         uri: image,
         type: 'image/' + ext,
-        name: 'photo.' + ext
+        name: 'photo.' + ext,
     });
 
     const requestOptions = {
         method: 'PUT',
         headers: authHeaderForm(token),
-        body: data
+        body: data,
     };
 
-    return fetch(URL + 'profile/' + id + '/upload-image/' + imageID + '/', requestOptions);
+    return fetch(
+        URL + 'profile/' + id + '/upload-image/' + imageID + '/',
+        requestOptions
+    );
 }
 
 /**
@@ -96,36 +102,37 @@ function changeImage(token,id, image, imageID) {
  * @param image The id of the image to delete
  * @returns {Promise<any>}
  */
-function deleteImage(token,id, image) {
-
+function deleteImage(token, id, image) {
     const requestOptions = {
         method: 'DELETE',
         headers: authHeader(token),
     };
 
-    return fetch(URL + 'profile/' + id + '/delete-image/' + image + '/', requestOptions);
+    return fetch(
+        URL + 'profile/' + id + '/delete-image/' + image + '/',
+        requestOptions
+    );
 }
 
 function saveProfile(token, id, state) {
-
     const value = {
-        "username": state.username,
-        "first_name": state.name,
-        "description": state.description,
-        "match_sex": state.user.match_sex,
-        "sex": state.user.sex,
-        "distance": state.sliderOneValue.toString(),
-        "notification": state.notification ? "true" : "false"
-    }
+        username: state.username,
+        first_name: state.name,
+        description: state.description,
+        match_sex: state.user.match_sex,
+        sex: state.user.sex,
+        distance: state.sliderOneValue.toString(),
+        notification: state.notification ? 'true' : 'false',
+    };
 
     const requestOptions = {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Accept-Language': LENGUAGE,
-            'Authorization': 'Token ' + token,
+            Authorization: 'Token ' + token,
         },
-        body: JSON.stringify(value)
+        body: JSON.stringify(value),
     };
 
     return fetch(URL + 'profile/' + id + '/', requestOptions);
