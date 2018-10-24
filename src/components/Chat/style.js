@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-export const GRAY = '#F3F3F3';
-export const MAGENTA = '#9605CC';
-export const WHITE = '#FFFFFF';
+const GRAY = '#F3F3F3';
+const MAGENTA = '#9605CC';
+const WHITE = '#FFFFFF';
 
 const styleSheet = StyleSheet.create({
     containers: {
@@ -29,8 +29,8 @@ const styleSheet = StyleSheet.create({
         flex: 1,
     },
     sendInnerView: {
-        marginRight: 5,
         marginBottom: -10,
+        marginRight: 5,
     },
     styleTextRight: {
         color: WHITE,

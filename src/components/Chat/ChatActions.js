@@ -43,23 +43,23 @@ export function appendData(oldData, newData, id) {
         if (data.user == APP_STORE.getUser()) {
             message = {
                 _id: data.id,
-                text: data.text,
                 createdAt: data.created,
+                text: data.text,
                 user: {
                     _id: APP_STORE.getId(),
-                    name: APP_STORE.getUser(),
                     avatar: '',
+                    name: APP_STORE.getUser(),
                 },
             };
         } else {
             message = {
                 _id: data.id,
-                text: data.text,
                 createdAt: data.created,
+                text: data.text,
                 user: {
                     _id: id,
-                    name: data.user,
                     avatar: '',
+                    name: data.user,
                 },
             };
         }

@@ -3,8 +3,8 @@ import { APP_STORE } from '../../Store';
 
 function chats(pagUrl) {
     const requestOptions = {
-        method: 'GET',
         headers: authHeader(APP_STORE.getToken()),
+        method: 'GET',
     };
 
     return fetch(pagUrl, requestOptions);

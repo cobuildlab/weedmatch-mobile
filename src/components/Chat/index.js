@@ -15,14 +15,14 @@ export default class Chat extends Component {
         super(props);
 
         this.state = {
-            messages: [],
-            open: false,
             connected: false,
-            urlPage: '',
-            numPage: 0,
-            morePages: false,
             isLoading: true,
+            messages: [],
+            morePages: false,
+            numPage: 0,
+            open: false,
             refreshing: true,
+            urlPage: '',
         };
 
         this.reconnect = true;
@@ -130,6 +130,7 @@ export default class Chat extends Component {
                 // console.log(this.state);
                 if (this.state.numPage > 0) {
                     this.setState(prevState => ({
+                        isLoading: false,
                         messages: GiftedChat.prepend(
                             [],
                             appendData(
@@ -138,11 +139,10 @@ export default class Chat extends Component {
                                 this.getOtherUser
                             )
                         ),
-                        isLoading: false,
                     }));
                 } else {
                     this.setState(prevState => ({
-                        refreshing: false,
+                        isLoading: false,
                         messages: GiftedChat.append(
                             [],
                             appendData(
@@ -151,7 +151,7 @@ export default class Chat extends Component {
                                 this.getOtherUser
                             )
                         ),
-                        isLoading: false,
+                        refreshing: false,
                     }));
                 }
 
@@ -168,15 +168,15 @@ export default class Chat extends Component {
 
             if (state.chatMsgPage) {
                 this.setState({
-                    urlPage: state.chatMsgPage,
-                    numPage: this.state.numPage + 1,
                     morePages: true,
+                    numPage: this.state.numPage + 1,
+                    urlPage: state.chatMsgPage,
                 });
                 return;
             } else {
                 this.setState({
-                    urlPage: '',
                     morePages: false,
+                    urlPage: '',
                 });
             }
             if (state.error) {
@@ -227,12 +227,12 @@ export default class Chat extends Component {
     onReceive(messages) {
         const message = {
             _id: Math.round(Math.random() * 1000000),
-            text: messages,
             createdAt: new Date(),
+            text: messages,
             user: {
                 _id: this.getOtherID(),
-                name: 'React Native',
                 avatar: '',
+                name: 'React Native',
             },
         };
 
@@ -246,10 +246,10 @@ export default class Chat extends Component {
         console.log('onSend:SOCKET CONNECTED');
 
         const payload = {
+            chat_id: this.getChatID(),
+            id_user_send: this.getOtherID(),
             message: messages[0].text,
             user: APP_STORE.getUser(),
-            id_user_send: this.getOtherID(),
-            chat_id: this.getChatID(),
         };
         this.WS.send(JSON.stringify(payload));
         // this.setState(prevState => ({open: !prevState.open}))
