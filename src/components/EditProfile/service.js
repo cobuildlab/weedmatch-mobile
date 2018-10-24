@@ -1,11 +1,4 @@
-import {
-    authHeader,
-    catchErrorAndPropagate,
-    URL,
-    authHeaderForm,
-} from '../../utils';
-import DeviceInfo from 'react-native-device-info';
-import { APP_STORE } from '../../Store';
+import { authHeader, URL, authHeaderForm } from '../../utils';
 
 import I18n from 'react-native-i18n';
 /**

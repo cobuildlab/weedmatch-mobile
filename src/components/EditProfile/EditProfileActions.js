@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
+
 import { APP_STORE } from '../../Store';
-import { strings } from '../../i18n';
-import { isValidText } from '../../utils/index';
 import { userService } from './service';
 
 function publicEditAction(token, id) {
