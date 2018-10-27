@@ -1,4 +1,4 @@
-import {StackNavigator, SwitchNavigator} from 'react-navigation';
+import { StackNavigator, SwitchNavigator } from 'react-navigation';
 import Splash from './src/components/Splash';
 import Terms from './src/components/Terms';
 import Authentication from './src/components/Authentication/index';
@@ -17,6 +17,7 @@ import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
 
+import Debug from './src/debug';
 
 const AppStack = StackNavigator({
     Bar: Topbar,
@@ -28,14 +29,14 @@ const AppStack = StackNavigator({
     EditProfile: EditProfile,
     PublicProfile: PublicProfile,
     Notifications: Notifications,
-    LikeProfile: LikeProfile
+    LikeProfile: LikeProfile,
 });
 const AuthStack = StackNavigator({
     SignIn: Authentication,
     Register: RegisterPage,
     Terms: Terms,
     Login: LoginPage,
-    Forgot: ForgotPage
+    Forgot: ForgotPage,
 });
 
 export default SwitchNavigator(
@@ -43,8 +44,9 @@ export default SwitchNavigator(
         AuthLoading: Splash,
         App: AppStack,
         Auth: AuthStack,
+        Debug: Debug,
     },
     {
-        initialRouteName: 'AuthLoading',
+        initialRouteName: __DEV__ ? 'Debug' : 'AuthLoading',
     }
 );
