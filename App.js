@@ -23,7 +23,11 @@ const AppStack = createStackNavigator({
     Profile: Profile,
     EditProfile: EditProfile,
     PublicProfile: PublicProfile,
-    LikeProfile: LikeProfile
+    LikeProfile: LikeProfile,
+    Notifications: Notifications,
+    Chat: Chat,
+    Message: Message,
+    Like: Like
 });
 
 const AuthStack = createStackNavigator({
@@ -34,19 +38,15 @@ const AuthStack = createStackNavigator({
     Forgot: ForgotPage
 });
 
-const NotificationsStack = createStackNavigator({
-    Notifications: Notifications,
-    Chat: Chat,
-    Message: Message,
-    Like: Like
-});
+// const NotificationsStack = createStackNavigator({
+//
+// });
 
 export default createSwitchNavigator(
     {
         AuthLoading: Splash,
         App: AppStack,
-        Auth: AuthStack,
-        Notifications: NotificationsStack,
+        Auth: AuthStack
     },
     {
         initialRouteName: 'AuthLoading',

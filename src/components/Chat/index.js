@@ -3,12 +3,12 @@ import {ActivityIndicator, View, Image, AppState} from 'react-native';
 import {WS_URL} from '../../utils';
 
 import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
 import {internet, checkConectivity, toastMsg} from '../../utils';
 import styles from './style';
 import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
 import {chatAction, appendData} from './ChatActions';
 import WS from 'react-native-websocket';
+import ChatTitle from "../../screens/chat/ChatTitle";
 
 export default class Chat extends Component {
     constructor(props) {
@@ -30,76 +30,12 @@ export default class Chat extends Component {
 
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
+        const {name, imgProfile} = params;
 
         return {
-            // title: navigation.getParam('otherUser', '0'),
-            title: params.name,
+            headerTitle: <ChatTitle src={imgProfile} name={name} />,
         };
     };
-
-    _handleWebSocketSetup() {
-        const {navigation} = this.props;
-        const chat_id = navigation.getParam('chat_id', '0');
-        let queryString =
-            'id_user=' +
-            APP_STORE.getId() +
-            '&' +
-            'username=' +
-            APP_STORE.getUser() +
-            '&' +
-            'chat_id=' +
-            chat_id +
-            '&' +
-            'token=' +
-            APP_STORE.getToken();
-        this.socket = new WebSocket(WS_URL + '?' + queryString);
-
-        this.socket.onopen = () => {
-            // eslint-disable-next-line no-console
-            console.log('CHAT:_handleWebSocketSetup:onopen');
-
-            this.setState({connected: true});
-            this.props.navigation.setParams({
-                name: this.getOtherUser(),
-            });
-        };
-
-        this.socket.onmessage = ({data}) => {
-            // eslint-disable-next-line no-console
-            console.log('CHAT:_handleWebSocketSetup:onmesage', data);
-
-            const json = JSON.parse(data);
-
-            this.onReceive(json.message);
-        };
-
-        this.socket.onerror = e => {
-            // eslint-disable-next-line no-console
-            console.error('CHAT:_handleWebSocketSetup:onerror', e);
-            // eslint-disable-next-line no-console
-            console.error(
-                'CHAT:_handleWebSocketSetup:onerror',
-                JSON.stringify(e)
-            );
-        };
-
-        this.socket.onclose = e => {
-            // eslint-disable-next-line no-console
-            console.log('CHAT:_handleWebSocketSetup:onclose');
-            // eslint-disable-next-line no-console
-            console.log(e.code, e.reason);
-
-            if (this.reconnect) {
-                this.props.navigation.setParams({
-                    name: strings('chat.reconnect'),
-                });
-
-                setTimeout(() => {
-                    this._handleWebSocketSetup();
-                }, 3000);
-            }
-        };
-    }
 
     _handleAppStateChange = nextAppState => {
         // eslint-disable-next-line no-console
@@ -111,14 +47,12 @@ export default class Chat extends Component {
     UNSAFE_componentWillMount() {
         this.props.navigation.setParams({
             name: this.getOtherUser(),
+            imgProfile: this.getImgProfile(),
         });
     }
 
     componentDidMount() {
         APP_STORE.CHATNOTIF_EVENT.next({chatNotif: this.getOtherUser()});
-
-        // For some reason this stop working so i change it to a plugin
-        // this._handleWebSocketSetup();
 
         AppState.addEventListener('change', this._handleAppStateChange);
 
@@ -205,6 +139,10 @@ export default class Chat extends Component {
 
     getOtherUser() {
         return this.props.navigation.getParam('otherUser', '0');
+    }
+
+    getImgProfile() {
+        return this.props.navigation.getParam('imgProfile', '');
     }
 
     getOtherID() {

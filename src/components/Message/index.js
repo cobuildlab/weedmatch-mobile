@@ -2,18 +2,16 @@ import React, {Component} from 'react';
 import {
     Text,
     View,
-    Image,
     TouchableOpacity,
     ActivityIndicator,
     ScrollView,
 } from 'react-native';
-
+import FastImage from 'react-native-fast-image';
 import styles from './style';
 import {getChat} from './MessageActions';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {connection, toastMsg} from '../../utils';
-import {Img} from '../../utils/ui';
 
 export default class Message extends Component {
     constructor(props) {
@@ -30,8 +28,6 @@ export default class Message extends Component {
 
         this.chatsVar = APP_STORE.CHAT_EVENT.subscribe((state) => {
             console.log('Messages:componentDidMount:chatsVar', state);
-
-            // state.chats = state.chats.slice(0, 5);
             if (state.chats) {
                 this.setState({
                     chats: state.chats,
@@ -59,11 +55,12 @@ export default class Message extends Component {
         this.chatsVar.unsubscribe();
     }
 
-    showChat(id, user, other) {
+    showChat(id, user, other, imgProfile) {
         this.props.navigation.navigate('Chat', {
             chat_id: id,
             otherUser: other,
             otherID: user,
+            imgProfile
         });
     }
 
@@ -90,10 +87,12 @@ export default class Message extends Component {
                         keyboardShouldPersistTaps={"always"}
             >
                 {this.state.chats.map((item, i) =>
-                    <TouchableOpacity key={i} onPress={() => this.showChat(item.id, item.id_user, item.user)}>
+                    <TouchableOpacity key={i}
+                                      onPress={() => this.showChat(item.id, item.id_user, item.user, item.image_profile)}>
                         <View style={styles.viewMsg}>
-                            <Img style={styles.imgProfileItem}
-                                   src={item.image_profile}
+                            <FastImage style={styles.imgProfileItem}
+                                       resizeMode={FastImage.resizeMode.contain}
+                                       source={{uri: item.image_profile}}
                             />
                             <View style={styles.viewTexts}>
                                 <Text style={styles.textUser}>{item.user}</Text>
