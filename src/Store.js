@@ -176,6 +176,10 @@ class Store {
         popIdFB(this.state);
         popUser(this.state);
         popNoti(this.state);
+        this.state.token = 'f56df0306c18673bf6dfe40907f32f91075bd216';
+        this.state.id = 245;
+        this.state.username = 'anacatherine';
+
         const me = this;
         this.ERROR_EVENT = new Subject();
         this.ERROR_EVENT.subscribe(state => {
@@ -417,13 +421,8 @@ class Store {
         return this.state.tokenFB;
     }
 
-
     getUser() {
         return this.state.username;
-    }
-
-    getNoti() {
-        return this.state.noti;
     }
 }
 

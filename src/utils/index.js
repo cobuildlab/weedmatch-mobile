@@ -13,7 +13,7 @@ import {strings} from '../i18n';
 import {APP_STATE} from "../Store";
 import I18n from 'react-native-i18n';
 import Toast from 'react-native-toast-native';
-import DeviceInfo from 'react-native-device-info';
+import {checkInternetConnection} from 'react-native-offline';
 
 /**
  * Detects the lenguange and keeps in constant
@@ -25,9 +25,7 @@ const LENGUAGE = I18n.currentLocale().slice(0, 2);
  * @return {string}
  */
 const getLocale = () => {
-    const currentDeviceCountry = DeviceInfo.getDeviceCountry(); // "US"
-    const currentLanguage = DeviceInfo.getDeviceLocale().slice(0, 2); // EN
-    return `${currentLanguage}-${currentDeviceCountry}`
+    return I18n.currentLocale();
 };
 
 const URL = "https://api.weedmatch.cl/";
@@ -35,9 +33,13 @@ const WS_URL = "ws://api.weedmatch.cl:8888/ws";
 
 // const URL = "http://192.168.0.16:8080/";
 
+/**
+ * Return true if there is an available internet connection
+ * @return {Promise<boolean>}
+ */
 async function checkConectivity() {
-    let response = await NetInfo.isConnected.fetch();
-    return response
+    const isConnected = await checkInternetConnection();
+    return isConnected;
 }
 
 function parseError(val) {

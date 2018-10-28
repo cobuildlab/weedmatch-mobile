@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { ActivityIndicator, View, Image, AppState } from 'react-native';
-import { WS_URL } from '../../utils';
+import React, {Component} from 'react';
+import {ActivityIndicator, View, Image, AppState} from 'react-native';
+import {WS_URL} from '../../utils';
 
-import { APP_STORE } from '../../Store';
-import { strings } from '../../i18n';
-import { internet, checkConectivity, toastMsg } from '../../utils';
+import {APP_STORE} from '../../Store';
+import {strings} from '../../i18n';
+import {internet, checkConectivity, toastMsg} from '../../utils';
 import styles from './style';
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
-import { chatAction, appendData } from './ChatActions';
+import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
+import {chatAction, appendData} from './ChatActions';
 import WS from 'react-native-websocket';
 
 export default class Chat extends Component {
@@ -28,8 +28,8 @@ export default class Chat extends Component {
         this.reconnect = true;
     }
 
-    static navigationOptions = ({ navigation }) => {
-        const { params } = navigation.state;
+    static navigationOptions = ({navigation}) => {
+        const {params} = navigation.state;
 
         return {
             // title: navigation.getParam('otherUser', '0'),
@@ -38,7 +38,7 @@ export default class Chat extends Component {
     };
 
     _handleWebSocketSetup() {
-        const { navigation } = this.props;
+        const {navigation} = this.props;
         const chat_id = navigation.getParam('chat_id', '0');
         let queryString =
             'id_user=' +
@@ -58,13 +58,13 @@ export default class Chat extends Component {
             // eslint-disable-next-line no-console
             console.log('CHAT:_handleWebSocketSetup:onopen');
 
-            this.setState({ connected: true });
+            this.setState({connected: true});
             this.props.navigation.setParams({
                 name: this.getOtherUser(),
             });
         };
 
-        this.socket.onmessage = ({ data }) => {
+        this.socket.onmessage = ({data}) => {
             // eslint-disable-next-line no-console
             console.log('CHAT:_handleWebSocketSetup:onmesage', data);
 
@@ -115,7 +115,7 @@ export default class Chat extends Component {
     }
 
     componentDidMount() {
-        APP_STORE.CHATNOTIF_EVENT.next({ chatNotif: this.getOtherUser() });
+        APP_STORE.CHATNOTIF_EVENT.next({chatNotif: this.getOtherUser()});
 
         // For some reason this stop working so i change it to a plugin
         // this._handleWebSocketSetup();
@@ -136,7 +136,7 @@ export default class Chat extends Component {
                             appendData(
                                 prevState.messages,
                                 state.chatMsg,
-                                this.getOtherUser
+                                this.getOtherUser()
                             )
                         ),
                     }));
@@ -148,7 +148,7 @@ export default class Chat extends Component {
                             appendData(
                                 prevState.messages,
                                 state.chatMsg,
-                                this.getOtherUser
+                                this.getOtherUser()
                             )
                         ),
                         refreshing: false,
@@ -191,7 +191,7 @@ export default class Chat extends Component {
         // eslint-disable-next-line no-console
         console.log('Chat:componentWillUmmount');
 
-        APP_STORE.CHATNOTIF_EVENT.next({ chatNotif: '' });
+        APP_STORE.CHATNOTIF_EVENT.next({chatNotif: ''});
         this.chatMsg.unsubscribe();
         this.chatPage.unsubscribe();
         // this.close()
@@ -217,7 +217,7 @@ export default class Chat extends Component {
 
     getEarlyMessages() {
         if (checkConectivity()) {
-            this.setState({ isLoading: true });
+            this.setState({isLoading: true});
             chatAction(this.state, this.getChatID());
         } else {
             internet();
@@ -295,82 +295,81 @@ export default class Chat extends Component {
         if (this.state.refreshing) {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC" />
-                </View>
-            );
-        } else {
-            const { navigation } = this.props;
-            const chat_id = navigation.getParam('chat_id', '0');
-            let queryString =
-                'id_user=' +
-                APP_STORE.getId() +
-                '&' +
-                'username=' +
-                APP_STORE.getUser() +
-                '&' +
-                'chat_id=' +
-                chat_id +
-                '&' +
-                'token=' +
-                APP_STORE.getToken();
-            const url = WS_URL + '?' + queryString;
-            const that = this;
-
-            return (
-                <View style={styles.root}>
-                    <WS
-                        ref={ref => {
-                            this.ws = ref;
-                            that.WS = ref;
-                        }}
-                        url={url}
-                        onOpen={() => {
-                            // eslint-disable-next-line no-console
-                            console.log('Open!');
-                            // const payload = {
-                            //     "message": "HOLA",
-                            //     "user": APP_STORE.getUser(),
-                            //     "id_user_send": that.getOtherID(),
-                            //     "chat_id": that.getChatID(),
-                            // }
-                            // this.ws.send(JSON.stringify(payload));
-                        }}
-                        onMessage={data => {
-                            // eslint-disable-next-line no-console
-                            console.log(
-                                'CHAT:_handleWebSocketSetup:onmesage',
-                                data
-                            );
-                            // eslint-disable-next-line no-console
-                            console.log(
-                                'CHAT:_handleWebSocketSetup:onmesage',
-                                data.data
-                            );
-                            const json = JSON.parse(data.data);
-                            that.onReceive(json.message);
-                        }}
-                        // eslint-disable-next-line no-console
-                        onError={console.error}
-                        // eslint-disable-next-line no-console
-                        onClose={console.log}
-                        reconnect // Will try to reconnect onClose
-                    />
-                    <GiftedChat
-                        renderAvatar={null}
-                        loadEarlier={this.state.morePages}
-                        // renderTime={this.renderTime}
-                        renderBubble={this.renderBubble}
-                        onLoadEarlier={() => this.getEarlyMessages()}
-                        isLoadingEarlier={this.state.isLoading}
-                        renderSend={this.renderSend}
-                        messages={this.state.messages}
-                        onSend={messages => this.onSend(messages)}
-                        user={{
-                            _id: APP_STORE.getId(),
-                        }}
-                    />
+                    <ActivityIndicator size="large" color="#9605CC"/>
                 </View>
             );
         }
+        const {navigation} = this.props;
+        const chat_id = navigation.getParam('chat_id', '0');
+        let queryString =
+            'id_user=' +
+            APP_STORE.getId() +
+            '&' +
+            'username=' +
+            APP_STORE.getUser() +
+            '&' +
+            'chat_id=' +
+            chat_id +
+            '&' +
+            'token=' +
+            APP_STORE.getToken();
+        const url = WS_URL + '?' + queryString;
+        const that = this;
+
+        return (
+            <View style={styles.root}>
+                <WS
+                    ref={ref => {
+                        this.ws = ref;
+                        that.WS = ref;
+                    }}
+                    url={url}
+                    onOpen={() => {
+                        // eslint-disable-next-line no-console
+                        console.log('Open!');
+                        // const payload = {
+                        //     "message": "HOLA",
+                        //     "user": APP_STORE.getUser(),
+                        //     "id_user_send": that.getOtherID(),
+                        //     "chat_id": that.getChatID(),
+                        // }
+                        // this.ws.send(JSON.stringify(payload));
+                    }}
+                    onMessage={data => {
+                        // eslint-disable-next-line no-console
+                        console.log(
+                            'CHAT:_handleWebSocketSetup:onmesage',
+                            data
+                        );
+                        // eslint-disable-next-line no-console
+                        console.log(
+                            'CHAT:_handleWebSocketSetup:onmesage',
+                            data.data
+                        );
+                        const json = JSON.parse(data.data);
+                        that.onReceive(json.message);
+                    }}
+                    // eslint-disable-next-line no-console
+                    onError={console.error}
+                    // eslint-disable-next-line no-console
+                    onClose={console.log}
+                    reconnect // Will try to reconnect onClose
+                />
+                <GiftedChat
+                    renderAvatar={null}
+                    loadEarlier={this.state.morePages}
+                    // renderTime={this.renderTime}
+                    renderBubble={this.renderBubble}
+                    onLoadEarlier={() => this.getEarlyMessages()}
+                    isLoadingEarlier={this.state.isLoading}
+                    renderSend={this.renderSend}
+                    messages={this.state.messages}
+                    onSend={messages => this.onSend(messages)}
+                    user={{
+                        _id: APP_STORE.getId(),
+                    }}
+                />
+            </View>
+        );
     }
 }

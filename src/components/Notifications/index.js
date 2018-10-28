@@ -28,10 +28,12 @@ export default class Notifications extends Component {
     };
 
     componentWillUnmount() {
+        console.log("Notifications:componentDidMount");
         this.notificationSubscription.unsubscribe();
     }
 
     componentDidMount() {
+        console.log("Notifications:componentDidMount");
         this.notificationSubscription = APP_STORE.NOTI_EVENT.subscribe(state => {
             if (state.noti === true) {
                 console.log("Notifications:componentDidMount", "Someone told me that there is a notification");
@@ -55,7 +57,6 @@ export default class Notifications extends Component {
                 <Tabs
                     locked
                     page={this.state.index}
-                    ref={(index) => this._tabs = index}
                     tabBarUnderlineStyle={styles.underLineColor}
                     tabContainerStyle={styles.tabContainerStyle}
                     edgeHitWidth={0}

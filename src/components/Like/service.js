@@ -1,5 +1,4 @@
 import {authHeader, catchErrorAndPropagate , URL} from '../../utils';
-import DeviceInfo from 'react-native-device-info';
 import {APP_STORE} from "../../Store";
 
 export const userService = {
@@ -31,7 +30,7 @@ function swiperAction(action,id) {
 
     const data = {
         "id_iloved": id,
-        "accept_notification":action    
+        "accept_notification":action
     }
 
     const requestOptions = {

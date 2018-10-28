@@ -1,6 +1,4 @@
-import {authHeader, catchErrorAndPropagate , URL} from '../../utils';
-import DeviceInfo from 'react-native-device-info';
-import {APP_STORE} from "../../Store";
+import {authHeader, URL} from '../../utils';
 
 export const userService = {
     publicProfile,
@@ -29,7 +27,7 @@ function publicProfile(token, id, state) {
  * @param pageUrl The Url of the page to fetch
  * @returns {Promise<any>}
  */
-function publicImages420(token,pageUrl) {
+function publicImages420(token, pageUrl) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token)
@@ -44,7 +42,7 @@ function publicImages420(token,pageUrl) {
  * @param state The current state of render screen
  * @returns {Promise<any>}
  */
-function swiperAction(token,action,id,time) {
+function swiperAction(token, action, id, time) {
 
     const data = {
         "user_match": id.toString(),

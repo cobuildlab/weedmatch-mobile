@@ -168,6 +168,7 @@ subprojects {
 }
 
 dependencies {
+    compile project(':rn-fetch-blob')
     compile project(':react-native-version-check')
     compile project(':react-native-vector-icons')
     compile project(':react-native-toast-native')
