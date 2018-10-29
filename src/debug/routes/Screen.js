@@ -61,6 +61,11 @@ const ScreenRoute = ({ navigation }) => {
     );
 };
 
+// @ts-ignore
+ScreenRoute.navigationOptions = ({ navigation }) => ({
+    title: `${navigation.state.params.title}`,
+});
+
 /**
  * Key used for react-navigation. E.g. navigate(SCREEN_ROUTE_KEY)
  */

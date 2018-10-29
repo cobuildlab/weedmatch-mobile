@@ -38,6 +38,7 @@ const SectionListRoute = ({ navigation }) => {
             onPressItem={(/** @type {Screen} */ item) => {
                 navigation.navigate(SCREEN_ROUTE_KEY, {
                     screen: item,
+                    title: item.name,
                 });
             }}
             sections={sections}
