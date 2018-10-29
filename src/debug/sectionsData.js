@@ -1,3 +1,5 @@
+import ChatView from '../components/Chat/View';
+
 /**
  * @file Specify test screens for debugging presentational components.
  * This data is used by routes/SectionList and passed into views/SectionList
@@ -32,7 +34,23 @@
  */
 const sections = [
     {
-        data: [],
+        data: [
+            {
+                name: 'Chat with no texts',
+                props: {
+                    currentInputText: '',
+                    isLoadingEarlier: false,
+                    messages: [],
+                    onInputTextChanged: text => {},
+                    onLoadEarlier: () => {},
+                    onSend: () => {},
+                    user: {
+                        _id: 1,
+                    },
+                },
+                statelessFunctionalComponent: ChatView,
+            },
+        ],
         title: 'Chat Screen',
     },
 ];
