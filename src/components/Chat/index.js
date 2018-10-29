@@ -33,7 +33,7 @@ export default class Chat extends Component {
         const {name, imgProfile} = params;
 
         return {
-            headerTitle: <ChatTitle src={imgProfile} name={name} />,
+            headerTitle: <ChatTitle src={imgProfile} name={name}/>,
         };
     };
 
@@ -53,47 +53,39 @@ export default class Chat extends Component {
 
     componentDidMount() {
         APP_STORE.CHATNOTIF_EVENT.next({chatNotif: this.getOtherUser()});
-
         AppState.addEventListener('change', this._handleAppStateChange);
 
+        // For receiving the latest messagues or if the user scrolls up in history
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
             console.log('Chat:componentDidMount:CHATMSG_EVENT');
 
-            if (state.chatMsg) {
-                // console.log(this.state);
-                if (this.state.numPage > 0) {
-                    this.setState(prevState => ({
-                        isLoading: false,
-                        messages: GiftedChat.prepend(
-                            [],
-                            appendData(
-                                prevState.messages,
-                                state.chatMsg,
-                                this.getOtherUser()
-                            )
-                        ),
-                    }));
-                } else {
-                    this.setState(prevState => ({
-                        isLoading: false,
-                        messages: GiftedChat.append(
-                            [],
-                            appendData(
-                                prevState.messages,
-                                state.chatMsg,
-                                this.getOtherUser()
-                            )
-                        ),
-                        refreshing: false,
-                    }));
-                }
-
-                return;
-            }
             if (state.error) {
                 toastMsg(state.error);
+                return;
             }
+
+            if (!state.chatMsg)
+                return;
+
+            const newState = {
+                isLoading: false,
+            };
+
+            const fullChat = appendData(
+                this.state.messages,
+                state.chatMsg,
+                this.getOtherID()
+            );
+
+            if (this.state.numPage > 0) {
+                newState["messages"] = GiftedChat.prepend([], fullChat);
+            } else {
+                newState["messages"] = GiftedChat.append([], fullChat);
+                newState["refreshing"] = false;
+            }
+
+            this.setState(newState);
         });
 
         this.chatPage = APP_STORE.CHATPAGE.subscribe(state => {

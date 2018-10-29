@@ -33,7 +33,7 @@ export function chatAction(state, chatID) {
 }
 
 export function appendData(oldData, newData, id) {
-    oldData.slice();
+    // oldData.slice();
 
     newData.map(data => {
         // console.log(data)
@@ -66,6 +66,6 @@ export function appendData(oldData, newData, id) {
 
         oldData.push(message);
     });
-
+    console.log(oldData);
     return oldData;
 }
