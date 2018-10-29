@@ -37,9 +37,7 @@ const SectionListRoute = ({ navigation }) => {
         <SectionList
             onPressItem={(/** @type {Screen} */ item) => {
                 navigation.navigate(SCREEN_ROUTE_KEY, {
-                    params: {
-                        screen: item,
-                    },
+                    screen: item,
                 });
             }}
             sections={sections}
