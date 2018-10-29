@@ -5,6 +5,7 @@ const LOG_SERVER_URL = '';
  * @param {any} stringifiable
  */
 const logToServer = stringifiable => {
+    // @ts-ignore
     if (LOG_SERVER_URL === '') {
         throw new Error('Specify log server url before calling logToServer()');
     }

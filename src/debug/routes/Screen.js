@@ -6,15 +6,16 @@ import React from 'react';
 
 import Screen from '../views/Screen';
 /**
- * @typedef {import('../../definitions').NavigationScreenProp<ScreenParams>} NavigationScreenProp
+ * @typedef {import('../../definitions').NavigationScreenProp<ScreenRouteParams>} NavigationScreenProp
  */
 /**
- * @typedef {import('../sectionsData').Screen} Screen
+ * @template Props
+ * @typedef {import('../definitions').Screen<Props>} Screen
  */
 
 /**
- * @typedef {object} ScreenParams
- * @prop {Screen} screen
+ * @typedef {object} ScreenRouteParams
+ * @prop {Screen<any>} screen
  */
 
 /**

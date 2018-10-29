@@ -10,7 +10,8 @@ import sections from '../sectionsData';
  * @typedef {import('../../definitions').NavigationScreenProp<{}>} NavigationScreenProp
  */
 /**
- * @typedef {import('../sectionsData').Screen} Screen
+ * @template Props
+ * @typedef {import('../definitions').Screen<Props>} Screen
  */
 
 import { SCREEN_ROUTE_KEY } from './Screen';
@@ -35,7 +36,7 @@ const SectionListRoute = ({ navigation }) => {
 
     return (
         <SectionList
-            onPressItem={(/** @type {Screen} */ item) => {
+            onPressItem={(/** @type {Screen<any>} */ item) => {
                 navigation.navigate(SCREEN_ROUTE_KEY, {
                     screen: item,
                     title: item.name,
