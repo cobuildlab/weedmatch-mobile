@@ -8,7 +8,12 @@ import { SectionList as RNSectionList, Text, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     // eslint-disable-next-line react-native/no-color-literals
     item: {
+        backgroundColor: '#bababa',
         color: 'gray',
+        paddingRight: 20,
+        paddingTop: 20,
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
     sectionHeader: {
         fontWeight: 'bold',
