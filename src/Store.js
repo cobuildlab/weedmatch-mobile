@@ -3,133 +3,166 @@ import { AsyncStorage } from 'react-native';
 import { isValidText } from './utils';
 
 /**
- * Synchronous save the token
- * @param token
+ * Asynchronously save the token
+ * @param {string} token
  * @returns {Promise<void>}
  */
 async function saveToken(token) {
     try {
         await AsyncStorage.setItem('token', token);
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
     }
 }
 
 /**
- * Synchronous save the username
- * @param username
+ * Asynchronously save the username
+ * @param {string} user
  * @returns {Promise<void>}
  */
 async function saveUser(user) {
     try {
         await AsyncStorage.setItem('username', user);
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
     }
 }
 
 /**
- * Save the User id
- * @param id
+ * Asynchronously save the User id
+ * @param {string} id
  * @returns {Promise<void>}
  */
 async function saveId(id) {
     try {
         await AsyncStorage.setItem('id', id);
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
     }
 }
 
 /**
- * Synchronous save the firebase ID
- * @param idFB
+ * Asynchronously save the firebase ID
+ * @param {string} id
  * @returns {Promise<void>}
  */
 async function saveFB(id) {
     try {
         await AsyncStorage.setItem('idFB', id);
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
     }
 }
 
 /**
- * Synchronous save the notif Boolean
- * @param notif
+ * Asynchronously save the notif Boolean
+ * @param {boolean} noti
  * @returns {Promise<void>}
  */
 async function saveNoti(noti) {
     try {
         await AsyncStorage.setItem('noti', JSON.stringify(noti));
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
     }
 }
 
 /**
  * Pops the token from the Async Store
+ * @param {{token: string}} state
+ * @returns {Promise<void>}
  */
 async function popToken(state) {
     try {
         const token = await AsyncStorage.getItem('token');
-        if (isValidText(token)) {
+        if (isValidText(token) && token != null) {
+            // eslint-disable-next-line no-console
             console.log('popToken:', token);
             state.token = token;
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
     }
 }
 
+/**
+ * @param {{username: string}} state
+ * @returns {Promise<void>}
+ */
 async function popUser(state) {
     try {
         const user = await AsyncStorage.getItem('username');
-        if (isValidText(user)) {
+        if (isValidText(user) && user != null) {
+            // eslint-disable-next-line no-console
             console.log('popUser:', user);
             state.username = user;
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
     }
 }
 
+/**
+ * @param {{id: string}} state
+ * @returns {Promise<void>}
+ */
 async function popId(state) {
     try {
         const id = await AsyncStorage.getItem('id');
-        if (isValidText(id)) {
+        if (isValidText(id) && id != null) {
+            // eslint-disable-next-line no-console
             console.log('popId:', id);
             state.id = id;
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
     }
 }
 
+/**
+ * @param {{tokenFB: string}} state
+ * @returns {Promise<void>}
+ */
 async function popIdFB(state) {
     try {
         const id = await AsyncStorage.getItem('idFB');
-        if (isValidText(id)) {
+        if (isValidText(id) && id != null) {
+            // eslint-disable-next-line no-console
             console.log('popFB:', id);
             state.tokenFB = id;
         }
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
     }
 }
 
+/**
+ * @param {{noti: boolean}} state
+ * @returns {Promise<void>}
+ */
 async function popNoti(state) {
     try {
         await AsyncStorage.getItem('noti').then(value => {
-            value = value === 'true' ? true : false;
+            const valueToBeSaved = value === 'true';
+            // eslint-disable-next-line no-console
             console.log('STORE:popNotification:', value);
-            state.noti = value;
+            state.noti = valueToBeSaved;
         });
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
     }
@@ -138,37 +171,37 @@ async function popNoti(state) {
 class Store {
     constructor() {
         this.state = {
-            error: undefined,
-            success: undefined,
-            token: undefined,
-            username: undefined,
-            id: undefined,
-            feed: undefined,
-            page: undefined,
-            like: undefined,
-            publicProfile: undefined,
-            saveProfile: undefined,
+            bad: undefined,
+            chatMsg: undefined,
+            chatMsgPage: undefined,
+            chatNotif: undefined,
+            chats: undefined,
             email: undefined,
-            publicImages420: undefined,
-            publicImages420Page: undefined,
-            swiper: undefined,
-            swiperPage: undefined,
+            error: undefined,
+            face: undefined,
+            feed: undefined,
+            id: undefined,
+            like: undefined,
+            likeAction: undefined,
+            likeNotif: undefined,
+            noti: undefined,
+            page: undefined,
             profile: undefined,
             profileImages420: undefined,
             profileImages420Page: undefined,
-            swiperAction: undefined,
-            likeAction: undefined,
-            tokenFB: undefined,
-            chats: undefined,
+            publicImages420: undefined,
+            publicImages420Page: undefined,
+            publicProfile: undefined,
+            saveProfile: undefined,
+            success: undefined,
             super: undefined,
-            chatMsg: undefined,
-            chatMsgPage: undefined,
-            bad: undefined,
-            face: undefined,
-            noti: undefined,
+            swiper: undefined,
+            swiperAction: undefined,
+            swiperPage: undefined,
+            token: undefined,
+            tokenFB: undefined,
             upload: undefined,
-            chatNotif: undefined,
-            likeNotif: undefined,
+            username: undefined,
         };
         popToken(this.state);
         popId(this.state);
