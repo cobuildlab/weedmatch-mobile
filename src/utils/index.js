@@ -18,8 +18,8 @@ const getLocale = () => {
     return I18n.currentLocale();
 };
 
-const URL = 'https://api.weedmatch.cl/';
-const WS_URL = 'ws://api.weedmatch.cl:8888/ws';
+const URL = 'http://192.168.0.18:8000/';
+const WS_URL = 'ws://192.168.0.18:8888/ws';
 
 // const URL = "http://192.168.0.16:8080/";
 
