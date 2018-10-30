@@ -54,11 +54,19 @@ function internet() {
     return Alert.alert(strings('main.internet'));
 }
 
+/**
+ * Returns true if, and only if, the value provided is an non-empty string.
+ * @param {any} text
+ * @returns {boolean}
+ */
 function isValidText(text) {
     if (text == null) {
         return false;
     }
-    if (typeof text === undefined) {
+    if (typeof text === 'undefined') {
+        return false;
+    }
+    if (typeof text !== 'string') {
         return false;
     }
     if (text === '') {
