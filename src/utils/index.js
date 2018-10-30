@@ -2,18 +2,13 @@
  * Check is the text is a valid input
  * @param {string} text The text to be tested
  */
-import React, {Component} from 'react';
-import {
-    Platform,
-    NetInfo,
-    Alert,
-    AsyncStorage
-} from 'react-native';
-import {strings} from '../i18n';
-import {APP_STATE} from "../Store";
+import React, { Component } from 'react';
+import { Platform, NetInfo, Alert, AsyncStorage } from 'react-native';
+import { strings } from '../i18n';
+import { APP_STATE } from '../Store';
 import I18n from 'react-native-i18n';
 import Toast from 'react-native-toast-native';
-import {checkInternetConnection} from 'react-native-offline';
+import { checkInternetConnection } from 'react-native-offline';
 
 /**
  * Detects the lenguange and keeps in constant
@@ -28,8 +23,8 @@ const getLocale = () => {
     return I18n.currentLocale();
 };
 
-const URL = "https://api.weedmatch.cl/";
-const WS_URL = "ws://api.weedmatch.cl:8888/ws";
+const URL = 'https://api.weedmatch.cl/';
+const WS_URL = 'ws://api.weedmatch.cl:8888/ws';
 
 // const URL = "http://192.168.0.16:8080/";
 
@@ -43,10 +38,10 @@ async function checkConectivity() {
 }
 
 function parseError(val) {
-    Object.keys(val).map((objectKey) => {
+    Object.keys(val).map(objectKey => {
         var value = val[objectKey];
         if (typeof value == 'object') {
-            value.forEach((msg) => {
+            value.forEach(msg => {
                 toastMsg(msg);
             });
         } else {
@@ -56,20 +51,20 @@ function parseError(val) {
 }
 
 function internet() {
-    return Alert.alert(strings("main.internet"));
+    return Alert.alert(strings('main.internet'));
 }
 
 function isValidText(text) {
     if (text == null) {
         return false;
     }
-    if (typeof(text) === undefined) {
+    if (typeof text === undefined) {
         return false;
     }
-    if (text === "") {
+    if (text === '') {
         return false;
     }
-    return true
+    return true;
 }
 
 /**
@@ -79,17 +74,17 @@ function isValidText(text) {
  */
 function authHeader(token) {
     return {
-        'Authorization': 'Token ' + token,
+        Authorization: 'Token ' + token,
         'Accept-Language': LENGUAGE,
         'Content-Type': 'application/json',
-    }
+    };
 }
 
 function authHeaderLogout() {
     return {
         'Accept-Language': LENGUAGE,
         'Content-Type': 'application/json',
-    }
+    };
 }
 
 /**
@@ -99,10 +94,10 @@ function authHeaderLogout() {
  */
 function authHeaderForm(token) {
     return {
-        'Authorization': 'Token ' + token,
+        Authorization: 'Token ' + token,
         'Accept-Language': LENGUAGE,
-        'Content-Type': 'multipart/form-data'
-    }
+        'Content-Type': 'multipart/form-data',
+    };
 }
 
 /**
@@ -111,7 +106,7 @@ function authHeaderForm(token) {
  * @throws {Error} the error that receives
  */
 function catchErrorAndPropagate(err) {
-    APP_STATE.next({error: err.toString()});
+    APP_STATE.next({ error: err.toString() });
     throw err;
 }
 
@@ -124,11 +119,12 @@ function toastMsg(msg) {
  * @param username
  */
 const generateUsernameFromFullName = (username, addNumber = false) => {
-    const newUsername = new String(username).replace(/ /g, "").toLocaleLowerCase();
-    if (!addNumber)
-        return newUsername;
-    const randonNumber = Math.floor((Math.random() * 1000) + 1);
-    return [newUsername, randonNumber].join("_");
+    const newUsername = new String(username)
+        .replace(/ /g, '')
+        .toLocaleLowerCase();
+    if (!addNumber) return newUsername;
+    const randonNumber = Math.floor(Math.random() * 1000 + 1);
+    return [newUsername, randonNumber].join('_');
 };
 
 export {
@@ -145,19 +141,18 @@ export {
     checkConectivity,
     parseError,
     getLocale,
-    generateUsernameFromFullName
-}
-
+    generateUsernameFromFullName,
+};
 
 const style = {
-    backgroundColor: "#333333",
+    backgroundColor: '#333333',
     width: 300,
-    height: Platform.OS === ("ios") ? 50 : 200,
-    color: "#ffffff",
+    height: Platform.OS === 'ios' ? 50 : 200,
+    color: '#ffffff',
     paddingLeft: 50,
     paddingRight: 50,
     fontSize: 12,
-    borderRadius: Platform.OS === ("ios") ? 25 : 50,
-    fontWeight: "normal",
-    yOffset: 60
+    borderRadius: Platform.OS === 'ios' ? 25 : 50,
+    fontWeight: 'normal',
+    yOffset: 60,
 };
