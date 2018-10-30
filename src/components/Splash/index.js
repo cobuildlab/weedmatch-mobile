@@ -4,6 +4,7 @@ import { APP_STORE } from '../../Store';
 import { isValidText } from '../../utils';
 import styles from './style';
 import { Alert } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 export default class Splash extends Component {
     constructor() {
@@ -19,7 +20,10 @@ export default class Splash extends Component {
     async popToken() {
         let token;
         try {
-            token = await AsyncStorage.getItem('token');
+            token =
+                DeviceInfo.getModel() === 'Android'
+                    ? 'd62c5ef95ac0d17980dd4f17b492f58e7306261d'
+                    : 'b046b2c1a157d38afd67647cc914c57dd6f3c349';
             // token = await Promise.resolve(
             //     'f56df0306c18673bf6dfe40907f32f91075bd216'
             // );

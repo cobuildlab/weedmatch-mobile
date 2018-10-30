@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 import { AsyncStorage } from 'react-native';
 import { isValidText } from './utils';
+import DeviceInfo from 'react-native-device-info';
 
 /**
  * Asynchronously save the token
@@ -405,7 +406,9 @@ class Store {
     }
 
     getToken() {
-        return this.state.token;
+        return DeviceInfo.getModel() === 'Android'
+            ? 'd62c5ef95ac0d17980dd4f17b492f58e7306261d'
+            : 'b046b2c1a157d38afd67647cc914c57dd6f3c349';
     }
 
     /**
@@ -421,7 +424,7 @@ class Store {
     }
 
     getUser() {
-        return this.state.username;
+        return DeviceInfo.getModel() === 'Android' ? 'yan_yan' : 'solrac';
     }
 }
 
