@@ -1,11 +1,6 @@
-/**
- * Check is the text is a valid input
- * @param {string} text The text to be tested
- */
-import React, { Component } from 'react';
-import { Platform, NetInfo, Alert, AsyncStorage } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { strings } from '../i18n';
-import { APP_STATE } from '../Store';
+import { APP_STATE } from '../Store'; // This module has no exported APP_STATE
 import I18n from 'react-native-i18n';
 import Toast from 'react-native-toast-native';
 import { checkInternetConnection } from 'react-native-offline';
@@ -37,6 +32,9 @@ async function checkConectivity() {
     return isConnected;
 }
 
+/**
+ * @param {Object} val
+ */
 function parseError(val) {
     Object.keys(val).map(objectKey => {
         var value = val[objectKey];
@@ -82,8 +80,8 @@ function isValidText(text) {
  */
 function authHeader(token) {
     return {
-        Authorization: 'Token ' + token,
         'Accept-Language': LENGUAGE,
+        Authorization: 'Token ' + token,
         'Content-Type': 'application/json',
     };
 }
@@ -102,8 +100,8 @@ function authHeaderLogout() {
  */
 function authHeaderForm(token) {
     return {
-        Authorization: 'Token ' + token,
         'Accept-Language': LENGUAGE,
+        Authorization: 'Token ' + token,
         'Content-Type': 'multipart/form-data',
     };
 }
@@ -124,7 +122,7 @@ function toastMsg(msg) {
 
 /**
  * Generates the username from the Full Name
- * @param username
+ * @param {any} username
  */
 const generateUsernameFromFullName = (username, addNumber = false) => {
     const newUsername = new String(username)
@@ -154,13 +152,13 @@ export {
 
 const style = {
     backgroundColor: '#333333',
-    width: 300,
-    height: Platform.OS === 'ios' ? 50 : 200,
+    borderRadius: Platform.OS === 'ios' ? 25 : 50,
     color: '#ffffff',
+    fontSize: 12,
+    fontWeight: 'normal',
+    height: Platform.OS === 'ios' ? 50 : 200,
     paddingLeft: 50,
     paddingRight: 50,
-    fontSize: 12,
-    borderRadius: Platform.OS === 'ios' ? 25 : 50,
-    fontWeight: 'normal',
+    width: 300,
     yOffset: 60,
 };
