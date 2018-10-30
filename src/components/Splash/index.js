@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Image, View, AsyncStorage} from 'react-native';
-import {APP_STORE} from "../../Store";
-import {isValidText} from "../../utils";
+import React, { Component } from 'react';
+import { Image, View, AsyncStorage } from 'react-native';
+import { APP_STORE } from '../../Store';
+import { isValidText } from '../../utils';
 import styles from './style';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 export default class Splash extends Component {
     constructor() {
@@ -13,7 +13,7 @@ export default class Splash extends Component {
     componentDidMount() {
         setTimeout(async () => {
             await this.popToken();
-        }, 2000)
+        }, 2000);
     }
 
     async popToken() {
@@ -30,8 +30,8 @@ export default class Splash extends Component {
         }
 
         const id = APP_STORE.getId();
-        console.log("Splash:TOKEN", token);
-        console.log("Splash:USER-ID", id);
+        console.log('Splash:TOKEN', token);
+        console.log('Splash:USER-ID', id);
         if (!isValidText(token)) {
             // To MatchUsersScreen Page
             this.props.navigation.navigate('Auth');
@@ -43,10 +43,16 @@ export default class Splash extends Component {
 
     render() {
         return (
-            <View style={styles.container} onLongPress={() => {
-                Alert.alert("EUREKA");
-            }}>
-                <Image source={require('../../assets/img/splash.png')} style={styles.imageStyle}/>
+            <View
+                style={styles.container}
+                onLongPress={() => {
+                    Alert.alert('EUREKA');
+                }}
+            >
+                <Image
+                    source={require('../../assets/img/splash.png')}
+                    style={styles.imageStyle}
+                />
             </View>
         );
     }
