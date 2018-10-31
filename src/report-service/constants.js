@@ -36,6 +36,11 @@ export const errorEnum = {
     INVALID_PROFILE_IMAGE_ID: 'INVALID_PROFILE_IMAGE_ID',
     INVALID_USER_ID: 'INVALID_USER_ID',
     UNKNOWN_ERROR: 'UNKNOWN_ERROR',
+    /**
+     * There's an error inside the post function because it doesn't validate
+     * the parameters before sending them
+     */
+    VALIDATION_ERROR: 'VALIDATION_ERROR',
 };
 
 export const REPORT_API_ENDPOINT_URL = GLOBAL_URL + 'reported/';
