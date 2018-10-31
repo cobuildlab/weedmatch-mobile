@@ -30,4 +30,11 @@ export const placeEnum = {
     Profile: 'Profile',
 };
 
+export const errorEnum = {
+    INVALID_CHAT_ID: 'INVALID_CHAT_ID',
+    INVALID_FEED_IMAGE_ID: 'INVALID_FEED_IMAGE_ID',
+    INVALID_PROFILE_IMAGE_ID: 'INVALID_PROFILE_IMAGE_ID',
+    INVALID_USER_ID: 'INVALID_USER_ID',
+};
+
 export const REPORT_API_ENDPOINT_URL = GLOBAL_URL + 'reported/';

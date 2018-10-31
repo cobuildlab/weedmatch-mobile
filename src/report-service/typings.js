@@ -127,6 +127,24 @@ export const isImageFeedReportPOSTParams = o => {
     return true;
 };
 
+/**
+ * The response if the id of an image feed image being reported isn't valid
+ * @typedef {object} InvalidFeedImageIDErrorResponse
+ * @prop {{ image_feed: string }} detail An object with a `image_feed` property
+ * containing the relevant error message
+ */
+
+/**
+ * @param {any} o
+ * @returns {o is InvalidFeedImageIDErrorResponse}
+ */
+export const isInvalidFeedImageIDErrorResponse = o => {
+    if (!isObject(o)) return false;
+    if (!isObject(o.detail)) return false;
+    if (typeof o.image_feed !== 'string') return false;
+    return true;
+};
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -175,6 +193,23 @@ export const isImageProfileReportPOSTParams = o => {
     if (typeof obj.image_profile !== 'string') return false;
     if (typeof obj.place !== 'string') return false;
     if (obj.place !== placeEnum.Profile) return false;
+    return true;
+};
+
+/**
+ * @typedef {object} InvalidProfileImageIDErrorResponse
+ * @prop {{ image_profile: string }} detail An object with a `image_profile`
+ * property containing the relevant error message
+ */
+
+/**
+ * @param {any} o
+ * @returns {o is InvalidProfileImageIDErrorResponse}
+ */
+export const isInvalidProfileImageIDErrorResponse = o => {
+    if (!isObject(o)) return false;
+    if (!isObject(o.detail)) return false;
+    if (typeof o.detail.image_profile !== 'string') return false;
     return true;
 };
 
@@ -227,6 +262,23 @@ export const isChatReportPOSTParams = o => {
     return true;
 };
 
+/**
+ * @typedef {object} InvalidChatIDErrorResponse
+ * @prop {{ chat: string }} detail An object with a `chat` property containing
+ * the relevant error message
+ */
+
+/**
+ * @param {any} o
+ * @returns {o is InvalidChatIDErrorResponse}
+ */
+export const isInvalidChatIDErrorResponse = o => {
+    if (!isObject(o)) return false;
+    if (!isObject(o.detail)) return false;
+    if (typeof o.detail.chat !== 'string') return false;
+    return true;
+};
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -250,36 +302,19 @@ export const isSuccessResponse = o => {
 /**
  * Shape of response when `reported_user` from the POST params is not a valid
  * user id (doesn't exist)
- * @typedef {object} InexistantUserErrorResponse
+ * @typedef {object} InvalidUserIDErrorResponse
  * @prop {{ reported_user: string }} detail An object with a `reported_user`
  * property containing the relevant error message
  */
 
 /**
  * @param {any} o
- * @returns {o is InexistantUserErrorResponse}
+ * @returns {o is InvalidUserIDErrorResponse}
  */
-export const isInexistantUserErrorResponse = o => {
+export const isInvalidUserIDErrorResponse = o => {
     if (!isObject(o)) return false;
     if (!isObject(o.detail)) return false;
-    if (typeof o.reported_user !== 'string') return false;
-    return true;
-};
-
-/**
- * @typedef {object} InexistantImageErrorResponse
- * @prop {{ image_feed: string }} detail An object with a `image_feed` property
- * containing the relevant error message
- */
-
-/**
- * @param {any} o
- * @returns {o is InexistantImageErrorResponse}
- */
-export const isInexistantImageErrorResponse = o => {
-    if (!isObject(o)) return false;
-    if (!isObject(o.detail)) return false;
-    if (typeof o.image_feed !== 'string') return false;
+    if (typeof o.detail.reported_user !== 'string') return false;
     return true;
 };
 
@@ -291,7 +326,7 @@ export const isInexistantImageErrorResponse = o => {
  * @param {any} o
  * @returns {o is ImageFeedReportValidationErrorResponse|ImageProfileReportValidationErrorResponse|ChatReportValidationErrorResponse}
  */
-const isValidationErrorResponse = o => {
+export const isValidationErrorResponse = o => {
     if (!isObject(o)) return false;
     if (!isObject(o.detail)) return false;
     const possiblyStringArrays = Object.values(o.detail);
