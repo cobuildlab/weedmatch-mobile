@@ -8,7 +8,6 @@ import {
     Image,
     ActivityIndicator,
     TouchableOpacity,
-    TouchableHighlight,
     TouchableWithoutFeedback,
     Modal,
     Button,
@@ -28,7 +27,6 @@ import {
     likeAction,
     calculateTime,
     appendData,
-    handleImagePress,
 } from './HomeActions';
 import firebase from 'react-native-firebase';
 
@@ -173,7 +171,7 @@ export default class HomePage extends Component {
      * @param {number} imageID Id of the image to report
      * @returns {void}
      */
-    onPressReport = imageID => {};
+    onPressReport = () => {};
 
     _feedData() {
         if (checkConectivity()) {
@@ -443,7 +441,7 @@ export default class HomePage extends Component {
         return <Image style={styles.picture} source={{ uri: photo }} />;
     }
 
-    _renderRow(rowData, rowID, sectionID, highlightRow) {
+    _renderRow(rowData, sectionID) {
         return (
             <View style={styles.containerView}>
                 <View style={styles.mediaUser}>
