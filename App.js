@@ -15,6 +15,7 @@ import LikeProfile from './src/components/LikeProfile';
 import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
+import Report from './src/components/Report';
 
 const AppStack = createStackNavigator({
     Bar: Topbar,
@@ -27,6 +28,7 @@ const AppStack = createStackNavigator({
     Chat: Chat,
     Message: Message,
     Like: Like,
+    Report: Report,
 });
 
 const AuthStack = createStackNavigator({
