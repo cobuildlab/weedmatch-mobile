@@ -1,4 +1,4 @@
-import {createStackNavigator, createSwitchNavigator} from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import Splash from './src/components/Splash';
 import Terms from './src/components/Terms';
 import Authentication from './src/components/Authentication/index';
@@ -16,7 +16,6 @@ import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
 
-
 const AppStack = createStackNavigator({
     Bar: Topbar,
     Home: HomePage,
@@ -27,7 +26,7 @@ const AppStack = createStackNavigator({
     Notifications: Notifications,
     Chat: Chat,
     Message: Message,
-    Like: Like
+    Like: Like,
 });
 
 const AuthStack = createStackNavigator({
@@ -35,7 +34,7 @@ const AuthStack = createStackNavigator({
     Register: RegisterPage,
     Terms: Terms,
     Login: LoginPage,
-    Forgot: ForgotPage
+    Forgot: ForgotPage,
 });
 
 // const NotificationsStack = createStackNavigator({
@@ -46,7 +45,7 @@ export default createSwitchNavigator(
     {
         AuthLoading: Splash,
         App: AppStack,
-        Auth: AuthStack
+        Auth: AuthStack,
     },
     {
         initialRouteName: 'AuthLoading',
