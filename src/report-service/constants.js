@@ -5,8 +5,12 @@ import { URL as GLOBAL_URL } from '../utils';
  */
 
 /**
+ * @typedef {'BULLYING'|'HATE'|'INFRINGEMENT'|'INJURY'|'PORN'|'SALE'|'SPAM'|'VIOLENCE'} ReportReasonEnumKey
+ */
+
+/**
  * Valid reasons for making a report
- * @type {{ [K: string]: ReasonEnum }}
+ * @type {{ [K in ReportReasonEnumKey]: ReasonEnum }}
  */
 export const reportReasonEnum = {
     BULLYING: 'Harassment or bullying',
