@@ -15,10 +15,10 @@ I18n.translations = {
 };
 
 const currentLocale = I18n.currentLocale().slice(0, 2);
-console.log("LOCALE", I18n.currentLocale());
+console.log('LOCALE', I18n.currentLocale());
 // Is it a RTL language?
-export const isRTL = currentLocale.indexOf('he') === 0 ||
-    currentLocale.indexOf('ar') === 0;
+export const isRTL =
+    currentLocale.indexOf('he') === 0 || currentLocale.indexOf('ar') === 0;
 
 // Allow RTL alignment in RTL languages
 ReactNative.I18nManager.allowRTL(isRTL);
@@ -31,6 +31,6 @@ ReactNative.I18nManager.allowRTL(isRTL);
  */
 export function strings(name, params = {}) {
     return I18n.t(name, params);
-};
+}
 
 export default I18n;
