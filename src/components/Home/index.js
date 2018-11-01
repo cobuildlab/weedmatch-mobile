@@ -167,6 +167,14 @@ export default class HomePage extends Component {
         }
     };
 
+    /**
+     * Handler when pressing the report button.
+     * Should bring up an interface for making the report about that image.
+     * @param {number} imageID Id of the image to report
+     * @returns {void}
+     */
+    onPressReport = imageID => {};
+
     _feedData() {
         if (checkConectivity()) {
             feedAction(APP_STORE.getToken(), this.state);
@@ -493,15 +501,24 @@ export default class HomePage extends Component {
                                 sectionID
                             )
                         }
+                        style={styles.heartAndTextContainer}
                     >
                         {this._likes(rowData.band)}
+                        <Text style={[styles.time, styles.likesNumber]}>
+                            {rowData.like}
+                        </Text>
                     </TouchableOpacity>
 
-                    <View style={styles.containerLikesCount}>
-                        <Text style={styles.time}>
-                            {rowData.like} weedy-likes
-                        </Text>
-                    </View>
+                    <TouchableOpacity
+                        onPress={this.onPressReport.bind(this, rowData.id)}
+                        style={styles.reportButtonContainer}
+                    >
+                        <Image
+                            // @ts-ignore file exists
+                            source={require('../../assets/img/report.png')}
+                            style={styles.reportButton}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.containerViewHorizontal}>
                     <Text style={styles.description}>{rowData.comment}</Text>

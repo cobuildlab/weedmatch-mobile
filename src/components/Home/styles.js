@@ -104,7 +104,6 @@ export default (styles = StyleSheet.create({
         height: 30,
     },
     icons: {
-        marginLeft: 10,
         marginTop: 5,
         width: 25,
         height: 22,
@@ -136,6 +135,9 @@ export default (styles = StyleSheet.create({
         fontSize: 14,
         color: '#999999',
         textAlign: 'left',
+    },
+    likesNumber: {
+        marginLeft: 10, // pull it a bit farther away from the heart
     },
     description: {
         fontSize: 14,
@@ -195,12 +197,18 @@ export default (styles = StyleSheet.create({
     containerLikes: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'flex-start',
+        paddingLeft: 15,
+        paddingRight: 15,
         paddingTop: 5,
         paddingBottom: 5,
     },
-    containerLikesCount: {
+    heartAndTextContainer: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    reportButtonContainer: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
@@ -222,6 +230,10 @@ export default (styles = StyleSheet.create({
     imageSize: {
         width: width,
         height: width,
+    },
+    reportButton: {
+        height: 32,
+        width: 32,
     },
     userContainer: {
         flex: 1,
