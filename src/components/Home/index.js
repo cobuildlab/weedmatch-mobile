@@ -30,6 +30,12 @@ import {
 } from './HomeActions';
 import firebase from 'react-native-firebase';
 
+import REPORT_ROUTE_KEY from '../Report/REPORT_ROUTE_KEY';
+/**
+ * @typedef {import('../Report').ReportRouteParams} ReportRouteParams
+ */
+import { placeEnum } from '../../report-service/constants';
+
 export default class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -169,9 +175,25 @@ export default class HomePage extends Component {
      * Handler when pressing the report button.
      * Should bring up an interface for making the report about that image.
      * @param {number} imageID Id of the image to report
+     * @param {number} userID Id of the user to report
+     * @param {string} userName Name of the user being reported
      * @returns {void}
      */
-    onPressReport = () => {};
+    onPressReport = (imageID, userID, userName) => {
+        const { navigation } = this.props;
+
+        /**
+         * @type {ReportRouteParams}
+         */
+        const params = {
+            feedImageID: imageID,
+            place: placeEnum.Feed,
+            userID,
+            userName,
+        };
+
+        navigation.navigate(REPORT_ROUTE_KEY, params);
+    };
 
     _feedData() {
         if (checkConectivity()) {
@@ -508,7 +530,12 @@ export default class HomePage extends Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={this.onPressReport.bind(this, rowData.id)}
+                        onPress={this.onPressReport.bind(
+                            this,
+                            rowData.id,
+                            rowData.id_user,
+                            rowData.username
+                        )}
                         style={styles.reportButtonContainer}
                     >
                         <Image
