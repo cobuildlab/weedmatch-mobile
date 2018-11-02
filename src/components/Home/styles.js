@@ -198,7 +198,7 @@ export default (styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         paddingLeft: 15,
         paddingRight: 15,
         paddingTop: 5,
@@ -232,8 +232,8 @@ export default (styles = StyleSheet.create({
         height: width,
     },
     reportButton: {
-        height: 32,
-        width: 32,
+        height: 24,
+        width: 24,
     },
     userContainer: {
         flex: 1,
