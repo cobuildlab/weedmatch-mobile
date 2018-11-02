@@ -313,7 +313,7 @@ export default class Report extends Component {
             }
         }
 
-        toastMsg(toastMsg('report.messageWhenSending'));
+        toastMsg(strings('report.messageWhenSending'));
 
         navigation.goBack();
     };
