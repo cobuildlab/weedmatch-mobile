@@ -1,11 +1,17 @@
+import { APP_STORE } from '../Store';
+
 import * as Validation from './typings';
 import { errorEnum, REPORT_API_ENDPOINT_URL } from './constants';
-
 /**
  * @typedef {import('./typings').ChatReportPOSTParams} ChatReportPOSTParams
  * @typedef {import('./typings').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
  * @typedef {import('./typings').ImageProfileReportPOSTParams} ImageProfileReportPOSTParams
  */
+
+const headers = {
+    Authorization: `Token ${APP_STORE.getToken()}`,
+    'Content-Type': 'application/json',
+};
 
 /**
  * @param {ChatReportPOSTParams} chatReportParameters
@@ -22,9 +28,7 @@ export const postChatReport = chatReportParameters => {
 
     return fetch(REPORT_API_ENDPOINT_URL, {
         body: JSON.stringify(chatReportParameters),
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         method: 'POST',
     })
         .then(res => Promise.all([res.ok, res.json()]))
@@ -57,7 +61,9 @@ export const postChatReport = chatReportParameters => {
                 throw new Error(errorEnum.VALIDATION_ERROR);
             }
 
-            throw new Error(errorEnum.UNKNOWN_ERROR);
+            throw new Error(
+                `${errorEnum.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
+            );
         });
 };
 
@@ -76,9 +82,7 @@ export const postFeedImageReport = imageFeedReportPOSTParams => {
 
     return fetch(REPORT_API_ENDPOINT_URL, {
         body: JSON.stringify(imageFeedReportPOSTParams),
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         method: 'POST',
     })
         .then(res => Promise.all([res.ok, res.json()]))
@@ -111,7 +115,9 @@ export const postFeedImageReport = imageFeedReportPOSTParams => {
                 throw new Error(errorEnum.VALIDATION_ERROR);
             }
 
-            throw new Error(errorEnum.UNKNOWN_ERROR);
+            throw new Error(
+                `${errorEnum.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
+            );
         });
 };
 
@@ -132,9 +138,7 @@ export const postProfileImageReport = imageProfileReportPOSTParams => {
 
     return fetch(REPORT_API_ENDPOINT_URL, {
         body: JSON.stringify(imageProfileReportPOSTParams),
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         method: 'POST',
     })
         .then(res => Promise.all([res.ok, res.json()]))
@@ -167,6 +171,8 @@ export const postProfileImageReport = imageProfileReportPOSTParams => {
                 throw new Error(errorEnum.VALIDATION_ERROR);
             }
 
-            throw new Error(errorEnum.UNKNOWN_ERROR);
+            throw new Error(
+                `${errorEnum.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
+            );
         });
 };
