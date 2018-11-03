@@ -30,10 +30,13 @@ export default class Chat extends Component {
 
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
-        const {name, imgProfile} = params;
+        const {name, imgProfile, otherID} = params;
 
         return {
-            headerTitle: <ChatTitle src={imgProfile} name={name}/>,
+            headerTitle: <ChatTitle src={imgProfile} name={name} onPress={() => {
+                navigation.navigate('PublicProfile', {userId: otherID});
+            }
+            }/>,
         };
     };
 

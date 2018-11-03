@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, View} from "react-native";
+import {Text, View, TouchableHighlight} from "react-native";
 import styles from "../../components/Message/style";
 import FastImage from "react-native-fast-image";
 
@@ -10,15 +10,19 @@ import FastImage from "react-native-fast-image";
  * @constructor
  */
 const ChatTitle = (props) => {
-    const {src, name} = props;
+    const {src, name, onPress} = props;
+
     return (
         <View style={styles.viewMsg}>
-            <FastImage style={styles.imgProfileItem}
-                       resizeMode={FastImage.resizeMode.contain}
-                       source={{uri: src}}
-            />
+            <TouchableHighlight onPress={onPress}>
+                <FastImage style={styles.imgProfileItem}
+                           resizeMode={FastImage.resizeMode.contain}
+                           source={{uri: src}}
+                           onPress={onPress}
+                />
+            </TouchableHighlight>
             <View style={styles.viewTexts}>
-                <Text style={styles.textUser}>{name}</Text>
+                <Text style={styles.textUser} onPress={onPress}>{name}</Text>
             </View>
         </View>
     );
