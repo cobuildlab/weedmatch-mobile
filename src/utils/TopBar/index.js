@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
-import {changeToken, validateToken} from './TopBarActions'
-import {NavigationActions} from 'react-navigation';
+import {validateToken} from './TopBarActions'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import {APP_STORE} from '../../Store';
@@ -11,6 +10,7 @@ import styles from './style';
 // Optional: Flow type
 import {Notification, NotificationOpen} from 'react-native-firebase';
 import MatchUsersScreen from "../../screens/swiper/MatchUsersScreen";
+
 
 export default class TopBar extends Component {
 
@@ -26,7 +26,6 @@ export default class TopBar extends Component {
             modalVisible: false,
             matchData: {},
         };
-
     }
 
     popNoti() {
@@ -88,6 +87,7 @@ export default class TopBar extends Component {
         firebase.notifications().getInitialNotification()
             .then((notificationOpen: NotificationOpen) => {
                 console.log("TOPBAR:getInitialNotification", notificationOpen);
+
                 if (notificationOpen) {
                     this.notifHandler(notificationOpen.notification.data);
                 }

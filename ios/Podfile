@@ -6,7 +6,8 @@ target 'weedmatch' do
   # use_frameworks!
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
-  pod 'FacebookSDK'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
   pod 'Firebase/Auth', '~> 5.3.0'
   # Pods for weedmatch
 
@@ -14,6 +15,10 @@ target 'weedmatch' do
     inherit! :search_paths
     # Pods for testing
     pod 'react-native-version-check', :path => '../node_modules/react-native-version-check'
+
+    pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
+
+    pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
 
   end
 

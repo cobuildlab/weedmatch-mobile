@@ -1,11 +1,10 @@
-import {StackNavigator, SwitchNavigator} from 'react-navigation';
+import {createStackNavigator, createSwitchNavigator} from 'react-navigation';
 import Splash from './src/components/Splash';
 import Terms from './src/components/Terms';
 import Authentication from './src/components/Authentication/index';
 import LoginPage from './src/components/Login';
 import RegisterPage from './src/components/Register';
 import HomePage from './src/components/Home';
-import SwiperView from './src/components/Swiper';
 import Profile from './src/components/Profile';
 import Message from './src/components/Message';
 import Chat from './src/components/Chat';
@@ -18,19 +17,20 @@ import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
 
 
-const AppStack = StackNavigator({
+const AppStack = createStackNavigator({
     Bar: Topbar,
     Home: HomePage,
     Profile: Profile,
-    Message: Message,
-    Chat: Chat,
-    Like: Like,
     EditProfile: EditProfile,
     PublicProfile: PublicProfile,
+    LikeProfile: LikeProfile,
     Notifications: Notifications,
-    LikeProfile: LikeProfile
+    Chat: Chat,
+    Message: Message,
+    Like: Like
 });
-const AuthStack = StackNavigator({
+
+const AuthStack = createStackNavigator({
     SignIn: Authentication,
     Register: RegisterPage,
     Terms: Terms,
@@ -38,11 +38,15 @@ const AuthStack = StackNavigator({
     Forgot: ForgotPage
 });
 
-export default SwitchNavigator(
+// const NotificationsStack = createStackNavigator({
+//
+// });
+
+export default createSwitchNavigator(
     {
         AuthLoading: Splash,
         App: AppStack,
-        Auth: AuthStack,
+        Auth: AuthStack
     },
     {
         initialRouteName: 'AuthLoading',
