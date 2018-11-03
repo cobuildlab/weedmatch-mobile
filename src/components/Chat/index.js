@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {ActivityIndicator, View, Image, AppState} from 'react-native';
-import {WS_URL} from '../../utils';
+import React, { Component } from 'react';
+import { ActivityIndicator, View, Image, AppState } from 'react-native';
+import { WS_URL } from '../../utils';
 
-import {APP_STORE} from '../../Store';
-import {internet, checkConectivity, toastMsg} from '../../utils';
+import { APP_STORE } from '../../Store';
+import { internet, checkConectivity, toastMsg } from '../../utils';
 import styles from './style';
-import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
-import {chatAction, appendData} from './ChatActions';
+import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
+import { chatAction, appendData } from './ChatActions';
 import WS from 'react-native-websocket';
-import ChatTitle from "../../screens/chat/ChatTitle";
+import ChatTitle from '../../screens/chat/ChatTitle';
 
 export default class Chat extends Component {
     constructor(props) {
@@ -82,10 +82,10 @@ export default class Chat extends Component {
             );
 
             if (this.state.numPage > 0) {
-                newState["messages"] = GiftedChat.prepend([], fullChat);
+                newState['messages'] = GiftedChat.prepend([], fullChat);
             } else {
-                newState["messages"] = GiftedChat.append([], fullChat);
-                newState["refreshing"] = false;
+                newState['messages'] = GiftedChat.append([], fullChat);
+                newState['refreshing'] = false;
             }
 
             this.setState(newState);
@@ -120,7 +120,7 @@ export default class Chat extends Component {
         // eslint-disable-next-line no-console
         console.log('Chat:componentWillUmmount');
 
-        APP_STORE.CHATNOTIF_EVENT.next({chatNotif: ''});
+        APP_STORE.CHATNOTIF_EVENT.next({ chatNotif: '' });
         this.chatMsg.unsubscribe();
         this.chatPage.unsubscribe();
         // this.close()
@@ -150,7 +150,7 @@ export default class Chat extends Component {
 
     getEarlyMessages() {
         if (checkConectivity()) {
-            this.setState({isLoading: true});
+            this.setState({ isLoading: true });
             chatAction(this.state, this.getChatID());
         } else {
             internet();
@@ -228,11 +228,11 @@ export default class Chat extends Component {
         if (this.state.refreshing) {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC"/>
+                    <ActivityIndicator size="large" color="#9605CC" />
                 </View>
             );
         }
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         const chat_id = navigation.getParam('chat_id', '0');
         let queryString =
             'id_user=' +

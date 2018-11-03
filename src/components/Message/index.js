@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Text,
     View,
@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styles from './style';
-import {getChat} from './MessageActions';
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
-import {connection, toastMsg} from '../../utils';
+import { getChat } from './MessageActions';
+import { APP_STORE } from '../../Store';
+import { strings } from '../../i18n';
+import { connection, toastMsg } from '../../utils';
 
 export default class Message extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ export default class Message extends Component {
     componentDidMount() {
         this.showChatNotif();
 
-        this.chatsVar = APP_STORE.CHAT_EVENT.subscribe((state) => {
+        this.chatsVar = APP_STORE.CHAT_EVENT.subscribe(state => {
             console.log('Messages:componentDidMount:chatsVar', state);
             if (state.chats) {
                 this.setState({
@@ -60,7 +60,7 @@ export default class Message extends Component {
             chat_id: id,
             otherUser: other,
             otherID: user,
-            imgProfile
+            imgProfile,
         });
     }
 
@@ -68,7 +68,7 @@ export default class Message extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC"/>
+                    <ActivityIndicator size="large" color="#9605CC" />
                 </View>
             );
         }
@@ -82,26 +82,40 @@ export default class Message extends Component {
         }
 
         return (
-            <ScrollView style={styles.viewContainer}
-                        keyboardDismissMode={"on-drag"}
-                        keyboardShouldPersistTaps={"always"}
+            <ScrollView
+                style={styles.viewContainer}
+                keyboardDismissMode={'on-drag'}
+                keyboardShouldPersistTaps={'always'}
             >
-                {this.state.chats.map((item, i) =>
-                    <TouchableOpacity key={i}
-                                      onPress={() => this.showChat(item.id, item.id_user, item.user, item.image_profile)}>
+                {this.state.chats.map((item, i) => (
+                    <TouchableOpacity
+                        key={i}
+                        onPress={() =>
+                            this.showChat(
+                                item.id,
+                                item.id_user,
+                                item.user,
+                                item.image_profile
+                            )
+                        }
+                    >
                         <View style={styles.viewMsg}>
-                            <FastImage style={styles.imgProfileItem}
-                                       resizeMode={FastImage.resizeMode.contain}
-                                       source={{uri: item.image_profile}}
+                            <FastImage
+                                style={styles.imgProfileItem}
+                                resizeMode={FastImage.resizeMode.contain}
+                                source={{ uri: item.image_profile }}
                             />
                             <View style={styles.viewTexts}>
                                 <Text style={styles.textUser}>{item.user}</Text>
-                                <Text
-                                    style={styles.textChat}>{item.message ? item.message : strings('chat.write')}</Text>
+                                <Text style={styles.textChat}>
+                                    {item.message
+                                        ? item.message
+                                        : strings('chat.write')}
+                                </Text>
                             </View>
                         </View>
                     </TouchableOpacity>
-                )}
+                ))}
             </ScrollView>
         );
     }
