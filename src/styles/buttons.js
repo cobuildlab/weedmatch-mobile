@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {black, white, gray, purple} from './colors';
+import {black, WHITE, gray, purple} from './colors';
 
 export default styles = StyleSheet.create({
     purpleButton: {
@@ -8,17 +8,17 @@ export default styles = StyleSheet.create({
     transparentButton: {
         opacity: 1,
         backgroundColor: black,
-        borderColor: white,
+        borderColor: WHITE,
         borderWidth: 1,
-        color: white,
+        color: WHITE,
         fontWeight: "600",
     },
     transparentIconButton: {
         opacity: 1,
         backgroundColor: black,
-        borderColor: white,
+        borderColor: WHITE,
         borderWidth: 1,
-        color: white,
+        color: WHITE,
         fontWeight: "600",
         paddingRight: 15,
     }

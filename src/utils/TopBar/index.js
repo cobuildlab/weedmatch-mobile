@@ -9,7 +9,7 @@ import Swiper from '../../components/Swiper';
 import styles from './style';
 // Optional: Flow type
 import {Notification, NotificationOpen} from 'react-native-firebase';
-import MatchUsersScreen from "../../screens/swiper/MatchUsersScreen";
+import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 
 
 export default class TopBar extends Component {

@@ -13,7 +13,6 @@ import { APP_STORE } from '../../Store';
 import styles from './styles';
 import { facebookAction, firebaseAction } from './AutheticationActions';
 import firebase from 'react-native-firebase';
-import VersionCheck from 'react-native-version-check';
 
 /**
  * MatchUsersScreen Screen
@@ -122,7 +121,7 @@ export default class Authentication extends Component {
     }
 
     _showCurrentVersion() {
-        Alert.alert(VersionCheck.getCurrentVersion());
+        //TODO: react-native-version-check deprecated
     }
 
     render() {

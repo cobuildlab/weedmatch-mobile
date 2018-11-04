@@ -1,21 +1,13 @@
 import React, {Component} from 'react';
 import {
-    TextInput,
-    TouchableOpacity,
     View,
-    AsyncStorage,
-    Alert,
-    ScrollView,
-    StyleSheet,
     Image,
     SafeAreaView,
 } from 'react-native';
-import {Container, Header, Content, Button, Text} from 'native-base';
+import {Button, Text} from 'native-base';
 import styles from './styles';
 import buttonStyles from '../../styles/buttons';
-import {white} from '../../styles/colors';
-import p1 from '../../images/p1.jpg';
-import p2 from '../../images/p2.jpg';
+import {WHITE} from '../../styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {strings} from '../../i18n';
 
@@ -60,7 +52,7 @@ export default class MatchUsersScreen extends Component {
                     <Button rounded iconRight style={[buttonStyles.transparentIconButton]}
                             onPress={() => onClose()}>
                         <Text>{strings('swiper.continue')}</Text>
-                        <Icon name="chevron-right" size={20} color={white}/>
+                        <Icon name="chevron-right" size={20} color={WHITE}/>
                     </Button>
                 </View>
 
