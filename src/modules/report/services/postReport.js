@@ -1,7 +1,9 @@
-import { APP_STORE } from '../Store';
+import {APP_STORE} from '../../../Store';
 
 import * as Validation from './typings';
-import { errorEnum, REPORT_API_ENDPOINT_URL } from './constants';
+import {REPORT_API_ENDPOINT_URL} from '../index';
+import {ERROR_ENUM} from "../index";
+
 /**
  * @typedef {import('./typings').ChatReportPOSTParams} ChatReportPOSTParams
  * @typedef {import('./typings').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
@@ -50,19 +52,19 @@ export const postChatReport = chatReportParameters => {
         })
         .then(errorJson => {
             if (Validation.isInvalidUserIDErrorResponse(errorJson)) {
-                throw new Error(errorEnum.INVALID_USER_ID);
+                throw new Error(ERROR_ENUM.INVALID_USER_ID);
             }
 
             if (Validation.isInvalidChatIDErrorResponse(errorJson)) {
-                throw new Error(errorEnum.INVALID_CHAT_ID);
+                throw new Error(ERROR_ENUM.INVALID_CHAT_ID);
             }
 
             if (Validation.isValidationErrorResponse(errorJson)) {
-                throw new Error(errorEnum.VALIDATION_ERROR);
+                throw new Error(ERROR_ENUM.VALIDATION_ERROR);
             }
 
             throw new Error(
-                `${errorEnum.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
+                `${ERROR_ENUM.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
             );
         });
 };
@@ -104,19 +106,19 @@ export const postFeedImageReport = imageFeedReportPOSTParams => {
         })
         .then(errorJson => {
             if (Validation.isInvalidUserIDErrorResponse(errorJson)) {
-                throw new Error(errorEnum.INVALID_USER_ID);
+                throw new Error(ERROR_ENUM.INVALID_USER_ID);
             }
 
             if (Validation.isInvalidFeedImageIDErrorResponse(errorJson)) {
-                throw new Error(errorEnum.INVALID_FEED_IMAGE_ID);
+                throw new Error(ERROR_ENUM.INVALID_FEED_IMAGE_ID);
             }
 
             if (Validation.isValidationErrorResponse(errorJson)) {
-                throw new Error(errorEnum.VALIDATION_ERROR);
+                throw new Error(ERROR_ENUM.VALIDATION_ERROR);
             }
 
             throw new Error(
-                `${errorEnum.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
+                `${ERROR_ENUM.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
             );
         });
 };
@@ -160,19 +162,19 @@ export const postProfileImageReport = imageProfileReportPOSTParams => {
         })
         .then(errorJson => {
             if (Validation.isInvalidUserIDErrorResponse(errorJson)) {
-                throw new Error(errorEnum.INVALID_USER_ID);
+                throw new Error(ERROR_ENUM.INVALID_USER_ID);
             }
 
             if (Validation.isInvalidProfileImageIDErrorResponse(errorJson)) {
-                throw new Error(errorEnum.INVALID_PROFILE_IMAGE_ID);
+                throw new Error(ERROR_ENUM.INVALID_PROFILE_IMAGE_ID);
             }
 
             if (Validation.isValidationErrorResponse(errorJson)) {
-                throw new Error(errorEnum.VALIDATION_ERROR);
+                throw new Error(ERROR_ENUM.VALIDATION_ERROR);
             }
 
             throw new Error(
-                `${errorEnum.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
+                `${ERROR_ENUM.UNKNOWN_ERROR} :: ${JSON.stringify(errorJson)}`
             );
         });
 };

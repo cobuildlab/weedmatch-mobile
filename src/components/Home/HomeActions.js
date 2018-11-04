@@ -52,6 +52,11 @@ function appendData(oldData, newData) {
     return oldData;
 }
 
+/**
+ * Upload the picture to the server
+ * @param token
+ * @param state
+ */
 function uploadAction(token, state) {
     console.log(state);
     console.log(`uploadAction: ${token}, ${state}`);

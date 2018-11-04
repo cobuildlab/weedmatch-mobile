@@ -16,8 +16,8 @@ import ForgotPage from './src/components/Forgot';
 import Topbar from './src/utils/TopBar';
 import Notifications from './src/components/Notifications';
 
-import Report from './src/components/Report';
-import REPORT_ROUTE_KEY from './src/components/Report/REPORT_ROUTE_KEY';
+import Report from './src/modules/report/Report';
+import REPORT_ROUTE_KEY from './src/modules/report/index';
 
 const AppStack = createStackNavigator(
     {

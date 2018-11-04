@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     },
     headerAndForm: {
         flex: 1,
+        alignItems: 'center'
     },
 });
 

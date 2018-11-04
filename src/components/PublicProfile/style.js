@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 var width = Dimensions.get('window').width;
+import {WHITE} from '../../styles/colors';
 
 export default styles = StyleSheet.create({
 
@@ -56,7 +57,7 @@ export default styles = StyleSheet.create({
     actionButtonIcon: {
         fontSize: 20,
         height: 22,
-        color: 'white',
+        color: WHITE,
     },
     welcome: {
         fontSize: 20,
@@ -290,7 +291,7 @@ export default styles = StyleSheet.create({
       },
       buttonSelected: {
         opacity: 1,
-        color: 'white',
+        color: WHITE,
         fontSize: 40,
       },
       customSlide: {

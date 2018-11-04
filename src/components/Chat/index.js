@@ -8,7 +8,8 @@ import styles from './style';
 import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
 import {chatAction, appendData} from './ChatActions';
 import WS from 'react-native-websocket';
-import ChatTitle from '../../screens/chat/ChatTitle';
+import ChatTitle from '../../modules/chat/ChatTitle';
+import {WHITE} from '../../styles/colors';
 
 export default class Chat extends Component {
     constructor(props) {
@@ -197,7 +198,7 @@ export default class Chat extends Component {
                 {...props}
                 wrapperStyle={{
                     left: {
-                        backgroundColor: 'white',
+                        backgroundColor: WHITE,
                     },
                     right: {
                         backgroundColor: '#9605CC',

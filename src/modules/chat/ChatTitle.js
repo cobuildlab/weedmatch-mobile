@@ -34,6 +34,7 @@ const ChatTitle = ({src, name, onPress}) => {
 ChatTitle.propTypes = {
     name: PropTypes.string.isRequired,
     src: PropTypes.string.isRequired,
+    onPress: PropTypes.func.isRequired
 };
 
 export default ChatTitle;

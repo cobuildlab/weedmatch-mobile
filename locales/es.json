@@ -95,7 +95,8 @@
     },
     "report": {
         "commentInputPlaceholder": "Comentario (opcional)",
-        "title": "Hacer un Reporte",
+        "title": "Reportar y Bloquear Usuario",
+        "reasonText": "Razón:",
         "reason": {
             "BULLYING": "Harassment or bullying",
             "HATE": "Language or symbols that incite hatred",

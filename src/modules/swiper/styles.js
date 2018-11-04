@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {black, white, gray, purple} from '../../styles/colors';
+import {black, WHITE, gray, purple} from '../../styles/colors';
 
 export default styles = StyleSheet.create({
     container: {
@@ -48,7 +48,7 @@ export default styles = StyleSheet.create({
     },
     fontMatchTitle: {
         textAlign: 'center',
-        color: white,
+        color: WHITE,
         fontSize: 28,
         fontWeight: '700',
     }

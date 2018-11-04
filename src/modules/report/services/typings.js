@@ -6,7 +6,8 @@
  * @author danlugo92
  */
 
-import { placeEnum, reportReasonEnum } from './constants';
+import { PLACE_ENUM} from '../index';
+import {REPORT_REASON_ENUM} from "../index";
 
 /**
  * @param {any} o
@@ -29,7 +30,7 @@ const stringIsPlaceEnum = str => {
     // @ts-ignore Typescript wants us to pass a value that is an actual value of
     // the object (a PlaceEnum), but that is what we are actually checking here
     // so that typecheck makes no sense
-    return Object.values(placeEnum).includes(str);
+    return Object.values(PLACE_ENUM).includes(str);
 };
 
 /**
@@ -46,7 +47,7 @@ const stringIsReasonEnum = str => {
     // @ts-ignore Typescript wants us to pass a value that is an actual value of
     // the object (a ReasonEnum), but that is what we are actually checking here
     // so that typecheck makes no sense
-    return Object.values(reportReasonEnum).includes(str);
+    return Object.values(REPORT_REASON_ENUM).includes(str);
 };
 
 // -----------------------------------------------------------------------------
@@ -63,17 +64,15 @@ const stringIsReasonEnum = str => {
 
 /**
  * @param {any} o
- * @returns {o is _BaseReportPOSTParams}
  */
-const isBaseReportPOSTParams = o => {
-    if (!isObject(o)) return false;
-    if (typeof o.comment !== 'string') return false;
-    if (typeof o.reason !== 'string') return false;
-    if (!stringIsReasonEnum(o.reason)) return false;
-    if (typeof o.reported_user !== 'string') return false;
-    if (typeof o.place !== 'string') return false;
-    if (!stringIsPlaceEnum(o.place)) return false;
-    return true;
+export const validateReport = o => {
+    if (!isObject(o)) throw new Error("Object Expected");
+    if (typeof o.comment !== 'string') throw new Error("`comment` of type string expected");
+    if (typeof o.reason !== 'string') throw new Error("`reason` of type string expected");
+    if (!stringIsReasonEnum(o.reason)) throw new Error(`invalid value for 'reason' expecting: ${Object.values(REPORT_REASON_ENUM)}`);
+    if (typeof o.reported_user !== 'string') throw new Error("`reported_user` of type string expected");
+    if (typeof o.place !== 'string') throw new Error("`place` of type string expected");
+    if (!stringIsPlaceEnum(o.place)) throw new Error(`invalid value for 'place' expecting: ${Object.values(PLACE_ENUM)}`);
 };
 
 // -----------------------------------------------------------------------------
@@ -111,7 +110,7 @@ const isBaseReportPOSTParams = o => {
  * @returns {o is ImageFeedReportPOSTParams}
  */
 export const isImageFeedReportPOSTParams = o => {
-    if (!isBaseReportPOSTParams(o)) return false;
+    validateReport(o);
 
     /**
      * Type assertion required here because after doing
@@ -122,8 +121,7 @@ export const isImageFeedReportPOSTParams = o => {
     const obj = o;
 
     if (typeof obj.image_feed !== 'string') return false;
-    if (typeof obj.place !== 'string') return false;
-    if (obj.place !== placeEnum.Feed) return false;
+    if (obj.place !== PLACE_ENUM.Feed) return false;
     return true;
 };
 
@@ -180,7 +178,7 @@ export const isInvalidFeedImageIDErrorResponse = o => {
  * @returns {o is ImageProfileReportPOSTParams}
  */
 export const isImageProfileReportPOSTParams = o => {
-    if (!isBaseReportPOSTParams(o)) return false;
+    validateReport(o);
 
     /**
      * Type assertion required here because after doing
@@ -191,8 +189,7 @@ export const isImageProfileReportPOSTParams = o => {
     const obj = o;
 
     if (typeof obj.image_profile !== 'string') return false;
-    if (typeof obj.place !== 'string') return false;
-    if (obj.place !== placeEnum.Profile) return false;
+    if (obj.place !== PLACE_ENUM.Profile) return false;
     return true;
 };
 
@@ -246,7 +243,7 @@ export const isInvalidProfileImageIDErrorResponse = o => {
  * @returns {o is ChatReportPOSTParams}
  */
 export const isChatReportPOSTParams = o => {
-    if (!isBaseReportPOSTParams(o)) return false;
+    validateReport(o);
 
     /**
      * Type assertion required here because after doing
@@ -256,9 +253,8 @@ export const isChatReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.chat !== 'string') return false;
-    if (typeof obj.place !== 'string') return false;
-    if (obj.place !== placeEnum.Chat) return false;
+    if (typeof obj.chat !== 'string') throw new Error("`chat` of type string expected");
+    if (obj.place !== PLACE_ENUM.Chat) throw new Error("wrong value for `place` of type string expected");
     return true;
 };
 
@@ -351,4 +347,3 @@ export const isValidationErrorResponse = o => {
 };
 
 // Keep typescript and eslint off from bugging about no exports
-export default {};
