@@ -10,6 +10,8 @@ import styles from './style';
 // Optional: Flow type
 import {Notification, NotificationOpen} from 'react-native-firebase';
 import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
+import GeoLocationProvider from "../GeoLocationProvider";
+import {strings} from "../../i18n";
 
 
 export default class TopBar extends Component {
@@ -235,9 +237,19 @@ export default class TopBar extends Component {
         this.props.navigation.navigate('Notifications');
     }
 
+    onLocation = (position) => {
+        console.log('TopBar:onLocation', position);
+        if (!position || !position.coords)
+            return;
+        this.latitud = position.coords.latitude.toFixed(6);
+        this.longitud = position.coords.longitude.toFixed(6);
+    };
+
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
+                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}/>
                 <Container style={styles.bgColor}>
 
                     <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>

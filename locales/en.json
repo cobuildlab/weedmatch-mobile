@@ -44,7 +44,9 @@
         "sexRequired": "Invalid sex, is required",
         "imageRequired": "Image is required",
         "ageRequired": "Date of birth is required",
-        "editProfile": "Edit Profile"
+        "editProfile": "Edit Profile",
+        "locationMessage": "Weedmatch requires your location to find content and interesting people to meet around you",
+        "locationTitle": "Weedmatch requires access to your location"
     },
     "main": {
         "title": "LINKING LOVERS OF THE",

@@ -44,7 +44,9 @@
         "sexRequired": "Sexo es requerido",
         "imageRequired": "Imagen es requerida",
         "ageRequired": "Fecha de nacimiento es requerida",
-        "editProfile": "Editar Perfil"
+        "editProfile": "Editar Perfil",
+        "locationMessage": "Weedmatch requiere tu ubicación para encontrar contenido y personas interesantes a tu alrededor",
+        "locationTitle": "Weedmatch require acceso a tu ubicación"
     },
     "main": {
         "title": "UNIENDO AMANTES DEL",

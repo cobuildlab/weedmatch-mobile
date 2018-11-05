@@ -33,6 +33,7 @@ import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
+import GeoLocationProvider from "../../utils/GeoLocationProvider";
 
 class RegisterPage extends Component {
 
@@ -158,28 +159,15 @@ class RegisterPage extends Component {
      * Method call for registering the user
      * */
     _registerUser() {
-        console.log('RegisterUser');
-        if (checkConectivity()) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    this.setState({
-                        latitud: position.coords.latitude.toFixed(6),
-                        longitud: position.coords.longitude.toFixed(6),
-                        isLoading: true
-                    }, () => {
-                        registerAction(this.state.full_name, this.state.email, this.state.password,
-                            parseFloat(this.state.latitud).toFixed(6), parseFloat(this.state.longitud).toFixed(6),
-                            this.state.sex, this.state.age, this.state.image, this.state.username)
-                    })
-                },
-                (error) => {
-                    Alert.alert(error.message)
-                },
-                {enableHighAccuracy: false, timeout: 5000}
-            );
-        } else {
-            internet();
-        }
+        console.log('Register:_registerUser');
+        this.setState({
+            isLoading: true
+        }, () => {
+            const longitude = (this.longitude === undefined) ? undefined : parseFloat(this.longitude);
+            const latitude = (this.latitude === undefined) ? undefined : parseFloat(this.latitude);
+            registerAction(this.state.full_name, this.state.email, this.state.password, latitude,
+                longitude, this.state.sex, this.state.age, this.state.image, this.state.username);
+        })
     }
 
     _showDatePicker() {
@@ -443,11 +431,23 @@ class RegisterPage extends Component {
         }
     }
 
+    onLocation = (position) => {
+        console.log('Register:onLocation', position);
+        if (!position || !position.coords)
+            return;
+        this.latitude = position.coords.latitude.toFixed(6);
+        this.longitude = position.coords.longitude.toFixed(6);
+    };
+
     render() {
+        const GEOL_OCATION_PROVIDER = <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
+                                                           dialogTitle={strings('register.locationTitle')}
+                                                           onLocation={this.onLocation}/>;
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
         if (!isLoading) {
             body = <View>
+                {GEOL_OCATION_PROVIDER}
                 {this._showActivity()}
                 {step == 1 &&
                 <View style={{marginTop: -5,}}>
@@ -600,6 +600,7 @@ class RegisterPage extends Component {
         }
         return (
             <View style={styles.scrollContainer}>
+                {GEOL_OCATION_PROVIDER}
                 {this.renderBy(body)}
             </View>
         );
