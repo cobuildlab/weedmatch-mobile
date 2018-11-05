@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import {
     Container,
@@ -14,9 +14,7 @@ import {
     FooterTab,
     Header,
 } from 'native-base';
-import {
-    SafeAreaView, Text
-} from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 import buttonStyles from '../../styles/buttons';
 import textStyles from '../../styles/text';
 import * as PropTypes from 'prop-types';
@@ -26,14 +24,14 @@ import * as PropTypes from 'prop-types';
  * @typedef {import('react-navigation').NavigationStackScreenOptions} NavigationStackScreenOptions
  */
 
-import {PLACE_ENUM} from './index';
+import { PLACE_ENUM } from './index';
 import {
     postChatReport,
     postFeedImageReport,
     postProfileImageReport,
 } from './services/postReport';
-import {strings} from '../../i18n';
-import {toastMsg} from '../../utils/index';
+import { strings } from '../../i18n';
+import { toastMsg } from '../../utils/index';
 /**
  * @typedef {import('../../definitions').NavigationScreenProp<ReportRouteParams>} ReportRouteNavigationScreenProp
  * @typedef {import('../../services/typings').PlaceEnum} PlaceEnum
@@ -44,9 +42,9 @@ import {toastMsg} from '../../utils/index';
  */
 
 import styles from './styles';
-import {REPORT_REASON_ENUM} from "./index";
-import {reportAction} from "./ReportActions";
-import store from "./ReportStore";
+import { REPORT_REASON_ENUM } from './index';
+import { reportAction } from './ReportActions';
+import store from './ReportStore';
 
 /**
  * @typedef {object} ReportRouteParams
@@ -95,23 +93,22 @@ export default class Report extends Component {
      */
     _pertinentID = -1;
 
-
     /**
      * @property
      */
     state = {
         commentInput: '',
         reasonInput: REPORT_REASON_ENUM.BULLYING,
-        report: {}
+        report: {},
     };
 
     componentDidMount() {
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         const place = navigation.getParam('place');
         const userId = navigation.getParam('userID');
         this.report = {
             reported_user: userId.toString(10),
-            place
+            place,
         };
 
         switch (place) {
@@ -119,10 +116,14 @@ export default class Report extends Component {
                 this.report.chat = navigation.getParam('chatID').toString(10);
                 break;
             case PLACE_ENUM.Feed:
-                this.report.image_feed = navigation.getParam('feedImageID').toString(10);
+                this.report.image_feed = navigation
+                    .getParam('feedImageID')
+                    .toString(10);
                 break;
             case PLACE_ENUM.Profile:
-                this.report.image_profile = navigation.getParam('profileImageID').toString(10);
+                this.report.image_profile = navigation
+                    .getParam('profileImageID')
+                    .toString(10);
                 break;
             default:
                 // TODO: prop-type
@@ -133,15 +134,14 @@ export default class Report extends Component {
                 );
         }
 
-        this.reportedSubscription = store.subscribe("Reported", () => {
+        this.reportedSubscription = store.subscribe('Reported', () => {
             toastMsg(strings('report.messageWhenSending'));
             navigation.goBack();
         });
 
-        this.reportSubscription = store.subscribe("ReportError", error => {
+        this.reportSubscription = store.subscribe('ReportError', error => {
             toastMsg(error);
         });
-
     }
 
     componentWillUnmount() {
@@ -169,25 +169,25 @@ export default class Report extends Component {
      * @returns {void}
      */
     onPressSend = () => {
-        console.log("ReportView: onPressSend");
-        const {navigation} = this.props;
-        const {commentInput: comment, reasonInput: reason} = this.state;
+        console.log('ReportView: onPressSend');
+        const { navigation } = this.props;
+        const { commentInput: comment, reasonInput: reason } = this.state;
 
         this.report.reason = reason;
         this.report.comment = comment;
-        console.log("ReportView: onPressSend:", this.report);
+        console.log('ReportView: onPressSend:', this.report);
         reportAction(this.report);
     };
 
     render() {
-        const {reasonInput} = this.state;
-        const userName = this.props.navigation.getParam('userName', "");
+        const { reasonInput } = this.state;
+        const userName = this.props.navigation.getParam('userName', '');
 
         // Please refer to the comment in styles.content if more than 2 items
         // will be inside content
 
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <Container>
                     <Header>
                         <Title>{userName}</Title>
@@ -195,8 +195,14 @@ export default class Report extends Component {
                     <Content>
                         <Form>
                             <Item fixedLabel>
-                                <Label>{strings('report.commentInputPlaceholder')}</Label>
-                                <Input onChangeText={text => this.setState({commentInput: text})}/>
+                                <Label>
+                                    {strings('report.commentInputPlaceholder')}
+                                </Label>
+                                <Input
+                                    onChangeText={text =>
+                                        this.setState({ commentInput: text })
+                                    }
+                                />
                             </Item>
                             <Item fixedLabel last picker>
                                 <Label>{strings('report.reasonText')}</Label>
@@ -249,8 +255,15 @@ export default class Report extends Component {
                     </Content>
                     <Footer>
                         <FooterTab>
-                            <Button block onPress={this.onPressSend} rounded style={[buttonStyles.purpleButton]}>
-                                <Text style={[textStyles.whiteText]}>{strings('report.send')}</Text>
+                            <Button
+                                block
+                                onPress={this.onPressSend}
+                                rounded
+                                style={[buttonStyles.purpleButton]}
+                            >
+                                <Text style={[textStyles.whiteText]}>
+                                    {strings('report.send')}
+                                </Text>
                             </Button>
                         </FooterTab>
                     </Footer>

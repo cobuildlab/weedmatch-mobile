@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     headerAndForm: {
+        alignItems: 'center',
         flex: 1,
-        alignItems: 'center'
     },
 });
 

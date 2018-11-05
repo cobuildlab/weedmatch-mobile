@@ -6,8 +6,8 @@
  * @author danlugo92
  */
 
-import { PLACE_ENUM} from '../index';
-import {REPORT_REASON_ENUM} from "../index";
+import { PLACE_ENUM } from '../index';
+import { REPORT_REASON_ENUM } from '../index';
 
 /**
  * @param {any} o
@@ -66,13 +66,25 @@ const stringIsReasonEnum = str => {
  * @param {any} o
  */
 export const validateReport = o => {
-    if (!isObject(o)) throw new Error("Object Expected");
-    if (typeof o.comment !== 'string') throw new Error("`comment` of type string expected");
-    if (typeof o.reason !== 'string') throw new Error("`reason` of type string expected");
-    if (!stringIsReasonEnum(o.reason)) throw new Error(`invalid value for 'reason' expecting: ${Object.values(REPORT_REASON_ENUM)}`);
-    if (typeof o.reported_user !== 'string') throw new Error("`reported_user` of type string expected");
-    if (typeof o.place !== 'string') throw new Error("`place` of type string expected");
-    if (!stringIsPlaceEnum(o.place)) throw new Error(`invalid value for 'place' expecting: ${Object.values(PLACE_ENUM)}`);
+    if (!isObject(o)) throw new Error('Object Expected');
+    if (typeof o.comment !== 'string')
+        throw new Error('`comment` of type string expected');
+    if (typeof o.reason !== 'string')
+        throw new Error('`reason` of type string expected');
+    if (!stringIsReasonEnum(o.reason))
+        throw new Error(
+            `invalid value for 'reason' expecting: ${Object.values(
+                REPORT_REASON_ENUM
+            )}`
+        );
+    if (typeof o.reported_user !== 'string')
+        throw new Error('`reported_user` of type string expected');
+    if (typeof o.place !== 'string')
+        throw new Error('`place` of type string expected');
+    if (!stringIsPlaceEnum(o.place))
+        throw new Error(
+            `invalid value for 'place' expecting: ${Object.values(PLACE_ENUM)}`
+        );
 };
 
 // -----------------------------------------------------------------------------
@@ -253,8 +265,10 @@ export const isChatReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.chat !== 'string') throw new Error("`chat` of type string expected");
-    if (obj.place !== PLACE_ENUM.Chat) throw new Error("wrong value for `place` of type string expected");
+    if (typeof obj.chat !== 'string')
+        throw new Error('`chat` of type string expected');
+    if (obj.place !== PLACE_ENUM.Chat)
+        throw new Error('wrong value for `place` of type string expected');
     return true;
 };
 

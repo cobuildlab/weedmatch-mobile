@@ -1,4 +1,4 @@
-import {URL as GLOBAL_URL} from "../../utils";
+import { URL as GLOBAL_URL } from '../../utils';
 
 /**
  * @typedef {import('./services/typings').PlaceEnum} PlaceEnum
@@ -8,8 +8,6 @@ import {URL as GLOBAL_URL} from "../../utils";
 /**
  * @typedef {'BULLYING'|'HATE'|'INFRINGEMENT'|'INJURY'|'PORN'|'SALE'|'SPAM'|'VIOLENCE'} ReportReasonEnumKey
  */
-
-
 
 export default 'REPORT_ROUTE_KEY';
 /**

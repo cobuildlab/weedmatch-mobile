@@ -1,8 +1,8 @@
-import {APP_STORE} from '../../../Store';
+import { APP_STORE } from '../../../Store';
 
 import * as Validation from './typings';
-import {REPORT_API_ENDPOINT_URL} from '../index';
-import {ERROR_ENUM} from "../index";
+import { REPORT_API_ENDPOINT_URL } from '../index';
+import { ERROR_ENUM } from '../index';
 
 /**
  * @typedef {import('./typings').ChatReportPOSTParams} ChatReportPOSTParams

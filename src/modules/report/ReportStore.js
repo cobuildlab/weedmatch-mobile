@@ -1,4 +1,4 @@
-import {FluxStore} from '../../utils/flux-state';
+import { FluxStore } from '../../utils/flux-state';
 
 /**
  * Store for the Report Data
@@ -14,4 +14,5 @@ class ReportStore extends FluxStore {
 }
 
 const store = new ReportStore();
+
 export default store;
