@@ -1,4 +1,5 @@
 import { StyleSheet, Platform  } from 'react-native';
+import {WHITE} from '../../styles/colors';
 
 export default styles = StyleSheet.create({
     headerLogin: {
@@ -84,7 +85,7 @@ export default styles = StyleSheet.create({
         backgroundColor: '#b22abf',
     },
     buttonTextFacebook: {
-        color: 'white',
+        color: WHITE,
         fontSize: 16,
         fontWeight: '500',
     },

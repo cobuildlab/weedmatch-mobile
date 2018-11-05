@@ -1,4 +1,5 @@
 import {StyleSheet, Platform, Dimensions} from 'react-native';
+import {WHITE} from '../../styles/colors';
 
 var width = Dimensions.get('window').width;
 
@@ -14,7 +15,7 @@ export default styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#E8E8E8',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: WHITE,
         paddingBottom: 10,
         marginBottom: 30,
         ...Platform.select({

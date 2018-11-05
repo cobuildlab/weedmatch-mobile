@@ -1,17 +1,20 @@
-import React from "react";
+import React from 'react';
+import * as PropTypes from 'prop-types';
 import {Text, View, TouchableHighlight} from "react-native";
-import styles from "../../components/Message/style";
-import FastImage from "react-native-fast-image";
+import FastImage from 'react-native-fast-image';
+import styles from '../../components/Message/style';
+
+/**
+ * @typedef {object} ChatTitleProps
+ * @prop {string} name Username
+ * @prop {string} src Image source
+ */
 
 /**
  * Component to show the header of the Chat Window
- * @param props
- * @return {*}
- * @constructor
+ * @type {React.SFC<ChatTitleProps>}
  */
-const ChatTitle = (props) => {
-    const {src, name, onPress} = props;
-
+const ChatTitle = ({src, name, onPress}) => {
     return (
         <View style={styles.viewMsg}>
             <TouchableHighlight onPress={onPress}>
@@ -26,6 +29,12 @@ const ChatTitle = (props) => {
             </View>
         </View>
     );
-}
+};
+
+ChatTitle.propTypes = {
+    name: PropTypes.string.isRequired,
+    src: PropTypes.string.isRequired,
+    onPress: PropTypes.func.isRequired
+};
 
 export default ChatTitle;
