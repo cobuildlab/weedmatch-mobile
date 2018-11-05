@@ -34,6 +34,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
 
+import TermsModal from './TermsModal'
+
 class RegisterPage extends Component {
 
     constructor(props) {
@@ -57,7 +59,10 @@ class RegisterPage extends Component {
             passwordError: '',
             ageError: '',
             sexError: '',
+            termsModalVisible: false,
         };
+
+        this.termsModalAccepted = false
     }
 
     static navigationOptions = {header: null};
@@ -254,11 +259,19 @@ class RegisterPage extends Component {
         }
 
         if (this.state.step == 1) {
+            if (!this.termsModalAccepted) {
+                this.setState({
+                    termsModalVisible: true,
+                })
+                return false
+            }
+
             this.state.username = generateUsernameFromFullName(this.state.full_name);
             this.setState({isLoading: true});
             validateEmailAction({"email": this.state.email});
             return false
         }
+
         if (this.state.step == 2) {
             if (this.state.age == '') {
                 toastMsg(strings("register.ageRequired"));
@@ -269,8 +282,9 @@ class RegisterPage extends Component {
                 return false
             }
             this.setState({isLoading: true});
-            const username =
-                validateUsernameAction(this.state.username);
+
+            // throws if invalid
+            validateUsernameAction(this.state.username);
             return false
         }
 
@@ -443,6 +457,22 @@ class RegisterPage extends Component {
         }
     }
 
+    onAcceptTerms = () => {
+        this.termsModalAccepted = true
+
+        this.setState({
+            termsModalVisible: false,
+        })
+
+        this._nextStep()
+    }
+
+    onRejectTerms = () => {
+        this.setState({
+            termsModalVisible: false,
+        })
+    } 
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
@@ -451,6 +481,11 @@ class RegisterPage extends Component {
                 {this._showActivity()}
                 {step == 1 &&
                 <View style={{marginTop: -5,}}>
+                    <TermsModal
+                      isVisible={this.state.termsModalVisible}
+                      onAccept={this.onAcceptTerms}
+                      onCloseOrReject={this.onRejectTerms}
+                    />
                     <TextInput
                         style={styles.inputStyle}
                         editable={true}
