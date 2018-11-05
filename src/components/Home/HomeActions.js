@@ -19,7 +19,7 @@ function feedAction(token, state) {
         getFeed(token, state, pagUrl);
 
     } else if (state.numPage == 0) {
-        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
+        pagUrl = URL + 'public-feed/?latitud=' + state.latitude + '&longitud=' + state.longitude;
         getFeed(token, state, pagUrl);
     }
 }

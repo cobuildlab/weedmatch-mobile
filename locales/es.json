@@ -114,5 +114,10 @@
         "error": "No se pudo hacer el reporte",
         "messageWhenSending": "Su reporte se enviará",
         "header": "Reportando al usuario"
+    },
+    "feed":{
+        "InactiveGeolocation":"Debes activar los servicios de ubicación para utilizar esta funcionalidad",
+        "GoToLocationServices":"Servicios de Ubicación",
+        "TryAgain":"Intenta de Nuevo"
     }
 }

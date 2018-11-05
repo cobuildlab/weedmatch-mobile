@@ -11,9 +11,10 @@ export default class GeoLocationProvider extends PureComponent {
     constructor(props) {
         super(props);
         this.permissionGranted = false;
+        this.watchId = 0;
     }
 
-    updateValues() {
+    updateValues = () => {
         console.log('GeoLocationProvider:updateValues', this.permissionGranted);
         if (!this.permissionGranted)
             return;
@@ -31,6 +32,15 @@ export default class GeoLocationProvider extends PureComponent {
 
     async componentDidMount() {
         console.log('GeoLocationProvider', 'Trying to acquire location');
+
+        this.watchId = navigator.geolocation.watchPosition(this.updateValues);
+
+        if(this.props.active){
+            this.timeOutId = setTimeout(()=>{
+                this.updateValues();
+            }, 5000);
+        }
+
         if (Platform.OS === "ios") { // IOS
             navigator.geolocation.requestAuthorization();
             this.permissionGranted = true;
@@ -60,7 +70,9 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     componentWillUnmount() {
-
+        navigator.geolocation.clearWatch(this.watchId);
+        if(this.timeOutId)
+            clearTimeout(this.timeOutId);
     }
 
     async requestPermission() {
@@ -92,5 +104,6 @@ GeoLocationProvider.propTypes = {
     dialogMessage: PropTypes.string.isRequired,
     dialogTitle: PropTypes.string.isRequired,
     onError: PropTypes.func,
-    onLocation: PropTypes.func.isRequired
+    onLocation: PropTypes.func.isRequired,
+    active: PropTypes.bool
 };

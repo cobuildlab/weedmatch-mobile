@@ -1,5 +1,6 @@
 import {userService} from './service';
 import {AsyncStorage, Alert} from "react-native";
+import {dispatchEvent} from "../flux-state";
 
 function changeToken(token) {
 
@@ -31,8 +32,17 @@ const validateToken = async (newToken) => {
     }
 };
 
+const updatelocation = position =>{
+    console.log("updateLocation:", position);
+    if (!position || !position.coords)
+        return;
+
+    return dispatchEvent("GeoData", position);
+};
+
 export {
     changeToken,
-    validateToken
+    validateToken,
+    updatelocation
 
 };

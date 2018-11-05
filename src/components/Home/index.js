@@ -11,9 +11,12 @@ import {
     Modal,
     Button,
     TextInput,
+    Platform,
+    Linking,
     Alert,
     SafeAreaView,
 } from 'react-native';
+import {Button as NativeBaseButton} from 'native-base';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
@@ -36,6 +39,10 @@ import REPORT_ROUTE_KEY from '../../modules/report/index';
  */
 import {PLACE_ENUM} from '../../modules/report/index';
 import Feed from "./Feed";
+import GeoStore from "../../utils/GeoStore";
+import buttonStyles from "../../styles/buttons";
+import textStyles from "../../styles/text";
+import {FooterTab} from "native-base";
 
 /**
  * View of the Photo Feed
@@ -49,8 +56,6 @@ export default class HomePage extends Component {
         });
 
         this.state = {
-            latitud: '',
-            longitud: '',
             feedData: this.ds1.cloneWithRows([]),
             dataSource: [],
             loading: true,
@@ -63,6 +68,8 @@ export default class HomePage extends Component {
             modalVisible: false,
             isLoaded: false,
             load: false,
+            latitude: undefined,
+            longitude: undefined,
         };
     }
 
@@ -157,7 +164,35 @@ export default class HomePage extends Component {
             }
         });
 
-        this._feedPosition();
+        this.appEvent = APP_STORE.APP_EVENT.subscribe(state =>{
+            if (state.error) {
+                Alert.alert(state.error);
+                return;
+            }
+        });
+
+        this.geoDatasubscription = GeoStore.subscribe("GeoData", position => {
+            console.log("HOME:componentDidMount:geoDatasubscription", position);
+            if (!position.coords)
+                return;
+
+            this.setState({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            });
+        });
+
+        this.updatePositionIfExists();
+        this._feedData();
+    }
+
+    updatePositionIfExists() {
+        const position = GeoStore.getState("GeoData");
+        if (!position || !position.coords)
+            return;
+
+        this.state.latitude = position.coords.latitude;
+        this.state.longitude = position.coords.longitude;
     }
 
     componentWillUnmount() {
@@ -166,6 +201,8 @@ export default class HomePage extends Component {
         this.event.unsubscribe();
         this.likeEvent.unsubscribe();
         this.feedPage.unsubscribe();
+        this.geoDatasubscription.unsubscribe();
+        this.appEvent.unsubscribe();
     }
 
     onEndReached = () => {
@@ -242,26 +279,6 @@ export default class HomePage extends Component {
         );
     }
 
-    _feedPosition() {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.setState(
-                    {
-                        latitud: position.coords.latitude.toFixed(6),
-                        longitud: position.coords.longitude.toFixed(6),
-                    },
-                    () => {
-                        this._feedData();
-                    }
-                );
-            },
-            error => {
-                this._feedData();
-                console.log(error);
-            },
-            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
-        );
-    }
 
     _likeHandlePress(idImage, id_user, like, row) {
         const now = new Date().getTime();
@@ -545,8 +562,32 @@ export default class HomePage extends Component {
         );
     }
 
+    goToSettings = () => {
+        Linking.openURL('app-settings:');
+    }
+
     render() {
         const {isLoaded, image, load} = this.state;
+
+        if (this.state.longitude === undefined || this.state.latitude === undefined) {
+            return (
+                <View style={[{
+                    justifyContent: "center",
+                    alignItems: "center"
+                }, styles.containerFlex]}>
+                    <Text style={[{marginBottom: 20}]}>
+                        {strings("feed.InactiveGeolocation")}
+                    </Text>
+                    {(Platform.OS == 'ios') ?
+                        <NativeBaseButton block onPress={this.goToSettings} rounded
+                                          style={[{alignSelf: "center", width: 200}, buttonStyles.purpleButton]}>
+                            <Text style={[textStyles.whiteText]}>{strings("feed.GoToLocationServices")}</Text>
+                        </NativeBaseButton>
+                        :
+                        ""}
+                </View>
+            );
+        }
 
         if (!isLoaded) {
             return (
@@ -557,7 +598,6 @@ export default class HomePage extends Component {
                 </View>
             );
         }
-
 
         return (
             <View style={styles.containerFlex}>

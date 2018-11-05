@@ -8,7 +8,7 @@ import {
     Alert,
     TouchableOpacity,
     Image,
-    ActivityIndicator,
+    ActivityIndicator, Linking, Platform,
 }
     from 'react-native'
 import styles from './style';
@@ -18,14 +18,18 @@ import {APP_STORE} from '../../Store'
 import {swiperAction, appendData, swiper, swiperListAction} from './SwiperActions'
 import Spinner from 'react-native-spinkit';
 import firebase from "react-native-firebase";
+import {Button as NativeBaseButton} from "native-base";
+import buttonStyles from "../../styles/buttons";
+import textStyles from "../../styles/text";
+import GeoStore from "../../utils/GeoStore";
 
 export default class SwiperView extends Component {
     constructor(props) {
         super(props);
         this.state = {
             cards: [],
-            latitud: '',
-            longitud: '',
+            latitude: 0,
+            longitude: 0,
             urlPage: '',
             numPage: 0,
             isLoaded: false,
@@ -97,7 +101,39 @@ export default class SwiperView extends Component {
                 Alert.alert(state.error);
             }
         });
-        this._position()
+
+        this.geoDatasubscription = GeoStore.subscribe("GeoData", position => {
+            console.log("HOME:componentDidMount:geoDatasubscription", position);
+            if (!position.coords)
+                return;
+
+            this.setState({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            });
+        });
+
+        setTimeout(()=>{
+            this.updatePositionIfExists();
+            this._swiperData();
+        }, 2000);
+
+    }
+
+    updatePositionIfExists() {
+        const position = GeoStore.getState("GeoData");
+
+        if (!position || !position.coords){
+            this.setState({
+                latitude: undefined,
+                longitude: undefined
+            });
+            return;
+        }
+        this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        });
     }
 
     static navigationOptions = {header: null};
@@ -107,25 +143,9 @@ export default class SwiperView extends Component {
         this.swiperData.unsubscribe();
         this.swiperPage.unsubscribe();
         this.errorSubscription.unsubscribe();
+        this.geoDatasubscription.unsubscribe();
     }
 
-    _position() {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setState({
-                    latitud: position.coords.latitude.toFixed(6),
-                    longitud: position.coords.longitude.toFixed(6),
-                }, () => {
-                    this._swiperData();
-                })
-            },
-            (error) => {
-                this._swiperData();
-                console.log(error)
-            },
-            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
-        );
-    }
 
     _swiperData() {
         if (checkConectivity()) {
@@ -261,7 +281,31 @@ export default class SwiperView extends Component {
         );
     }
 
+    goToSettings = () => {
+        Linking.openURL('app-settings:');
+    };
+
     render() {
+        if (this.state.longitude === undefined || this.state.latitude === undefined) {
+            return (
+                <View style={[{
+                    justifyContent: "center",
+                    alignItems: "center"
+                }, styles.containerFlex]}>
+                    <Text style={[{marginBottom: 20}]}>
+                        {strings("feed.InactiveGeolocation")}
+                    </Text>
+                    {(Platform.OS == 'ios') ?
+                        <NativeBaseButton block onPress={this.goToSettings} rounded
+                                          style={[{alignSelf: "center", width: 200}, buttonStyles.purpleButton]}>
+                            <Text style={[textStyles.whiteText]}>{strings("feed.GoToLocationServices")}</Text>
+                        </NativeBaseButton>
+                        :
+                        ""}
+                </View>
+            );
+        }
+
         if (this.state.isLoaded && this.state.cards.length > 0) {
             return (
                 <View style={styles.container}>

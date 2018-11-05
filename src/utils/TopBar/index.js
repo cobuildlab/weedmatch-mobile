@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
-import {validateToken} from './TopBarActions'
+import {updatelocation, validateToken} from './TopBarActions'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import {APP_STORE} from '../../Store';
@@ -26,7 +26,7 @@ export default class TopBar extends Component {
             like: "false",
             currentChatUsername: "",
             modalVisible: false,
-            matchData: {},
+            matchData: {}
         };
     }
 
@@ -237,19 +237,18 @@ export default class TopBar extends Component {
         this.props.navigation.navigate('Notifications');
     }
 
-    onLocation = (position) => {
+    onLocation = position => {
         console.log('TopBar:onLocation', position);
-        if (!position || !position.coords)
-            return;
-        this.latitud = position.coords.latitude.toFixed(6);
-        this.longitud = position.coords.longitude.toFixed(6);
+        updatelocation(position);
     };
 
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
                 <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}/>
+                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
+                active={true}
+                />
                 <Container style={styles.bgColor}>
 
                     <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>

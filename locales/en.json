@@ -114,5 +114,10 @@
         "error": "An error happened trying to make the report",
         "messageWhenSending": "Your report will be sent",
         "header": "Reporting user"
+    },
+    "feed":{
+        "InactiveGeolocation":"Must activate Locations Services to use this feature",
+        "GoToLocationServices":"Location Services",
+        "TryAgain":"Try Again"
     }
 }
