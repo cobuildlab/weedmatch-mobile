@@ -10,6 +10,7 @@ export default class GeoLocationProvider extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log('GeoLocationProvider:constructor');
         this.permissionGranted = false;
         this.watchId = 0;
     }
@@ -32,8 +33,6 @@ export default class GeoLocationProvider extends PureComponent {
 
     async componentDidMount() {
         console.log('GeoLocationProvider', 'Trying to acquire location');
-
-        this.watchId = navigator.geolocation.watchPosition(this.updateValues);
 
         if(this.props.active){
             this.timeOutId = setTimeout(()=>{
@@ -70,7 +69,6 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     componentWillUnmount() {
-        navigator.geolocation.clearWatch(this.watchId);
         if(this.timeOutId)
             clearTimeout(this.timeOutId);
     }

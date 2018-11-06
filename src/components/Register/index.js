@@ -1,39 +1,37 @@
 import React, {Component} from 'react';
 import {
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    AsyncStorage,
-    Alert,
-    ScrollView,
-    StyleSheet,
+    ActivityIndicator,
     Image,
     KeyboardAvoidingView,
     Platform,
-    ActivityIndicator,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
+    View,
 } from 'react-native';
 import {strings} from "../../i18n";
 import {
-    registerAction,
     createDateData,
-    validateEmailAction,
     facebookAction,
     firebaseAction,
+    registerAction,
+    validateEmailAction,
     validateUsernameAction
 } from "./RegisterActions";
 import {APP_STORE} from "../../Store";
 import styles from './style';
 import loginStyles from '../Login/style';
-import {toastMsg, connection, internet, checkConectivity, generateUsernameFromFullName} from "../../utils";
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import {connection, generateUsernameFromFullName, toastMsg} from "../../utils";
 import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/GeoLocationProvider";
+
+import TermsModal from './TermsModal'
 
 class RegisterPage extends Component {
 
@@ -58,7 +56,10 @@ class RegisterPage extends Component {
             passwordError: '',
             ageError: '',
             sexError: '',
+            termsModalVisible: false,
         };
+
+        this.termsModalAccepted = false
     }
 
     static navigationOptions = {header: null};
@@ -242,11 +243,19 @@ class RegisterPage extends Component {
         }
 
         if (this.state.step == 1) {
+            if (!this.termsModalAccepted) {
+                this.setState({
+                    termsModalVisible: true,
+                })
+                return false
+            }
+
             this.state.username = generateUsernameFromFullName(this.state.full_name);
             this.setState({isLoading: true});
             validateEmailAction({"email": this.state.email});
             return false
         }
+
         if (this.state.step == 2) {
             if (this.state.age == '') {
                 toastMsg(strings("register.ageRequired"));
@@ -257,8 +266,9 @@ class RegisterPage extends Component {
                 return false
             }
             this.setState({isLoading: true});
-            const username =
-                validateUsernameAction(this.state.username);
+
+            // throws if invalid
+            validateUsernameAction(this.state.username);
             return false
         }
 
@@ -439,18 +449,35 @@ class RegisterPage extends Component {
         this.longitude = position.coords.longitude.toFixed(6);
     };
 
+    onAcceptTerms = () => {
+        this.termsModalAccepted = true
+
+        this.setState({
+            termsModalVisible: false,
+        })
+
+        this._nextStep()
+    }
+
+    onRejectTerms = () => {
+        this.setState({
+            termsModalVisible: false,
+        })
+    }
+
     render() {
-        const GEOL_OCATION_PROVIDER = <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                                                           dialogTitle={strings('register.locationTitle')}
-                                                           onLocation={this.onLocation}/>;
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
         if (!isLoading) {
             body = <View>
-                {GEOL_OCATION_PROVIDER}
                 {this._showActivity()}
                 {step == 1 &&
                 <View style={{marginTop: -5,}}>
+                    <TermsModal
+                      isVisible={this.state.termsModalVisible}
+                      onAccept={this.onAcceptTerms}
+                      onCloseOrReject={this.onRejectTerms}
+                    />
                     <TextInput
                         style={styles.inputStyle}
                         editable={true}
@@ -600,7 +627,9 @@ class RegisterPage extends Component {
         }
         return (
             <View style={styles.scrollContainer}>
-                {GEOL_OCATION_PROVIDER}
+                {/*<GeoLocationProvider dialogMessage={strings('register.locationMessage')}*/}
+                                                           {/*dialogTitle={strings('register.locationTitle')}*/}
+                                                           {/*onLocation={this.onLocation} />*/}
                 {this.renderBy(body)}
             </View>
         );

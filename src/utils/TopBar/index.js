@@ -247,7 +247,7 @@ export default class TopBar extends Component {
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
                 <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
                                      dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
-                active={true}
+                                     active={true}
                 />
                 <Container style={styles.bgColor}>
 

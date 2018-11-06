@@ -286,5 +286,14 @@ export default styles = StyleSheet.create({
     scrollContainer: {
         backgroundColor: '#FFF',
         flex:1,
-    }
+    },
+    termsModalContainer: {
+        alignItems: 'center',
+        elevation: 5,
+        margin: 30,
+        padding: 20,
+    },
+    termsModalText: {
+        fontSize: 14,
+    },
 })

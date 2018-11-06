@@ -5,8 +5,6 @@ import android.app.Application;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactApplication;
 import com.dylanvann.fastimage.FastImageViewPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
-import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.toast.RCTToastPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
@@ -70,8 +68,6 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
             new FastImageViewPackage(),
-            new RNFetchBlobPackage(),
-            new RNVersionCheckPackage(),
                     new VectorIconsPackage(),
                     new RNFirebasePackage(),
                     new RNFirebaseNotificationsPackage(),

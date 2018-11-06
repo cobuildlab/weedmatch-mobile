@@ -138,6 +138,7 @@ export default class Report extends Component {
             navigation.goBack();
         });
 
+
         this.reportSubscription = store.subscribe("ReportError", error => {
             toastMsg(error);
         });

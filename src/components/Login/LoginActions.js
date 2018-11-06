@@ -22,7 +22,10 @@ function loginAction(username, password) {
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
+        }).catch(err => {
+        console.log(`loginAction:CATCH:`, err);
+        APP_STORE.APP_EVENT.next({"error": err.message});
+    });
 }
 
 /**

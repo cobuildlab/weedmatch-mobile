@@ -301,7 +301,7 @@ export default class SwiperView extends Component {
                             <Text style={[textStyles.whiteText]}>{strings("feed.GoToLocationServices")}</Text>
                         </NativeBaseButton>
                         :
-                        ""}
+                        null}
                 </View>
             );
         }

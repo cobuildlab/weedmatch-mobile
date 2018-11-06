@@ -584,7 +584,7 @@ export default class HomePage extends Component {
                             <Text style={[textStyles.whiteText]}>{strings("feed.GoToLocationServices")}</Text>
                         </NativeBaseButton>
                         :
-                        ""}
+                        null}
                 </View>
             );
         }

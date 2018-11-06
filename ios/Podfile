@@ -11,7 +11,7 @@ target 'weedmatch' do
   pod 'Firebase/Auth', '~> 5.3.0'
   # Pods for weedmatch
   pod 'React', :path => '../node_modules/react-native'
-  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  #pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
   target 'weedmatch-tvOSTests' do
     inherit! :search_paths

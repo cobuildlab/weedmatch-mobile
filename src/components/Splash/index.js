@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Image, View, AsyncStorage } from 'react-native';
-import { APP_STORE } from '../../Store';
-import { isValidText } from '../../utils';
+import React, {Component} from 'react';
+import {Image, View, AsyncStorage} from 'react-native';
+import {APP_STORE} from '../../Store';
+import {isValidText} from '../../utils';
 import styles from './style';
-import { Alert } from 'react-native';
+import {Alert, Platform} from 'react-native';
 
 export default class Splash extends Component {
     constructor() {
@@ -11,6 +11,7 @@ export default class Splash extends Component {
     }
 
     componentDidMount() {
+        console.log("Splash:componentDidMount", Platform.Version);
         setTimeout(async () => {
             await this.popToken();
         }, 2000);

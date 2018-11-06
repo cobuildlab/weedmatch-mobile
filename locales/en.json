@@ -46,7 +46,13 @@
         "ageRequired": "Date of birth is required",
         "editProfile": "Edit Profile",
         "locationMessage": "Weedmatch requires your location to find content and interesting people to meet around you",
-        "locationTitle": "Weedmatch requires access to your location"
+        "locationTitle": "Weedmatch requires access to your location",
+        "editProfile": "Edit Profile",
+        "termsPopup": {
+            "accept": "Accept",
+            "reject": "Don't accept",
+            "text": "Última revisión el 19/06/2018 \n Bienvenidos a Weedmatch, operada por Grupo WHYNOT (“nosotros”, “Compañía” o “Weedmatch”)\nAceptación de los Términos y Condiciones\nAl crear una cuenta o usar una cuenta en Weedmatch estás aceptando estar sujeto a estos Términos y Condiciones. Si no estás de acuerdo con ellos, por favor no uses la plataforma Weedmatch. Última revisión el 19/06/2018 \n Bienvenidos a Weedmatch, operada por Grupo WHYNOT (“nosotros”, “Compañía” o “Weedmatch”)\nAceptación de los Términos y Condiciones\nAl crear una cuenta o usar una cuenta en Weedmatch estás aceptando estar sujeto a estos Términos y Condiciones. Si no estás de acuerdo con ellos, por favor no uses la plataforma Weedmatch. Última revisión el 19/06/2018 \n Bienvenidos a Weedmatch, operada por Grupo WHYNOT (“nosotros”, “Compañía” o “Weedmatch”)\nAceptación de los Términos y Condiciones\nAl crear una cuenta o usar una cuenta en Weedmatch estás aceptando estar sujeto a estos Términos y Condiciones. Si no estás de acuerdo con ellos, por favor no uses la plataforma Weedmatch. Última revisión el 19/06/2018 \n Bienvenidos a Weedmatch, operada por Grupo WHYNOT (“nosotros”, “Compañía” o “Weedmatch”)\nAceptación de los Términos y Condiciones\nAl crear una cuenta o usar una cuenta en Weedmatch estás aceptando estar sujeto a estos Términos y Condiciones. Si no estás de acuerdo con ellos, por favor no uses la plataforma Weedmatch."
+        }
     },
     "main": {
         "title": "LINKING LOVERS OF THE",
