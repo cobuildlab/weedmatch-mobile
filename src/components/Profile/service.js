@@ -4,7 +4,8 @@ import {APP_STORE} from "../../Store";
 export const userService = {
     publicProfile,
     publicImages420,
-    tokenFB
+    tokenFB,
+    privateProfile
 };
 
 /**
@@ -20,6 +21,21 @@ function publicProfile(token, id) {
     };
 
     return fetch(URL + 'public-profile/' + id + '/', requestOptions);
+}
+
+/**
+ * Get the user's profile data
+ * @param token The token of the current user's sesion
+ * @param id The id of the user
+ * @returns {Promise<any>}
+ */
+function privateProfile(token, id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader(token)
+    };
+
+    return fetch(URL + 'private-profile/' + id + '/', requestOptions);
 }
 
 /**

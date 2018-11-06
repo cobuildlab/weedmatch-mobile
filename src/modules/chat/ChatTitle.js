@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Text, View, TouchableHighlight} from "react-native";
-import FastImage from 'react-native-fast-image';
+import {Image} from 'react-native';
 import styles from '../../components/Message/style';
 
 /**
@@ -18,8 +18,7 @@ const ChatTitle = ({src, name, onPress}) => {
     return (
         <View style={styles.viewMsg}>
             <TouchableHighlight onPress={onPress}>
-                <FastImage style={styles.imgProfileItem}
-                           resizeMode={FastImage.resizeMode.contain}
+                <Image style={styles.imgProfileItem}
                            source={{uri: src}}
                            onPress={onPress}
                 />

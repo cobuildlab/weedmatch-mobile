@@ -19,7 +19,7 @@ function feedAction(token, state) {
         getFeed(token, state, pagUrl);
 
     } else if (state.numPage == 0) {
-        pagUrl = URL + 'public-feed/?latitud=' + state.latitude + '&longitud=' + state.longitude;
+        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
         getFeed(token, state, pagUrl);
     }
 }
@@ -58,8 +58,7 @@ function appendData(oldData, newData) {
  * @param state
  */
 function uploadAction(token, state) {
-    console.log(state);
-    console.log(`uploadAction: ${token}, ${state}`);
+    console.log(`uploadAction: ${token}`, state);
 
     userService.publicImage(token, state)
         .then(async (response) => {

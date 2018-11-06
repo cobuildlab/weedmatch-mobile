@@ -68,8 +68,8 @@ export default class HomePage extends Component {
             modalVisible: false,
             isLoaded: false,
             load: false,
-            latitude: undefined,
-            longitude: undefined,
+            latitud: undefined,
+            longitud: undefined,
         };
     }
 
@@ -177,8 +177,8 @@ export default class HomePage extends Component {
                 return;
 
             this.setState({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
+                latitud: position.coords.latitude,
+                longitud: position.coords.longitude
             });
         });
 
@@ -191,8 +191,8 @@ export default class HomePage extends Component {
         if (!position || !position.coords)
             return;
 
-        this.state.latitude = position.coords.latitude;
-        this.state.longitude = position.coords.longitude;
+        this.state.latitud = position.coords.latitude;
+        this.state.longitud = position.coords.longitude;
     }
 
     componentWillUnmount() {
@@ -569,7 +569,7 @@ export default class HomePage extends Component {
     render() {
         const {isLoaded, image, load} = this.state;
 
-        if (this.state.longitude === undefined || this.state.latitude === undefined) {
+        if (this.state.longitud === undefined || this.state.latitud === undefined) {
             return (
                 <View style={[{
                     justifyContent: "center",

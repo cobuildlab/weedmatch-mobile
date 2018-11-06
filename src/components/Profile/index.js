@@ -19,7 +19,15 @@ import styles from './style';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {connection, internet, checkConectivity, toastMsg} from '../../utils';
-import {publicProfileAction, getImages, publicImages420Action, appendData, Action420, logOut} from './ProfileActions';
+import {
+    publicProfileAction,
+    getImages,
+    publicImages420Action,
+    appendData,
+    Action420,
+    logOut,
+    privateProfileAction
+} from './ProfileActions';
 
 var {height, width} = Dimensions.get('window');
 
@@ -154,7 +162,7 @@ export default class Profile extends Component {
 
     _publicProfile() {
         if (checkConectivity()) {
-            publicProfileAction(APP_STORE.getToken(), APP_STORE.getId())
+            privateProfileAction(APP_STORE.getToken(), APP_STORE.getId())
         } else {
             internet();
         }
@@ -175,7 +183,7 @@ export default class Profile extends Component {
 
     renderiza() {
         const {rowData, country} = this.state;
-
+        console.log("PROFILE:renderiza:", rowData);
         return (
             <View>
                 <View style={styles.viewBackground}>
@@ -184,11 +192,9 @@ export default class Profile extends Component {
                 <View style={styles.viewContainer}>
                     <View style={styles.viewContainerPlus}>
                         <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
-                        {country &&
-                        <Text style={styles.textContainer}>{country.name} </Text>
-                        }
-                        <Text style={styles.textContainer}>{rowData.distance} </Text>
-                        <Text style={styles.textContainer}>{rowData.description} </Text>
+                        {/*{country && <Text style={styles.textContainer}>{country.name} </Text> }*/}
+                        {/*<Text style={styles.textContainer}>{rowData.distance} </Text>*/}
+                        {/*<Text style={styles.textContainer}>{rowData.description} </Text>*/}
                     </View>
                     <TouchableOpacity style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
                         <Image source={require('../../assets/img/edit.png')} style={styles.buttomOpt}/>

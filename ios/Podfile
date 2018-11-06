@@ -10,7 +10,7 @@ target 'weedmatch' do
   pod 'FBSDKShareKit'
   pod 'Firebase/Auth', '~> 5.3.0'
   # Pods for weedmatch
-  pod 'React', :path => '../node_modules/react-native'
+  #pod 'React', :path => '../node_modules/react-native'
   #pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
   target 'weedmatch-tvOSTests' do
@@ -20,7 +20,7 @@ target 'weedmatch' do
 
 #    pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
-    pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
+#    pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
 
   end
 

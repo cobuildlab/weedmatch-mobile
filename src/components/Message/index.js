@@ -6,7 +6,7 @@ import {
     ActivityIndicator,
     ScrollView,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image} from 'react-native';
 import styles from './style';
 import { getChat } from './MessageActions';
 import { APP_STORE } from '../../Store';
@@ -100,9 +100,8 @@ export default class Message extends Component {
                         }
                     >
                         <View style={styles.viewMsg}>
-                            <FastImage
+                            <Image
                                 style={styles.imgProfileItem}
-                                resizeMode={FastImage.resizeMode.contain}
                                 source={{ uri: item.image_profile }}
                             />
                             <View style={styles.viewTexts}>

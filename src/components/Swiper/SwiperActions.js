@@ -40,7 +40,7 @@ const swiperAction = async (token, action, id) => {
 const swiperListAction = (token, state) => {
     console.log(`SwiperActions:swiper ${token}, ${state.urlPage}, ${state.numPage}`, state);
 
-    let pageUrl = URL + 'swiper/?latitud=' + state.latitude + '&longitude=' + state.longitude;
+    let pageUrl = URL + 'swiper/?latitud=' + state.latitude + '&longitud=' + state.longitude;
 
     if (state.numPage > 0)
         pageUrl = state.urlPage;
