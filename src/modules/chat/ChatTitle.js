@@ -3,9 +3,10 @@
  */
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { Text, View, TouchableHighlight } from 'react-native';
-import { Image } from 'react-native';
+import { Text, View, TouchableHighlight, Platform } from 'react-native';
+import { Image as RNImage } from 'react-native';
 import styles from '../../components/Message/style';
+import FastImage from 'react-native-fast-image';
 
 /**
  * @typedef {object} ChatTitleProps
@@ -13,6 +14,8 @@ import styles from '../../components/Message/style';
  * @prop {string} src Image source
  * @prop {() => void} onPress
  */
+
+const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 /**
  * Component to show the header of the Chat Window

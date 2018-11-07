@@ -5,13 +5,17 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     ScrollView,
+    Platform,
 } from 'react-native';
-import {Image} from 'react-native';
+import { Image as RNImage } from 'react-native';
 import styles from './style';
 import { getChat } from './MessageActions';
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { connection, toastMsg } from '../../utils';
+import FastImage from 'react-native-fast-image';
+
+const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 export default class Message extends Component {
     constructor(props) {
