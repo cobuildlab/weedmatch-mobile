@@ -35,7 +35,7 @@ export default class GeoLocationProvider extends PureComponent {
         console.log('GeoLocationProvider', 'Trying to acquire location');
 
         if(this.props.active){
-            this.timeOutId = setTimeout(()=>{
+            this.intervalID = setInterval(()=>{
                 this.updateValues();
             }, 5000);
         }
@@ -69,8 +69,8 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     componentWillUnmount() {
-        if(this.timeOutId)
-            clearTimeout(this.timeOutId);
+        if(this.intervalID)
+            clearInterval(this.intervalID);
     }
 
     async requestPermission() {
