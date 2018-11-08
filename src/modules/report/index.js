@@ -1,4 +1,8 @@
-import {URL as GLOBAL_URL} from "../../utils";
+/**
+ * @prettier
+ * @author danlugo92
+ */
+import { URL as GLOBAL_URL } from '../../utils';
 
 /**
  * @typedef {import('./services/typings').PlaceEnum} PlaceEnum
@@ -9,9 +13,6 @@ import {URL as GLOBAL_URL} from "../../utils";
  * @typedef {'BULLYING'|'HATE'|'INFRINGEMENT'|'INJURY'|'PORN'|'SALE'|'SPAM'|'VIOLENCE'} ReportReasonEnumKey
  */
 
-
-
-export default 'REPORT_ROUTE_KEY';
 /**
  * Valid reasons for making a report
  * @type {{ [K in ReportReasonEnumKey]: ReasonEnum }}
@@ -35,6 +36,7 @@ export const PLACE_ENUM = {
     Chat: 'Chat',
     Feed: 'Feed',
     Profile: 'Profile',
+    Swiper: 'Swiper',
 };
 export const ERROR_ENUM = {
     INVALID_CHAT_ID: 'INVALID_CHAT_ID',
@@ -49,3 +51,5 @@ export const ERROR_ENUM = {
     VALIDATION_ERROR: 'VALIDATION_ERROR',
 };
 export const REPORT_API_ENDPOINT_URL = GLOBAL_URL + 'reported/';
+
+export default 'REPORT_ROUTE_KEY';
