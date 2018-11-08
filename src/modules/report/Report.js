@@ -26,35 +26,32 @@ import * as PropTypes from 'prop-types';
  * @typedef {import('react-navigation').NavigationStackScreenOptions} NavigationStackScreenOptions
  */
 
-import {PLACE_ENUM} from './index';
-import {
-    postChatReport,
-    postFeedImageReport,
-    postProfileImageReport,
-} from './services/postReport';
+
 import {strings} from '../../i18n';
 import {toastMsg} from '../../utils/index';
 /**
  * @typedef {import('../../definitions').NavigationScreenProp<ReportRouteParams>} ReportRouteNavigationScreenProp
- * @typedef {import('../../services/typings').PlaceEnum} PlaceEnum
- * @typedef {import('../../services/typings').ReasonEnum} ReasonEnum
- * @typedef {import('../../services/postReport').ChatReportPOSTParams} ChatReportPOSTParams
- * @typedef {import('../../services/postReport').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
- * @typedef {import('../../services/postReport').ImageProfileReportPOSTParams} ImageProfileReportPOSTParams
+ * @typedef {import('./services/typings').PlaceEnum} PlaceEnum
+ * @typedef {import('./services/typings').ReasonEnum} ReasonEnum
+ * @typedef {import('./services/typings').ChatReportPOSTParams} ChatReportPOSTParams
+ * @typedef {import('./services/typings').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
+ * @typedef {import('./services/typings').ImageProfileReportPOSTParams} ImageProfileReportPOSTParams
+ * @typedef {import('./services/typings').SwiperReportPOSTParams} SwiperReportPOSTParams 
+ * @typedef {ChatReportPOSTParams|ImageFeedReportPOSTParams|ImageProfileReportPOSTParams|SwiperReportPOSTParams} ReportPOSTParams
  */
 
 import styles from './styles';
-import {REPORT_REASON_ENUM} from "./index";
+import {REPORT_REASON_ENUM, PLACE_ENUM} from "./index";
 import {reportAction} from "./ReportActions";
 import store from "./ReportStore";
 
 /**
  * @typedef {object} ReportRouteParams
- * @prop {number=} chatID Defined if place is PlaceEnum.Chat
- * @prop {number=} feedImageID Defined if place is PlaceEnum.Feed
+ * @prop {string=} chatID Defined if place is PlaceEnum.Chat
+ * @prop {string=} feedImageID Defined if place is PlaceEnum.Feed
  * @prop {PlaceEnum} place
- * @prop {number=} profileImageID Defined if place is PlaceEnum.Profile
- * @prop {number} userID ID of the user being reported
+ * @prop {string=} profileImageID Defined if place is PlaceEnum.Profile
+ * @prop {string} userID ID of the user being reported
  * @prop {string=} userName Screen name of the user being reported (optional)
  */
 
@@ -75,6 +72,7 @@ import store from "./ReportStore";
 export default class Report extends Component {
     /**
      * @property
+     * @static
      * @type {NavigationStackScreenOptions}
      */
     static navigationOptions = {
@@ -83,6 +81,7 @@ export default class Report extends Component {
 
     /**
      * @property
+     * @static
      */
     static propTypes = {
         navigation: PropTypes.object.isRequired,
@@ -102,36 +101,10 @@ export default class Report extends Component {
     state = {
         commentInput: '',
         reasonInput: REPORT_REASON_ENUM.BULLYING,
-        report: {}
     };
 
     componentDidMount() {
-        const {navigation} = this.props;
-        const place = navigation.getParam('place');
-        const userId = navigation.getParam('userID');
-        this.report = {
-            reported_user: userId.toString(10),
-            place
-        };
-
-        switch (place) {
-            case PLACE_ENUM.Chat:
-                this.report.chat = navigation.getParam('chatID').toString(10);
-                break;
-            case PLACE_ENUM.Feed:
-                this.report.image_feed = navigation.getParam('feedImageID').toString(10);
-                break;
-            case PLACE_ENUM.Profile:
-                this.report.image_profile = navigation.getParam('profileImageID').toString(10);
-                break;
-            default:
-                // TODO: prop-type
-                throw new Error(
-                    `Invalid \`place\` parameter in report route, expected one of these: ${Object.values(
-                        PLACE_ENUM
-                    )}, instead got: ${JSON.stringify(place)}`
-                );
-        }
+        const { navigation } = this.props
 
         this.reportedSubscription = store.subscribe("Reported", () => {
             toastMsg(strings('report.messageWhenSending'));
@@ -141,6 +114,8 @@ export default class Report extends Component {
         this.reportSubscription = store.subscribe("ReportError", error => {
             toastMsg(error);
         });
+
+        
 
     }
 
@@ -156,10 +131,10 @@ export default class Report extends Component {
      * @returns {void}
      */
     onChangeReasonPicker = value => {
-        // @ts-ignore Check that the values for the picker items are of the
-        // correct type
+        // Check that the values for the picker items in the render
+        // method of this class are of the correct type `ReasonEnum`
         this.setState({
-            reasonInput: value,
+            reasonInput: /** @type {ReasonEnum} */(value),
         });
     };
 
@@ -169,14 +144,30 @@ export default class Report extends Component {
      * @returns {void}
      */
     onPressSend = () => {
+        // eslint-disable-next-line no-console
         console.log("ReportView: onPressSend");
         const {navigation} = this.props;
         const {commentInput: comment, reasonInput: reason} = this.state;
 
-        this.report.reason = reason;
-        this.report.comment = comment;
-        console.log("ReportView: onPressSend:", this.report);
-        reportAction(this.report);
+        /**
+         * @type {ReportPOSTParams}
+         */
+        const params = {
+            chat: navigation.getParam('chatID'),
+            comment,
+            image_feed: navigation.getParam('feedImageID'),
+            image_profile: navigation.getParam('profileImageID'),
+            place: navigation.getParam('place'),
+            reason,
+            reported_user: String(navigation.getParam('userID')),
+        }
+
+        // eslint-disable-next-line no-console
+        console.warn("ReportView: onPressSend:", params);
+
+        reportAction(params)
+
+        navigation.goBack()
     };
 
     render() {
@@ -187,7 +178,7 @@ export default class Report extends Component {
         // will be inside content
 
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={styles.safeAreaView}>
                 <Container>
                     <Header>
                         <Title>{userName}</Title>

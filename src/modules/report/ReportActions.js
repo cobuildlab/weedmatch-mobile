@@ -1,53 +1,64 @@
-import {dispatchEvent} from '../../utils/flux-state';
-import {ERROR_ENUM, PLACE_ENUM, REPORT_API_ENDPOINT_URL} from "./index";
-import * as Validation from "./services/typings";
-import {APP_STORE} from "../../Store";
-import {validateReport} from "./services/typings";
+/**
+ * @prettier
+ */
+import { dispatchEvent } from '../../utils/flux-state';
+import * as Validation from './services/typings';
+
+import {
+    postChatReport,
+    postFeedImageReport,
+    postProfileImageReport,
+    postSwiperReport,
+} from './services/postReport';
+
+/**
+ * @typedef {import('./services/typings').ChatReportPOSTParams} ChatReportPOSTParams
+ * @typedef {import('./services/typings').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
+ * @typedef {import('./services/typings').ImageProfileReportPOSTParams} ImageProfileReportPOSTParams
+ * @typedef {import('./services/typings').SwiperReportPOSTParams} SwiperReportPOSTParams
+ * @typedef {ChatReportPOSTParams|ImageFeedReportPOSTParams|ImageProfileReportPOSTParams|SwiperReportPOSTParams} ReportPOSTParams
+ */
 
 /**
  * Action to report a user
+ * @param {ReportPOSTParams} report
+ * @returns {void}
  */
 export const reportAction = report => {
-    console.log("ReportAction:", report);
-    const {place, reported_user} = report;
-
-    if (typeof place === 'undefined') {
-        return dispatchEvent("ReportError", 'Missing `place` parameter in report route');
-    }
-
-    if (typeof reported_user !== 'string') {
-        return dispatchEvent("ReportError", 'Missing or wrong type of `reported_user` parameter in report route');
-    }
-
-    try {
-        validateReport(report);
-    } catch (e) {
-        return dispatchEvent("ReportError", e.message);
-    }
-
-    const headers = {
-        Authorization: `Token ${APP_STORE.getToken()}`,
-        'Content-Type': 'application/json',
+    /**
+     * @param {boolean} result
+     */
+    const successCallback = result => {
+        // eslint-disable-next-line no-console
+        console.log('ReportAction: ', result);
+        dispatchEvent('Reported', {});
+    };
+    /**
+     * @param {{ message: string }} e
+     */
+    const errorCallback = e => {
+        dispatchEvent('ReportError', e.message);
     };
 
-    fetch(REPORT_API_ENDPOINT_URL, {
-        body: JSON.stringify(report),
-        headers,
-        method: 'POST',
-    })
-        .then(res => Promise.all([res.ok, res.json()]))
-        .then(([ok, json]) => {
-            console.log("ReportAction:", [ok, json]);
-            if (ok) {
-                if (!Validation.isSuccessResponse(json) && __DEV__) {
-                    // eslint-disable-next-line no-console
-                    console.log(
-                        `Invalid response from server accompanied by OK response status: ${JSON.stringify(json)}`
-                    );
-                    return dispatchEvent("ReportError", 'Report Service Error');
-                }
-                return dispatchEvent("Reported", {});
-            }
-            return dispatchEvent("ReportError", 'Connection Error');
+    if (Validation.isChatReportPOSTParams(report)) {
+        postChatReport(report)
+            .then(successCallback)
+            .catch(errorCallback);
+    } else if (Validation.isImageFeedReportPOSTParams(report)) {
+        postFeedImageReport(report)
+            .then(successCallback)
+            .catch(errorCallback);
+    } else if (Validation.isImageProfileReportPOSTParams(report)) {
+        postProfileImageReport(report)
+            .then(successCallback)
+            .catch(errorCallback);
+    } else if (Validation.isSwiperReportPOSTParams(report)) {
+        postSwiperReport(report)
+            .then(successCallback)
+            .catch(errorCallback);
+    } else {
+        errorCallback({
+            message: 'Invalid report type'
         })
+    }
 };
