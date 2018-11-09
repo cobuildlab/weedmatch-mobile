@@ -14,9 +14,14 @@ import { REPORT_REASON_ENUM } from '../index';
 
 /**
  * @param {any} o
+ * @throws {TypeError}
  * @returns {o is Object}
  */
-const isObject = o => typeof o === 'object' && !Array.isArray(o);
+const isObject = o => {
+    if (typeof o !== 'object' || Array.isArray(o))
+        throw new TypeError('Expected an object for a report');
+    return true;
+};
 
 // -----------------------------------------------------------------------------
 
@@ -28,14 +33,27 @@ const isObject = o => typeof o === 'object' && !Array.isArray(o);
 
 /**
  * @param {string} str
+ * @throws {TypeError}
  * @return {str is PlaceEnum}
  */
 const stringIsPlaceEnum = str => {
-    if (typeof str !== 'string') return false;
+    if (typeof str !== 'string') {
+        throw new TypeError(
+            `Expected report.place to be an string instead got: ${typeof str}`
+        );
+    }
     // @ts-ignore Typescript wants us to pass a value that is an actual value of
     // the object (a PlaceEnum), but that is what we are actually checking here
     // so that typecheck makes no sense
-    return Object.values(PLACE_ENUM).includes(str);
+    if (!Object.values(PLACE_ENUM).includes(str)) {
+        throw new TypeError(
+            `Expected report.place to be: ${Object.values(
+                PLACE_ENUM
+            )} but instead got: ${str}`
+        );
+    }
+
+    return true;
 };
 
 // -----------------------------------------------------------------------------
@@ -47,14 +65,27 @@ const stringIsPlaceEnum = str => {
 
 /**
  * @param {string} str
+ * @throws {TypeError}
  * @returns {str is ReasonEnum}
  */
 const stringIsReasonEnum = str => {
-    if (typeof str !== 'string') return false;
+    if (typeof str !== 'string') {
+        throw new TypeError(
+            `Expected report.reason to be an string instead got: ${typeof str}`
+        );
+    }
     // @ts-ignore Typescript wants us to pass a value that is an actual value of
     // the object (a ReasonEnum), but that is what we are actually checking here
     // so that typecheck makes no sense
-    return Object.values(REPORT_REASON_ENUM).includes(str);
+    if (!Object.values(REPORT_REASON_ENUM).includes(str)) {
+        throw new TypeError(
+            `Expected report.place to be: ${Object.values(
+                REPORT_REASON_ENUM
+            )} but instead got: ${str}`
+        );
+    }
+
+    return true;
 };
 
 // -----------------------------------------------------------------------------
@@ -71,16 +102,29 @@ const stringIsReasonEnum = str => {
 
 /**
  * @param {any} o
+ * @throws {TypeError}
  * @returns {o is _BaseReportPOSTParams}
  */
 const isBaseReportPOSTParams = o => {
-    if (!isObject(o)) return false;
-    if (typeof o.comment !== 'string') return false;
-    if (typeof o.reason !== 'string') return false;
-    if (!stringIsReasonEnum(o.reason)) return false;
-    if (typeof o.reported_user !== 'string') return false;
-    if (typeof o.place !== 'string') return false;
-    if (!stringIsPlaceEnum(o.place)) return false;
+    isObject(o);
+    if (typeof o.comment !== 'string') {
+        throw new TypeError(`
+            Expected o.comment to be an string instead got: ${typeof o.comment}
+        `);
+    }
+    stringIsReasonEnum(o.reason);
+    stringIsPlaceEnum(o.place);
+    if (typeof o.reported_user !== 'string') {
+        throw new TypeError(`
+            Expected o.reported_user to be an string instead got: ${typeof o.reported_user}
+        `);
+    }
+    if (typeof o.place !== 'string') {
+        throw new TypeError(`
+            Expected o.place to be an string instead got: ${typeof o.place}
+        `);
+    }
+
     return true;
 };
 
@@ -101,25 +145,20 @@ const isBaseReportPOSTParams = o => {
  */
 
 /**
- * The keys of an ImageFeedReport POST json body
- * @typedef {keyof ImageFeedReportPOSTParams} ImageFeedReportPOSTParamsKeys
- */
-
-/**
- * Error response received when one of the POST json body parameters of a
- * ImageFeedReport is of the wrong type. The strings in the array of each key
- * inside the object `detail` is the reasons the validation for that parameter
- * failed.
- * @typedef {object} ImageFeedReportValidationErrorResponse
- * @prop {Partial<Record<ImageFeedReportPOSTParamsKeys, ReadonlyArray<string>>>} detail
- */
-
-/**
  * @param {any} o
+ * @throws {TypeError}
  * @returns {o is ImageFeedReportPOSTParams}
  */
-export const isImageFeedReportPOSTParams = o => {
-    if (!isBaseReportPOSTParams(o)) return false;
+export const validateImageFeedReport = o => {
+    isBaseReportPOSTParams(o);
+
+    if (o.place !== PLACE_ENUM.Feed) {
+        throw new TypeError(
+            `Called isImageFeedReportPOSTParams on a report with report.place not ${
+                PLACE_ENUM.Feed
+            }`
+        );
+    }
 
     /**
      * Type assertion required here because after doing
@@ -129,26 +168,12 @@ export const isImageFeedReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.image_feed !== 'string') return false;
-    if (obj.place !== PLACE_ENUM.Feed) return false;
-    return true;
-};
+    if (typeof obj.image_feed !== 'string') {
+        throw new TypeError(`
+            Expected o.image_feed to be an string instead got: ${typeof obj.image_feed}
+        `);
+    }
 
-/**
- * The response if the id of an image feed image being reported isn't valid
- * @typedef {object} InvalidFeedImageIDErrorResponse
- * @prop {{ image_feed: string }} detail An object with a `image_feed` property
- * containing the relevant error message
- */
-
-/**
- * @param {any} o
- * @returns {o is InvalidFeedImageIDErrorResponse}
- */
-export const isInvalidFeedImageIDErrorResponse = o => {
-    if (!isObject(o)) return false;
-    if (!isObject(o.detail)) return false;
-    if (typeof o.image_feed !== 'string') return false;
     return true;
 };
 
@@ -184,10 +209,19 @@ export const isInvalidFeedImageIDErrorResponse = o => {
 
 /**
  * @param {any} o
+ * @throws {TypeError}
  * @returns {o is ImageProfileReportPOSTParams}
  */
-export const isImageProfileReportPOSTParams = o => {
+export const validateImageProfileReport = o => {
     isBaseReportPOSTParams(o);
+
+    if (o.place !== PLACE_ENUM.Profile) {
+        throw new TypeError(
+            `Called isImageProfileReportPOSTParams on a report with report.place not ${
+                PLACE_ENUM.Profile
+            }`
+        );
+    }
 
     /**
      * Type assertion required here because after doing
@@ -197,25 +231,12 @@ export const isImageProfileReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.image_profile !== 'string') return false;
-    if (obj.place !== PLACE_ENUM.Profile) return false;
-    return true;
-};
+    if (typeof obj.image_profile !== 'string') {
+        throw new TypeError(`
+            Expected report.image_profile to be an string instead got: ${typeof obj.image_profile}
+        `);
+    }
 
-/**
- * @typedef {object} InvalidProfileImageIDErrorResponse
- * @prop {{ image_profile: string }} detail An object with a `image_profile`
- * property containing the relevant error message
- */
-
-/**
- * @param {any} o
- * @returns {o is InvalidProfileImageIDErrorResponse}
- */
-export const isInvalidProfileImageIDErrorResponse = o => {
-    if (!isObject(o)) return false;
-    if (!isObject(o.detail)) return false;
-    if (typeof o.detail.image_profile !== 'string') return false;
     return true;
 };
 
@@ -234,25 +255,20 @@ export const isInvalidProfileImageIDErrorResponse = o => {
  */
 
 /**
- * The keys of a ChatReport POST json body
- * @typedef {keyof ChatReportPOSTParams} ChatReportPOSTParamsKeys
- */
-
-/**
- * Error response received when one of the POST json body parameters of a
- * ChatReport is of the wrong type. The strings in the array of each key
- * inside the object `detail` is the reasons the validation for that parameter
- * failed.
- * @typedef {object} ChatReportValidationErrorResponse
- * @prop {Partial<Record<ChatReportPOSTParamsKeys, ReadonlyArray<string>>>} detail
- */
-
-/**
  * @param {any} o
+ * @throws {TypeError}
  * @returns {o is ChatReportPOSTParams}
  */
-export const isChatReportPOSTParams = o => {
+export const validateChatReport = o => {
     isBaseReportPOSTParams(o);
+
+    if (o.place !== PLACE_ENUM.Chat) {
+        throw new TypeError(
+            `Called isChatReportPOSTParams on a report with report.place not ${
+                PLACE_ENUM.Chat
+            }`
+        );
+    }
 
     /**
      * Type assertion required here because after doing
@@ -262,25 +278,12 @@ export const isChatReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.chat !== 'string') return false;
-    if (obj.place !== PLACE_ENUM.Chat) return false;
-    return true;
-};
+    if (typeof obj.chat !== 'string') {
+        throw new TypeError(`
+            Expected report.chat to be an string instead got: ${typeof obj.chat}
+        `);
+    }
 
-/**
- * @typedef {object} InvalidChatIDErrorResponse
- * @prop {{ chat: string }} detail An object with a `chat` property containing
- * the relevant error message
- */
-
-/**
- * @param {any} o
- * @returns {o is InvalidChatIDErrorResponse}
- */
-export const isInvalidChatIDErrorResponse = o => {
-    if (!isObject(o)) return false;
-    if (!isObject(o.detail)) return false;
-    if (typeof o.detail.chat !== 'string') return false;
     return true;
 };
 
@@ -300,19 +303,20 @@ export const isInvalidChatIDErrorResponse = o => {
  */
 
 /**
- * Error response received when one of the POST json body parameters of an
- * SwiperReport is of the wrong type. The strings in the array of each key
- * inside the object `detail` is the reasons the validation for that parameter
- * failed. The same as an image profile report
- * @typedef {ImageProfileReportValidationErrorResponse} SwiperReportValidationErrorResponse
- */
-
-/**
  * @param {any} o
+ * @throws {TypeError}
  * @returns {o is SwiperReportPOSTParams}
  */
-export const isSwiperReportPOSTParams = o => {
+export const validateSwiperReport = o => {
     isBaseReportPOSTParams(o);
+
+    if (o.place !== PLACE_ENUM.Swiper) {
+        throw new TypeError(
+            `Called isSwiperReportPOSTParams on a report with report.place not ${
+                PLACE_ENUM.Swiper
+            }`
+        );
+    }
 
     /**
      * Type assertion required here because after doing
@@ -322,78 +326,17 @@ export const isSwiperReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.chat !== 'string') return false;
-    if (obj.place !== PLACE_ENUM.Swiper) return false;
+    if (typeof obj.image_profile !== 'string') {
+        throw new TypeError(`
+            Expected report.image_profile to be an string instead got: ${typeof obj.image_profile}
+        `);
+    }
+
     return true;
 };
 
 // -----------------------------------------------------------------------------
 
 /**
- * Shape of a successful response for all types of reports.
- * @typedef {object} SuccessResponse
- * @prop {string} detail Sucess message.
+ * @typedef {ChatReportPOSTParams|ImageFeedReportPOSTParams|ImageProfileReportPOSTParams|SwiperReportPOSTParams} ReportPOSTParams
  */
-
-/**
- * @param {any} o
- * @returns {o is SuccessResponse}
- */
-export const isSuccessResponse = o => {
-    if (!isObject(o)) return false;
-    if (typeof o.detail !== 'string') return false;
-    return true;
-};
-
-// -----------------------------------------------------------------------------
-
-/**
- * Shape of response when `reported_user` from the POST params is not a valid
- * user id (doesn't exist)
- * @typedef {object} InvalidUserIDErrorResponse
- * @prop {{ reported_user: string }} detail An object with a `reported_user`
- * property containing the relevant error message
- */
-
-/**
- * @param {any} o
- * @returns {o is InvalidUserIDErrorResponse}
- */
-export const isInvalidUserIDErrorResponse = o => {
-    if (!isObject(o)) return false;
-    if (!isObject(o.detail)) return false;
-    if (typeof o.detail.reported_user !== 'string') return false;
-    return true;
-};
-
-// -----------------------------------------------------------------------------
-
-/**
- * Use this function to see if the response is a cerberus validation response
- * then typecast to the expected response type
- * @param {any} o
- * @returns {o is ImageFeedReportValidationErrorResponse|ImageProfileReportValidationErrorResponse|ChatReportValidationErrorResponse}
- */
-export const isValidationErrorResponse = o => {
-    if (!isObject(o)) return false;
-    if (!isObject(o.detail)) return false;
-    const possiblyStringArrays = Object.values(o.detail);
-    // an empty object, with no validation warnings? obviously not a valid
-    // response
-    if (possiblyStringArrays.length === 0) return false;
-    // Conversely, each array should be populated with at least one validation
-    // error message
-    const areTheyAllPopulatedArrays = possiblyStringArrays.every(
-        arr => Array.isArray(arr) && arr.length > 0
-    );
-    if (!areTheyAllPopulatedArrays) return false;
-
-    const areTheyAllStringArrays = possiblyStringArrays.every(subArr =>
-        subArr.every(
-            (/** @type {unknown} */ possiblyString) =>
-                typeof possiblyString === 'string'
-        )
-    );
-
-    return areTheyAllStringArrays;
-};
