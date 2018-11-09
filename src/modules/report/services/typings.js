@@ -194,20 +194,6 @@ export const validateImageFeedReport = o => {
  */
 
 /**
- * The keys of an ImageProfileReport POST json body
- * @typedef {keyof ImageProfileReportPOSTParams} ImageProfileReportPOSTParamsKeys
- */
-
-/**
- * Error response received when one of the POST json body parameters of a
- * ImageProfileReport is of the wrong type. The strings in the array of each key
- * inside the object `detail` is the reasons the validation for that parameter
- * failed.
- * @typedef {object} ImageProfileReportValidationErrorResponse
- * @prop {Partial<Record<ImageProfileReportPOSTParamsKeys, ReadonlyArray<string>>>} detail
- */
-
-/**
  * @param {any} o
  * @throws {TypeError}
  * @returns {o is ImageProfileReportPOSTParams}
