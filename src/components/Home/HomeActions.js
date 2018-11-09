@@ -74,32 +74,23 @@ function uploadAction(token, state) {
 }
 
 function likeAction(id, id_user, like, row) {
-
-    console.log(`likeAction: ${id}, ${id_user}, ${like}`);
+    console.log(`likeAction:`, [id, id_user, like, row]);
 
     userService.publicImageLike(APP_STORE.getToken(), id, id_user, like)
         .then(async (response) => {
-            console.log(`likeAction: ${id}, ${id_user}, ${like}`, response);
+            console.log(`likeAction:`, response);
             const json = await response.json();
             console.log(`likeAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.LIKE_EVENT.next({"like": row});
+                APP_STORE.LIKE_EVENT.next({row});
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
+        }).catch(err => {
+        APP_STORE.APP_EVENT.next({"error": err.message});
+    });
 }
 
-function handleImagePress(idImage, id_user, like, row) {
-    const now = new Date().getTime();
-
-    if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
-        delete this.lastImagePress;
-        likeAction(idImage, id_user, like, row);
-    } else {
-        this.lastImagePress = now;
-    }
-}
 
 function calculateTime(rowData) {
     var start = moment(rowData.time).tz(DeviceInfo.getTimezone());
@@ -127,4 +118,4 @@ function calculateTime(rowData) {
 
 }
 
-export {feedAction, uploadAction, likeAction, calculateTime, appendData, handleImagePress};
+export {feedAction, uploadAction, likeAction, calculateTime, appendData};

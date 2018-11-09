@@ -1,4 +1,7 @@
 /**
+ * @prettier
+ */
+/**
  * Type definitions used in the report service module.
  * JSON schemas taken from: https://github.com/4geeks/weedmatch-backend/blob/02b1750b78f4c26fa4383cab3aec09a309073555/documentations/services_endpoint/report_services.md
  * However, the schema has some typos which will be corrected here and may not
@@ -6,8 +9,8 @@
  * @author danlugo92
  */
 
-import { PLACE_ENUM} from '../index';
-import {REPORT_REASON_ENUM} from "../index";
+import { PLACE_ENUM } from '../index';
+import { REPORT_REASON_ENUM } from '../index';
 
 /**
  * @param {any} o
@@ -15,10 +18,12 @@ import {REPORT_REASON_ENUM} from "../index";
  */
 const isObject = o => typeof o === 'object' && !Array.isArray(o);
 
+// -----------------------------------------------------------------------------
+
 /**
  * An enum for the `place` key in all of the POST json body parameters. Each one
  * corresponds exclusively to the type of the report being made.
- * @typedef {"Chat"|"Feed"|"Profile"} PlaceEnum
+ * @typedef {"Chat"|"Feed"|"Profile"|"Swiper"} PlaceEnum
  */
 
 /**
@@ -32,6 +37,8 @@ const stringIsPlaceEnum = str => {
     // so that typecheck makes no sense
     return Object.values(PLACE_ENUM).includes(str);
 };
+
+// -----------------------------------------------------------------------------
 
 /**
  * An enum for the `reason` key in all of the POST json body parameters
@@ -64,15 +71,17 @@ const stringIsReasonEnum = str => {
 
 /**
  * @param {any} o
+ * @returns {o is _BaseReportPOSTParams}
  */
-export const validateReport = o => {
-    if (!isObject(o)) throw new Error("Object Expected");
-    if (typeof o.comment !== 'string') throw new Error("`comment` of type string expected");
-    if (typeof o.reason !== 'string') throw new Error("`reason` of type string expected");
-    if (!stringIsReasonEnum(o.reason)) throw new Error(`invalid value for 'reason' expecting: ${Object.values(REPORT_REASON_ENUM)}`);
-    if (typeof o.reported_user !== 'string') throw new Error("`reported_user` of type string expected");
-    if (typeof o.place !== 'string') throw new Error("`place` of type string expected");
-    if (!stringIsPlaceEnum(o.place)) throw new Error(`invalid value for 'place' expecting: ${Object.values(PLACE_ENUM)}`);
+const isBaseReportPOSTParams = o => {
+    if (!isObject(o)) return false;
+    if (typeof o.comment !== 'string') return false;
+    if (typeof o.reason !== 'string') return false;
+    if (!stringIsReasonEnum(o.reason)) return false;
+    if (typeof o.reported_user !== 'string') return false;
+    if (typeof o.place !== 'string') return false;
+    if (!stringIsPlaceEnum(o.place)) return false;
+    return true;
 };
 
 // -----------------------------------------------------------------------------
@@ -110,7 +119,7 @@ export const validateReport = o => {
  * @returns {o is ImageFeedReportPOSTParams}
  */
 export const isImageFeedReportPOSTParams = o => {
-    validateReport(o);
+    if (!isBaseReportPOSTParams(o)) return false;
 
     /**
      * Type assertion required here because after doing
@@ -178,7 +187,7 @@ export const isInvalidFeedImageIDErrorResponse = o => {
  * @returns {o is ImageProfileReportPOSTParams}
  */
 export const isImageProfileReportPOSTParams = o => {
-    validateReport(o);
+    isBaseReportPOSTParams(o);
 
     /**
      * Type assertion required here because after doing
@@ -225,7 +234,7 @@ export const isInvalidProfileImageIDErrorResponse = o => {
  */
 
 /**
- * The keys of an ChatReport POST json body
+ * The keys of a ChatReport POST json body
  * @typedef {keyof ChatReportPOSTParams} ChatReportPOSTParamsKeys
  */
 
@@ -243,7 +252,7 @@ export const isInvalidProfileImageIDErrorResponse = o => {
  * @returns {o is ChatReportPOSTParams}
  */
 export const isChatReportPOSTParams = o => {
-    validateReport(o);
+    isBaseReportPOSTParams(o);
 
     /**
      * Type assertion required here because after doing
@@ -253,8 +262,8 @@ export const isChatReportPOSTParams = o => {
      */
     const obj = o;
 
-    if (typeof obj.chat !== 'string') throw new Error("`chat` of type string expected");
-    if (obj.place !== PLACE_ENUM.Chat) throw new Error("wrong value for `place` of type string expected");
+    if (typeof obj.chat !== 'string') return false;
+    if (obj.place !== PLACE_ENUM.Chat) return false;
     return true;
 };
 
@@ -272,6 +281,49 @@ export const isInvalidChatIDErrorResponse = o => {
     if (!isObject(o)) return false;
     if (!isObject(o.detail)) return false;
     if (typeof o.detail.chat !== 'string') return false;
+    return true;
+};
+
+// -----------------------------------------------------------------------------
+/**
+ * Parameters exclusive to a report of an swiper image (which is the profile
+ * image actually, but the backend records the place where it was reported)
+ * @typedef {object} _SwiperReportPOSTParams
+ * @prop {string} image_profile ID of the image being reported
+ * @prop {'Swiper'} place A constant telling the backend this is an
+ * swiper report
+ */
+
+/**
+ * Parameters of the POST json body for making an swiper report.
+ * @typedef {_BaseReportPOSTParams & _SwiperReportPOSTParams} SwiperReportPOSTParams
+ */
+
+/**
+ * Error response received when one of the POST json body parameters of an
+ * SwiperReport is of the wrong type. The strings in the array of each key
+ * inside the object `detail` is the reasons the validation for that parameter
+ * failed. The same as an image profile report
+ * @typedef {ImageProfileReportValidationErrorResponse} SwiperReportValidationErrorResponse
+ */
+
+/**
+ * @param {any} o
+ * @returns {o is SwiperReportPOSTParams}
+ */
+export const isSwiperReportPOSTParams = o => {
+    isBaseReportPOSTParams(o);
+
+    /**
+     * Type assertion required here because after doing
+     * `isBaseReportPOSTParams(o)`, `o` becomes of type `_BaseReportPOSTParams`
+     * and typescript starts throwing errors till the end of the function
+     * @type {any}
+     */
+    const obj = o;
+
+    if (typeof obj.chat !== 'string') return false;
+    if (obj.place !== PLACE_ENUM.Swiper) return false;
     return true;
 };
 
@@ -345,5 +397,3 @@ export const isValidationErrorResponse = o => {
 
     return areTheyAllStringArrays;
 };
-
-// Keep typescript and eslint off from bugging about no exports

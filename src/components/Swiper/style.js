@@ -89,17 +89,12 @@ export default styles = StyleSheet.create({
     viewContainer: {
         flex: 1,
         flexDirection: 'column',
-        marginTop: 20,
     },
     textName: {
-        marginTop: 0,
-        paddingLeft: 20,
         fontSize: 18,
         color: '#333',
     },
     textContainer: {
-        paddingLeft: 20,
-        marginTop: 2,
         fontSize: 14,
         color: '#777'
     },
@@ -126,6 +121,14 @@ export default styles = StyleSheet.create({
     imageSize: {
         width: 50,
         height: 50
-    }
-
+    },
+    cardBottomHalf: {
+        alignContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
 })

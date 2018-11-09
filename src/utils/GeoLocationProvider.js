@@ -10,20 +10,20 @@ export default class GeoLocationProvider extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('GeoLocationProvider:constructor');
+        // console.log('GeoLocationProvider:constructor');
         this.permissionGranted = false;
         this.watchId = 0;
     }
 
     updateValues = () => {
-        console.log('GeoLocationProvider:updateValues', this.permissionGranted);
+        // console.log('GeoLocationProvider:updateValues', this.permissionGranted);
         if (!this.permissionGranted)
             return;
 
         navigator.geolocation.getCurrentPosition(this.props.onLocation,
             (error) => {
                 this.permissionGranted = false;
-                console.log("GeoLocationProvider:updateValues", error);
+                // console.log("GeoLocationProvider:updateValues", error);
                 if (this.props.onError)
                     this.props.onError(error);
             },
@@ -32,7 +32,7 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     async componentDidMount() {
-        console.log('GeoLocationProvider', 'Trying to acquire location');
+        // console.log('GeoLocationProvider', 'Trying to acquire location');
 
         if(this.props.active){
             this.intervalID = setInterval(()=>{

@@ -93,7 +93,8 @@
         "continue": "Continuar",
         "searching": "Buscando personas cerca de ti",
         "hours": " horas y ",
-        "minutes": " minutos para volver a realizar esta acción."
+        "minutes": " minutos para volver a realizar esta acción.",
+        "BLOCK_OR_REPORT": "Bloquear"
     },
     "chat": {
         "nomsg": "No tienes conversaciones activas",
