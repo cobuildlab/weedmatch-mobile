@@ -118,5 +118,8 @@
         "error": "No se pudo hacer el reporte",
         "messageWhenSending": "Su reporte se enviará",
         "header": "Reportando al usuario"
+    },
+    "PublicProfile": {
+        "reportButtonText": "Reportar"
     }
 }
