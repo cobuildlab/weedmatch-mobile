@@ -10,9 +10,8 @@ import {
     Picker,
     Button,
     Title,
-    Footer,
-    FooterTab,
     Header,
+    Spinner,
 } from 'native-base';
 import {
     SafeAreaView, Text
@@ -33,15 +32,11 @@ import {toastMsg} from '../../utils/index';
  * @typedef {import('../../definitions').NavigationScreenProp<ReportRouteParams>} ReportRouteNavigationScreenProp
  * @typedef {import('./services/typings').PlaceEnum} PlaceEnum
  * @typedef {import('./services/typings').ReasonEnum} ReasonEnum
- * @typedef {import('./services/typings').ChatReportPOSTParams} ChatReportPOSTParams
- * @typedef {import('./services/typings').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
- * @typedef {import('./services/typings').ImageProfileReportPOSTParams} ImageProfileReportPOSTParams
- * @typedef {import('./services/typings').SwiperReportPOSTParams} SwiperReportPOSTParams 
- * @typedef {ChatReportPOSTParams|ImageFeedReportPOSTParams|ImageProfileReportPOSTParams|SwiperReportPOSTParams} ReportPOSTParams
+ * @typedef {import('./services/typings').ReportPOSTParams} ReportPOSTParams
  */
 
 import styles from './styles';
-import {REPORT_REASON_ENUM, PLACE_ENUM} from "./index";
+import {REPORT_REASON_ENUM} from "./index";
 import {reportAction} from "./ReportActions";
 import store from "./ReportStore";
 
@@ -64,6 +59,8 @@ import store from "./ReportStore";
  * @typedef {object} ReportRouteState
  * @prop {string} commentInput
  * @prop {ReasonEnum} reasonInput
+ * @prop {boolean} sendingReport True when the report is in process of being
+ * sent.
  */
 
 /**
@@ -101,23 +98,40 @@ export default class Report extends Component {
     state = {
         commentInput: '',
         reasonInput: REPORT_REASON_ENUM.BULLYING,
+        sendingReport: false,
     };
 
     componentDidMount() {
         const { navigation } = this.props
 
-        this.reportedSubscription = store.subscribe("Reported", () => {
-            toastMsg(strings('report.messageWhenSending'));
-            navigation.goBack();
+        this.reportedSubscription = store.subscribe("Reported", (status) => {
+            if (status === 'SENDING_REPORT') {
+                this.setState({
+                    sendingReport: true,
+                })
+            }
+
+            if (status === 'REPORT_SENT') {
+                this.setState({
+                    sendingReport: false
+                })
+
+                toastMsg(strings('report.success'))
+
+                navigation.goBack()
+            }
         });
 
+        this.reportSubscription = store.subscribe(
+            "ReportError",
+            (/** @type {string} */ error) => {
+                toastMsg(error);
 
-        this.reportSubscription = store.subscribe("ReportError", error => {
-            toastMsg(error);
+                if (__DEV__) {
+                    // eslint-disable-next-line no-console
+                    console.warn(error)
+                }
         });
-
-        
-
     }
 
     componentWillUnmount() {
@@ -154,10 +168,10 @@ export default class Report extends Component {
          * @type {ReportPOSTParams}
          */
         const params = {
-            chat: navigation.getParam('chatID'),
+            chat: String(navigation.getParam('chatID')),
             comment,
-            image_feed: navigation.getParam('feedImageID'),
-            image_profile: navigation.getParam('profileImageID'),
+            image_feed: String(navigation.getParam('feedImageID')),
+            image_profile: String(navigation.getParam('profileImageID')),
             place: navigation.getParam('place'),
             reason,
             reported_user: String(navigation.getParam('userID')),
@@ -167,8 +181,6 @@ export default class Report extends Component {
         console.warn("ReportView: onPressSend:", params);
 
         reportAction(params)
-
-        navigation.goBack()
     };
 
     render() {
@@ -187,10 +199,22 @@ export default class Report extends Component {
                     <Content>
                         <Form>
                             <Item fixedLabel>
-                                <Label>{strings('report.commentInputPlaceholder')}</Label>
-                                <Input onChangeText={text => this.setState({commentInput: text})}/>
+                                <Label>
+                                    {strings('report.commentInputPlaceholder')}
+                                </Label>
+                                <Input
+                                    onChangeText={text =>
+                                        this.setState({ commentInput: text })
+                                    }
+                                    disabled={this.state.sendingReport}
+                                />
                             </Item>
-                            <Item fixedLabel last picker>
+                            <Item
+                                fixedLabel
+                                last
+                                picker
+                                disabled={this.state.sendingReport}
+                            >
                                 <Label>{strings('report.reasonText')}</Label>
                                 <Picker
                                     mode="dropdown"
@@ -239,13 +263,24 @@ export default class Report extends Component {
                             </Item>
                         </Form>
                     </Content>
-                    <Footer>
-                        <FooterTab>
-                            <Button block onPress={this.onPressSend} rounded style={[buttonStyles.purpleButton]}>
-                                <Text style={[textStyles.whiteText]}>{strings('report.send')}</Text>
-                            </Button>
-                        </FooterTab>
-                    </Footer>
+                        {
+                            this.state.sendingReport
+                            ? (
+                                <Spinner style={{ alignSelf: 'center'}}/>
+                            )
+                            : (
+                                <Button
+                                    block
+                                    onPress={this.onPressSend}
+                                    rounded
+                                    style={[buttonStyles.purpleButton]}
+                                >
+                                    <Text style={[textStyles.whiteText]} >
+                                        {strings('report.send')}
+                                    </Text>
+                                </Button>
+                            )
+                        }
                 </Container>
             </SafeAreaView>
         );

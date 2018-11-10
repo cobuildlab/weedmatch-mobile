@@ -2,6 +2,9 @@ import { StyleSheet, Platform, Dimensions } from 'react-native';
 var width = Dimensions.get('window').width;
 import {WHITE} from '../../styles/colors';
 
+const PADDING_LEFT = 20
+const PADDING_RIGHT = PADDING_LEFT
+
 export default styles = StyleSheet.create({
 
     MainContainer: {
@@ -79,8 +82,10 @@ export default styles = StyleSheet.create({
         borderRadius:15,
     },
     media: {
-        width:width,
-        height:width,
+        height: width,
+        marginBottom: 2,
+        width: width,
+
         // ...Platform.select({
         //   android: {
         //     width: width,
@@ -210,11 +215,8 @@ export default styles = StyleSheet.create({
         flex:3
     },
     textName: {
-        marginTop: 15,
-        marginBottom: 15,
-        paddingLeft: 20,
-        fontSize: 18,
         color: '#333',
+        fontSize: 18,
     },
     textNameDetails: {
         marginTop: -32,
@@ -230,25 +232,19 @@ export default styles = StyleSheet.create({
         color: '#777'
     },
     textCountry: {
-        marginTop: -5,
-        marginBottom: 10,
-        paddingLeft: 20,
+        color: '#777',
         fontSize: 15,
-        color: '#777'
     },
     textDistance: {
-        marginTop: 0,
-        marginBottom: 10,
-        paddingLeft: 20,
+        color: '#777',
         fontSize: 15,
-        color: '#777'
     },
     textDescription: {
-        marginTop: 0,
-        marginBottom: 20,
-        paddingLeft: 20,
+        color: '#777',
         fontSize: 15,
-        color: '#777'
+        marginTop: 5,
+        paddingLeft: PADDING_LEFT,
+        paddingRight: PADDING_RIGHT,
     },
     container: {
         flex: 1,
@@ -308,17 +304,46 @@ export default styles = StyleSheet.create({
         width: undefined,
         height: undefined,
       },
-      buttonViewContainer: {
-        flex: 1,
-        padding: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-      },
+      
       activeButton: {
           opacity: 1
       },
       disactiveButton: {
         opacity: 0.5
-    }
+    },
+    buttonViewContainer: {
+        alignContent: 'center',
+        alignItems: 'center',
+        bottom: 0, // comment this line to make it overlap the underlying text
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingBottom: 10,
+        paddingLeft: PADDING_LEFT,
+        paddingRight: PADDING_RIGHT,
+        paddingTop: 10,
+        position: 'absolute', // comment this line to make it overlap the underlying text
+        width: '100%', // comment this line to make it overlap the underlying text
+    },
+    dataAndReportButton: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+        marginTop: 2,
+        paddingLeft: PADDING_LEFT,
+        paddingRight: PADDING_RIGHT,
+    },
+    reportButtonContainer: {
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    reportButtonImage: {
+        height: 24,
+        width: 24,
+    },
+    reportButtonText: {
+        color: '#777',
+        fontSize: 12,
+    },
 });

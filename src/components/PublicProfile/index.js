@@ -21,6 +21,11 @@ import {connection, internet, checkConectivity } from '../../utils';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
+import { Content, Container } from 'native-base';
+import REPORT_ROUTE_KEY from '../../modules/report/index';
+/**
+ * @typedef {import('../../modules/report/Report').ReportRouteParams} ReportRouteParams
+ */
 
 var { height, width } = Dimensions.get('window');
 
@@ -223,23 +228,22 @@ export default class PublicProfile extends Component {
     showButtons() {
       console.log(this.state)
       return (
-          <View style={styles.buttonViewContainer}>
-              <View>
-              <TouchableOpacity onPress={() => this.actionSwiper(1)}  disabled={this.state.disLike} style={!this.state.disLike ? styles.activeButton : styles.disactiveButton}>
+              <View style={styles.buttonViewContainer}>
+                  <TouchableOpacity onPress={() => this.actionSwiper(1)}  disabled={this.state.disLike} style={!this.state.disLike ? styles.activeButton : styles.disactiveButton}>
                   <Image source={require('../../assets/img/actions/rejected.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
-              </View>
-              <View>
+
               <TouchableOpacity onPress={() => this.actionSwiper(2)} disabled={this.state.super} style={!this.state.super ? styles.activeButton : styles.disactiveButton}>
                   <Image source={require('../../assets/img/actions/like.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
-              </View>
-              <View>
+
+
                 <TouchableOpacity onPress={() => this.actionSwiper(3)} disabled={this.state.like} style={!this.state.like ? styles.activeButton : styles.disactiveButton}>
                   <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}} />
                 </TouchableOpacity>
               </View>
-            </View>
+
+
       );
     }
 
@@ -303,6 +307,27 @@ export default class PublicProfile extends Component {
       }
     };
 
+    /**
+     * @private
+     * @property
+     * @returns {void}
+     */
+    onPressReport = () => {
+      const { rowData } = this.state
+
+      /**
+       * @type {ReportRouteParams}
+       */
+      const params = {
+        place: 'Profile',
+        profileImageID: rowData.profile_images[0].id,
+        userID: rowData.id_user,
+        userName: rowData.username,
+      }
+
+      this.props.navigation.navigate(REPORT_ROUTE_KEY, params)
+    }
+
     render() {
 
         const {rowData,country,isLoading, isDetail,public420} = this.state;
@@ -333,29 +358,49 @@ export default class PublicProfile extends Component {
               </View>
             );
           } else {
-              return (
-                <View style={styles.viewFlex}>
-                  <View style={styles.viewBackground}>
-                    <Image style={styles.media} source={{uri: rowData.image_profile}} />
-                  </View>
-                  <View style={styles.viewContainer}>
-                    <View style={styles.viewContainer}>
-                      <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
-                    </View>
-                    <View style={styles.viewContainer}>
+
+            return (
+              
+              <Container>
+                <Content>
+                  <Image
+                    source={{uri: rowData.image_profile}}
+                    style={styles.media}
+                  />
+
+                  <View style={styles.dataAndReportButton}>
+                    
+                    <View style={styles.viewFlex}>
+                      <Text style={styles.textName}>
+                        {rowData.first_name}, {rowData.age}
+                      </Text>
                       {country &&
-                        <Text style={styles.textCountry}>{country.name} </Text>
+                            <Text style={styles.textCountry}>{country.name}</Text>
                       }
-                      <Text style={styles.textDistance}>{rowData.distance} </Text>
-                      <Text style={styles.textDescription}>{rowData.description} </Text>
+                      <Text style={styles.textDistance}>{rowData.distance}</Text>
                     </View>
-                      <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityPlus} onPress={this._changeView}>
-                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
-                      </TouchableOpacity>
+                    
+                    <TouchableOpacity
+                      onPress={this.onPressReport}
+                      style={styles.reportButtonContainer}
+                    >
+                      <Image style={styles.reportButtonImage} source={require('../../assets/img/report.png')} />
+                      <Text style={styles.reportButtonText}>{strings('PublicProfile.reportButtonText')}</Text>
+                    </TouchableOpacity>
+                    
                   </View>
-                    {this.showButtons()}
-                </View>
-            );
+
+                  <Text style={styles.textDescription}>
+                    {rowData.description}
+                  </Text>
+                  
+                </Content>
+                {
+                  // absolutely positioned
+                  this.showButtons()
+                }
+              </Container>
+            )
           }
         } else {
             return (
