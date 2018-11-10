@@ -129,5 +129,13 @@
         "InactiveGeolocation":"Debes activar los servicios de ubicación para utilizar esta funcionalidad",
         "GoToLocationServices":"Servicios de Ubicación",
         "TryAgain":"Intenta de Nuevo"
+    },
+    "ImagePicker":{
+        "AlertTitle": "Weedmatch requiere accesso a tus fotos",
+        "AlertDescription": "Nosotros requerimos acceso a tus fotos para permitirte compartir momentos y emociones con el resto de la comunidad"
+    },
+    "GeoLocationProvider":{
+        "AlertTitle": "Weedmatch requiere accesso a tus localización",
+        "AlertDescription": "Nosotros requerimos tu localización para mostrarte usuarios, contenido y eventos relevantes para ti"
     }
 }

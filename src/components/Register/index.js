@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    ActivityIndicator,
+    ActivityIndicator, Alert, AsyncStorage,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -58,7 +58,8 @@ class RegisterPage extends Component {
             sexError: '',
             termsModalVisible: false,
         };
-
+        this.libraryPermissionsHasBeenAsked = false;
+        this.cameraPermissionsHasBeenAsked = false;
         this.termsModalAccepted = false
     }
 
@@ -66,6 +67,14 @@ class RegisterPage extends Component {
 
     componentDidMount() {
         console.log("RegisterPage:componentDidMount");
+        AsyncStorage.getItem("libraryPermissionsHasBeenAsked").then(value => {
+            if (value !== null)
+                this.libraryPermissionsHasBeenAsked = true;
+        });
+        AsyncStorage.getItem("cameraPermissionsHasBeenAsked").then(value => {
+            if (value !== null)
+                this.cameraPermissionsHasBeenAsked = true;
+        });
 
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             if (state.error) {
@@ -312,7 +321,7 @@ class RegisterPage extends Component {
         );
     }
 
-    _getPhoto() {
+    getPhotoFromPicker = () => {
         ImagePicker.openPicker({
             cropping: false,
             width: 500,
@@ -324,10 +333,30 @@ class RegisterPage extends Component {
             this.setState({
                 image: image.path
             });
-        }).catch(e => alert(e));
+        }).catch(e => console.log(e));
+    };
+
+    _getPhoto() {
+        if (this.libraryPermissionsHasBeenAsked)
+            this.getPhotoFromPicker();
+        else {
+            Alert.alert(
+                strings("ImagePicker.AlertTitle"),
+                strings("ImagePicker.AlertDescription"),
+                [
+                    {
+                        text: 'Cancel', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {text: 'OK', onPress: this.getPhotoFromPicker},
+                ],
+                {cancelable: false}
+            );
+            AsyncStorage.setItem("libraryPermissionsHasBeenAsked", "someValue");
+        }
     }
 
-    _takePhoto() {
+    takePhotoFromPicker = () => {
         ImagePicker.openCamera({
             cropping: false,
             width: 500,
@@ -341,6 +370,26 @@ class RegisterPage extends Component {
             });
 
         }).catch(e => alert(e));
+    }
+
+    _takePhoto() {
+        if (this.cameraPermissionsHasBeenAsked)
+            this.takePhotoFromPicker();
+        else {
+            Alert.alert(
+                strings("ImagePicker.AlertTitle"),
+                strings("ImagePicker.AlertDescription"),
+                [
+                    {
+                        text: 'Cancel', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {text: 'OK', onPress: this.takePhotoFromPicker},
+                ],
+                {cancelable: false}
+            );
+            AsyncStorage.setItem("cameraPermissionsHasBeenAsked", "someValue");
+        }
     }
 
     renderBy(body) {
@@ -474,9 +523,9 @@ class RegisterPage extends Component {
                 {step == 1 &&
                 <View style={{marginTop: -5,}}>
                     <TermsModal
-                      isVisible={this.state.termsModalVisible}
-                      onAccept={this.onAcceptTerms}
-                      onCloseOrReject={this.onRejectTerms}
+                        isVisible={this.state.termsModalVisible}
+                        onAccept={this.onAcceptTerms}
+                        onCloseOrReject={this.onRejectTerms}
                     />
                     <TextInput
                         style={styles.inputStyle}
@@ -628,8 +677,8 @@ class RegisterPage extends Component {
         return (
             <View style={styles.scrollContainer}>
                 {/*<GeoLocationProvider dialogMessage={strings('register.locationMessage')}*/}
-                                                           {/*dialogTitle={strings('register.locationTitle')}*/}
-                                                           {/*onLocation={this.onLocation} />*/}
+                {/*dialogTitle={strings('register.locationTitle')}*/}
+                {/*onLocation={this.onLocation} />*/}
                 {this.renderBy(body)}
             </View>
         );
