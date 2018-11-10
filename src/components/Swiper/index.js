@@ -18,6 +18,9 @@ import {APP_STORE} from '../../Store'
 import {swiperAction, appendData, swiper, swiperListAction} from './SwiperActions'
 import Spinner from 'react-native-spinkit';
 import firebase from "react-native-firebase";
+import { PLACE_ENUM } from '../../modules/report';
+
+import REPORT_ROUTE_KEY from '../../modules/report'
 
 export default class SwiperView extends Component {
     constructor(props) {
@@ -135,6 +138,27 @@ export default class SwiperView extends Component {
         }
     }
 
+    /**
+     * @property
+     * @private
+     * @param {string} imageID Id of the image to report
+     * @param {string} userID Id of the user to report
+     * @param {string} userName Name of the user being reported
+     * @returns {void}
+     */
+    onPressBlock = (imageID, userID, userName) => {
+        const { navigation } = this.props;
+
+        const params = {
+            place: PLACE_ENUM.Swiper,
+            profileImageID: imageID,
+            userID,
+            userName,
+        };
+
+        navigation.navigate(REPORT_ROUTE_KEY, params);
+    }
+
     renderCard = card => {
         return (
             <View style={[styles.card]}>
@@ -142,12 +166,22 @@ export default class SwiperView extends Component {
                     <View style={[styles.viewBackground]}>
                         <Image style={styles.media} source={{uri: card.image_profile}}/>
                     </View>
-                    <View style={[{flex: 2}]}>
+                    <View style={styles.cardBottomHalf}>
                         <View style={[styles.viewContainer]}>
                             <Text style={styles.textName}>{card.first_name}, {card.age}</Text>
                             <Text style={styles.textContainer}>{card.country.name}</Text>
                             <Text style={styles.textContainer}>{card.distance} </Text>
                         </View>
+                        <TouchableOpacity
+                            onPress={this.onPressBlock.bind(
+                                this,
+                                card.profile_images[0].id,
+                                card.id_user,
+                                card.username
+                            )}
+                        >
+                            <Text>{strings('swiper.BLOCK_OR_REPORT')}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

@@ -169,8 +169,6 @@ subprojects {
 
 dependencies {
     compile project(':react-native-fast-image')
-    compile project(':rn-fetch-blob')
-    compile project(':react-native-version-check')
     compile project(':react-native-vector-icons')
     compile project(':react-native-toast-native')
     compile project(':react-native-spinkit')

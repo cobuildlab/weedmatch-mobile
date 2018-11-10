@@ -90,7 +90,8 @@
         "continue": "Continue",
         "searching": "Looking for people near you",
         "hours": " hours and ",
-        "minutes": " minutes to do this action again."
+        "minutes": " minutes to do this action again.",
+        "BLOCK_OR_REPORT": "Block"
     },
     "chat": {
         "nomsg": "You do not have active conversations",

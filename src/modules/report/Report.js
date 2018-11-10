@@ -10,9 +10,8 @@ import {
     Picker,
     Button,
     Title,
-    Footer,
-    FooterTab,
     Header,
+    Spinner,
 } from 'native-base';
 import {
     SafeAreaView, Text
@@ -26,21 +25,14 @@ import * as PropTypes from 'prop-types';
  * @typedef {import('react-navigation').NavigationStackScreenOptions} NavigationStackScreenOptions
  */
 
-import {PLACE_ENUM} from './index';
-import {
-    postChatReport,
-    postFeedImageReport,
-    postProfileImageReport,
-} from './services/postReport';
+
 import {strings} from '../../i18n';
 import {toastMsg} from '../../utils/index';
 /**
  * @typedef {import('../../definitions').NavigationScreenProp<ReportRouteParams>} ReportRouteNavigationScreenProp
- * @typedef {import('../../services/typings').PlaceEnum} PlaceEnum
- * @typedef {import('../../services/typings').ReasonEnum} ReasonEnum
- * @typedef {import('../../services/postReport').ChatReportPOSTParams} ChatReportPOSTParams
- * @typedef {import('../../services/postReport').ImageFeedReportPOSTParams} ImageFeedReportPOSTParams
- * @typedef {import('../../services/postReport').ImageProfileReportPOSTParams} ImageProfileReportPOSTParams
+ * @typedef {import('./services/typings').PlaceEnum} PlaceEnum
+ * @typedef {import('./services/typings').ReasonEnum} ReasonEnum
+ * @typedef {import('./services/typings').ReportPOSTParams} ReportPOSTParams
  */
 
 import styles from './styles';
@@ -50,11 +42,11 @@ import store from "./ReportStore";
 
 /**
  * @typedef {object} ReportRouteParams
- * @prop {number=} chatID Defined if place is PlaceEnum.Chat
- * @prop {number=} feedImageID Defined if place is PlaceEnum.Feed
+ * @prop {string=} chatID Defined if place is PlaceEnum.Chat
+ * @prop {string=} feedImageID Defined if place is PlaceEnum.Feed
  * @prop {PlaceEnum} place
- * @prop {number=} profileImageID Defined if place is PlaceEnum.Profile
- * @prop {number} userID ID of the user being reported
+ * @prop {string=} profileImageID Defined if place is PlaceEnum.Profile
+ * @prop {string} userID ID of the user being reported
  * @prop {string=} userName Screen name of the user being reported (optional)
  */
 
@@ -67,6 +59,8 @@ import store from "./ReportStore";
  * @typedef {object} ReportRouteState
  * @prop {string} commentInput
  * @prop {ReasonEnum} reasonInput
+ * @prop {boolean} sendingReport True when the report is in process of being
+ * sent.
  */
 
 /**
@@ -75,6 +69,7 @@ import store from "./ReportStore";
 export default class Report extends Component {
     /**
      * @property
+     * @static
      * @type {NavigationStackScreenOptions}
      */
     static navigationOptions = {
@@ -83,6 +78,7 @@ export default class Report extends Component {
 
     /**
      * @property
+     * @static
      */
     static propTypes = {
         navigation: PropTypes.object.isRequired,
@@ -102,46 +98,40 @@ export default class Report extends Component {
     state = {
         commentInput: '',
         reasonInput: REPORT_REASON_ENUM.BULLYING,
-        report: {}
+        sendingReport: false,
     };
 
     componentDidMount() {
-        const {navigation} = this.props;
-        const place = navigation.getParam('place');
-        const userId = navigation.getParam('userID');
-        this.report = {
-            reported_user: userId.toString(10),
-            place
-        };
+        const { navigation } = this.props
 
-        switch (place) {
-            case PLACE_ENUM.Chat:
-                this.report.chat = navigation.getParam('chatID').toString(10);
-                break;
-            case PLACE_ENUM.Feed:
-                this.report.image_feed = navigation.getParam('feedImageID').toString(10);
-                break;
-            case PLACE_ENUM.Profile:
-                this.report.image_profile = navigation.getParam('profileImageID').toString(10);
-                break;
-            default:
-                // TODO: prop-type
-                throw new Error(
-                    `Invalid \`place\` parameter in report route, expected one of these: ${Object.values(
-                        PLACE_ENUM
-                    )}, instead got: ${JSON.stringify(place)}`
-                );
-        }
+        this.reportedSubscription = store.subscribe("Reported", (status) => {
+            if (status === 'SENDING_REPORT') {
+                this.setState({
+                    sendingReport: true,
+                })
+            }
 
-        this.reportedSubscription = store.subscribe("Reported", () => {
-            toastMsg(strings('report.messageWhenSending'));
-            navigation.goBack();
+            if (status === 'REPORT_SENT') {
+                this.setState({
+                    sendingReport: false
+                })
+
+                toastMsg(strings('report.success'))
+
+                navigation.goBack()
+            }
         });
 
-        this.reportSubscription = store.subscribe("ReportError", error => {
-            toastMsg(error);
-        });
+        this.reportSubscription = store.subscribe(
+            "ReportError",
+            (/** @type {string} */ error) => {
+                toastMsg(error);
 
+                if (__DEV__) {
+                    // eslint-disable-next-line no-console
+                    console.warn(error)
+                }
+        });
     }
 
     componentWillUnmount() {
@@ -156,10 +146,10 @@ export default class Report extends Component {
      * @returns {void}
      */
     onChangeReasonPicker = value => {
-        // @ts-ignore Check that the values for the picker items are of the
-        // correct type
+        // Check that the values for the picker items in the render
+        // method of this class are of the correct type `ReasonEnum`
         this.setState({
-            reasonInput: value,
+            reasonInput: /** @type {ReasonEnum} */(value),
         });
     };
 
@@ -169,14 +159,28 @@ export default class Report extends Component {
      * @returns {void}
      */
     onPressSend = () => {
+        // eslint-disable-next-line no-console
         console.log("ReportView: onPressSend");
         const {navigation} = this.props;
         const {commentInput: comment, reasonInput: reason} = this.state;
 
-        this.report.reason = reason;
-        this.report.comment = comment;
-        console.log("ReportView: onPressSend:", this.report);
-        reportAction(this.report);
+        /**
+         * @type {ReportPOSTParams}
+         */
+        const params = {
+            chat: String(navigation.getParam('chatID')),
+            comment,
+            image_feed: String(navigation.getParam('feedImageID')),
+            image_profile: String(navigation.getParam('profileImageID')),
+            place: navigation.getParam('place'),
+            reason,
+            reported_user: String(navigation.getParam('userID')),
+        }
+
+        // eslint-disable-next-line no-console
+        console.warn("ReportView: onPressSend:", params);
+
+        reportAction(params)
     };
 
     render() {
@@ -187,7 +191,7 @@ export default class Report extends Component {
         // will be inside content
 
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={styles.safeAreaView}>
                 <Container>
                     <Header>
                         <Title>{userName}</Title>
@@ -195,10 +199,22 @@ export default class Report extends Component {
                     <Content>
                         <Form>
                             <Item fixedLabel>
-                                <Label>{strings('report.commentInputPlaceholder')}</Label>
-                                <Input onChangeText={text => this.setState({commentInput: text})}/>
+                                <Label>
+                                    {strings('report.commentInputPlaceholder')}
+                                </Label>
+                                <Input
+                                    onChangeText={text =>
+                                        this.setState({ commentInput: text })
+                                    }
+                                    disabled={this.state.sendingReport}
+                                />
                             </Item>
-                            <Item fixedLabel last picker>
+                            <Item
+                                fixedLabel
+                                last
+                                picker
+                                disabled={this.state.sendingReport}
+                            >
                                 <Label>{strings('report.reasonText')}</Label>
                                 <Picker
                                     mode="dropdown"
@@ -247,13 +263,24 @@ export default class Report extends Component {
                             </Item>
                         </Form>
                     </Content>
-                    <Footer>
-                        <FooterTab>
-                            <Button block onPress={this.onPressSend} rounded style={[buttonStyles.purpleButton]}>
-                                <Text style={[textStyles.whiteText]}>{strings('report.send')}</Text>
-                            </Button>
-                        </FooterTab>
-                    </Footer>
+                        {
+                            this.state.sendingReport
+                            ? (
+                                <Spinner style={{ alignSelf: 'center'}}/>
+                            )
+                            : (
+                                <Button 
+                                    block 
+                                    onPress={this.onPressSend} 
+                                    rounded 
+                                    style={[buttonStyles.purpleButton]}
+                                >
+                                    <Text style={[textStyles.whiteText]} >
+                                        {strings('report.send')}
+                                    </Text>
+                                </Button>
+                            )
+                        }
                 </Container>
             </SafeAreaView>
         );
