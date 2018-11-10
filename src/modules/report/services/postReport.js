@@ -42,7 +42,7 @@ export const postReport = report => {
         default:
             throw new TypeError(`Unexpected report.place, got: ${report.place}`)
     }
- 
+
     return fetch(REPORT_API_ENDPOINT_URL, {
         body: JSON.stringify(report),
         headers,

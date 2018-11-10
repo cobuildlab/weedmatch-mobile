@@ -269,10 +269,10 @@ export default class Report extends Component {
                                 <Spinner style={{ alignSelf: 'center'}}/>
                             )
                             : (
-                                <Button 
-                                    block 
-                                    onPress={this.onPressSend} 
-                                    rounded 
+                                <Button
+                                    block
+                                    onPress={this.onPressSend}
+                                    rounded
                                     style={[buttonStyles.purpleButton]}
                                 >
                                     <Text style={[textStyles.whiteText]} >

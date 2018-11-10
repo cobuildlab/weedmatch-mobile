@@ -1,59 +1,11 @@
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
-import {isValidText} from '../../utils/index'
+import {checkConectivity} from '../../utils/index'
 import {userService} from './service';
-import {Logger} from "../../utils";
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
 
 /**
- *
- * @param firstName
- * @param email
- * @param username
- * @param password
- * @param lat
- * @param lon
- * @param sex
- * @param age
- * @returns A boolean value
- */
-function verifyAction(firstName, email, username, password, lat, lon, sex, age) {
-    if (!isValidText(firstName)) {
-        APP_STORE.APP_EVENT.next({error: strings("register.errorFullName")});
-        return false
-    }
-    if (!isValidText(email)) {
-        APP_STORE.APP_EVENT.next({error: strings("register.errorEmail")});
-        return false
-    }
-    if (!isValidText(username)) {
-        APP_STORE.APP_EVENT.next({error: strings("register.errorUsername")});
-        return false
-    }
-    if (!isValidText(password)) {
-        APP_STORE.APP_EVENT.next({error: strings("register.errorPassword")});
-        return false
-    }
-    if (!isValidText(sex)) {
-        APP_STORE.APP_EVENT.next({error: strings("register.errorSex")});
-        return false
-    }
-    if (!isValidText(age)) {
-        APP_STORE.APP_EVENT.next({error: strings("register.errorAge")});
-        return false
-    }
-    if (Number.isNaN(lat)) {
-        lat = 0
-    }
-    if (Number.isNaN(lon)) {
-        lon = 0
-    }
-
-    return true
-}
-
-/**
- *
+ * Register a User
  * @param firstName
  * @param email
  * @param username
@@ -64,6 +16,11 @@ function verifyAction(firstName, email, username, password, lat, lon, sex, age) 
  * @param age
  */
 function registerAction(firstName, email, password, lat, lon, sex, age, image, username) {
+    console.log(`registerAction:`, this.arguments);
+    if (!checkConectivity()) {
+        APP_STORE.APP_EVENT.next({error: strings('main.internet')});
+        return;
+    }
 
     const data = new FormData();
     var re = /(?:\.([^.]+))?$/;
@@ -74,8 +31,10 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
     data.append('first_name', firstName);
     data.append('email', email.toLowerCase());
     data.append('password', password);
-    data.append('latitud', lat);
-    data.append('longitud', lon);
+    if (lat)
+        data.append('latitud', lat);
+    if (lon)
+        data.append('longitud', lon);
     data.append('sex', sex);
     data.append('age', birth);
     data.append('username', username);
@@ -85,13 +44,19 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
         name: 'photo.' + ext
     });
 
+    console.log(`registerAction:`, data);
     userService.postRegister(data)
         .then(async (response) => {
-            console.log(`registerAction:`, data);
-            console.log(`response:`, response);
-            const json = await response.json();
-            console.log(`registerAction:JSON:`, json);
-
+            console.log(`registerAction:Response:`, response);
+            let json;
+            try {
+                json = await response.json();
+            }catch (e) {
+                console.log(`registerAction:Response:JSON:error`, e);
+                APP_STORE.APP_EVENT.next({error: e.message});
+                return;
+            }
+            console.log(`registerAction:Response:JSON`, json);
             if (response.ok) {
                 APP_STORE.APP_EVENT.next({"success": json.detail});
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
@@ -99,7 +64,7 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
                 return;
             }
 
-            APP_STORE.APP_EVENT.next({error: json})
+            APP_STORE.APP_EVENT.next({error: json});
         });
 }
 

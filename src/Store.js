@@ -208,9 +208,9 @@ class Store {
         popIdFB(this.state);
         popUser(this.state);
         popNoti(this.state);
-        // this.state.token = 'f56df0306c18673bf6dfe40907f32f91075bd216';
-        // this.state.id = 245;
-        // this.state.username = 'anacatherine';
+        // this.state.token = '7e6052eeb671064e7822f0fa6a5ff465f052aa61';
+        // this.state.id = 115;
+        // this.state.username = 'oscarlzcl';
 
         const me = this;
         this.ERROR_EVENT = new Subject();
@@ -305,7 +305,7 @@ class Store {
         this.LIKE_EVENT = new Subject();
         this.LIKE_EVENT.subscribe(state => {
             if (!state) return;
-            me.state.like = state.like;
+            me.state.row = state.row;
         });
         this.PUBLICPROFILE_EVENT = new Subject();
         this.PUBLICPROFILE_EVENT.subscribe(state => {

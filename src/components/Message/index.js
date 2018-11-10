@@ -5,13 +5,17 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     ScrollView,
+    Platform,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image as RNImage } from 'react-native';
 import styles from './style';
 import { getChat } from './MessageActions';
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { connection, toastMsg } from '../../utils';
+import FastImage from 'react-native-fast-image';
+
+const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 export default class Message extends Component {
     constructor(props) {
@@ -100,9 +104,8 @@ export default class Message extends Component {
                         }
                     >
                         <View style={styles.viewMsg}>
-                            <FastImage
+                            <Image
                                 style={styles.imgProfileItem}
-                                resizeMode={FastImage.resizeMode.contain}
                                 source={{ uri: item.image_profile }}
                             />
                             <View style={styles.viewTexts}>

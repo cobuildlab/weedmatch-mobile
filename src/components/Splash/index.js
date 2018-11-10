@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Image, View, AsyncStorage } from 'react-native';
-import { APP_STORE } from '../../Store';
-import { isValidText } from '../../utils';
+import React, {Component} from 'react';
+import {Image, View, AsyncStorage} from 'react-native';
+import {APP_STORE} from '../../Store';
+import {isValidText} from '../../utils';
 import styles from './style';
-import { Alert } from 'react-native';
+import {Alert, Platform} from 'react-native';
 
 export default class Splash extends Component {
     constructor() {
@@ -11,6 +11,7 @@ export default class Splash extends Component {
     }
 
     componentDidMount() {
+        console.log("Splash:componentDidMount", Platform.Version);
         setTimeout(async () => {
             await this.popToken();
         }, 2000);
@@ -21,7 +22,7 @@ export default class Splash extends Component {
         try {
             token = await AsyncStorage.getItem('token');
             // token = await Promise.resolve(
-            //     'f56df0306c18673bf6dfe40907f32f91075bd216'
+            //     '7e6052eeb671064e7822f0fa6a5ff465f052aa61'
             // );
         } catch (error) {
             console.error('Splash:AsyncStorage:error: ' + error.message);

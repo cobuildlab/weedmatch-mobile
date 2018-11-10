@@ -45,6 +45,9 @@
         "imageRequired": "Imagen es requerida",
         "ageRequired": "Fecha de nacimiento es requerida",
         "editProfile": "Editar Perfil",
+        "locationMessage": "Weedmatch requiere tu ubicación para encontrar contenido y personas interesantes a tu alrededor",
+        "locationTitle": "Weedmatch require acceso a tu ubicación",
+        "editProfile": "Editar Perfil",
         "termsPopup": {
             "accept": "Acepto",
             "reject": "No Acepto",
@@ -121,5 +124,10 @@
     },
     "PublicProfile": {
         "reportButtonText": "Reportar"
+    },
+    "feed":{
+        "InactiveGeolocation":"Debes activar los servicios de ubicación para utilizar esta funcionalidad",
+        "GoToLocationServices":"Servicios de Ubicación",
+        "TryAgain":"Intenta de Nuevo"
     }
 }

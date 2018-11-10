@@ -11,9 +11,12 @@ import {
     Modal,
     Button,
     TextInput,
+    Platform,
+    Linking,
     Alert,
     SafeAreaView,
 } from 'react-native';
+import {Button as NativeBaseButton} from 'native-base';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
@@ -36,6 +39,11 @@ import REPORT_ROUTE_KEY from '../../modules/report/index';
  */
 import {PLACE_ENUM} from '../../modules/report/index';
 import Feed from "./Feed";
+import GeoStore from "../../utils/GeoStore";
+import buttonStyles from "../../styles/buttons";
+import textStyles from "../../styles/text";
+import {FooterTab} from "native-base";
+import {FeedRow} from "../../modules/feed/FeedRow";
 
 /**
  * View of the Photo Feed
@@ -49,8 +57,6 @@ export default class HomePage extends Component {
         });
 
         this.state = {
-            latitud: '',
-            longitud: '',
             feedData: this.ds1.cloneWithRows([]),
             dataSource: [],
             loading: true,
@@ -63,6 +69,8 @@ export default class HomePage extends Component {
             modalVisible: false,
             isLoaded: false,
             load: false,
+            latitud: undefined,
+            longitud: undefined,
         };
     }
 
@@ -79,16 +87,14 @@ export default class HomePage extends Component {
                         isLoaded: true,
                     });
                 } else {
-                    this.setState(prevState => ({
-                        dataSource: appendData(
-                            prevState.dataSource,
-                            state.feed
-                        ),
-                        feedData: this.ds1.cloneWithRows(this.state.dataSource),
+                    const dataSource = this.state.dataSource.concat(state.feed);
+                    this.setState({
+                        dataSource,
+                        feedData: this.ds1.cloneWithRows(dataSource),
+                        isLoaded: true,
                         loading: false,
                         refreshing: false,
-                        isLoaded: true,
-                    }));
+                    });
                 }
                 return;
             }
@@ -137,27 +143,54 @@ export default class HomePage extends Component {
         });
 
         this.likeEvent = APP_STORE.LIKE_EVENT.subscribe(state => {
-            console.log(state);
+            console.log("APP_STORE.LIKE_EVENT.subscribe", state);
             if (state.error) {
                 Alert.alert(state.error);
                 return;
             }
-            if (state.like) {
-                var newDs = [];
-                newDs = this.state.feedData._dataBlob.s1.slice();
-                newDs[state.like].band =
-                    newDs[state.like].band == true ? false : true;
-                newDs[state.like].like =
-                    newDs[state.like].band == true
-                        ? newDs[state.like].like + 1
-                        : newDs[state.like].like - 1;
+            if (state.row) {
+                // const newDs = this.state.feedData._dataBlob.s1.slice();
+                const newDs = this.state.dataSource.concat();
+                const row = newDs[state.row];
+                console.log("APP_STORE.LIKE_EVENT.subscribe", row);
+                row.band = !row.band;
+                row.like = row.band == true ? row.like + 1 : row.like - 1;
+                console.log("APP_STORE.LIKE_EVENT.subscribe", row);
                 this.setState({
                     feedData: this.ds1.cloneWithRows(newDs),
                 });
             }
         });
 
-        this._feedPosition();
+        this.appEvent = APP_STORE.APP_EVENT.subscribe(state => {
+            if (state.error) {
+                Alert.alert(state.error);
+                return;
+            }
+        });
+
+        this.geoDatasubscription = GeoStore.subscribe("GeoData", position => {
+            console.log("HOME:componentDidMount:geoDatasubscription", position);
+            if (!position.coords)
+                return;
+
+            this.setState({
+                latitud: position.coords.latitude,
+                longitud: position.coords.longitude
+            });
+        });
+
+        this.updatePositionIfExists();
+        this._feedData();
+    }
+
+    updatePositionIfExists() {
+        const position = GeoStore.getState("GeoData");
+        if (!position || !position.coords)
+            return;
+
+        this.state.latitud = position.coords.latitude;
+        this.state.longitud = position.coords.longitude;
     }
 
     componentWillUnmount() {
@@ -166,6 +199,8 @@ export default class HomePage extends Component {
         this.event.unsubscribe();
         this.likeEvent.unsubscribe();
         this.feedPage.unsubscribe();
+        this.geoDatasubscription.unsubscribe();
+        this.appEvent.unsubscribe();
     }
 
     onEndReached = () => {
@@ -200,11 +235,7 @@ export default class HomePage extends Component {
     };
 
     _feedData() {
-        if (checkConectivity()) {
-            feedAction(APP_STORE.getToken(), this.state);
-        } else {
-            internet();
-        }
+        feedAction(APP_STORE.getToken(), this.state);
     }
 
     _onRefresh() {
@@ -242,26 +273,6 @@ export default class HomePage extends Component {
         );
     }
 
-    _feedPosition() {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.setState(
-                    {
-                        latitud: position.coords.latitude.toFixed(6),
-                        longitud: position.coords.longitude.toFixed(6),
-                    },
-                    () => {
-                        this._feedData();
-                    }
-                );
-            },
-            error => {
-                this._feedData();
-                console.log(error);
-            },
-            {enableHighAccuracy: true, timeout: 50000, maximumAge: 10000}
-        );
-    }
 
     _likeHandlePress(idImage, id_user, like, row) {
         const now = new Date().getTime();
@@ -269,20 +280,14 @@ export default class HomePage extends Component {
         if (this.lastImagePress && now - this.lastImagePress < 300) {
             delete this.lastImagePress;
             this.showBigHeart(row);
-
-            if (checkConectivity()) {
-                this._like(idImage, id_user, like, row);
-            } else {
-                internet();
-            }
+            this._like(idImage, id_user, like, row);
         } else {
             this.lastImagePress = now;
         }
     }
 
     showBigHeart(row) {
-        var newDs = [];
-        newDs = this.state.feedData._dataBlob.s1.slice();
+        const newDs = this.state.feedData._dataBlob.s1.slice();
         newDs[row].flag = newDs[row].flag == true ? false : true;
 
         this.setState(
@@ -416,7 +421,7 @@ export default class HomePage extends Component {
                 <Feed
                     style={styles.listView}
                     dataSource={this.state.feedData}
-                    renderRow={this._renderRow.bind(this)}
+                    renderRow={this._renderRow}
                     onEndReached={this.onEndReached.bind(this)}
                     onMomentumScrollBegin={() => {
                         this.onEndReachedCalledDuringMomentum = false;
@@ -455,98 +460,38 @@ export default class HomePage extends Component {
         return <Image style={styles.picture} source={{uri: photo}}/>;
     }
 
-    _renderRow(rowData, sectionID) {
+    _renderRow = (rowData, sectionID, rowID) => {
         return (
-            <View style={styles.containerView}>
-                <View style={styles.mediaUser}>
-                    <TouchableOpacity
-                        onPress={() => this._onPressButton(rowData)}
-                    >
-                        {this._profilePhoto(rowData.image_profile)}
-                    </TouchableOpacity>
-                    <View style={styles.userContainer}>
-                        <TouchableOpacity
-                            onPress={() => this._onPressButton(rowData)}
-                        >
-                            <Text style={styles.username}>
-                                {rowData.username}
-                            </Text>
-                        </TouchableOpacity>
-                        <Text style={styles.distancia}>{rowData.distance}</Text>
-                    </View>
-                    <Text style={styles.tiempo}>{calculateTime(rowData)}</Text>
-                </View>
-
-                <TouchableWithoutFeedback
-                    onPress={() =>
-                        this._likeHandlePress(
-                            rowData.id,
-                            rowData.id_user,
-                            !rowData.band,
-                            sectionID
-                        )
-                    }
-                >
-                    <View>
-                        <Image
-                            style={styles.media}
-                            source={{uri: rowData.image}}
-                        />
-                        {rowData.flag && (
-                            <View style={styles.heartLike}>
-                                <Image
-                                    style={styles.positionHeart}
-                                    source={require('../../assets/img/heartLike.png')}
-                                />
-                            </View>
-                        )}
-                    </View>
-                </TouchableWithoutFeedback>
-
-                <View style={styles.containerLikes}>
-                    <TouchableOpacity
-                        onPress={() =>
-                            this._like(
-                                rowData.id,
-                                rowData.id_user,
-                                !rowData.band,
-                                sectionID
-                            )
-                        }
-                        style={styles.heartAndTextContainer}
-                    >
-                        {this._likes(rowData.band)}
-                        <Text style={[styles.time, styles.likesNumber]}>
-                            {rowData.like}
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={this.onPressReport.bind(
-                            this,
-                            rowData.id,
-                            rowData.id_user,
-                            rowData.username
-                        )}
-                        style={styles.reportButtonContainer}
-                    >
-                        <Image
-                            // @ts-ignore file exists
-                            source={require('../../assets/img/report.png')}
-                            style={styles.reportButton}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.containerViewHorizontal}>
-                    <Text style={styles.description}>{rowData.comment}</Text>
-                    <View style={styles.containerViewSpace}/>
-                </View>
-            </View>
+            <FeedRow navigation={this.props.navigation} rowData={rowData} sectionID={sectionID} rowID={rowID}/>
         );
-    }
+    };
+
+    goToSettings = () => {
+        Linking.openURL('app-settings:');
+    };
 
     render() {
         const {isLoaded, image, load} = this.state;
+
+        if (this.state.longitud === undefined || this.state.latitud === undefined) {
+            return (
+                <View style={[{
+                    justifyContent: "center",
+                    alignItems: "center"
+                }, styles.containerFlex]}>
+                    <Text style={[{marginBottom: 20}]}>
+                        {strings("feed.InactiveGeolocation")}
+                    </Text>
+                    {(Platform.OS == 'ios') ?
+                        <NativeBaseButton block onPress={this.goToSettings} rounded
+                                          style={[{alignSelf: "center", width: 200}, buttonStyles.purpleButton]}>
+                            <Text style={[textStyles.whiteText]}>{strings("feed.GoToLocationServices")}</Text>
+                        </NativeBaseButton>
+                        :
+                        null}
+                </View>
+            );
+        }
 
         if (!isLoaded) {
             return (
@@ -557,7 +502,6 @@ export default class HomePage extends Component {
                 </View>
             );
         }
-
 
         return (
             <View style={styles.containerFlex}>

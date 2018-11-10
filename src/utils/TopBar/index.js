@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
-import {validateToken} from './TopBarActions'
+import {updatelocation, validateToken} from './TopBarActions'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
 import {APP_STORE} from '../../Store';
@@ -10,6 +10,8 @@ import styles from './style';
 // Optional: Flow type
 import {Notification, NotificationOpen} from 'react-native-firebase';
 import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
+import GeoLocationProvider from "../GeoLocationProvider";
+import {strings} from "../../i18n";
 
 
 export default class TopBar extends Component {
@@ -24,7 +26,7 @@ export default class TopBar extends Component {
             like: "false",
             currentChatUsername: "",
             modalVisible: false,
-            matchData: {},
+            matchData: {}
         };
     }
 
@@ -235,9 +237,18 @@ export default class TopBar extends Component {
         this.props.navigation.navigate('Notifications');
     }
 
+    onLocation = position => {
+        console.log('TopBar:onLocation', position);
+        updatelocation(position);
+    };
+
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
+                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
+                                     active={true}
+                />
                 <Container style={styles.bgColor}>
 
                     <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>

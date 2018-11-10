@@ -45,6 +45,9 @@
         "imageRequired": "Image is required",
         "ageRequired": "Date of birth is required",
         "editProfile": "Edit Profile",
+        "locationMessage": "Weedmatch requires your location to find content and interesting people to meet around you",
+        "locationTitle": "Weedmatch requires access to your location",
+        "editProfile": "Edit Profile",
         "termsPopup": {
             "accept": "Accept",
             "reject": "Don't accept",
@@ -118,6 +121,11 @@
         "error": "An error happened trying to make the report",
         "messageWhenSending": "Your report will be sent",
         "header": "Reporting user"
+    },
+    "feed":{
+        "InactiveGeolocation":"Must activate Locations Services to use this feature",
+        "GoToLocationServices":"Location Services",
+        "TryAgain":"Try Again"
     },
     "PublicProfile": {
         "reportButtonText": "Report"

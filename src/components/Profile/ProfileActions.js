@@ -25,6 +25,24 @@ function publicProfileAction(token, id) {
         });
 }
 
+function privateProfileAction(token, id) {
+    console.log(`privateProfileAction: ${token}, ${id}`);
+
+    userService.privateProfile(token, id)
+        .then(async (response) => {
+            console.log(`privateProfileAction: ${token}, ${id}`, response);
+            const json = await response.json();
+            console.log(`privateProfileAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.PROFILE_EVENT.next({"profile": json});
+                return;
+            } else if (response.status === 401) {
+                logOut()
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        });
+}
+
 function publicImages420Action(token, id, pageUrl) {
     console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`);
 
@@ -94,7 +112,7 @@ function logOut() {
         // Tell the system there is no more notifications
         APP_STORE.NOTI_EVENT.next({"noti": false});
     }).catch(err => {
-        console.log(`ProfileActions:logOut:firebase.messaging:error`,JSON.stringify(err));
+        console.log(`ProfileActions:logOut:firebase.messaging:error`, JSON.stringify(err));
         _cleanStorage();
         // Tell the system there is no more notifications
         APP_STORE.NOTI_EVENT.next({"noti": false});
@@ -119,4 +137,4 @@ function getImages(data) {
     return _images;
 }
 
-export {publicProfileAction, getImages, publicImages420Action, appendData, Action420, logOut};
+export {publicProfileAction, getImages, publicImages420Action, appendData, Action420, logOut, privateProfileAction};

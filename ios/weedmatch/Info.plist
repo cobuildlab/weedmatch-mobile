@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0</string>
+	<string>1.6.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5</string>
+	<string>8</string>
 	<key>FacebookAppID</key>
 	<string>195159134438735</string>
 	<key>FacebookDisplayName</key>
@@ -57,8 +57,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Weedmatch requires access to your camera to take photos.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Weedmatch requires constant access to your location in order to track your position, even when the screen is off.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Weedmatch will now only track your location when the screen is on and the app is displayed.</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -89,7 +87,6 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

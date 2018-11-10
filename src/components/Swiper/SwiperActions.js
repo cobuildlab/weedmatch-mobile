@@ -38,9 +38,9 @@ const swiperAction = async (token, action, id) => {
  * @param state
  */
 const swiperListAction = (token, state) => {
-    console.log(`SwiperActions:swiper ${token}, ${state.urlPage}, ${state.numPage}`);
+    console.log(`SwiperActions:swiper ${token}, ${state.urlPage}, ${state.numPage}`, state);
 
-    let pageUrl = URL + 'swiper/?latitud=' + state.latitud + '&longitud=' + state.longitud;
+    let pageUrl = URL + 'swiper/?latitud=' + state.latitude + '&longitud=' + state.longitude;
 
     if (state.numPage > 0)
         pageUrl = state.urlPage;
@@ -50,7 +50,6 @@ const swiperListAction = (token, state) => {
 };
 
 function swiper(token, state) {
-
     console.log(`SwiperAction: ${token}, ${state.urlPage}, ${state.numPage}`);
 
     var pagUrl = '';
@@ -60,7 +59,7 @@ function swiper(token, state) {
         getSwiper(token, pagUrl);
 
     } else if (state.numPage == 0) {
-        pagUrl = URL + 'swiper/?latitud=' + state.latitud + '&longitud=' + state.longitud;
+        pagUrl = URL + 'swiper/?latitud=' + state.latitude + '&longitud=' + state.longitude;
         getSwiper(token, pagUrl);
     }
 }
