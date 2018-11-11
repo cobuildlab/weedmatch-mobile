@@ -462,7 +462,12 @@ export default class HomePage extends Component {
 
     _renderRow = (rowData, sectionID, rowID) => {
         return (
-            <FeedRow navigation={this.props.navigation} rowData={rowData} sectionID={sectionID} rowID={rowID}/>
+            <FeedRow
+                navigation={this.props.navigation}
+                rowData={rowData}
+                sectionID={sectionID}
+                rowID={parseInt(rowID)}
+            />
         );
     };
 
