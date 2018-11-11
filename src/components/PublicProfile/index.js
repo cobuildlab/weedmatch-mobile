@@ -285,7 +285,7 @@ export default class PublicProfile extends Component {
               <Text style={styles.textNameDetails}>{rowData.first_name}, {rowData.age} </Text>
             </View>
             <View>
-              {country &&
+              {!!country &&
                 <Text style={styles.textCountry}>{country.name} </Text>
               }
               <Text style={styles.textDistance}>{rowData.distance} </Text>
@@ -360,7 +360,7 @@ export default class PublicProfile extends Component {
           } else {
 
             return (
-              
+
               <Container>
                 <Content>
                   <Image
@@ -369,17 +369,17 @@ export default class PublicProfile extends Component {
                   />
 
                   <View style={styles.dataAndReportButton}>
-                    
+
                     <View style={styles.viewFlex}>
                       <Text style={styles.textName}>
                         {rowData.first_name}, {rowData.age}
                       </Text>
-                      {country &&
+                      {!!country &&
                             <Text style={styles.textCountry}>{country.name}</Text>
                       }
                       <Text style={styles.textDistance}>{rowData.distance}</Text>
                     </View>
-                    
+
                     <TouchableOpacity
                       onPress={this.onPressReport}
                       style={styles.reportButtonContainer}
@@ -387,13 +387,13 @@ export default class PublicProfile extends Component {
                       <Image style={styles.reportButtonImage} source={require('../../assets/img/report.png')} />
                       <Text style={styles.reportButtonText}>{strings('PublicProfile.reportButtonText')}</Text>
                     </TouchableOpacity>
-                    
+
                   </View>
 
                   <Text style={styles.textDescription}>
                     {rowData.description}
                   </Text>
-                  
+
                 </Content>
                 {
                   // absolutely positioned
