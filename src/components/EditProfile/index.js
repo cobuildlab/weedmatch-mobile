@@ -10,7 +10,7 @@ import {
     TextInput,
     Keyboard,
     ActivityIndicator,
-    Switch,
+    Switch, AsyncStorage, Alert,
 } from 'react-native';
 
 import { strings } from '../../i18n';
@@ -45,11 +45,21 @@ export default class EditProfile extends Component {
             user: {},
             username: '',
         };
-
+        this.libraryPermissionsHasBeenAsked = false;
+        this.cameraPermissionsHasBeenAsked = false;
         this.helper = false;
     }
 
     componentDidMount() {
+        AsyncStorage.getItem("libraryPermissionsHasBeenAsked").then(value => {
+            if (value !== null)
+                this.libraryPermissionsHasBeenAsked = true;
+        });
+        AsyncStorage.getItem("cameraPermissionsHasBeenAsked").then(value => {
+            if (value !== null)
+                this.cameraPermissionsHasBeenAsked = true;
+        });
+
         this.public = APP_STORE.PUBLICEDITPROFILE_EVENT.subscribe(state => {
             console.log(
                 'Public Edit Profile:componentDidMount:PUBLICEDITPROFILE_EVENT',
@@ -200,7 +210,7 @@ export default class EditProfile extends Component {
         );
     }
 
-    _getPhoto(index) {
+    getPhotoFromPicker = (index) => {
         ImagePicker.openPicker({
             compressImageQuality: 0.5,
             cropping: false,
@@ -211,10 +221,31 @@ export default class EditProfile extends Component {
             .then(image => {
                 this.setImageUrl(image.path, index);
             })
-            .catch(e => alert(e));
+            .catch(e => console.log(e));
+    };
+
+    _getPhoto(index) {
+        if (this.libraryPermissionsHasBeenAsked)
+            this.getPhotoFromPicker(index);
+        else {
+            Alert.alert(
+                strings("ImagePicker.AlertTitle"),
+                strings("ImagePicker.AlertDescription"),
+                [
+                    {
+                        text: 'Cancel', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {text: 'OK', onPress: ()=> {this.getPhotoFromPicker(index)}},
+                ],
+                {cancelable: false}
+            );
+            AsyncStorage.setItem("libraryPermissionsHasBeenAsked", "someValue");
+        }
+
     }
 
-    _takePhoto(index) {
+    takePhotoFromPicker(index) {
         ImagePicker.openCamera({
             compressImageQuality: 0.5,
             cropping: false,
@@ -225,7 +256,27 @@ export default class EditProfile extends Component {
             .then(image => {
                 this.setImageUrl(image.path, index);
             })
-            .catch(e => alert(e));
+            .catch(e => console.log(e));
+    }
+
+    _takePhoto(index) {
+        if (this.cameraPermissionsHasBeenAsked)
+            this.takePhotoFromPicker(index);
+        else {
+            Alert.alert(
+                strings("ImagePicker.AlertTitle"),
+                strings("ImagePicker.AlertDescription"),
+                [
+                    {
+                        text: 'Cancel', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {text: 'OK', onPress: ()=> {this.takePhotoFromPicker(index);}},
+                ],
+                {cancelable: false}
+            );
+            AsyncStorage.setItem("cameraPermissionsHasBeenAsked", "someValue");
+        }
     }
 
     _setGenero(value) {

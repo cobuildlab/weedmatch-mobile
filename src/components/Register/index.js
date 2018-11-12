@@ -29,7 +29,6 @@ import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
-import GeoLocationProvider from "../../utils/GeoLocationProvider";
 
 import TermsModal from './TermsModal'
 
@@ -676,9 +675,6 @@ class RegisterPage extends Component {
         }
         return (
             <View style={styles.scrollContainer}>
-                {/*<GeoLocationProvider dialogMessage={strings('register.locationMessage')}*/}
-                {/*dialogTitle={strings('register.locationTitle')}*/}
-                {/*onLocation={this.onLocation} />*/}
                 {this.renderBy(body)}
             </View>
         );

@@ -136,6 +136,6 @@
     },
     "GeoLocationProvider":{
         "AlertTitle": "Weedmatch requiere accesso a tus localización",
-        "AlertDescription": "Nosotros requerimos tu localización para mostrarte usuarios, contenido y eventos relevantes para ti"
+        "AlertDescription": "Nosotros requerimos acceso a tu localización para mostrarte usuarios, contenido y eventos relevantes para ti a tu alrededor"
     }
 }

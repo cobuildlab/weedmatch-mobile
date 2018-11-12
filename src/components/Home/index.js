@@ -385,7 +385,7 @@ export default class HomePage extends Component {
                 });
                 this.toggleModal();
             })
-            .catch(e => alert(e));
+            .catch(e => console.log(e));
     }
 
     _takePhoto() {
