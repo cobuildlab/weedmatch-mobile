@@ -23,21 +23,25 @@ import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
 import GeoStore from "../../utils/GeoStore";
 
-import REPORT_ROUTE_KEY from '../../modules/report'
-import { PLACE_ENUM } from '../../modules/report';
+import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
+import ReportStore from '../../modules/report/ReportStore'
 
 
 export default class SwiperView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    static getInitialState() {
+        return {
             cards: [],
+            isLoaded: false,
             latitude: 0,
             longitude: 0,
-            urlPage: '',
             numPage: 0,
-            isLoaded: false,
+            urlPage: '',
         }
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = SwiperView.getInitialState()
 
         this.cardIndex = 0;
     }
@@ -122,6 +126,11 @@ export default class SwiperView extends Component {
             this._swiperData();
         }, 2000);
 
+        this.reportSubscription = ReportStore.subscribe("Reported", () => {
+            // reload component
+            this.setState(SwiperView.getInitialState())
+            this._swiperData()
+        })
     }
 
     updatePositionIfExists() {
@@ -148,6 +157,7 @@ export default class SwiperView extends Component {
         this.swiperPage.unsubscribe();
         this.errorSubscription.unsubscribe();
         this.geoDatasubscription.unsubscribe();
+        this.reportSubscription.unsubscribe();
     }
 
 
