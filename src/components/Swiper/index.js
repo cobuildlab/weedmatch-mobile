@@ -23,8 +23,8 @@ import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
 import GeoStore from "../../utils/GeoStore";
 
-import REPORT_ROUTE_KEY from '../../modules/report'
-import { PLACE_ENUM } from '../../modules/report';
+import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
+import ReportStore from '../../modules/report/ReportStore'
 
 
 export default class SwiperView extends Component {
@@ -126,13 +126,11 @@ export default class SwiperView extends Component {
             this._swiperData();
         }, 2000);
 
-        this.navigationSubscription = this.props.navigation.addListener(
-            "willFocus",
-            () => {
-                // reload component
-                this.setState(SwiperView.getInitialState())
-                this._swiperData()
-        });
+        this.reportSubscription = ReportStore.subscribe("Reported", () => {
+            // reload component
+            this.setState(SwiperView.getInitialState())
+            this._swiperData()
+        })
     }
 
     updatePositionIfExists() {
@@ -159,7 +157,7 @@ export default class SwiperView extends Component {
         this.swiperPage.unsubscribe();
         this.errorSubscription.unsubscribe();
         this.geoDatasubscription.unsubscribe();
-        this.navigationSubscription.remove();
+        this.reportSubscription.unsubscribe();
     }
 
 
