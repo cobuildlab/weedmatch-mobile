@@ -11,6 +11,10 @@ import {PLACE_ENUM} from "../report";
 import REPORT_ROUTE_KEY from "../report";
 import {EMPTY_PROFILE_PICTURE} from "./index";
 
+/**
+ * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
+ */
+
 export class FeedRow extends React.Component {
     constructor(props) {
         super(props);
@@ -87,9 +91,9 @@ export class FeedRow extends React.Component {
          * @type {ReportRouteParams}
          */
         const params = {
-            feedImageID: idImage,
+            feedImageID: String(idImage),
             place: PLACE_ENUM.Feed,
-            userID,
+            userID: String(userID),
             userName,
         };
 
