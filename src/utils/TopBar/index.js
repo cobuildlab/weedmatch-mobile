@@ -1,3 +1,4 @@
+// @ts-check
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
@@ -8,7 +9,10 @@ import {APP_STORE} from '../../Store';
 import Swiper from '../../components/Swiper';
 import styles from './style';
 // Optional: Flow type
-import {Notification, NotificationOpen} from 'react-native-firebase';
+import {Notification} from 'react-native-firebase';
+/**
+ * @typedef {import('react-native-firebase').RNFirebase.notifications.NotificationOpen} NotificationOpen
+ */
 import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 import GeoLocationProvider from "../GeoLocationProvider";
 import {strings} from "../../i18n";
@@ -87,7 +91,7 @@ export default class TopBar extends Component {
 
         // This initialNotification if for when the App it's opened from tapping in a notification
         firebase.notifications().getInitialNotification()
-            .then((notificationOpen: NotificationOpen) => {
+            .then((/** @type {NotificationOpen} */ notificationOpen) => {
                 console.log("TOPBAR:getInitialNotification", notificationOpen);
 
                 if (notificationOpen) {
