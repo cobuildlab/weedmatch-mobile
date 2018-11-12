@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Text,
     TouchableOpacity,
     View,
     Alert,
     ScrollView,
-    Image,
+    Image, SafeAreaView,
 } from 'react-native';
-import { strings } from '../../i18n';
-import { isValidText, toastMsg } from '../../utils';
-import { APP_STORE } from '../../Store';
+import {strings} from '../../i18n';
+import {isValidText, toastMsg} from '../../utils';
+import {APP_STORE} from '../../Store';
 import styles from './styles';
-import { facebookAction, firebaseAction } from './AutheticationActions';
+import {facebookAction, firebaseAction} from './AutheticationActions';
 import firebase from 'react-native-firebase';
+import GeoLocationProvider from "../../utils/GeoLocationProvider";
 
 /**
  * MatchUsersScreen Screen
@@ -86,7 +87,7 @@ export default class Authentication extends Component {
         });
     }
 
-    static navigationOptions = { header: null };
+    static navigationOptions = {header: null};
 
     userRegister() {
         this.props.navigation.navigate('Register');
@@ -97,36 +98,29 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                // eslint-disable-next-line no-console
-                console.log(position);
-
-                this.setState(
-                    {
-                        latitud: position.coords.latitude.toFixed(6),
-                        longitud: position.coords.longitude.toFixed(6),
-                    },
-                    () => {
-                        this.subscription();
-                        facebookAction(this.state);
-                    }
-                );
-            },
-            error => {
-                Alert.alert(error.message);
-            },
-            { enableHighAccuracy: false, timeout: 5000 }
-        );
+        this.subscription();
+        facebookAction(this.state);
     }
 
     _showCurrentVersion() {
         //TODO: react-native-version-check deprecated
     }
 
+    onLocation = (position) => {
+        this.setState({
+            latitud: position.coords.latitude.toFixed(6),
+            longitud: position.coords.longitude.toFixed(6),
+        });
+
+    };
+
     render() {
         return (
             <ScrollView style={styles.scrollContainer}>
+                <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
+                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
+                                     active={true}
+                />
                 <View style={styles.headerLogin}>
                     <View style={styles.headerImageHolder}>
                         <View style={styles.imageStyle}>

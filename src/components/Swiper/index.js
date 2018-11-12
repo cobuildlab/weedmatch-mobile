@@ -117,7 +117,7 @@ export default class SwiperView extends Component {
             });
         });
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.updatePositionIfExists();
             this._swiperData();
         }, 2000);
@@ -127,7 +127,7 @@ export default class SwiperView extends Component {
     updatePositionIfExists() {
         const position = GeoStore.getState("GeoData");
 
-        if (!position || !position.coords){
+        if (!position || !position.coords) {
             this.setState({
                 latitude: undefined,
                 longitude: undefined
@@ -168,7 +168,7 @@ export default class SwiperView extends Component {
      * @returns {void}
      */
     onPressBlock = (imageID, userID, userName) => {
-        const { navigation } = this.props;
+        const {navigation} = this.props;
 
         const params = {
             place: PLACE_ENUM.Swiper,

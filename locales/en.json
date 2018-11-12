@@ -129,5 +129,14 @@
     },
     "PublicProfile": {
         "reportButtonText": "Report"
+    },
+
+    "ImagePicker":{
+        "AlertTitle": "Weedmatch require access to your photos",
+        "AlertDescription": "We require access to your photos to allow you share moments and emotions with the members of our community"
+    },
+    "GeoLocationProvider":{
+        "AlertTitle": "Weedmatch require access to your location",
+        "AlertDescription": "We require access to your location to show you nearby content, users and events that are more relevant to your location"
     }
 }

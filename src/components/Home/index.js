@@ -14,7 +14,7 @@ import {
     Platform,
     Linking,
     Alert,
-    SafeAreaView,
+    SafeAreaView, AsyncStorage,
 } from 'react-native';
 import {Button as NativeBaseButton} from 'native-base';
 import moment from 'moment';
@@ -72,9 +72,20 @@ export default class HomePage extends Component {
             latitud: undefined,
             longitud: undefined,
         };
+        this.libraryPermissionsHasBeenAsked = false;
+        this.cameraPermissionsHasBeenAsked = false;
     }
 
     componentDidMount() {
+        AsyncStorage.getItem("libraryPermissionsHasBeenAsked").then(value => {
+            if (value !== null)
+                this.libraryPermissionsHasBeenAsked = true;
+        });
+        AsyncStorage.getItem("cameraPermissionsHasBeenAsked").then(value => {
+            if (value !== null)
+                this.cameraPermissionsHasBeenAsked = true;
+        });
+
         this.feedData = APP_STORE.FEED_EVENT.subscribe(state => {
             console.log('Home420:componentDidMount:feedDataSuscription', state);
             if (state.feed) {
@@ -322,26 +333,43 @@ export default class HomePage extends Component {
 
     static navigationOptions = {header: null};
 
-    _getPhoto() {
+    getPhotoFromPicker = () => {
         ImagePicker.openPicker({
             cropping: false,
             width: 500,
             height: 500,
             compressImageQuality: 0.5,
             includeExif: true,
-        })
-            .then(image => {
-                console.log('received image', image.path);
-                console.log(image);
-                this.setState({
-                    image: image.path,
-                });
-                this.toggleModal();
-            })
-            .catch(e => alert(e));
+        }).then(image => {
+            console.log('received image', image.path);
+            this.setState({
+                image: image.path
+            });
+            this.toggleModal();
+        }).catch(e => console.log(e));
+    };
+
+    _getPhoto() {
+        if (this.libraryPermissionsHasBeenAsked)
+            this.getPhotoFromPicker();
+        else {
+            Alert.alert(
+                strings("ImagePicker.AlertTitle"),
+                strings("ImagePicker.AlertDescription"),
+                [
+                    {
+                        text: 'Cancel', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {text: 'OK', onPress: this.getPhotoFromPicker},
+                ],
+                {cancelable: false}
+            );
+            AsyncStorage.setItem("libraryPermissionsHasBeenAsked", "someValue");
+        }
     }
 
-    _takePhoto() {
+    takePhotoFromPicker() {
         ImagePicker.openCamera({
             cropping: false,
             width: 500,
@@ -357,7 +385,27 @@ export default class HomePage extends Component {
                 });
                 this.toggleModal();
             })
-            .catch(e => alert(e));
+            .catch(e => console.log(e));
+    }
+
+    _takePhoto() {
+        if (this.cameraPermissionsHasBeenAsked)
+            this.takePhotoFromPicker();
+        else {
+            Alert.alert(
+                strings("ImagePicker.AlertTitle"),
+                strings("ImagePicker.AlertDescription"),
+                [
+                    {
+                        text: 'Cancel', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {text: 'OK', onPress: this.takePhotoFromPicker},
+                ],
+                {cancelable: false}
+            );
+            AsyncStorage.setItem("cameraPermissionsHasBeenAsked", "someValue");
+        }
     }
 
     showActivity() {
