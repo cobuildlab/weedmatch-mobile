@@ -191,6 +191,9 @@ export default class TopBar extends Component {
                     this.setState({modalVisible: true, matchData: data});
                     break;
                 }
+            case "MS":
+                this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
+                break;
             default:
                 console.warn("UNHANDLED NOTIFICATION TYPE:", JSON.stringify(data));
         }
