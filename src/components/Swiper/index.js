@@ -172,8 +172,8 @@ export default class SwiperView extends Component {
 
         const params = {
             place: PLACE_ENUM.Swiper,
-            profileImageID: imageID,
-            userID,
+            profileImageID: String(imageID),
+            userID: String(userID),
             userName,
         };
 

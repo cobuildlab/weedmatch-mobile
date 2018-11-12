@@ -236,9 +236,9 @@ export default class HomePage extends Component {
          * @type {ReportRouteParams}
          */
         const params = {
-            feedImageID: imageID,
+            feedImageID: String(imageID),
             place: PLACE_ENUM.Feed,
-            userID,
+            userID: String(userID),
             userName,
         };
 

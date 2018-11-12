@@ -104,22 +104,14 @@ export default class Report extends Component {
     componentDidMount() {
         const { navigation } = this.props
 
-        this.reportedSubscription = store.subscribe("Reported", (status) => {
-            if (status === 'SENDING_REPORT') {
-                this.setState({
-                    sendingReport: true,
-                })
-            }
-
-            if (status === 'REPORT_SENT') {
-                this.setState({
-                    sendingReport: false
-                })
-
-                toastMsg(strings('report.success'))
-
-                navigation.goBack()
-            }
+        this.reportedSubscription = store.subscribe("Reported", () => {
+            this.setState({
+                sendingReport: false
+            });
+            
+            toastMsg(strings("report.success"))
+            
+            navigation.goBack();
         });
 
         this.reportSubscription = store.subscribe(
@@ -179,6 +171,10 @@ export default class Report extends Component {
 
         // eslint-disable-next-line no-console
         console.warn("ReportView: onPressSend:", params);
+
+        this.setState({
+            sendingReport: true,
+        })
 
         reportAction(params)
     };
