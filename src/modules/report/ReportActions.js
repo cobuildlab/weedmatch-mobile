@@ -15,8 +15,6 @@ import { postReport } from './services/postReport';
  * @returns {void}
  */
 export const reportAction = report => {
-    dispatchEvent('Reported', 'SENDING_REPORT');
-
     /**
      * @param {Response} res
      */

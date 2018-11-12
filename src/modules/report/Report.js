@@ -104,22 +104,14 @@ export default class Report extends Component {
     componentDidMount() {
         const { navigation } = this.props
 
-        this.reportedSubscription = store.subscribe("Reported", (status) => {
-            if (status === 'SENDING_REPORT') {
-                this.setState({
-                    sendingReport: true,
-                })
-            }
-
-            if (status === 'REPORT_SENT') {
-                this.setState({
-                    sendingReport: false
-                })
-
-                toastMsg(strings('report.success'))
-
-                navigation.goBack()
-            }
+        this.reportedSubscription = store.subscribe("Reported", () => {
+            this.setState({
+                sendingReport: false
+            });
+            
+            toastMsg(strings("report.success"))
+            
+            navigation.goBack();
         });
 
         this.reportSubscription = store.subscribe(
@@ -165,22 +157,24 @@ export default class Report extends Component {
         const {commentInput: comment, reasonInput: reason} = this.state;
 
         /**
-         * Any undefined parameter will be deleted from the POST body by
-         * JSON.stringify()
          * @type {ReportPOSTParams}
          */
         const params = {
-            chat: navigation.getParam('chatID'),
+            chat: String(navigation.getParam('chatID')),
             comment,
-            image_feed: navigation.getParam('feedImageID'),
-            image_profile: navigation.getParam('profileImageID'),
+            image_feed: String(navigation.getParam('feedImageID')),
+            image_profile: String(navigation.getParam('profileImageID')),
             place: navigation.getParam('place'),
             reason,
-            reported_user: navigation.getParam('userID'),
+            reported_user: String(navigation.getParam('userID')),
         }
 
         // eslint-disable-next-line no-console
         console.warn("ReportView: onPressSend:", params);
+
+        this.setState({
+            sendingReport: true,
+        })
 
         reportAction(params)
     };
