@@ -22,12 +22,10 @@ import {Button as NativeBaseButton} from "native-base";
 import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
 import GeoStore from "../../utils/GeoStore";
-import { PLACE_ENUM } from '../../modules/report';
 
 import REPORT_ROUTE_KEY from '../../modules/report'
 import { PLACE_ENUM } from '../../modules/report';
 
-import REPORT_ROUTE_KEY from '../../modules/report'
 
 export default class SwiperView extends Component {
     constructor(props) {
