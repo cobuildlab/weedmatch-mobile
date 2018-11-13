@@ -157,16 +157,18 @@ export default class Report extends Component {
         const {commentInput: comment, reasonInput: reason} = this.state;
 
         /**
+         * Any undefined parameter will be deleted from the POST body by
+         * JSON.stringify()
          * @type {ReportPOSTParams}
          */
         const params = {
-            chat: String(navigation.getParam('chatID')),
+            chat: navigation.getParam('chatID'),
             comment,
-            image_feed: String(navigation.getParam('feedImageID')),
-            image_profile: String(navigation.getParam('profileImageID')),
+            image_feed: navigation.getParam('feedImageID'),
+            image_profile: navigation.getParam('profileImageID'),
             place: navigation.getParam('place'),
             reason,
-            reported_user: String(navigation.getParam('userID')),
+            reported_user: navigation.getParam('userID'),
         }
 
         // eslint-disable-next-line no-console
