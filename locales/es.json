@@ -83,12 +83,12 @@
     },
     "forgot": {
         "send": "Enviar",
-        "code": "Codigo",
+        "code": "Código",
         "password": "Password",
         "confirmPassword": "Confirmar Password"
     },
     "swiper": {
-        "match": "¡{{name}} y tu se gustan!",
+        "match": "¡{{name}} y tú hicieron MATCH!",
         "hi": "¡Dile Hola!",
         "continue": "Continuar",
         "searching": "Buscando personas cerca de ti",
@@ -100,7 +100,7 @@
         "nomsg": "No tienes conversaciones activas",
         "noLike": "No tienes nuevas notificaciones",
         "reconnect": "Reconectando",
-        "write": "Se el primero en escribir un mensaje"
+        "write": "Sé el primero en escribir un mensaje"
     },
     "report": {
         "commentInputPlaceholder": "Comentario (opcional)",
