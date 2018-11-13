@@ -36,12 +36,12 @@ import {
 } from './HomeActions';
 import firebase from 'react-native-firebase';
 
-import REPORT_ROUTE_KEY from '../../modules/report/index';
+import REPORT_ROUTE_KEY, {PLACE_ENUM} from '../../modules/report/index';
+import ReportStore from '../../modules/report/ReportStore'
 /**
  * @typedef {import('../report').ReportRouteParams} ReportRouteParams
  * @typedef {import('../../definitions').NavigationScreenProp} NavigationScreenProp
  */
-import {PLACE_ENUM} from '../../modules/report/index';
 import Feed from "./Feed";
 import GeoStore from "../../utils/GeoStore";
 import buttonStyles from "../../styles/buttons";
@@ -228,6 +228,13 @@ export default class HomePage extends Component {
 
         this.updatePositionIfExists();
         this._feedData();
+
+        // subscribe and reload the feed when a report it's made so as to hide
+        // the posts from the user that was just reported
+        this.reportStoreSubscription = ReportStore.subscribe("Reported", () => {
+            this.setState(HomePage.getInitialState(this.ds1));
+            this._feedData();
+        });
     }
 
     updatePositionIfExists() {
@@ -247,6 +254,7 @@ export default class HomePage extends Component {
         this.feedPage.unsubscribe();
         this.geoDatasubscription.unsubscribe();
         this.appEvent.unsubscribe();
+        this.reportStoreSubscription.unsubscribe();
     }
 
     onEndReached = () => {
