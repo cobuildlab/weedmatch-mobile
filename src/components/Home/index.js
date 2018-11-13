@@ -16,6 +16,9 @@ import {
     Alert,
     SafeAreaView, AsyncStorage,
 } from 'react-native';
+/**
+ * @typedef {import('react-native').ListViewDataSource} ListViewDataSource
+ */
 import {Button as NativeBaseButton} from 'native-base';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -36,6 +39,7 @@ import firebase from 'react-native-firebase';
 import REPORT_ROUTE_KEY from '../../modules/report/index';
 /**
  * @typedef {import('../report').ReportRouteParams} ReportRouteParams
+ * @typedef {import('../../definitions').NavigationScreenProp} NavigationScreenProp
  */
 import {PLACE_ENUM} from '../../modules/report/index';
 import Feed from "./Feed";
@@ -46,9 +50,55 @@ import {FooterTab} from "native-base";
 import {FeedRow} from "../../modules/feed/FeedRow";
 
 /**
+ * @typedef {object} HomePageProps
+ * @prop {NavigationScreenProp} navigation
+ */
+
+/**
+ * @typedef {object} HomePageState
+ * @prop {string} comment
+ * @prop {Array<any>} dataSource
+ * @prop {ListViewDataSource} feedData
+ * @prop {string} image
+ * @prop {boolean} isLoaded
+ * @prop {any|undefined} latitud
+ * @prop {boolean} load
+ * @prop {boolean} loading
+ * @prop {any|undefined} longitud
+ * @prop {boolean} modalVisible
+ * @prop {number} numPage
+ * @prop {boolean} refreshing
+ * @prop {string} time
+ * @prop {string} urlPage
+ */
+
+/**
  * View of the Photo Feed
  */
 export default class HomePage extends Component {
+    /**
+     * @param {ListViewDataSource} ds1
+     * @returns {HomePageState}
+     */
+    static getInitialState(ds1) {
+        return {
+            comment: '',
+            dataSource: [],
+            feedData: ds1.cloneWithRows([]),
+            image: '',
+            isLoaded: false,
+            latitud: undefined,
+            load: false,
+            loading: true,
+            longitud: undefined,
+            modalVisible: false,
+            numPage: 0,
+            refreshing: false,
+            time: '',
+            urlPage: '',
+        };
+    }
+
     constructor(props) {
         super(props);
 
@@ -56,22 +106,7 @@ export default class HomePage extends Component {
             rowHasChanged: (r1, r2) => r1 !== r2,
         });
 
-        this.state = {
-            feedData: this.ds1.cloneWithRows([]),
-            dataSource: [],
-            loading: true,
-            refreshing: false,
-            urlPage: '',
-            numPage: 0,
-            image: '',
-            time: '',
-            comment: '',
-            modalVisible: false,
-            isLoaded: false,
-            load: false,
-            latitud: undefined,
-            longitud: undefined,
-        };
+        this.state = HomePage.getInitialState(this.ds1)
         this.libraryPermissionsHasBeenAsked = false;
         this.cameraPermissionsHasBeenAsked = false;
     }
