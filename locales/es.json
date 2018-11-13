@@ -83,12 +83,12 @@
     },
     "forgot": {
         "send": "Enviar",
-        "code": "Codigo",
+        "code": "Código",
         "password": "Password",
         "confirmPassword": "Confirmar Password"
     },
     "swiper": {
-        "match": "¡{{name}} y tu se gustan!",
+        "match": "¡{{name}} y tú hicieron MATCH!",
         "hi": "¡Dile Hola!",
         "continue": "Continuar",
         "searching": "Buscando personas cerca de ti",
@@ -100,7 +100,7 @@
         "nomsg": "No tienes conversaciones activas",
         "noLike": "No tienes nuevas notificaciones",
         "reconnect": "Reconectando",
-        "write": "Se el primero en escribir un mensaje"
+        "write": "Sé el primero en escribir un mensaje"
     },
     "report": {
         "commentInputPlaceholder": "Comentario (opcional)",
@@ -125,17 +125,17 @@
     "PublicProfile": {
         "reportButtonText": "Reportar"
     },
-    "feed":{
-        "InactiveGeolocation":"Debes activar los servicios de ubicación para utilizar esta funcionalidad",
-        "GoToLocationServices":"Servicios de Ubicación",
-        "TryAgain":"Intenta de Nuevo"
+    "feed": {
+        "InactiveGeolocation": "Debes activar los servicios de ubicación para utilizar esta funcionalidad",
+        "GoToLocationServices": "Servicios de Ubicación",
+        "TryAgain": "Intenta de Nuevo"
     },
-    "ImagePicker":{
-        "AlertTitle": "Weedmatch requiere accesso a tus fotos",
-        "AlertDescription": "Nosotros requerimos acceso a tus fotos para permitirte compartir momentos y emociones con el resto de la comunidad"
+    "ImagePicker": {
+        "AlertTitle": "Weedmatch requiere acceso a tus fotos",
+        "AlertDescription": "Requerimos acceso a tus fotos para permitirte compartir tus momentos cannábicos con la comunidad"
     },
-    "GeoLocationProvider":{
-        "AlertTitle": "Weedmatch requiere accesso a tus localización",
-        "AlertDescription": "Nosotros requerimos acceso a tu localización para mostrarte usuarios, contenido y eventos relevantes para ti a tu alrededor"
+    "GeoLocationProvider": {
+        "AlertTitle": "Weedmatch requiere acceso a tu localización",
+        "AlertDescription": "Requerimos acceso a tu localización para mostrarte usuarios, contenido y eventos a tu alrededor"
     }
 }
