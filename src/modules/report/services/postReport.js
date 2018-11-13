@@ -2,7 +2,6 @@ import {APP_STORE} from '../../../Store';
 
 import * as Validation from './typings';
 import {REPORT_API_ENDPOINT_URL, PLACE_ENUM} from '../index';
-import {ERROR_ENUM} from "../index";
 
 /**
  * @typedef {import('./typings').ChatReportPOSTParams} ChatReportPOSTParams
@@ -12,11 +11,9 @@ import {ERROR_ENUM} from "../index";
  * @typedef {ChatReportPOSTParams|ImageFeedReportPOSTParams|ImageProfileReportPOSTParams|SwiperReportPOSTParams} ReportPOSTParams
  */
 
-
-
 /**
  * @param {ReportPOSTParams} report
- * @returns {Promise<boolean>} Returns a promise of a boolean, if the boolean
+ * @returns {Promise<Response>} Returns a promise of a boolean, if the boolean
  * is true, the report was made successfully
  * @throws {TypeError} if the parameters aren't of the correct type
  */
@@ -48,5 +45,4 @@ export const postReport = report => {
         headers,
         method: 'POST',
     })
-        .then(res => res.ok)
 };
