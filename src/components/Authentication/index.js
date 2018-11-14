@@ -13,7 +13,7 @@ import {APP_STORE} from '../../Store';
 import styles from './styles';
 import {facebookAction, firebaseAction} from './AutheticationActions';
 import firebase from 'react-native-firebase';
-import GeoLocationProvider from "../../utils/GeoLocationProvider";
+import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
 
 /**
  * MatchUsersScreen Screen

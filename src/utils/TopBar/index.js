@@ -14,7 +14,7 @@ import {Notification} from 'react-native-firebase';
  * @typedef {import('react-native-firebase').RNFirebase.notifications.NotificationOpen} NotificationOpen
  */
 import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
-import GeoLocationProvider from "../GeoLocationProvider";
+import GeoLocationProvider from "../geolocation/GeoLocationProvider";
 import {strings} from "../../i18n";
 
 

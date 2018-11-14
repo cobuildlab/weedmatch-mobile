@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     Text,
     View,
     Image,
@@ -31,21 +30,21 @@ import {strings} from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
 import {Content, Container} from 'native-base';
 import REPORT_ROUTE_KEY from '../../modules/report/index';
-import GeoLocationProvider from "../../utils/GeoLocationProvider";
+import geoStore from "../../utils/geolocation/GeoStore";
 
 /**
  * @typedef {import('../../modules/report/Report').ReportRouteParams} ReportRouteParams
  */
 
-var {height, width} = Dimensions.get('window');
+var {width} = Dimensions.get('window');
 
 export default class PublicProfile extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            latitud: '',
-            longitud: '',
+            latitud: null,
+            longitud: null,
             rowData: {},
             refreshing: false,
             public420: [],
@@ -58,9 +57,9 @@ export default class PublicProfile extends Component {
             super: false,
         };
 
-        this.like = false
-        this.dislike = false
-        this.superLike = false
+        this.like = false;
+        this.dislike = false;
+        this.superLike = false;
 
         console.log('PublicProfile');
     }
@@ -70,6 +69,15 @@ export default class PublicProfile extends Component {
     };
 
     componentDidMount() {
+        this.geoDataSubscription = geoStore.subscribe("GeoData", position => {
+            console.log("PublicProfile:componentDidMount:geoDataSubscription:", position);
+            if (!position)
+                return;
+            // Forced to have the value updated
+            this.state.latitud = position.coords.latitude.toFixed(6);
+            this.state.longitud = position.coords.longitude.toFixed(6);
+
+        }, true);
 
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
             console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
@@ -155,12 +163,9 @@ export default class PublicProfile extends Component {
             }
         });
 
-        this._feedPosition();
-    }
-
-    _feedPosition() {
         this._publicProfile();
     }
+
 
     componentWillUnmount() {
         console.log("PublicProfile:componentWillUmmount");
@@ -168,17 +173,14 @@ export default class PublicProfile extends Component {
         this.images420Page.unsubscribe();
         this.public.unsubscribe();
         this.swiper.unsubscribe();
+        this.geoDataSubscription.unsubscribe();
     }
 
     _publicProfile() {
         const {params} = this.props.navigation.state;
         const userId = params ? params.userId : null;
 
-        if (checkConectivity()) {
-            publicProfileAction(APP_STORE.getToken(), userId, this.state)
-        } else {
-            internet();
-        }
+        publicProfileAction(APP_STORE.getToken(), userId, this.state)
     }
 
     _get420Images() {
@@ -196,7 +198,7 @@ export default class PublicProfile extends Component {
         this.setState({
             isDetail: !this.state.isDetail
         })
-    }
+    };
 
     actionSwiper(val) {
         if (this.props.navigation.state.params.root) {
@@ -221,7 +223,7 @@ export default class PublicProfile extends Component {
     }
 
     showButtons() {
-        console.log(this.state)
+        console.log(this.state);
         return (
             <View style={styles.buttonViewContainer}>
                 <TouchableOpacity onPress={() => this.actionSwiper(1)} disabled={this.state.disLike}
@@ -240,8 +242,6 @@ export default class PublicProfile extends Component {
                     <Image source={require('../../assets/img/actions/mach.png')} style={{width: 50, height: 50}}/>
                 </TouchableOpacity>
             </View>
-
-
         );
     }
 
@@ -327,13 +327,6 @@ export default class PublicProfile extends Component {
         this.props.navigation.navigate(REPORT_ROUTE_KEY, params)
     };
 
-    onLocation = (position) => {
-        this.setState({
-            latitud: position.coords.latitude.toFixed(6),
-            longitud: position.coords.longitude.toFixed(6)
-        })
-    };
-
     render() {
 
         const {rowData, country, isLoading, isDetail, public420} = this.state;
@@ -342,11 +335,6 @@ export default class PublicProfile extends Component {
             if (isDetail) {
                 return (
                     <View style={styles.viewFlex}>
-                        <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                                             dialogTitle={strings('register.locationTitle')}
-                                             onLocation={this.onLocation}
-                                             active={true}
-                                             />
                         <FlatList
                             horizontal={false}
                             numColumns={3}
@@ -427,3 +415,4 @@ export default class PublicProfile extends Component {
         }
     }
 }
+
