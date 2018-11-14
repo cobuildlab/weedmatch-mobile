@@ -17,6 +17,10 @@ import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 import GeoLocationProvider from "../geolocation/GeoLocationProvider";
 import {strings} from "../../i18n";
 
+import logToServer from 'log-to-server'
+
+import AuthStore, { events as authStoreEvents } from '../../modules/auth/AuthStore'
+
 
 export default class TopBar extends Component {
 
@@ -24,13 +28,25 @@ export default class TopBar extends Component {
 
     constructor() {
         super();
+        logToServer(AuthStore)
+        let userImageURL = null
+        let userImageURLStore =
+            AuthStore.getState(authStoreEvents.IMAGE_PROFILE_URL)
+
+        if (typeof userImageURLStore == 'string') {
+            if (userImageURLStore.length > 0) {
+                userImageURL = userImageURLStore
+            }
+        }
+
         this.state = {
             activePage: 0,
             notification: "false",
             like: "false",
             currentChatUsername: "",
             modalVisible: false,
-            matchData: {}
+            matchData: {},
+            userImageURL,
         };
     }
 
@@ -171,6 +187,19 @@ export default class TopBar extends Component {
         //     image_profile_match : "https://weedmatch-mobile.sfo2.digitaloceanspaces.com/mobile/users/profile/99/125/99-alacret_396-2018-10-08_213613.jpg",
         //     chat_id:1
         // });
+
+        // for the user pic
+        this.userImageURLSubscription =
+            AuthStore.subscribe(authStoreEvents.IMAGE_PROFILE_URL, url => {
+                if (typeof url == 'string') {
+                    if (url.length > 0) {
+                        this.setState({
+                            userImageURL : url
+                        })
+                    }
+                }
+                
+            })
     }
 
     /**
@@ -213,6 +242,14 @@ export default class TopBar extends Component {
 
 
         AppState.removeEventListener('change', this._handleAppStateChange);
+        AsyncStorage
+            .getItem(authStoreEvents.IMAGE_PROFILE_URL)
+            .then(userImageURL => {
+                this.setState({
+                    userImageURL,
+                })
+            })
+        this.userImageURLSubscription.unsubscribe();
     }
 
     getSwiperImage() {
@@ -256,7 +293,11 @@ export default class TopBar extends Component {
                 <Container style={styles.bgColor}>
 
                     <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>
-                        <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
+                        {
+                            this.state.userImageURL == null
+                            ? <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/> 
+                            : <Image style={styles.imgIconProfile} source={{ uri: this.state.userImageURL}}/>
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttomIconMsg} onPress={() => this.showMessage()}>
                         <Image style={styles.imgIconMsg}

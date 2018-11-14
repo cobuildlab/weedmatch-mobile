@@ -61,6 +61,7 @@ export default styles = StyleSheet.create({
         zIndex: 999,
     },
     imgIconProfile:{
+        borderRadius: 26 / 2,
         width: 26,
         height: 26
     },
