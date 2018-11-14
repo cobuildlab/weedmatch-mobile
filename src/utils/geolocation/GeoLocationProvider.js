@@ -1,7 +1,7 @@
 import {PureComponent} from 'react';
 import {PermissionsAndroid, Platform, AsyncStorage, Alert} from 'react-native';
 import PropTypes from 'prop-types';
-import {strings} from "../i18n";
+import {strings} from "../../i18n";
 // Optional: Flow type
 
 /**

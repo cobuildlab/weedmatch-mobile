@@ -21,7 +21,7 @@ import firebase from "react-native-firebase";
 import {Button as NativeBaseButton} from "native-base";
 import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
-import GeoStore from "../../utils/GeoStore";
+import GeoStore from "../../utils/geolocation/GeoStore";
 
 import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
 import ReportStore from '../../modules/report/ReportStore'

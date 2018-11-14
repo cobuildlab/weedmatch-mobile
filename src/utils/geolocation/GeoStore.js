@@ -1,4 +1,4 @@
-import {FluxStore} from './flux-state';
+import {FluxStore} from '../flux-state/index';
 
 /**
  * Store for the Geolocalization Data

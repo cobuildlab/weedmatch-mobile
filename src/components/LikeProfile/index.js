@@ -28,7 +28,7 @@ import {connection, internet, checkConectivity} from '../../utils';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
-import GeoLocationProvider from "../../utils/GeoLocationProvider";
+import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
 
 var {height, width} = Dimensions.get('window');
 

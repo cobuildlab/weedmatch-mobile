@@ -39,7 +39,7 @@ import REPORT_ROUTE_KEY from '../../modules/report/index';
  */
 import {PLACE_ENUM} from '../../modules/report/index';
 import Feed from "./Feed";
-import GeoStore from "../../utils/GeoStore";
+import GeoStore from "../../utils/geolocation/GeoStore";
 import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
 import {FooterTab} from "native-base";
