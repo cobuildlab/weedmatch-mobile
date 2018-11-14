@@ -13,7 +13,7 @@ import {
     FlatList,
     ScrollView
 } from 'react-native';
-
+import logToServer from 'log-to-server'
 import styles from './style';
 import {
     publicProfileAction,
@@ -61,7 +61,7 @@ export default class PublicProfile extends Component {
         this.dislike = false;
         this.superLike = false;
 
-        console.log('PublicProfile');
+        logToServer('PublicProfile');
     }
 
     static navigationOptions = {
@@ -70,7 +70,7 @@ export default class PublicProfile extends Component {
 
     componentDidMount() {
         this.geoDataSubscription = geoStore.subscribe("GeoData", position => {
-            console.log("PublicProfile:componentDidMount:geoDataSubscription:", position);
+            logToServer("PublicProfile:componentDidMount:geoDataSubscription:", position);
             if (!position)
                 return;
             // Forced to have the value updated
@@ -80,7 +80,7 @@ export default class PublicProfile extends Component {
         }, true);
 
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+            logToServer("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
             if (state.publicProfile) {
 
                 switch (state.publicProfile.weed_action) {
@@ -116,7 +116,7 @@ export default class PublicProfile extends Component {
         });
 
         this.swiper = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:SWIPERACTION_EVENT", state);
+            logToServer("Public Profile:componentDidMount:SWIPERACTION_EVENT", state);
             if (state.swiperAction) {
                 this.props.navigation.goBack();
                 return;
@@ -127,7 +127,7 @@ export default class PublicProfile extends Component {
         });
 
         this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:images420Suscription", state);
+            logToServer("Public Profile:componentDidMount:images420Suscription", state);
             if (state.publicImages420) {
 
                 this.setState(prevState => ({
@@ -135,7 +135,7 @@ export default class PublicProfile extends Component {
                     isLoading: true,
                 }))
 
-                console.log(getImages(this.state.public420));
+                logToServer(getImages(this.state.public420));
 
                 return;
             }
@@ -145,7 +145,7 @@ export default class PublicProfile extends Component {
         });
 
         this.images420Page = APP_STORE.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:images420PageSuscription", state);
+            logToServer("Public Profile:componentDidMount:images420PageSuscription", state);
             if (state.publicImages420Page) {
 
                 this.setState({
@@ -168,7 +168,7 @@ export default class PublicProfile extends Component {
 
 
     componentWillUnmount() {
-        console.log("PublicProfile:componentWillUmmount");
+        logToServer("PublicProfile:componentWillUmmount");
         this.images420.unsubscribe();
         this.images420Page.unsubscribe();
         this.public.unsubscribe();
@@ -223,7 +223,7 @@ export default class PublicProfile extends Component {
     }
 
     showButtons() {
-        console.log(this.state);
+        logToServer(this.state);
         return (
             <View style={styles.buttonViewContainer}>
                 <TouchableOpacity onPress={() => this.actionSwiper(1)} disabled={this.state.disLike}

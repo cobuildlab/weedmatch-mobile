@@ -1,3 +1,4 @@
+import logToServer from 'log-to-server'
 /**
  * Validates if the input is a Valid Text
  * Non null, non undefined, non empty
@@ -22,8 +23,8 @@ export default {
         if (!window.DEBUG)
             return;
         if (obj)
-            console.log(msg, obj);
+            logToServer(msg, obj);
         else
-            console.log(msg)
+            logToServer(msg)
     }
 };

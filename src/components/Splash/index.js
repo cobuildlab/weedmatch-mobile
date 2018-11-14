@@ -4,14 +4,14 @@ import {APP_STORE} from '../../Store';
 import {isValidText} from '../../utils';
 import styles from './style';
 import {Alert, Platform} from 'react-native';
-
+import logToServer from 'log-to-server'
 export default class Splash extends Component {
     constructor() {
         super();
     }
 
     componentDidMount() {
-        console.log("Splash:componentDidMount", Platform.Version);
+        logToServer("Splash:componentDidMount", Platform.Version);
         setTimeout(async () => {
             await this.popToken();
         }, 2000);
@@ -31,8 +31,8 @@ export default class Splash extends Component {
         }
 
         const id = APP_STORE.getId();
-        console.log('Splash:TOKEN', token);
-        console.log('Splash:USER-ID', id);
+        logToServer('Splash:TOKEN', token);
+        logToServer('Splash:USER-ID', id);
         if (!isValidText(token)) {
             // To MatchUsersScreen Page
             this.props.navigation.navigate('Auth');

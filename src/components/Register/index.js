@@ -29,14 +29,14 @@ import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
-
+import logToServer from 'log-to-server'
 import TermsModal from './TermsModal'
 
 class RegisterPage extends Component {
 
     constructor(props) {
         super(props);
-        console.log("RegisterPage:constructor");
+        logToServer("RegisterPage:constructor");
         this.state = {
             full_name: '',
             username: '',
@@ -65,7 +65,7 @@ class RegisterPage extends Component {
     static navigationOptions = {header: null};
 
     componentDidMount() {
-        console.log("RegisterPage:componentDidMount");
+        logToServer("RegisterPage:componentDidMount");
         AsyncStorage.getItem("libraryPermissionsHasBeenAsked").then(value => {
             if (value !== null)
                 this.libraryPermissionsHasBeenAsked = true;
@@ -108,7 +108,7 @@ class RegisterPage extends Component {
         });
 
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
-            console.log("RegisterPage:componentDidMount:firebaseSubscription", state);
+            logToServer("RegisterPage:componentDidMount:firebaseSubscription", state);
             this.props.navigation.navigate('App');
         });
 
@@ -156,7 +156,7 @@ class RegisterPage extends Component {
     }
 
     componentWillUnmount() {
-        console.log("RegisterPage:componentWillUmmount");
+        logToServer("RegisterPage:componentWillUmmount");
         Picker.hide();
         this.event.unsubscribe();
         this.email.unsubscribe();
@@ -168,7 +168,7 @@ class RegisterPage extends Component {
      * Method call for registering the user
      * */
     _registerUser() {
-        console.log('Register:_registerUser');
+        logToServer('Register:_registerUser');
         this.setState({
             isLoading: true
         }, () => {
@@ -205,11 +205,11 @@ class RegisterPage extends Component {
                 this.setState({age: dateAge})
             },
             onPickerCancel: (pickedValue, pickedIndex) => {
-                console.log('date', pickedValue, pickedIndex);
+                logToServer('date', pickedValue, pickedIndex);
             },
             onPickerSelect: (pickedValue, pickedIndex) => {
                 this.setState({year: pickedValue[0]});
-                console.log('date3', pickedValue, pickedIndex);
+                logToServer('date3', pickedValue, pickedIndex);
             }
         });
         Picker.show();
@@ -232,7 +232,7 @@ class RegisterPage extends Component {
     }
 
     _nextStep() {
-        console.log("Register:_nextStep", this.state);
+        logToServer("Register:_nextStep", this.state);
         const emailError = validate('email', this.state.email);
         const full_nameError = validate('full_name', this.state.full_name);
         const passwordError = validate('password', this.state.password);
@@ -328,11 +328,11 @@ class RegisterPage extends Component {
             compressImageQuality: 0.5,
             includeExif: true,
         }).then(image => {
-            console.log('received image', image.path);
+            logToServer('received image', image.path);
             this.setState({
                 image: image.path
             });
-        }).catch(e => console.log(e));
+        }).catch(e => logToServer(e));
     };
 
     _getPhoto() {
@@ -363,7 +363,7 @@ class RegisterPage extends Component {
             compressImageQuality: 0.5,
             includeExif: true,
         }).then(image => {
-            console.log('received image', image.path);
+            logToServer('received image', image.path);
             this.setState({
                 image: image.path
             });
@@ -490,7 +490,7 @@ class RegisterPage extends Component {
     }
 
     onLocation = (position) => {
-        console.log('Register:onLocation', position);
+        logToServer('Register:onLocation', position);
         if (!position || !position.coords)
             return;
         this.latitude = position.coords.latitude.toFixed(6);

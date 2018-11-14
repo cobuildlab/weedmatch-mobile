@@ -3,18 +3,18 @@ import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import {AsyncStorage} from 'react-native';
-
+import logToServer from 'log-to-server'
 function loginAction(username, password) {
-    console.log(`loginAction: ${username}, ${password}`);
+    logToServer(`loginAction: ${username}, ${password}`);
     if (!isValidText(username) || !isValidText(password)) {
         APP_STORE.APP_EVENT.next({error: strings("login.required_fields_error")});
         return;
     }
     userService.login(username, password)
         .then(async (response) => {
-            console.log(`loginAction: ${username}, ${password}`, response);
+            logToServer(`loginAction: ${username}, ${password}`, response);
             const json = await response.json();
-            console.log(`loginAction:JSON:`, json);
+            logToServer(`loginAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
                 APP_STORE.USER_EVENT.next({"username": json.username});
@@ -23,7 +23,7 @@ function loginAction(username, password) {
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         }).catch(err => {
-        console.log(`loginAction:CATCH:`, err);
+        logToServer(`loginAction:CATCH:`, err);
         APP_STORE.APP_EVENT.next({"error": err.message});
     });
 }
@@ -33,13 +33,13 @@ function loginAction(username, password) {
  * @param token
  */
 function firebaseAction(token) {
-    console.log(`firebaseAction: ${token}`);
+    logToServer(`firebaseAction: ${token}`);
 
     userService.tokenFB(token)
         .then(async (response) => {
-            console.log(`firebaseAction: ${token}`, response);
+            logToServer(`firebaseAction: ${token}`, response);
             const json = await response.json();
-            console.log(`firebaseAction:JSON:`, json);
+            logToServer(`firebaseAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
                 saveFirebase(token);

@@ -10,7 +10,7 @@ import {APP_STORE} from '../../Store';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import Chats from '../Message';
 import ILikedNotifications from '../Like';
-
+import logToServer from 'log-to-server'
 export default class Notifications extends Component {
     constructor(props) {
         super(props);
@@ -28,17 +28,17 @@ export default class Notifications extends Component {
     };
 
     componentWillUnmount() {
-        console.log("Notifications:componentDidMount");
+        logToServer("Notifications:componentDidMount");
         this.notificationSubscription.unsubscribe();
     }
 
     componentDidMount() {
-        console.log("Notifications:componentDidMount");
+        logToServer("Notifications:componentDidMount");
         this.notificationSubscription = APP_STORE.NOTI_EVENT.subscribe(state => {
             if (state.noti === true) {
-                console.log("Notifications:componentDidMount", "Someone told me that there is a notification");
-                console.log("Notifications:componentDidMount", "but i'm the notification Lord, do yo see my name?");
-                console.log("Notifications:componentDidMount", "So i'm gonna shut it down");
+                logToServer("Notifications:componentDidMount", "Someone told me that there is a notification");
+                logToServer("Notifications:componentDidMount", "but i'm the notification Lord, do yo see my name?");
+                logToServer("Notifications:componentDidMount", "So i'm gonna shut it down");
                 APP_STORE.NOTI_EVENT.next({"noti": false});
             }
         });

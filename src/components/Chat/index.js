@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, View, Image, AppState} from 'react-native';
 import {WS_URL} from '../../utils';
-
+import logToServer from 'log-to-server'
 import {APP_STORE} from '../../Store';
 import {internet, checkConectivity, toastMsg} from '../../utils';
 import styles from './style';
@@ -43,7 +43,7 @@ export default class Chat extends Component {
 
     _handleAppStateChange = nextAppState => {
         // eslint-disable-next-line no-console
-        console.log('TOPBAR:_handleAppStateChange', nextAppState);
+        logToServer('TOPBAR:_handleAppStateChange', nextAppState);
 
         if (nextAppState == 'active') this.getEarlyMessages();
     };
@@ -62,7 +62,7 @@ export default class Chat extends Component {
         // For receiving the latest messagues or if the user scrolls up in history
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log('Chat:componentDidMount:CHATMSG_EVENT');
+            logToServer('Chat:componentDidMount:CHATMSG_EVENT');
 
             if (state.error) {
                 toastMsg(state.error);
@@ -94,7 +94,7 @@ export default class Chat extends Component {
 
         this.chatPage = APP_STORE.CHATPAGE.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log('Chat:componentDidMount:CHATPAGE');
+            logToServer('Chat:componentDidMount:CHATPAGE');
 
             if (state.chatMsgPage) {
                 this.setState({
@@ -119,7 +119,7 @@ export default class Chat extends Component {
 
     componentWillUnmount() {
         // eslint-disable-next-line no-console
-        console.log('Chat:componentWillUmmount');
+        logToServer('Chat:componentWillUmmount');
 
         APP_STORE.CHATNOTIF_EVENT.next({chatNotif: ''});
         this.chatMsg.unsubscribe();
@@ -177,7 +177,7 @@ export default class Chat extends Component {
 
     onSend(messages = []) {
         // eslint-disable-next-line no-console
-        console.log('onSend:SOCKET CONNECTED');
+        logToServer('onSend:SOCKET CONNECTED');
 
         const payload = {
             chat_id: this.getChatID(),
@@ -260,7 +260,7 @@ export default class Chat extends Component {
                     url={url}
                     onOpen={() => {
                         // eslint-disable-next-line no-console
-                        console.log('Open!');
+                        logToServer('Open!');
                         // const payload = {
                         //     "message": "HOLA",
                         //     "user": APP_STORE.getUser(),
@@ -271,12 +271,12 @@ export default class Chat extends Component {
                     }}
                     onMessage={data => {
                         // eslint-disable-next-line no-console
-                        console.log(
+                        logToServer(
                             'CHAT:_handleWebSocketSetup:onmesage',
                             data
                         );
                         // eslint-disable-next-line no-console
-                        console.log(
+                        logToServer(
                             'CHAT:_handleWebSocketSetup:onmesage',
                             data.data
                         );

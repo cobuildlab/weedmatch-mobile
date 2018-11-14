@@ -2,16 +2,16 @@ import {APP_STORE} from '../../Store';
 import {userService} from './service';
 import {URL} from '../../utils';
 import moment from 'moment';
-
+import logToServer from 'log-to-server'
 function swiperAction(token, action, id) {
 
     userService.swiperAction(token, action, id, moment().format())
         .then(async (response) => {
-            console.log(`Swiper: ${token}, ${action}, ${id}`, response);
+            logToServer(`Swiper: ${token}, ${action}, ${id}`, response);
             const json = await response.json();
-            console.log(`Swiper:JSON:`, json);
+            logToServer(`Swiper:JSON:`, json);
             if (response.ok) {
-                console.log(json.detail);
+                logToServer(json.detail);
                 APP_STORE.SWIPERACTION_EVENT.next({"swiperAction": json.detail});
                 return;
             }
@@ -20,13 +20,13 @@ function swiperAction(token, action, id) {
 }
 
 function publicProfileAction(token, id, state) {
-    console.log(`publicProfileAction: ${token}, ${id}`);
+    logToServer(`publicProfileAction: ${token}, ${id}`);
 
     userService.publicProfile(token, id, state)
         .then(async (response) => {
-            console.log(`publicProfileAction: ${token}, ${id}`, response);
+            logToServer(`publicProfileAction: ${token}, ${id}`, response);
             const json = await response.json();
-            console.log(`publicProfileAction:JSON:`, json);
+            logToServer(`publicProfileAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PUBLICPROFILE_EVENT.next({"publicProfile": json});
                 return;
@@ -36,13 +36,13 @@ function publicProfileAction(token, id, state) {
 }
 
 function publicImages420Action(token, pageUrl) {
-    console.log(`publicImages420Action: ${token}, ${pageUrl}`);
+    logToServer(`publicImages420Action: ${token}, ${pageUrl}`);
 
     userService.publicImages420(token, pageUrl)
         .then(async (response) => {
-            console.log(`publicImages420Action: ${token}, ${pageUrl}`, response);
+            logToServer(`publicImages420Action: ${token}, ${pageUrl}`, response);
             const json = await response.json();
-            console.log(`publicImages420Action:JSON:`, json);
+            logToServer(`publicImages420Action:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PUBLICIMAGES420_EVENT.next({"publicImages420": json.results});
                 APP_STORE.PUBLICIMAGES420PAGE_EVENT.next({"publicImages420Page": json.next});
@@ -54,7 +54,7 @@ function publicImages420Action(token, pageUrl) {
 
 function Action420(token, state, userId) {
 
-    console.log(`Action420: ${token}, ${state}, ${userId}`);
+    logToServer(`Action420: ${token}, ${state}, ${userId}`);
 
     var pagUrl = '';
 

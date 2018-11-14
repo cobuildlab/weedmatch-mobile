@@ -17,12 +17,12 @@ import styles from './style';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from "../../utils";
 import ValidationComponent from '../../utils/ValidationComponent';
-
+import logToServer from 'log-to-server'
 class ForgotPage extends ValidationComponent {
 
     constructor() {
         super();
-        console.log("Forgot:constructor");
+        logToServer("Forgot:constructor");
         this.state = {
             email: ``,
             step: 1,
@@ -34,9 +34,9 @@ class ForgotPage extends ValidationComponent {
     }
 
     componentDidMount() {
-        console.log("Forgot:componentDidMount");
+        logToServer("Forgot:componentDidMount");
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-            console.log("Forgot:componentDidMount:appSubscription", state);
+            logToServer("Forgot:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
             if(state.success && this.state.step == 2){
                 toastMsg(state.success);
@@ -53,7 +53,7 @@ class ForgotPage extends ValidationComponent {
     }
 
     componentWillUnmount() {
-        console.log("Forgot:componentWillUnmount");
+        logToServer("Forgot:componentWillUnmount");
         this.appSubscription.unsubscribe();
     }
 

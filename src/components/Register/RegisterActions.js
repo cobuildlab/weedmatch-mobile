@@ -3,7 +3,7 @@ import {strings} from '../../i18n';
 import {checkConectivity} from '../../utils/index'
 import {userService} from './service';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
-
+import logToServer from 'log-to-server'
 /**
  * Register a User
  * @param firstName
@@ -16,7 +16,7 @@ import {AccessToken, LoginManager} from 'react-native-fbsdk';
  * @param age
  */
 function registerAction(firstName, email, password, lat, lon, sex, age, image, username) {
-    console.log(`registerAction:`, this.arguments);
+    logToServer(`registerAction:`, this.arguments);
     if (!checkConectivity()) {
         APP_STORE.APP_EVENT.next({error: strings('main.internet')});
         return;
@@ -44,19 +44,19 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
         name: 'photo.' + ext
     });
 
-    console.log(`registerAction:`, data);
+    logToServer(`registerAction:`, data);
     userService.postRegister(data)
         .then(async (response) => {
-            console.log(`registerAction:Response:`, response);
+            logToServer(`registerAction:Response:`, response);
             let json;
             try {
                 json = await response.json();
             }catch (e) {
-                console.log(`registerAction:Response:JSON:error`, e);
+                logToServer(`registerAction:Response:JSON:error`, e);
                 APP_STORE.APP_EVENT.next({error: e.message});
                 return;
             }
-            console.log(`registerAction:Response:JSON`, json);
+            logToServer(`registerAction:Response:JSON`, json);
             if (response.ok) {
                 APP_STORE.APP_EVENT.next({"success": json.detail});
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
@@ -115,9 +115,9 @@ function createDateData() {
 function validateEmailAction(email) {
     userService.validateEmail(email)
         .then(async (response) => {
-            console.log(`validateEmail:`, email);
+            logToServer(`validateEmail:`, email);
             const json = await response.json();
-            console.log(`validateEmail:JSON:`, json);
+            logToServer(`validateEmail:JSON:`, json);
 
             if (response.ok) {
                 APP_STORE.EMAIL_EVENT.next({success: json.detail});
@@ -133,12 +133,12 @@ function validateEmailAction(email) {
  * @param username
  */
 const validateUsernameAction = (username) => {
-    console.log("validateUsernameAction", username);
+    logToServer("validateUsernameAction", username);
     userService.validateUsernameService(username)
         .then(async (response) => {
-            console.log(`validateUsernameAction:`, username);
+            logToServer(`validateUsernameAction:`, username);
             const json = await response.json();
-            console.log(`validateUsernameAction:JSON:`, json);
+            logToServer(`validateUsernameAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.USERNAME_EVENT.next({success: json.detail});
                 return;
@@ -161,13 +161,13 @@ function facebookAction(state) {
                     }
                     AccessToken.getCurrentAccessToken().then(
                         (data) => {
-                            console.log(data.accessToken.toString())
+                            logToServer(data.accessToken.toString())
 
                             userService.facebookHandle(data.accessToken.toString(), state)
                                 .then(async (response) => {
-                                    console.log(`facebookAction: ${data.accessToken.toString()}`, response);
+                                    logToServer(`facebookAction: ${data.accessToken.toString()}`, response);
                                     const json = await response.json();
-                                    console.log(`facebookAction:JSON:`, json);
+                                    logToServer(`facebookAction:JSON:`, json);
                                     if (response.ok) {
                                         APP_STORE.APP_EVENT.next({"success": json.image_profile})
                                         APP_STORE.TOKEN_EVENT.next({"token": json.token});
@@ -188,13 +188,13 @@ function facebookAction(state) {
 }
 
 function firebaseAction(token) {
-    console.log(`firebaseAction: ${token}`);
+    logToServer(`firebaseAction: ${token}`);
 
     userService.tokenFB(token)
         .then(async (response) => {
-            console.log(`firebaseAction: ${token}`, response);
+            logToServer(`firebaseAction: ${token}`, response);
             const json = await response.json();
-            console.log(`firebaseAction:JSON:`, json);
+            logToServer(`firebaseAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.FIRE_EVENT.next({"tokenFB": json.id.toString()});
                 return;

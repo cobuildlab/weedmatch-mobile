@@ -14,7 +14,7 @@ import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { connection, toastMsg } from '../../utils';
 import FastImage from 'react-native-fast-image';
-
+import logToServer from 'log-to-server'
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 export default class Message extends Component {
@@ -31,7 +31,7 @@ export default class Message extends Component {
         this.showChatNotif();
 
         this.chatsVar = APP_STORE.CHAT_EVENT.subscribe(state => {
-            console.log('Messages:componentDidMount:chatsVar', state);
+            logToServer('Messages:componentDidMount:chatsVar', state);
             if (state.chats) {
                 this.setState({
                     chats: state.chats,

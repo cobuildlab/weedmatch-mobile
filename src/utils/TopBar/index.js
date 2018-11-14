@@ -17,6 +17,7 @@ import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 import GeoLocationProvider from "../geolocation/GeoLocationProvider";
 import {strings} from "../../i18n";
 
+import logToServer from 'log-to-server'
 
 export default class TopBar extends Component {
 
@@ -36,7 +37,7 @@ export default class TopBar extends Component {
 
     popNoti() {
         AsyncStorage.getItem('noti').then((value) => {
-            console.log("TopBar:popNotification:", value);
+            logToServer("TopBar:popNotification:", value);
             value = (value === "true") ? true : false;
             this.setState({notification: value})
         }).catch(err => {
@@ -45,7 +46,7 @@ export default class TopBar extends Component {
     }
 
     _handleAppStateChange = (nextAppState) => {
-        console.log("TOPBAR:_handleAppStateChange", nextAppState);
+        logToServer("TOPBAR:_handleAppStateChange", nextAppState);
         if (nextAppState == "active")
             firebase.notifications().removeAllDeliveredNotifications();
     };
@@ -54,11 +55,11 @@ export default class TopBar extends Component {
         // check if there is unread messages
         this.popNoti();
 
-        // console.log("TOPBAR:componentDidMount", AppState.currentState);
+        // logToServer("TOPBAR:componentDidMount", AppState.currentState);
         AppState.addEventListener('change', this._handleAppStateChange);
 
         // Clean all indications of notifications when we start the App
-        firebase.notifications().removeAllDeliveredNotifications().then(some => console.log("TopBar:componentDidMount", some));
+        firebase.notifications().removeAllDeliveredNotifications().then(some => logToServer("TopBar:componentDidMount", some));
 
         // this event gets trigger when the user open a chats
         this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
@@ -86,13 +87,13 @@ export default class TopBar extends Component {
 
         // Do we need this here? REALLY?
         // this.fcmMessageListener = firebase.messaging().onMessage(message => {
-        //     console.log("TopBar:componentDidMount:onMessague", message);
+        //     logToServer("TopBar:componentDidMount:onMessague", message);
         // });
 
         // This initialNotification if for when the App it's opened from tapping in a notification
         firebase.notifications().getInitialNotification()
             .then((/** @type {NotificationOpen} */ notificationOpen) => {
-                console.log("TOPBAR:getInitialNotification", notificationOpen);
+                logToServer("TOPBAR:getInitialNotification", notificationOpen);
 
                 if (notificationOpen) {
                     this.notifHandler(notificationOpen.notification.data);
@@ -101,7 +102,7 @@ export default class TopBar extends Component {
 
         // When we receive a notification
         this.notificationListener = firebase.notifications().onNotification(notification => {
-            console.log("TOPBAR:onNotification", notification.data);
+            logToServer("TOPBAR:onNotification", notification.data);
 
             let localNotification = notification;
             if (Platform.OS === 'android') {
@@ -140,7 +141,7 @@ export default class TopBar extends Component {
             firebase.notifications().displayNotification(localNotification);
             // A signal to tell the APP there is a new notification
             APP_STORE.NOTI_EVENT.next({"noti": true});
-            // console.log('onNotification:', notification)
+            // logToServer('onNotification:', notification)
 
             // If the App is open, clear the notifications tray
             if (AppState.currentState === "active") {
@@ -153,7 +154,7 @@ export default class TopBar extends Component {
 
         // this is when someone taps on the notification with the app Open
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened(notificationOpen => {
-            console.log("TOPBAR:OnNotificationopen", notificationOpen);
+            logToServer("TOPBAR:OnNotificationopen", notificationOpen);
             this.notifHandler(notificationOpen.notification.data);
             // And i need to remove it
             // Better, let's remove it all
@@ -161,7 +162,7 @@ export default class TopBar extends Component {
         });
 
         // this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed(notification => {
-        //     // console.log("TopBar:componentDidMount:onNotificationDisplayed", notification);
+        //     // logToServer("TopBar:componentDidMount:onNotificationDisplayed", notification);
         // });
 
         // this.notifHandler({
@@ -177,7 +178,7 @@ export default class TopBar extends Component {
      * Method to handle the touch of a notification
      **/
     notifHandler(data) {
-        console.log("TopBar:index:notifHandler", data);
+        logToServer("TopBar:index:notifHandler", data);
         switch (data.type_notification) {
             case "ME": // I like it Notification
                 if (this.state.like == "false") { // Like notification
@@ -242,7 +243,7 @@ export default class TopBar extends Component {
     }
 
     onLocation = position => {
-        console.log('TopBar:onLocation', position);
+        logToServer('TopBar:onLocation', position);
         updatelocation(position);
     };
 

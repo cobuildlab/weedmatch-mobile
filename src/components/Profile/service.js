@@ -39,7 +39,7 @@ function privateProfile(token, id) {
 }
 
 /**
- * Get the user's profile data
+ * Get the user's profile data.
  * @param token The token of the current user's sesion
  * @param pageUrl The Url of the page to fetch
  * @returns {Promise<any>}

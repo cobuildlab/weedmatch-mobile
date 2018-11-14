@@ -44,7 +44,7 @@ import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
 import {FooterTab} from "native-base";
 import {FeedRow} from "../../modules/feed/FeedRow";
-
+import logToServer from 'log-to-server'
 /**
  * View of the Photo Feed
  */
@@ -87,7 +87,7 @@ export default class HomePage extends Component {
         });
 
         this.feedData = APP_STORE.FEED_EVENT.subscribe(state => {
-            console.log('Home420:componentDidMount:feedDataSuscription', state);
+            logToServer('Home420:componentDidMount:feedDataSuscription', state);
             if (state.feed) {
                 if (this.state.refreshing) {
                     this.setState({
@@ -115,7 +115,7 @@ export default class HomePage extends Component {
         });
 
         this.feedPage = APP_STORE.FEEDPAGE_EVENT.subscribe(state => {
-            console.log('Home420:componentDidMount:feedPageSuscription', state);
+            logToServer('Home420:componentDidMount:feedPageSuscription', state);
             if (state.page) {
                 this.setState({
                     urlPage: state.page,
@@ -134,7 +134,7 @@ export default class HomePage extends Component {
 
         this.event = APP_STORE.UPLOAD_EVENT.subscribe(state => {
             this.setState({isLoading: true});
-            console.log(state);
+            logToServer(state);
             if (state.error) {
                 Alert.alert(state.error);
                 return;
@@ -154,7 +154,7 @@ export default class HomePage extends Component {
         });
 
         this.likeEvent = APP_STORE.LIKE_EVENT.subscribe(state => {
-            console.log("APP_STORE.LIKE_EVENT.subscribe", state);
+            logToServer("APP_STORE.LIKE_EVENT.subscribe", state);
             if (state.error) {
                 Alert.alert(state.error);
                 return;
@@ -163,10 +163,10 @@ export default class HomePage extends Component {
                 // const newDs = this.state.feedData._dataBlob.s1.slice();
                 const newDs = this.state.dataSource.concat();
                 const row = newDs[state.row];
-                console.log("APP_STORE.LIKE_EVENT.subscribe", row);
+                logToServer("APP_STORE.LIKE_EVENT.subscribe", row);
                 row.band = !row.band;
                 row.like = row.band == true ? row.like + 1 : row.like - 1;
-                console.log("APP_STORE.LIKE_EVENT.subscribe", row);
+                logToServer("APP_STORE.LIKE_EVENT.subscribe", row);
                 this.setState({
                     feedData: this.ds1.cloneWithRows(newDs),
                 });
@@ -181,7 +181,7 @@ export default class HomePage extends Component {
         });
 
         this.geoDatasubscription = GeoStore.subscribe("GeoData", position => {
-            console.log("HOME:componentDidMount:geoDatasubscription", position);
+            logToServer("HOME:componentDidMount:geoDatasubscription", position);
             if (!position.coords)
                 return;
 
@@ -205,7 +205,7 @@ export default class HomePage extends Component {
     }
 
     componentWillUnmount() {
-        console.log('Home420:componentWillUmmount');
+        logToServer('Home420:componentWillUmmount');
         this.feedData.unsubscribe();
         this.event.unsubscribe();
         this.likeEvent.unsubscribe();
@@ -250,7 +250,7 @@ export default class HomePage extends Component {
     }
 
     _onRefresh() {
-        console.log(this.state);
+        logToServer(this.state);
         this.setState(
             {
                 feedData: this.ds1.cloneWithRows([]),
@@ -259,7 +259,7 @@ export default class HomePage extends Component {
                 numPage: 0,
             },
             () => {
-                console.log(this.state);
+                logToServer(this.state);
                 this._feedData();
             }
         );
@@ -272,7 +272,7 @@ export default class HomePage extends Component {
                 time: moment().format(),
             },
             () => {
-                console.log(this.state.time);
+                logToServer(this.state.time);
                 if (checkConectivity()) {
                     firebase.analytics().logEvent('upload_photo');
 
@@ -341,12 +341,12 @@ export default class HomePage extends Component {
             compressImageQuality: 0.5,
             includeExif: true,
         }).then(image => {
-            console.log('received image', image.path);
+            logToServer('received image', image.path);
             this.setState({
                 image: image.path
             });
             this.toggleModal();
-        }).catch(e => console.log(e));
+        }).catch(e => logToServer(e));
     };
 
     _getPhoto() {
@@ -378,14 +378,14 @@ export default class HomePage extends Component {
             includeExif: true,
         })
             .then(image => {
-                console.log('received image', image.path);
-                console.log(image);
+                logToServer('received image', image.path);
+                logToServer(image);
                 this.setState({
                     image: image.path,
                 });
                 this.toggleModal();
             })
-            .catch(e => console.log(e));
+            .catch(e => logToServer(e));
     }
 
     _takePhoto() {
@@ -561,7 +561,7 @@ export default class HomePage extends Component {
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => console.log('closed')}
+                    onRequestClose={() => logToServer('closed')}
                 >
                     <SafeAreaView style={styles.modalContainer}>
                         <Button

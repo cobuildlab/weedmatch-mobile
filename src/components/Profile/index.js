@@ -24,7 +24,7 @@ import {
 } from './ProfileActions';
 
 const {width} = Dimensions.get('window');
-
+import logToServer from 'log-to-server'
 export default class Profile extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ export default class Profile extends Component {
             urlPage: '',
             numPage: 0,
         };
-        console.log('Profile');
+        logToServer('Profile');
     }
 
     static navigationOptions = ({navigation}) => {
@@ -56,7 +56,7 @@ export default class Profile extends Component {
         this.props.navigation.setParams({update: () => this.update()});
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-            console.log("Profile:componentDidMount:appSubscription", state);
+            logToServer("Profile:componentDidMount:appSubscription", state);
             if (state.error) {
                 this.setState({isLoading: true});
                 toastMsg(state.error);
@@ -67,7 +67,7 @@ export default class Profile extends Component {
         });
 
         this.public = APP_STORE.PROFILE_EVENT.subscribe(state => {
-            console.log("Profile:componentDidMount:PROFILE_EVENT", state);
+            logToServer("Profile:componentDidMount:PROFILE_EVENT", state);
             if (state.profile) {
                 this.setState({
                     rowData: state.profile,
@@ -82,7 +82,7 @@ export default class Profile extends Component {
         });
 
         this.images420 = APP_STORE.PROFILEIMAGES_EVENT.subscribe(state => {
-            console.log("Profile:componentDidMount:images420Suscription", state);
+            logToServer("Profile:componentDidMount:images420Suscription", state);
             if (state.profileImages420) {
 
                 this.setState(prevState => ({
@@ -90,7 +90,7 @@ export default class Profile extends Component {
                     isLoading: true,
                 }))
 
-                console.log(getImages(this.state.public420));
+                logToServer(getImages(this.state.public420));
 
                 return;
             }
@@ -100,7 +100,7 @@ export default class Profile extends Component {
         });
 
         this.images420Page = APP_STORE.PROFILEPAGE_EVENT.subscribe(state => {
-            console.log("Profile:componentDidMount:images420PageSuscription", state);
+            logToServer("Profile:componentDidMount:images420PageSuscription", state);
             if (state.profileImages420Page) {
 
                 this.setState({
@@ -122,7 +122,7 @@ export default class Profile extends Component {
     }
 
     componentWillUnmount() {
-        console.log("Profile:componentWillUmmount");
+        logToServer("Profile:componentWillUmmount");
         this.images420.unsubscribe();
         this.images420Page.unsubscribe();
         this.appSubscription.unsubscribe();
@@ -177,7 +177,7 @@ export default class Profile extends Component {
 
     renderiza() {
         const {rowData, country} = this.state;
-        console.log("PROFILE:renderiza:", rowData);
+        logToServer("PROFILE:renderiza:", rowData);
         return (
             <View>
                 <View style={styles.viewBackground}>

@@ -1,14 +1,14 @@
 import { userService } from './service';
 import { APP_STORE } from '../../Store';
 import { URL } from '../../utils';
-
+import logToServer from 'log-to-server'
 export function getChatMessages(pageUrl) {
-    // console.log(`getChatMessagesAction: ${pageUrl}`);
+    // logToServer(`getChatMessagesAction: ${pageUrl}`);
 
     userService.chats(pageUrl).then(async response => {
-        // console.log(`getChatMessagesAction: ${pageUrl}`, response);
+        // logToServer(`getChatMessagesAction: ${pageUrl}`, response);
         const json = await response.json();
-        // console.log(`getChatMessagesAction:JSON:`, json);
+        // logToServer(`getChatMessagesAction:JSON:`, json);
         if (response.ok) {
             APP_STORE.CHATMSG_EVENT.next({ chatMsg: json.results });
             APP_STORE.CHATPAGE.next({ chatMsgPage: json.next });
@@ -19,7 +19,7 @@ export function getChatMessages(pageUrl) {
 }
 
 export function chatAction(state, chatID) {
-    // console.log(`CHATMSG: ${state}, ${chatID}`);
+    // logToServer(`CHATMSG: ${state}, ${chatID}`);
 
     var pagUrl = '';
 
@@ -36,7 +36,7 @@ export function appendData(oldData, newData, id) {
     // oldData.slice();
 
     newData.map(data => {
-        // console.log(data)
+        // logToServer(data)
 
         var message = null;
 
@@ -66,6 +66,6 @@ export function appendData(oldData, newData, id) {
 
         oldData.push(message);
     });
-    console.log(oldData);
+    logToServer(oldData);
     return oldData;
 }

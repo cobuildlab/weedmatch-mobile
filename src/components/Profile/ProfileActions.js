@@ -6,15 +6,15 @@ import {AsyncStorage} from 'react-native';
 import {authHeader, catchErrorAndPropagate, URL, LENGUAGE} from '../../utils';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
-
+import logToServer from 'log-to-server'
 function publicProfileAction(token, id) {
-    console.log(`publicProfileAction: ${token}, ${id}`);
+    logToServer(`publicProfileAction: ${token}, ${id}`);
 
     userService.publicProfile(token, id)
         .then(async (response) => {
-            console.log(`ProfileAction: ${token}, ${id}`, response);
+            logToServer(`ProfileAction: ${token}, ${id}`, response);
             const json = await response.json();
-            console.log(`ProfileAction:JSON:`, json);
+            logToServer(`ProfileAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
@@ -26,13 +26,13 @@ function publicProfileAction(token, id) {
 }
 
 function privateProfileAction(token, id) {
-    console.log(`privateProfileAction: ${token}, ${id}`);
+    logToServer(`privateProfileAction: ${token}, ${id}`);
 
     userService.privateProfile(token, id)
         .then(async (response) => {
-            console.log(`privateProfileAction: ${token}, ${id}`, response);
+            logToServer(`privateProfileAction: ${token}, ${id}`, response);
             const json = await response.json();
-            console.log(`privateProfileAction:JSON:`, json);
+            logToServer(`privateProfileAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
@@ -44,13 +44,13 @@ function privateProfileAction(token, id) {
 }
 
 function publicImages420Action(token, id, pageUrl) {
-    console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`);
+    logToServer(`publicImages420Action: ${token}, ${id}, ${pageUrl}`);
 
     userService.publicImages420(token, id, pageUrl)
         .then(async (response) => {
-            console.log(`publicImages420Action: ${token}, ${id}, ${pageUrl}`, response);
+            logToServer(`publicImages420Action: ${token}, ${id}, ${pageUrl}`, response);
             const json = await response.json();
-            console.log(`publicImages420Action:JSON:`, json);
+            logToServer(`publicImages420Action:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PROFILEIMAGES_EVENT.next({"profileImages420": json.results});
                 APP_STORE.PROFILEPAGE_EVENT.next({"profileImages420Page": json.next});
@@ -62,7 +62,7 @@ function publicImages420Action(token, id, pageUrl) {
 
 function Action420(token, state, userId) {
 
-    console.log(`Action420: ${token}, ${state}, ${userId}`);
+    logToServer(`Action420: ${token}, ${state}, ${userId}`);
 
     var pagUrl = '';
 
@@ -87,32 +87,32 @@ function appendData(oldData, newData) {
 }
 
 function logOut() {
-    console.log(`ProfileActions:logOut`);
+    logToServer(`ProfileActions:logOut`);
     AccessToken.getCurrentAccessToken().then(
         (data) => {
-            console.log(`ProfileActions:logOut`, data);
+            logToServer(`ProfileActions:logOut`, data);
             if (data) {
                 LoginManager.logOut();
             }
         }
-    ).catch(err => console.log(`ProfileActions:logOut:AccessToken`, JSON.stringify(err)));
+    ).catch(err => logToServer(`ProfileActions:logOut:AccessToken`, JSON.stringify(err)));
 
-    console.log(`ProfileActions:logOut: Trying to obtain Firebase Token`);
+    logToServer(`ProfileActions:logOut: Trying to obtain Firebase Token`);
     firebase.messaging().getToken().then(async (token) => {
-        console.log("1")
+        logToServer("1")
         if (token) {
-            console.log("2")
+            logToServer("2")
             const response = await userService.tokenFB();
-            console.log(`ProfileActions:logOut:firebase.messaging:response${response}`);
+            logToServer(`ProfileActions:logOut:firebase.messaging:response${response}`);
             const json = await response.json();
-            console.log(`ProfileActions:logOut:firebase.messaging:responseJSON${JSON.stringify(json)}`);
+            logToServer(`ProfileActions:logOut:firebase.messaging:responseJSON${JSON.stringify(json)}`);
         }
-        console.log("3")
+        logToServer("3")
         _cleanStorage();
         // Tell the system there is no more notifications
         APP_STORE.NOTI_EVENT.next({"noti": false});
     }).catch(err => {
-        console.log(`ProfileActions:logOut:firebase.messaging:error`, JSON.stringify(err));
+        logToServer(`ProfileActions:logOut:firebase.messaging:error`, JSON.stringify(err));
         _cleanStorage();
         // Tell the system there is no more notifications
         APP_STORE.NOTI_EVENT.next({"noti": false});

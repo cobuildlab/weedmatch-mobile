@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ImagePicker from "react-native-image-crop-picker";
 import {strings} from "../i18n";
 // Optional: Flow type
+import logToServer from 'log-to-server'
 
 /**
  * GeoLocation component.
@@ -23,7 +24,7 @@ export default class ImagePickerProvider extends PureComponent {
     }
 
     infoPermissions = (onAccept) => {
-        console.log("ImagePickerProvider:infoPermissions", this.imagePermissionsHasBeenAsked);
+        logToServer("ImagePickerProvider:infoPermissions", this.imagePermissionsHasBeenAsked);
         if (this.imagePermissionsHasBeenAsked){
             onAccept();
             return;
@@ -38,7 +39,7 @@ export default class ImagePickerProvider extends PureComponent {
             [
                 {
                     text: 'Cancel', onPress: () => {
-                        console.log("ImagePickerProvider:infoPermissions: cancel")
+                        logToServer("ImagePickerProvider:infoPermissions: cancel")
                     }, style: 'cancel'
                 },
                 {text: 'OK', onPress: onAccept},
@@ -49,7 +50,7 @@ export default class ImagePickerProvider extends PureComponent {
     };
 
     getPhoto = () => {
-        console.log("ImagePickerProvider:getPhoto");
+        logToServer("ImagePickerProvider:getPhoto");
         this.infoPermissions(() => {
             ImagePicker.openPicker({
                 cropping: false,
@@ -58,10 +59,10 @@ export default class ImagePickerProvider extends PureComponent {
                 compressImageQuality: 0.5,
                 includeExif: true,
             }).then(image => {
-                console.log('ImagePickerProvider: received image', image.path);
+                logToServer('ImagePickerProvider: received image', image.path);
                 this.props.onImage(image);
             }).catch(e => {
-                console.log('ImagePickerProvider: received image error', e);
+                logToServer('ImagePickerProvider: received image error', e);
                 if (this.props.onError)
                     this.props.onError(e)
             });
@@ -70,7 +71,7 @@ export default class ImagePickerProvider extends PureComponent {
     };
 
     takePhoto = () => {
-        console.log("ImagePickerProvider:takePhoto");
+        logToServer("ImagePickerProvider:takePhoto");
         this.infoPermissions(() => {
             ImagePicker.openCamera({
                 compressImageQuality: 0.5,
@@ -79,10 +80,10 @@ export default class ImagePickerProvider extends PureComponent {
                 includeExif: true,
                 width: 500,
             }).then(image => {
-                console.log('ImagePickerProvider: received photo', image.path);
+                logToServer('ImagePickerProvider: received photo', image.path);
                 this.props.onImage(image);
             }).catch(e => {
-                console.log('ImagePickerProvider: received image error', e);
+                logToServer('ImagePickerProvider: received image error', e);
                 if (this.props.onError)
                     this.props.onError(e)
             });

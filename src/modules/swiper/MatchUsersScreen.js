@@ -10,7 +10,7 @@ import buttonStyles from '../../styles/buttons';
 import {WHITE} from '../../styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {strings} from '../../i18n';
-
+import logToServer from 'log-to-server'
 
 /**
  * Match User Screen, used when two users match each other
@@ -23,7 +23,7 @@ export default class MatchUsersScreen extends Component {
     // static navigationOptions = {header: null};
 
     render() {
-        console.log('MatchUsersScreen', this.props.data);
+        logToServer('MatchUsersScreen', this.props.data);
         const {onClose, onPress, data} = this.props;
         const myPictureUrl = data.image_profile;
         const usernameMatch = data.username_match;

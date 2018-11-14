@@ -2,14 +2,14 @@
 
 import { APP_STORE } from '../../Store';
 import { userService } from './service';
-
+import logToServer from 'log-to-server'
 function publicEditAction(token, id) {
-    console.log(`publicEditProfileAction: ${token}, ${id}`);
+    logToServer(`publicEditProfileAction: ${token}, ${id}`);
 
     userService.publicProfile(token, id).then(async response => {
-        console.log(`publicEditProfileAction: ${token}, ${id}`, response);
+        logToServer(`publicEditProfileAction: ${token}, ${id}`, response);
         const json = await response.json();
-        console.log(`publicEditProfileAction:JSON:`, json);
+        logToServer(`publicEditProfileAction:JSON:`, json);
         if (response.ok) {
             APP_STORE.PUBLICEDITPROFILE_EVENT.next({ publicEditProfile: json });
             return;
@@ -19,14 +19,14 @@ function publicEditAction(token, id) {
 }
 
 function postImageAction(image) {
-    console.log(`postImageAction`);
+    logToServer(`postImageAction`);
 
     userService
         .uploadImage(APP_STORE.getToken(), APP_STORE.getId(), image)
         .then(async response => {
-            console.log('postImageAction', response);
+            logToServer('postImageAction', response);
             const json = await response.json();
-            console.log(`postImageAction:JSON:`, json);
+            logToServer(`postImageAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PUBLICEDITPROFILE_EVENT.next({
                     publicEditProfile: json,
@@ -38,14 +38,14 @@ function postImageAction(image) {
 }
 
 function putImageAction(image, id) {
-    console.log(`putImageAction`);
+    logToServer(`putImageAction`);
 
     userService
         .changeImage(APP_STORE.getToken(), APP_STORE.getId(), image, id)
         .then(async response => {
-            console.log('putImageAction', response);
+            logToServer('putImageAction', response);
             const json = await response.json();
-            console.log(`putImageAction:JSON:`, json);
+            logToServer(`putImageAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PUBLICEDITPROFILE_EVENT.next({
                     publicEditProfile: json,
@@ -57,14 +57,14 @@ function putImageAction(image, id) {
 }
 
 function deleteImageAction(image) {
-    console.log(`deleteImageAction`);
+    logToServer(`deleteImageAction`);
 
     userService
         .deleteImage(APP_STORE.getToken(), APP_STORE.getId(), image)
         .then(async response => {
-            console.log('deleteImageAction', response);
+            logToServer('deleteImageAction', response);
             const json = await response.json();
-            console.log(`deleteImageAction:JSON:`, json);
+            logToServer(`deleteImageAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.PUBLICEDITPROFILE_EVENT.next({
                     publicEditProfile: json,
@@ -76,15 +76,15 @@ function deleteImageAction(image) {
 }
 
 function saveProfileAction(token, id, state) {
-    console.log(`saveProfile: ${token}, ${id}, ${state}`);
+    logToServer(`saveProfile: ${token}, ${id}, ${state}`);
 
     userService.saveProfile(token, id, state).then(async response => {
-        console.log(
+        logToServer(
             `publicSaveProfileAction: ${token}, ${id}, ${state}`,
             response
         );
         const json = await response.json();
-        console.log(`publicSaveProfileAction:JSON:`, json);
+        logToServer(`publicSaveProfileAction:JSON:`, json);
         if (response.ok) {
             APP_STORE.PUBLIC_SAVE_PROFILE_EVENT.next({ saveProfile: json });
             return;

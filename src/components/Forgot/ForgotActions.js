@@ -2,14 +2,14 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from "../../utils";
 import {userService} from './service';
-
+import logToServer from 'log-to-server'
 function forgotAction(email) {
-    console.log(`forgotAction: ${email}`);
+    logToServer(`forgotAction: ${email}`);
     userService.forgotPassword(email)
         .then(async (response) => {
-            console.log(`forgotAction: ${email}`, response);
+            logToServer(`forgotAction: ${email}`, response);
             const json = await response.json();
-            console.log(`forgotAction:JSON:`, json);
+            logToServer(`forgotAction:JSON:`, json);
 
             if (response.ok) {
                 APP_STORE.APP_EVENT.next({"success": json.detail});
@@ -20,13 +20,13 @@ function forgotAction(email) {
 }
 
 function recoveryPassword(code, password){
-    console.log(`recoveryPassword: ${code} ${password}`);
+    logToServer(`recoveryPassword: ${code} ${password}`);
 
     userService.recoveryPassword(code, password)
         .then(async (response) => {
-            console.log(`forgotAction: ${code}`, response);
+            logToServer(`forgotAction: ${code}`, response);
             const json = await response.json();
-            console.log(`forgotAction:JSON:`, json);
+            logToServer(`forgotAction:JSON:`, json);
 
             if (response.ok) {
                 APP_STORE.APP_EVENT.next({"success": json.detail});

@@ -25,7 +25,7 @@ import GeoStore from "../../utils/geolocation/GeoStore";
 
 import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
 import ReportStore from '../../modules/report/ReportStore'
-
+import logToServer from 'log-to-server'
 
 export default class SwiperView extends Component {
     static getInitialState() {
@@ -47,7 +47,7 @@ export default class SwiperView extends Component {
     }
 
     componentDidMount() {
-        console.log("SwiperView: componentDidMount");
+        logToServer("SwiperView: componentDidMount");
 
         this.errorSubscription = APP_STORE.ERROR_EVENT.subscribe(state => {
             if (state)
@@ -55,7 +55,7 @@ export default class SwiperView extends Component {
         });
 
         this.bad = APP_STORE.BAD_EVENT.subscribe(state => {
-            console.log("SwiperView:componentDidMount:BAD_EVENT", state);
+            logToServer("SwiperView:componentDidMount:BAD_EVENT", state);
             if (state.bad) {
                 if (this.swiper != null) {
                     this.swiper.swipeBack(() => {
@@ -66,7 +66,7 @@ export default class SwiperView extends Component {
         });
 
         this.action = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
-            console.log("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
+            logToServer("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
             if (state.swiperAction) {
                 if (this.swiper != null) {
                     if (this.swiper.state.firstCardIndex == 0) {
@@ -77,7 +77,7 @@ export default class SwiperView extends Component {
         });
 
         this.swiperData = APP_STORE.SWIPER_EVENT.subscribe(state => {
-            console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
+            logToServer("SwiperView:componentDidMount:swipeDataSuscription", state);
             if (state.swiper) {
                 this.setState(prevState => ({
                     cards: appendData(prevState.cards, state.swiper),
@@ -91,7 +91,7 @@ export default class SwiperView extends Component {
         });
 
         this.swiperPage = APP_STORE.SWIPERPAGE_EVENT.subscribe(state => {
-            console.log("SwiperView:componentDidMount:swipePageSuscription", state);
+            logToServer("SwiperView:componentDidMount:swipePageSuscription", state);
             if (state.swiperPage) {
                 this.setState({
                     urlPage: state.swiperPage,
@@ -111,7 +111,7 @@ export default class SwiperView extends Component {
         });
 
         this.geoDatasubscription = GeoStore.subscribe("GeoData", position => {
-            console.log("HOME:componentDidMount:geoDatasubscription", position);
+            logToServer("HOME:componentDidMount:geoDatasubscription", position);
             if (!position.coords)
                 return;
 
@@ -152,7 +152,7 @@ export default class SwiperView extends Component {
     static navigationOptions = {header: null};
 
     componentWillUnmount() {
-        console.log("SwiperView :componentWillUmmount");
+        logToServer("SwiperView :componentWillUmmount");
         this.swiperData.unsubscribe();
         this.swiperPage.unsubscribe();
         this.errorSubscription.unsubscribe();
@@ -275,7 +275,7 @@ export default class SwiperView extends Component {
     };
 
     async swipeTop() {
-        console.log("Swiper:swipeTop");
+        logToServer("Swiper:swipeTop");
         const swiperId = this.state.cards[this.swiper.state.firstCardIndex].id_user;
         await swiperAction(APP_STORE.getToken(), 'SuperLike', swiperId);
     };

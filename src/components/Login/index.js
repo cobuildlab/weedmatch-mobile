@@ -12,7 +12,7 @@ import {
     Platform,
     Clipboard
 } from 'react-native';
-
+import logToServer from 'log-to-server'
 import {APP_STORE} from '../../Store';
 import {loginAction, firebaseAction} from './LoginActions';
 import styles from './style';
@@ -27,7 +27,7 @@ export default class LoginPage extends Component {
 
     constructor() {
         super();
-        console.log("LoginPage:constructor");
+        logToServer("LoginPage:constructor");
         this.state = {
             username: ``,
             password: ``,
@@ -36,27 +36,27 @@ export default class LoginPage extends Component {
     }
 
     componentDidMount() {
-        console.log("LoginPage:componentDidMount");
+        logToServer("LoginPage:componentDidMount");
         this.tokenSubscription = APP_STORE.TOKEN_EVENT.subscribe(state => {
-            console.log("LoginPage:componentDidMount:tokenSubscription", state);
+            logToServer("LoginPage:componentDidMount:tokenSubscription", state);
         });
 
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
-            console.log("LoginPage:componentDidMount:firebaseSubscription", state);
+            logToServer("LoginPage:componentDidMount:firebaseSubscription", state);
             this.setState({isLoading: false});
             // Initialization session on Firebase
             firebase.auth().signInAnonymouslyAndRetrieveData()
                 .then((user) => {
-                    console.log("LoginPage:componentDidMount:firebaseAuth", user);
+                    logToServer("LoginPage:componentDidMount:firebaseAuth", user);
                     const username = APP_STORE.getUser();
-                    console.log("LoginPage:componentDidMount:firebaseAuth", username);
+                    logToServer("LoginPage:componentDidMount:firebaseAuth", username);
                     firebase.analytics().setUserId(username);
                     this.props.navigation.navigate('App');
                 }).catch(err => console.error("LoginPage:componentDidMount:firebaseAuth", err));
         });
 
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
-            console.log("LoginPage:componentDidMount:idSubscription", state);
+            logToServer("LoginPage:componentDidMount:idSubscription", state);
             if (isValidText(state.id)) {
 
                 if (firebase.messaging().hasPermission()) {
@@ -74,7 +74,7 @@ export default class LoginPage extends Component {
         });
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
-            console.log("LoginPage:componentDidMount:appSubscription", state);
+            logToServer("LoginPage:componentDidMount:appSubscription", state);
             this.setState({isLoading: false});
             if (state.error) {
                 toastMsg(state.error)
@@ -83,7 +83,7 @@ export default class LoginPage extends Component {
     }
 
     componentWillUnmount() {
-        console.log("LoginPage:componentWillUnmount");
+        logToServer("LoginPage:componentWillUnmount");
         this.tokenSubscription.unsubscribe();
         this.appSubscription.unsubscribe();
         this.idSubscription.unsubscribe();

@@ -3,7 +3,7 @@ import {PermissionsAndroid, Platform, AsyncStorage, Alert} from 'react-native';
 import PropTypes from 'prop-types';
 import {strings} from "../../i18n";
 // Optional: Flow type
-
+import logToServer from 'log-to-server'
 /**
  * GeoLocation component.
  */
@@ -11,21 +11,21 @@ export default class GeoLocationProvider extends PureComponent {
 
     constructor(props) {
         super(props);
-        // console.log('GeoLocationProvider:constructor');
+        // logToServer('GeoLocationProvider:constructor');
         this.permissionGranted = false;
         this.watchId = 0;
     }
 
 
     updateValues = () => {
-        // console.log('GeoLocationProvider:updateValues', this.permissionGranted);
+        // logToServer('GeoLocationProvider:updateValues', this.permissionGranted);
         if (!this.permissionGranted)
             return;
 
         navigator.geolocation.getCurrentPosition(this.props.onLocation,
             (error) => {
                 this.permissionGranted = false;
-                // console.log("GeoLocationProvider:updateValues", error);
+                // logToServer("GeoLocationProvider:updateValues", error);
                 if (this.props.onError)
                     this.props.onError(error);
             },
@@ -34,7 +34,7 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     async componentDidMount() {
-        // console.log('GeoLocationProvider', 'Trying to acquire location');
+        // logToServer('GeoLocationProvider', 'Trying to acquire location');
 
         const userAnswerToLocationDialog = await AsyncStorage.getItem("userAnswerToLocationDialog");
         if (userAnswerToLocationDialog !== null) {
@@ -117,7 +117,7 @@ export default class GeoLocationProvider extends PureComponent {
 
         } catch (error) {
             this.permissionGranted = false;
-            console.log("GeoLocationProvider:requestPermission", error);
+            logToServer("GeoLocationProvider:requestPermission", error);
             if (this.props.onError)
                 this.props.onError(error);
         }

@@ -8,7 +8,7 @@ export const userService = {
     tokenFB,
     validateUsernameService,
 };
-
+import logToServer from 'log-to-server'
 /**
  * Register the user
  * @param data The data of the user to register
@@ -24,7 +24,7 @@ function postRegister(data) {
         body: data,
     };
 
-    console.log(requestOptions);
+    logToServer(requestOptions);
 
     return fetch(URL + 'register/', requestOptions);
 }

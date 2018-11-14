@@ -62,7 +62,7 @@ import store from "./ReportStore";
  * @prop {boolean} sendingReport True when the report is in process of being
  * sent.
  */
-
+import logToServer from 'log-to-server'
 /**
  * @augments Component<ReportRouteProps, ReportRouteState>
  */
@@ -152,7 +152,7 @@ export default class Report extends Component {
      */
     onPressSend = () => {
         // eslint-disable-next-line no-console
-        console.log("ReportView: onPressSend");
+        logToServer("ReportView: onPressSend");
         const {navigation} = this.props;
         const {commentInput: comment, reasonInput: reason} = this.state;
 

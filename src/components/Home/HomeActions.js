@@ -5,12 +5,12 @@ import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
 import {logOut} from '../Profile/ProfileActions';
 import {URL} from '../../utils';
-
+import logToServer from 'log-to-server'
 const DOUBLE_PRESS_DELAY = 300;
 
 function feedAction(token, state) {
 
-    console.log(`homeAction: ${token}, ${state}`);
+    logToServer(`homeAction: ${token}, ${state}`);
 
     var pagUrl = '';
 
@@ -27,11 +27,11 @@ function feedAction(token, state) {
 function getFeed(token, state, pagUrl) {
     userService.feed(token, state, pagUrl)
         .then(async (response) => {
-            console.log(`homeAction: ${token}, ${state}`, response);
+            logToServer(`homeAction: ${token}, ${state}`, response);
             const json = await response.json();
-            console.log(`homeAction:JSON:`, json);
+            logToServer(`homeAction:JSON:`, json);
             if (response.ok) {
-                console.log(json.results);
+                logToServer(json.results);
                 APP_STORE.FEED_EVENT.next({"feed": json.results});
                 APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
                 return;
@@ -58,13 +58,13 @@ function appendData(oldData, newData) {
  * @param state
  */
 function uploadAction(token, state) {
-    console.log(`uploadAction: ${token}`, state);
+    logToServer(`uploadAction: ${token}`, state);
 
     userService.publicImage(token, state)
         .then(async (response) => {
-            console.log(`uploadAction: ${token}, ${state.time}`, response);
+            logToServer(`uploadAction: ${token}, ${state.time}`, response);
             const json = await response.json();
-            console.log(`uploadAction:JSON:`, json);
+            logToServer(`uploadAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.UPLOAD_EVENT.next({"upload": json.detail});
                 return;
@@ -74,13 +74,13 @@ function uploadAction(token, state) {
 }
 
 function likeAction(id, id_user, like, row) {
-    console.log(`likeAction:`, [id, id_user, like, row]);
+    logToServer(`likeAction:`, [id, id_user, like, row]);
 
     userService.publicImageLike(APP_STORE.getToken(), id, id_user, like)
         .then(async (response) => {
-            console.log(`likeAction:`, response);
+            logToServer(`likeAction:`, response);
             const json = await response.json();
-            console.log(`likeAction:JSON:`, json);
+            logToServer(`likeAction:JSON:`, json);
             if (response.ok) {
                 APP_STORE.LIKE_EVENT.next({row});
                 return;

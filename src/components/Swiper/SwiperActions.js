@@ -5,7 +5,7 @@ import {authHeader, URL, LENGUAGE} from '../../utils';
 import {logOut} from '../Profile/ProfileActions';
 import moment from 'moment';
 import {AsyncStorage, NetInfo} from 'react-native'
-
+import logToServer from 'log-to-server'
 /**
  * Action to send a swipper Action to the server. Ex, "like", "not-like", "love"
  * @param token
@@ -13,7 +13,7 @@ import {AsyncStorage, NetInfo} from 'react-native'
  * @param id
  */
 const swiperAction = async (token, action, id) => {
-    console.log(`SwiperActions:swiperAction: ${token}, ${action}, ${id}`);
+    logToServer(`SwiperActions:swiperAction: ${token}, ${action}, ${id}`);
     let isConnected = await NetInfo.isConnected.fetch();
     if (isConnected === false) {
         APP_STORE.ERROR_EVENT.next(strings("main.internet"));
@@ -22,7 +22,7 @@ const swiperAction = async (token, action, id) => {
 
     userService.swiperAction(token, action, id, moment().format())
         .then(async (response) => {
-            console.log(`SwiperActions:swiperAction:`, response);
+            logToServer(`SwiperActions:swiperAction:`, response);
             const json = await response.json();
             if (response.ok) {
                 APP_STORE.SWIPERACTION_EVENT.next({"swiperAction": json.detail});
@@ -38,7 +38,7 @@ const swiperAction = async (token, action, id) => {
  * @param state
  */
 const swiperListAction = (token, state) => {
-    console.log(`SwiperActions:swiper ${token}, ${state.urlPage}, ${state.numPage}`, state);
+    logToServer(`SwiperActions:swiper ${token}, ${state.urlPage}, ${state.numPage}`, state);
 
     let pageUrl = URL + 'swiper/?latitud=' + state.latitude + '&longitud=' + state.longitude;
 
@@ -50,7 +50,7 @@ const swiperListAction = (token, state) => {
 };
 
 function swiper(token, state) {
-    console.log(`SwiperAction: ${token}, ${state.urlPage}, ${state.numPage}`);
+    logToServer(`SwiperAction: ${token}, ${state.urlPage}, ${state.numPage}`);
 
     var pagUrl = '';
 
@@ -67,11 +67,11 @@ function swiper(token, state) {
 function getSwiper(token, pagUrl) {
     userService.swiper(token, pagUrl)
         .then(async (response) => {
-            console.log(`SwiperAction: ${token}, ${pagUrl}`, response);
+            logToServer(`SwiperAction: ${token}, ${pagUrl}`, response);
             const json = await response.json();
-            console.log(`SwiperAction:JSON:`, json);
+            logToServer(`SwiperAction:JSON:`, json);
             if (response.ok) {
-                console.log(json.results);
+                logToServer(json.results);
                 APP_STORE.SWIPER_EVENT.next({"swiper": json.results});
                 APP_STORE.SWIPERPAGE_EVENT.next({"swiperPage": json.next});
                 return;

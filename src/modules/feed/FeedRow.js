@@ -10,7 +10,7 @@ import {Heart} from "./Heart";
 import {PLACE_ENUM} from "../report";
 import REPORT_ROUTE_KEY from "../report";
 import {EMPTY_PROFILE_PICTURE} from "./index";
-
+import logToServer from 'log-to-server'
 /**
  * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
  */
@@ -102,7 +102,7 @@ export class FeedRow extends React.Component {
 
 
     render() {
-        console.log("FEEDROW:render", this.state);
+        logToServer("FEEDROW:render", this.state);
         const {rowData} = this.state;
 
         return (

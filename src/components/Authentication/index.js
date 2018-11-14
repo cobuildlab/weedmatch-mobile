@@ -14,7 +14,7 @@ import styles from './styles';
 import {facebookAction, firebaseAction} from './AutheticationActions';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
-
+import logToServer from 'log-to-server'
 /**
  * MatchUsersScreen Screen
  */
@@ -30,7 +30,7 @@ export default class Authentication extends Component {
     subscription() {
         this.face = APP_STORE.FACE_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log(
+            logToServer(
                 'Public Profile:componentDidMount:PUBLICPROFILE_EVENT',
                 state
             );
@@ -44,7 +44,7 @@ export default class Authentication extends Component {
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log(
+            logToServer(
                 'MatchUsersScreen:componentDidMount:appSubscription',
                 state
             );
@@ -54,7 +54,7 @@ export default class Authentication extends Component {
 
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log(
+            logToServer(
                 'MatchUsersScreen:componentDidMount:firebaseSubscription',
                 state
             );
@@ -64,7 +64,7 @@ export default class Authentication extends Component {
 
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log(
+            logToServer(
                 'MatchUsersScreen:componentDidMount:idSubscription',
                 state
             );

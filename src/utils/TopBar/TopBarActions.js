@@ -1,17 +1,17 @@
 import {userService} from './service';
 import {AsyncStorage, Alert} from "react-native";
 import {dispatchEvent} from "../flux-state";
-
+import logToServer from 'log-to-server'
 function changeToken(token) {
 
     userService.refreshToken(token)
         .then(async (response) => {
             const json = await response.json();
-            console.log(`refreshToken:JSON:`, json);
+            logToServer(`refreshToken:JSON:`, json);
             if (response.ok) {
                 return;
             }
-            console.log(json.detail)
+            logToServer(json.detail)
         });
 }
 
@@ -25,7 +25,7 @@ const validateToken = async (newToken) => {
     }
 
     if (token) {
-        console.log("TOPBARACTIONS:validateTokenFirebase Token:", token);
+        logToServer("TOPBARACTIONS:validateTokenFirebase Token:", token);
         if (token != newToken) {
             changeToken(newToken);
         }
@@ -33,7 +33,7 @@ const validateToken = async (newToken) => {
 };
 
 const updatelocation = position =>{
-    console.log("updateLocation:", position);
+    logToServer("updateLocation:", position);
     if (!position || !position.coords)
         return;
 

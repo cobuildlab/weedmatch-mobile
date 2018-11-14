@@ -1,6 +1,6 @@
 import {authHeader, catchErrorAndPropagate , URL,LENGUAGE} from '../../utils';
 import {APP_STORE} from "../../Store";
-
+import logToServer from 'log-to-server'
 export const userService = {
     login,
     tokenFB
@@ -13,7 +13,7 @@ export const userService = {
  * @returns {Promise<any>}
  */
 function login(username, password) {
-    console.log(`USERSERVICE:login: ${username}, ${password}`);
+    logToServer(`USERSERVICE:login: ${username}, ${password}`);
     const requestOptions = {
         method: 'POST',
         headers: {

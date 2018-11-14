@@ -14,7 +14,7 @@ import {
   FlatList,
   RefreshControl
 } from 'react-native';
-
+import logToServer from 'log-to-server'
 import styles from './style';
 import { getSuper,calculateTime,likeAction } from './LikeActions';
 import {APP_STORE} from '../../Store';
@@ -51,7 +51,7 @@ export default class Like extends Component {
       // APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "true"});
 
       this.superVar = APP_STORE.SUPER_EVENT.subscribe(state => {
-        console.log("Like:componentDidMount:superVar", state);
+        logToServer("Like:componentDidMount:superVar", state);
         if (state.super) {
 
           this.setState({
@@ -68,7 +68,7 @@ export default class Like extends Component {
       });
 
       this.like = APP_STORE.LIKEACTION_EVENT.subscribe(state => {
-        console.log("Like:componentDidMount:like", state);
+        logToServer("Like:componentDidMount:like", state);
         if (state.likeAction) {
           this._onRefresh()
           Alert.alert(state.likeAction);

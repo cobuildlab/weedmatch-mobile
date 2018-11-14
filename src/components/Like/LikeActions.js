@@ -4,13 +4,13 @@ import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
-
+import logToServer from 'log-to-server'
 function getSuper() {
 
     userService.superService(APP_STORE.getToken())
         .then(async (response) => {
             const json = await response.json();
-            console.log(`getSuper:JSON:`, json);
+            logToServer(`getSuper:JSON:`, json);
             if (response.ok) {
                 APP_STORE.SUPER_EVENT.next({"super": json});
                 return;
@@ -24,9 +24,9 @@ function likeAction(action,id) {
     userService.swiperAction(action,id)
         .then(async (response) => {
             const json = await response.json();
-            console.log(`LikeAction:JSON:`, json);
+            logToServer(`LikeAction:JSON:`, json);
             if (response.ok) {
-                console.log(json.detail);
+                logToServer(json.detail);
                 APP_STORE.LIKEACTION_EVENT.next({"likeAction": json.detail});
                 return;
             }

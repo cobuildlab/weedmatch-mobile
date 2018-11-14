@@ -1,10 +1,10 @@
 import { APP_STORE } from '../../Store';
 import { userService } from './service';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-
+import logToServer from 'log-to-server'
 export function facebookAction(state) {
     // eslint-disable-next-line no-console
-    console.log(state);
+    logToServer(state);
 
     AccessToken.getCurrentAccessToken().then(data => {
         if (data) {
@@ -23,13 +23,13 @@ export function facebookAction(state) {
                 }
                 AccessToken.getCurrentAccessToken().then(data => {
                     // eslint-disable-next-line no-console
-                    console.log(data.accessToken.toString());
+                    logToServer(data.accessToken.toString());
 
                     userService
                         .facebookHandle(data.accessToken.toString(), state)
                         .then(async response => {
                             // eslint-disable-next-line no-console
-                            console.log(
+                            logToServer(
                                 `facebookAction: ${data.accessToken.toString()}`,
                                 response
                             );
@@ -37,7 +37,7 @@ export function facebookAction(state) {
                             const json = await response.json();
 
                             // eslint-disable-next-line no-console
-                            console.log(`facebookAction:JSON:`, json);
+                            logToServer(`facebookAction:JSON:`, json);
 
                             if (response.ok) {
                                 APP_STORE.TOKEN_EVENT.next({
@@ -61,16 +61,16 @@ export function facebookAction(state) {
 
 export function firebaseAction(token) {
     // eslint-disable-next-line no-console
-    console.log(`firebaseAction: ${token}`);
+    logToServer(`firebaseAction: ${token}`);
 
     userService.tokenFB(token).then(async response => {
         // eslint-disable-next-line no-console
-        console.log(`firebaseAction: ${token}`, response);
+        logToServer(`firebaseAction: ${token}`, response);
 
         const json = await response.json();
 
         // eslint-disable-next-line no-console
-        console.log(`firebaseAction:JSON:`, json);
+        logToServer(`firebaseAction:JSON:`, json);
 
         if (response.ok) {
             APP_STORE.FIRE_EVENT.next({ tokenFB: json.id.toString() });

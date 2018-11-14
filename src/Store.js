@@ -1,3 +1,4 @@
+import logToServer from 'log-to-server'
 import { Subject } from 'rxjs/Subject';
 import { AsyncStorage } from 'react-native';
 import { isValidText } from './utils';
@@ -82,7 +83,7 @@ async function popToken(state) {
         const token = await AsyncStorage.getItem('token');
         if (isValidText(token) && token != null) {
             // eslint-disable-next-line no-console
-            console.log('popToken:', token);
+            logToServer('popToken:', token);
             state.token = token;
         }
     } catch (error) {
@@ -101,7 +102,7 @@ async function popUser(state) {
         const user = await AsyncStorage.getItem('username');
         if (isValidText(user) && user != null) {
             // eslint-disable-next-line no-console
-            console.log('popUser:', user);
+            logToServer('popUser:', user);
             state.username = user;
         }
     } catch (error) {
@@ -120,7 +121,7 @@ async function popId(state) {
         const id = await AsyncStorage.getItem('id');
         if (isValidText(id) && id != null) {
             // eslint-disable-next-line no-console
-            console.log('popId:', id);
+            logToServer('popId:', id);
             state.id = id;
         }
     } catch (error) {
@@ -139,7 +140,7 @@ async function popIdFB(state) {
         const id = await AsyncStorage.getItem('idFB');
         if (isValidText(id) && id != null) {
             // eslint-disable-next-line no-console
-            console.log('popFB:', id);
+            logToServer('popFB:', id);
             state.tokenFB = id;
         }
     } catch (error) {
@@ -158,7 +159,7 @@ async function popNoti(state) {
         await AsyncStorage.getItem('noti').then(value => {
             const valueToBeSaved = value === 'true';
             // eslint-disable-next-line no-console
-            console.log('STORE:popNotification:', value);
+            logToServer('STORE:popNotification:', value);
             state.noti = valueToBeSaved;
         });
     } catch (error) {
@@ -214,14 +215,14 @@ class Store {
 
         const me = this;
         this.ERROR_EVENT = new Subject();
-        this.ERROR_EVENT.subscribe(state => {
+        this.ERROR_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             if (isValidText(state)) {
                 me.state.error = state;
             }
         });
         this.APP_EVENT = new Subject();
-        this.APP_EVENT.subscribe(state => {
+        this.APP_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             const error = state.error;
             if (isValidText(error)) {
@@ -233,7 +234,7 @@ class Store {
             }
         });
         this.TOKEN_EVENT = new Subject();
-        this.TOKEN_EVENT.subscribe(state => {
+        this.TOKEN_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             if (isValidText(state.token)) {
                 saveToken(state.token);
@@ -241,7 +242,7 @@ class Store {
             }
         });
         this.NOTI_EVENT = new Subject();
-        this.NOTI_EVENT.subscribe(state => {
+        this.NOTI_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             if (state.noti !== undefined && state.noti !== null) {
                 saveNoti(state.noti);
@@ -249,15 +250,16 @@ class Store {
             }
         });
         this.USER_EVENT = new Subject();
-        this.USER_EVENT.subscribe(state => {
+        this.USER_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             if (isValidText(state.username)) {
                 saveUser(state.username);
                 me.state.username = state.username;
+
             }
         });
         this.ID_EVENT = new Subject();
-        this.ID_EVENT.subscribe(state => {
+        this.ID_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             if (isValidText(state.id)) {
                 saveId(state.id);
@@ -265,7 +267,7 @@ class Store {
             }
         });
         this.FIRE_EVENT = new Subject();
-        this.FIRE_EVENT.subscribe(state => {
+        this.FIRE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             if (isValidText(state.tokenFB)) {
                 saveFB(state.tokenFB);
@@ -273,132 +275,136 @@ class Store {
             }
         });
         this.FEED_EVENT = new Subject();
-        this.FEED_EVENT.subscribe(state => {
+        this.FEED_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.feed = state.feed;
         });
         this.FEEDPAGE_EVENT = new Subject();
-        this.FEEDPAGE_EVENT.subscribe(state => {
+        this.FEEDPAGE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.page = state.page;
         });
         this.PROFILE_EVENT = new Subject();
-        this.PROFILE_EVENT.subscribe(state => {
+        this.PROFILE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.profile = state.profile;
+
         });
         this.PROFILEIMAGES_EVENT = new Subject();
-        this.PROFILEIMAGES_EVENT.subscribe(state => {
+        this.PROFILEIMAGES_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.profileImages420 = state.profileImages420;
+
         });
         this.PROFILEPAGE_EVENT = new Subject();
-        this.PROFILEPAGE_EVENT.subscribe(state => {
+        this.PROFILEPAGE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.profileImages420Page = state.profileImages420Page;
         });
         this.SWIPERPAGE_EVENT = new Subject();
-        this.SWIPERPAGE_EVENT.subscribe(state => {
+        this.SWIPERPAGE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.swiperPage = state.swiperPage;
         });
         this.LIKE_EVENT = new Subject();
-        this.LIKE_EVENT.subscribe(state => {
+        this.LIKE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.row = state.row;
         });
         this.PUBLICPROFILE_EVENT = new Subject();
-        this.PUBLICPROFILE_EVENT.subscribe(state => {
+        this.PUBLICPROFILE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.publicProfile = state.publicProfile;
         });
         this.PUBLICEDITPROFILE_EVENT = new Subject();
-        this.PUBLICEDITPROFILE_EVENT.subscribe(state => {
+        this.PUBLICEDITPROFILE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.publicProfile = state.publicProfile;
         });
         this.PUBLIC_SAVE_PROFILE_EVENT = new Subject();
-        this.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => {
+        this.PUBLIC_SAVE_PROFILE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.saveProfile = state.saveProfile;
         });
         this.PUBLICIMAGES420_EVENT = new Subject();
-        this.PUBLICIMAGES420_EVENT.subscribe(state => {
+        this.PUBLICIMAGES420_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.publicImages420 = state.publicImages420;
+
         });
         this.PUBLICIMAGES420PAGE_EVENT = new Subject();
-        this.PUBLICIMAGES420PAGE_EVENT.subscribe(state => {
+        this.PUBLICIMAGES420PAGE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.publicImages420Page = state.publicImages420Page;
+
         });
         this.EMAIL_EVENT = new Subject();
-        this.EMAIL_EVENT.subscribe(state => {
+        this.EMAIL_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.email = state.email;
         });
         this.USERNAME_EVENT = new Subject();
-        this.USERNAME_EVENT.subscribe(state => {
+        this.USERNAME_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.username = state.username;
         });
         this.SWIPER_EVENT = new Subject();
-        this.SWIPER_EVENT.subscribe(state => {
+        this.SWIPER_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.swiper = state.swiper;
         });
         this.SWIPERACTION_EVENT = new Subject();
-        this.SWIPERACTION_EVENT.subscribe(state => {
+        this.SWIPERACTION_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.swiperAction = state.swiperAction;
         });
         this.CHAT_EVENT = new Subject();
-        this.CHAT_EVENT.subscribe(state => {
+        this.CHAT_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.chats = state.chats;
         });
         this.SUPER_EVENT = new Subject();
-        this.SUPER_EVENT.subscribe(state => {
+        this.SUPER_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.super = state.super;
         });
         this.LIKEACTION_EVENT = new Subject();
-        this.LIKEACTION_EVENT.subscribe(state => {
+        this.LIKEACTION_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.likeAction = state.likeAction;
         });
         this.CHATMSG_EVENT = new Subject();
-        this.CHATMSG_EVENT.subscribe(state => {
+        this.CHATMSG_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.chatMsg = state.chatMsg;
         });
         this.CHATPAGE = new Subject();
-        this.CHATPAGE.subscribe(state => {
+        this.CHATPAGE.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.chatMsgPage = state.chatMsgPage;
         });
         this.BAD_EVENT = new Subject();
-        this.BAD_EVENT.subscribe(state => {
+        this.BAD_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.bad = state.bad;
         });
         this.FACE_EVENT = new Subject();
-        this.FACE_EVENT.subscribe(state => {
+        this.FACE_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.face = state.face;
         });
         this.UPLOAD_EVENT = new Subject();
-        this.UPLOAD_EVENT.subscribe(state => {
+        this.UPLOAD_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.upload = state.upload;
         });
         this.CHATNOTIF_EVENT = new Subject();
-        this.CHATNOTIF_EVENT.subscribe(state => {
+        this.CHATNOTIF_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.chatNotif = state.chatNotif;
         });
         this.LIKENOTIF_EVENT = new Subject();
-        this.LIKENOTIF_EVENT.subscribe(state => {
+        this.LIKENOTIF_EVENT.subscribe(state => { logToServer(state)
             if (!state) return;
             me.state.likeNotif = state.likeNotif;
         });

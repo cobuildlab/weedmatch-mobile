@@ -12,7 +12,7 @@ import {
     ActivityIndicator,
     Switch, AsyncStorage, Alert,
 } from 'react-native';
-
+import logToServer from 'log-to-server'
 import { strings } from '../../i18n';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles, { LIGHT_GRAY, MAGENTA } from './style';
@@ -31,7 +31,7 @@ import {
 export default class EditProfile extends Component {
     constructor(props) {
         super(props);
-        console.log('EditProfile:constructor');
+        logToServer('EditProfile:constructor');
 
         this.state = {
             description: '',
@@ -61,11 +61,11 @@ export default class EditProfile extends Component {
         });
 
         this.public = APP_STORE.PUBLICEDITPROFILE_EVENT.subscribe(state => {
-            console.log(
+            logToServer(
                 'Public Edit Profile:componentDidMount:PUBLICEDITPROFILE_EVENT',
                 state
             );
-            console.log(state);
+            logToServer(state);
             if (state.publicEditProfile) {
                 let newValues = [0];
                 newValues[0] = state.publicEditProfile.distance;
@@ -85,11 +85,11 @@ export default class EditProfile extends Component {
 
         this.saveProfile = APP_STORE.PUBLIC_SAVE_PROFILE_EVENT.subscribe(
             state => {
-                console.log(
+                logToServer(
                     'Public Save Profile:componentDidMount:PUBLIC_SAVE_PROFILE_EVENT',
                     state
                 );
-                console.log(state);
+                logToServer(state);
                 if (state.saveProfile) {
                     this.helper = true;
                     this.props.navigation.pop();
@@ -100,8 +100,8 @@ export default class EditProfile extends Component {
 
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             this.setState({ isLoading: true });
-            console.log('Edit Profile:componentDidMount:APP_EVENT', state);
-            console.log(state);
+            logToServer('Edit Profile:componentDidMount:APP_EVENT', state);
+            logToServer(state);
             if (state.error) {
                 parseError(state.error);
             }
@@ -111,7 +111,7 @@ export default class EditProfile extends Component {
     }
 
     componentWillUnmount() {
-        console.log('EditProfile:componentWillUmmount');
+        logToServer('EditProfile:componentWillUmmount');
         if (this.helper) {
             this.props.navigation.state.params.refresh();
         }
@@ -130,7 +130,7 @@ export default class EditProfile extends Component {
     };
 
     sliderOneValuesChange = values => {
-        console.log(values);
+        logToServer(values);
         let newValues = [0];
         newValues[0] = values[0];
         this.setState({
@@ -221,7 +221,7 @@ export default class EditProfile extends Component {
             .then(image => {
                 this.setImageUrl(image.path, index);
             })
-            .catch(e => console.log(e));
+            .catch(e => logToServer(e));
     };
 
     _getPhoto(index) {
@@ -256,7 +256,7 @@ export default class EditProfile extends Component {
             .then(image => {
                 this.setImageUrl(image.path, index);
             })
-            .catch(e => console.log(e));
+            .catch(e => logToServer(e));
     }
 
     _takePhoto(index) {
@@ -290,7 +290,7 @@ export default class EditProfile extends Component {
     }
 
     _setMatch(value) {
-        console.log(value);
+        logToServer(value);
         this.setState(prevState => ({
             user: {
                 ...prevState.user,
