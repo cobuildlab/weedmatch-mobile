@@ -1,35 +1,29 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     Text,
     View,
     Image,
-    AsyncStorage,
     TouchableOpacity,
     ActivityIndicator,
     Alert,
-    SafeAreaView,
-    TouchableHighlight,
     Dimensions,
     FlatList,
-    AppState
 } from 'react-native';
 
 import styles from './style';
 import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
-import {connection, internet, checkConectivity, toastMsg} from '../../utils';
+import {internet, checkConectivity, toastMsg} from '../../utils';
 import {
     publicProfileAction,
     getImages,
-    publicImages420Action,
     appendData,
     Action420,
     logOut,
     privateProfileAction
 } from './ProfileActions';
 
-var {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export default class Profile extends Component {
     constructor(props) {

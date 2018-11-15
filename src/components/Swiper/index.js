@@ -21,22 +21,27 @@ import firebase from "react-native-firebase";
 import {Button as NativeBaseButton} from "native-base";
 import buttonStyles from "../../styles/buttons";
 import textStyles from "../../styles/text";
-import GeoStore from "../../utils/GeoStore";
-import { PLACE_ENUM } from '../../modules/report';
+import GeoStore from "../../utils/geolocation/GeoStore";
 
-import REPORT_ROUTE_KEY from '../../modules/report';
+import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
+import ReportStore from '../../modules/report/ReportStore'
+
 
 export default class SwiperView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    static getInitialState() {
+        return {
             cards: [],
+            isLoaded: false,
             latitude: 0,
             longitude: 0,
-            urlPage: '',
             numPage: 0,
-            isLoaded: false,
+            urlPage: '',
         }
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = SwiperView.getInitialState()
 
         this.cardIndex = 0;
     }
@@ -116,17 +121,22 @@ export default class SwiperView extends Component {
             });
         });
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.updatePositionIfExists();
             this._swiperData();
         }, 2000);
 
+        this.reportSubscription = ReportStore.subscribe("Reported", () => {
+            // reload component
+            this.setState(SwiperView.getInitialState())
+            this._swiperData()
+        })
     }
 
     updatePositionIfExists() {
         const position = GeoStore.getState("GeoData");
 
-        if (!position || !position.coords){
+        if (!position || !position.coords) {
             this.setState({
                 latitude: undefined,
                 longitude: undefined
@@ -147,6 +157,7 @@ export default class SwiperView extends Component {
         this.swiperPage.unsubscribe();
         this.errorSubscription.unsubscribe();
         this.geoDatasubscription.unsubscribe();
+        this.reportSubscription.unsubscribe();
     }
 
 
@@ -167,12 +178,12 @@ export default class SwiperView extends Component {
      * @returns {void}
      */
     onPressBlock = (imageID, userID, userName) => {
-        const { navigation } = this.props;
+        const {navigation} = this.props;
 
         const params = {
             place: PLACE_ENUM.Swiper,
-            profileImageID: imageID,
-            userID,
+            profileImageID: String(imageID),
+            userID: String(userID),
             userName,
         };
 

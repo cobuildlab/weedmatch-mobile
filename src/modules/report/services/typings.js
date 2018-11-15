@@ -28,7 +28,7 @@ const isObject = o => {
 /**
  * An enum for the `place` key in all of the POST json body parameters. Each one
  * corresponds exclusively to the type of the report being made.
- * @typedef {"Chat"|"Feed"|"Profile"} PlaceEnum
+ * @typedef {"Chat"|"Feed"|"Profile"|"Swiper"} PlaceEnum
  */
 
 /**

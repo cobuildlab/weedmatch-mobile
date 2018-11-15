@@ -1,6 +1,7 @@
 import {PureComponent} from 'react';
-import {PermissionsAndroid, Platform, AsyncStorage} from 'react-native';
+import {PermissionsAndroid, Platform, AsyncStorage, Alert} from 'react-native';
 import PropTypes from 'prop-types';
+import {strings} from "../../i18n";
 // Optional: Flow type
 
 /**
@@ -14,6 +15,7 @@ export default class GeoLocationProvider extends PureComponent {
         this.permissionGranted = false;
         this.watchId = 0;
     }
+
 
     updateValues = () => {
         // console.log('GeoLocationProvider:updateValues', this.permissionGranted);
@@ -34,8 +36,37 @@ export default class GeoLocationProvider extends PureComponent {
     async componentDidMount() {
         // console.log('GeoLocationProvider', 'Trying to acquire location');
 
-        if(this.props.active){
-            this.intervalID = setInterval(()=>{
+        const userAnswerToLocationDialog = await AsyncStorage.getItem("userAnswerToLocationDialog");
+        if (userAnswerToLocationDialog !== null) {
+            if (userAnswerToLocationDialog === "true") {
+                await this.handlePermissions();
+                return;
+            }
+        }
+
+        Alert.alert(
+            strings("GeoLocationProvider.AlertTitle"),
+            strings("GeoLocationProvider.AlertDescription"),
+            [
+                {
+                    text: 'Cancel', onPress: async () => {
+                        await AsyncStorage.setItem("userAnswerToLocationDialog", "false");
+                    }, style: 'cancel'
+                },
+                {
+                    text: 'OK', onPress: async () => {
+                        await this.handlePermissions();
+                        await AsyncStorage.setItem("userAnswerToLocationDialog", "true");
+                    }
+                },
+            ],
+            {cancelable: false}
+        );
+    }
+
+    handlePermissions = async () => {
+        if (this.props.active) {
+            this.intervalID = setInterval(() => {
                 this.updateValues();
             }, 5000);
         }
@@ -69,7 +100,7 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     componentWillUnmount() {
-        if(this.intervalID)
+        if (this.intervalID)
             clearInterval(this.intervalID);
     }
 

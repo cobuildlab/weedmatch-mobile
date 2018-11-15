@@ -2,13 +2,13 @@ import {APP_STORE} from '../../Store';
 import {strings} from '../../i18n';
 import {isValidText} from '../../utils/index'
 import {userService} from './service';
-import { authHeader, catchErrorAndPropagate , URL,LENGUAGE } from '../../utils';
+import {authHeader, catchErrorAndPropagate, URL, LENGUAGE} from '../../utils';
 import moment from 'moment';
-import { AsyncStorage, Alert} from 'react-native'
+import {AsyncStorage, Alert} from 'react-native'
 
-function swiperAction(token,action,id) {
+function swiperAction(token, action, id) {
 
-    userService.swiperAction(token,action,id,moment().format())
+    userService.swiperAction(token, action, id, moment().format())
         .then(async (response) => {
             console.log(`Swiper: ${token}, ${action}, ${id}`, response);
             const json = await response.json();
@@ -22,10 +22,16 @@ function swiperAction(token,action,id) {
         })
 }
 
-function publicProfileAction(token, id,state) {
-    console.log(`publicProfileAction: ${token}, ${id}`);
+/**
+ * Get the Public profile detail
+ * @param token
+ * @param id
+ * @param state
+ */
+function publicProfileAction(token, id, state) {
+    console.log(`publicProfileAction:`, [token, id, state]);
 
-    userService.publicProfile(token, id,state)
+    userService.publicProfile(token, id, state)
         .then(async (response) => {
             console.log(`publicProfileAction: ${token}, ${id}`, response);
             const json = await response.json();
@@ -35,13 +41,13 @@ function publicProfileAction(token, id,state) {
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
+        }).catch(err => APP_STORE.APP_EVENT.next({"error": err.message}));
 }
 
 function publicImages420Action(token, pageUrl) {
     console.log(`publicImages420Action: ${token}, ${pageUrl}`);
 
-    userService.publicImages420(token,pageUrl)
+    userService.publicImages420(token, pageUrl)
         .then(async (response) => {
             console.log(`publicImages420Action: ${token}, ${pageUrl}`, response);
             const json = await response.json();
@@ -55,47 +61,47 @@ function publicImages420Action(token, pageUrl) {
         });
 }
 
-function Action420(token, state,userId) {
+function Action420(token, state, userId) {
 
     console.log(`Action420: ${token}, ${state}, ${userId}`);
 
     var pagUrl = '';
 
-    if (state.urlPage != '' && state.numPage > 0) {
+    if (state.urlPage != '' && state.numPage > 0) {
         pagUrl = state.urlPage;
-        publicImages420Action(token,pagUrl);
+        publicImages420Action(token, pagUrl);
 
-    } else if (state.numPage == 0){
+    } else if (state.numPage == 0) {
         pagUrl = URL + 'public-image/' + userId + '/';
-        publicImages420Action(token,pagUrl);
+        publicImages420Action(token, pagUrl);
     }
 }
 
-function appendData(oldData, newData) {
+function appendData(oldData, newData) {
     oldData.slice();
 
-    newData.map((data) => { 
+    newData.map((data) => {
         oldData.push(data);
     });
 
     return oldData;
 }
 
-function getImages(data) {
+function getImages(data) {
 
     const _images = [];
 
-    data.map((image) => {
-      _images.push(image.image);
+    data.map((image) => {
+        _images.push(image.image);
     });
 
     return _images;
 }
 
-async function saveSuper(id,tomorrow) {
+async function saveSuper(id, tomorrow) {
     try {
         await AsyncStorage.setItem("day", tomorrow);
-        swiperAction(APP_STORE.getToken(),'SuperLike',id)
+        swiperAction(APP_STORE.getToken(), 'SuperLike', id)
     } catch (error) {
         console.error('AsyncStorage error: ' + error.message);
     }
@@ -109,23 +115,23 @@ async function saveHour(id) {
 
     const day = await AsyncStorage.getItem('day');
 
-    if (day != null) {
+    if (day != null) {
         if (moment().diff(day, 'minutes') < 0) {
 
             startTime = "00:00"
             minutes = moment().diff(day, 'minutes') * -1
             h = Math.floor(minutes / 60)
-            m = minutes % 60 + parseInt(startTime.substring(3,4));
+            m = minutes % 60 + parseInt(startTime.substring(3, 4));
             newtime = h + strings("swiper.hours") + m + strings("swiper.minutes");
 
             Alert.alert(newtime)
 
         } else {
-            saveSuper(id,tomorrow)
+            saveSuper(id, tomorrow)
         }
-    } else {
-        saveSuper(id,tomorrow)
+    } else {
+        saveSuper(id, tomorrow)
     }
 }
 
-export { publicProfileAction,getImages,publicImages420Action,appendData,Action420,swiperAction,saveHour };
+export {publicProfileAction, getImages, publicImages420Action, appendData, Action420, swiperAction, saveHour};
