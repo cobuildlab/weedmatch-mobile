@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Image as RNImage } from 'react-native';
 import styles from './style';
-import { getChat } from './MessageActions';
+import { getChat, touchChatMessage } from './MessageActions';
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { connection, toastMsg } from '../../utils';
@@ -60,6 +60,7 @@ export default class Message extends Component {
     }
 
     showChat(id, user, other, imgProfile) {
+        touchChatMessage(id);
         this.props.navigation.navigate('Chat', {
             chat_id: id,
             otherUser: other,

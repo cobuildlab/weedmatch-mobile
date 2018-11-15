@@ -168,6 +168,7 @@ async function popNoti(state) {
     }
 }
 
+
 class Store {
     constructor() {
         this.state = {
@@ -357,6 +358,17 @@ class Store {
             if (!state) return;
             me.state.chats = state.chats;
         });
+        this.CHATMSG_READ_EVENT = new Subject();
+        this.CHATMSG_READ_EVENT.subscribe(state => {
+            if (!state) return;
+            console.log(state);
+            /*const index = (me.state.chats || []).findIndex(chat => chat.id === state.id);
+            me.state.chats = Object.assign(
+                [...(me.state.chats || [])],
+                { [index]: Object.assign({}, (me.state.chats || [])[index], { read: true }) }
+            )*/
+        });
+
         this.SUPER_EVENT = new Subject();
         this.SUPER_EVENT.subscribe(state => {
             if (!state) return;

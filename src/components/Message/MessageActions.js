@@ -15,6 +15,20 @@ function getChat() {
     });
 }
 
+function touchChatMessage(id) {
+    userService.touchChatMessage(APP_STORE.getToken(), id)
+        .then(async response => {
+            const json = await response.json();
+            console.warn('touchChatMessage', json);
+            if (response.ok) {
+                APP_STORE.CHATMSG_READ_EVENT.next({ message: json });
+                return;
+            }
+
+            APP_STORE.APP_EVENT.next({ error: json.detail });
+        })
+}
+
 function getImages(data) {
     const _images = [];
 
@@ -25,4 +39,4 @@ function getImages(data) {
     return _images;
 }
 
-export { getChat, getImages };
+export { getChat, getImages, touchChatMessage };

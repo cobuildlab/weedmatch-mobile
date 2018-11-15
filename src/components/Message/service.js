@@ -2,6 +2,7 @@ import {authHeader, catchErrorAndPropagate , URL} from '../../utils';
 
 export const userService = {
     chatService,
+    touchChatMessage
 };
 
 /**
@@ -16,4 +17,14 @@ function chatService(token) {
     };
 
     return fetch(URL + 'getchat/', requestOptions);
+}
+
+function touchChatMessage(token, id) {
+    return fetch(`${URL}messages/${id}/`, {
+        method: 'PUT',
+        headers: authHeader(token),
+        body: JSON.stringify({
+            status: 'READ'
+        })
+    });
 }
