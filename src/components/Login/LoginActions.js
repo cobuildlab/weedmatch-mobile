@@ -24,10 +24,9 @@ function loginAction(username, password) {
                 APP_STORE.USER_EVENT.next({"username": json.username});
                 APP_STORE.ID_EVENT.next({"id": json.id.toString()});
 
-                dispatchEvent(authStoreEvents.ID, json.id);
-                dispatchEvent(authStoreEvents.IMAGE_PROFILE_URL, json.image_profile)
-                dispatchEvent(authStoreEvents.TOKEN, json.token)
-                dispatchEvent(authStoreEvents.USER_NAME, json.username)
+
+
+                dispatchEvent(authStoreEvents.USER, json)
 
                 return;
             }

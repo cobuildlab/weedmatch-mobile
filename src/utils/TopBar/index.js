@@ -1,4 +1,3 @@
-// @ts-check
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
@@ -17,10 +16,14 @@ import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 import GeoLocationProvider from "../geolocation/GeoLocationProvider";
 import {strings} from "../../i18n";
 
+import AuthStore,
+    { events as authStoreEvents } from '../../modules/auth/AuthStore'
+/**
+ * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
+ * 
+ */    
+
 import logToServer from 'log-to-server'
-
-import AuthStore, { events as authStoreEvents } from '../../modules/auth/AuthStore'
-
 
 export default class TopBar extends Component {
 
@@ -28,16 +31,23 @@ export default class TopBar extends Component {
 
     constructor() {
         super();
-        logToServer(AuthStore)
-        let userImageURL = null
-        let userImageURLStore =
-            AuthStore.getState(authStoreEvents.IMAGE_PROFILE_URL)
 
-        if (typeof userImageURLStore == 'string') {
-            if (userImageURLStore.length > 0) {
-                userImageURL = userImageURLStore
+        /**
+         * @type {UserObject}
+         */
+        const user = AuthStore.getState(authStoreEvents.USER)
+        logToServer(user)
+        let userImageURL = null
+        
+            
+        if (user != null) {
+            if (typeof user.image_profile == 'string') {
+                userImageURL = user.image_profile
             }
         }
+
+        logToServer(userImageURL)
+
 
         this.state = {
             activePage: 0,
@@ -189,16 +199,33 @@ export default class TopBar extends Component {
         // });
 
         // for the user pic
-        this.userImageURLSubscription =
-            AuthStore.subscribe(authStoreEvents.IMAGE_PROFILE_URL, url => {
-                if (typeof url == 'string') {
-                    if (url.length > 0) {
-                        this.setState({
-                            userImageURL : url
-                        })
+        this.userSubscription =
+            AuthStore.subscribe(
+                authStoreEvents.USER,
+                (/** @type {UserObject} */user) => {
+                    logToServer(`subs: ${JSON.stringify(user)}`)
+                    const url = user.image_profile
+                    if (typeof url == 'string') {
+                        if (url.length > 0) {
+                            this.setState({
+                                userImageURL : url
+                            })
+                        }
                     }
+            })
+        
+        AsyncStorage
+            .getItem(authStoreEvents.USER)
+            .then(userJSON => {
+                if (userJSON != null) {
+                    /**
+                     * @type {UserObject}
+                     */
+                    const user = JSON.parse(userJSON)
+                    this.setState({
+                        userImageURL: user.image_profile
+                    })
                 }
-                
             })
     }
 
@@ -242,14 +269,8 @@ export default class TopBar extends Component {
 
 
         AppState.removeEventListener('change', this._handleAppStateChange);
-        AsyncStorage
-            .getItem(authStoreEvents.IMAGE_PROFILE_URL)
-            .then(userImageURL => {
-                this.setState({
-                    userImageURL,
-                })
-            })
-        this.userImageURLSubscription.unsubscribe();
+        
+        this.userSubscription.unsubscribe();
     }
 
     getSwiperImage() {

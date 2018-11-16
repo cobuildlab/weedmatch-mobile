@@ -5,13 +5,22 @@
 import { FluxStore } from '../../utils/flux-state/index';
 import { AsyncStorage } from 'react-native';
 
+/**
+ * @typedef {object} UserObject
+ * @prop {string} id
+ * @prop {string} image_profile
+ * @prop {string} token
+ * @prop {string} username
+ */
+
 export const events = {
     // dispatched from components/login/actions
     ERROR: 'authStore/error',
-    ID: 'authStore/id',
-    IMAGE_PROFILE_URL: 'authStore/image-profile-url',
-    TOKEN: 'authStore/token',
-    USER_NAME: 'authStore/user-name',
+    /**
+     * An object of the shape UserObject
+     * @see UserObject
+     */
+    USER: 'authStore/user',
 };
 
 /**
@@ -22,8 +31,8 @@ class AuthStore extends FluxStore {
         super();
 
         Object.values(events).forEach(eventName => {
-            this.addEvent(eventName, value => {
-                AsyncStorage.setItem(eventName, value);
+            this.addEvent(eventName, (/** @type {unknown} */ value) => {
+                AsyncStorage.setItem(eventName, JSON.stringify(value));
                 return value;
             });
         });
