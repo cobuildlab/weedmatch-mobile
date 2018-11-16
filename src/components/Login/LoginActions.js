@@ -4,6 +4,10 @@ import {isValidText} from '../../utils/index'
 import {userService} from './service';
 import {AsyncStorage} from 'react-native';
 
+import { events as authStoreEvents } from '../../modules/auth/AuthStore'
+import { dispatchEvent } from '../../utils/flux-state'
+
+
 function loginAction(username, password) {
     console.log(`loginAction: ${username}, ${password}`);
     if (!isValidText(username) || !isValidText(password)) {
@@ -19,9 +23,15 @@ function loginAction(username, password) {
                 APP_STORE.TOKEN_EVENT.next({"token": json.token});
                 APP_STORE.USER_EVENT.next({"username": json.username});
                 APP_STORE.ID_EVENT.next({"id": json.id.toString()});
+
+
+
+                dispatchEvent(authStoreEvents.USER, json)
+
                 return;
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
+            dispatchEvent(authStoreEvents.ERROR, json.detail)
         }).catch(err => {
         console.log(`loginAction:CATCH:`, err);
         APP_STORE.APP_EVENT.next({"error": err.message});
