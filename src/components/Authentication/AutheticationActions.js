@@ -1,6 +1,12 @@
 import { APP_STORE } from '../../Store';
 import { userService } from './service';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { events as authStoreEvents } from '../../modules/auth/AuthStore'
+import { dispatchEvent } from '../../utils/flux-state'
+/**
+ * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
+ */
+
 
 export function facebookAction(state) {
     // eslint-disable-next-line no-console
@@ -38,6 +44,13 @@ export function facebookAction(state) {
 
                             // eslint-disable-next-line no-console
                             console.log(`facebookAction:JSON:`, json);
+
+                            /**
+                             * @type {UserObject}
+                             */
+                            const user = json
+
+                            dispatchEvent(authStoreEvents.USER, user)
 
                             if (response.ok) {
                                 APP_STORE.TOKEN_EVENT.next({
