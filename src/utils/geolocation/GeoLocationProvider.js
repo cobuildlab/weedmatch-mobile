@@ -11,21 +11,25 @@ export default class GeoLocationProvider extends PureComponent {
 
     constructor(props) {
         super(props);
-        // console.log('GeoLocationProvider:constructor');
+        console.log('GeoLocationProvider:constructor');
         this.permissionGranted = false;
         this.watchId = 0;
     }
 
 
     updateValues = () => {
-        // console.log('GeoLocationProvider:updateValues', this.permissionGranted);
+        console.log('GeoLocationProvider:updateValues', this.permissionGranted);
         if (!this.permissionGranted)
             return;
 
-        navigator.geolocation.getCurrentPosition(this.props.onLocation,
+        navigator.geolocation.getCurrentPosition(()=> {
+            this.props.onLocation();
+            if (this.intervalID)
+                clearInterval(this.intervalID);
+        },
             (error) => {
+                console.log("GeoLocationProvider:updateValues:error", error);
                 this.permissionGranted = false;
-                // console.log("GeoLocationProvider:updateValues", error);
                 if (this.props.onError)
                     this.props.onError(error);
             },
@@ -34,34 +38,7 @@ export default class GeoLocationProvider extends PureComponent {
     }
 
     async componentDidMount() {
-        // console.log('GeoLocationProvider', 'Trying to acquire location');
-
-        const userAnswerToLocationDialog = await AsyncStorage.getItem("userAnswerToLocationDialog");
-        if (userAnswerToLocationDialog !== null) {
-            if (userAnswerToLocationDialog === "true") {
-                await this.handlePermissions();
-                return;
-            }
-        }
-
-        Alert.alert(
-            strings("GeoLocationProvider.AlertTitle"),
-            strings("GeoLocationProvider.AlertDescription"),
-            [
-                {
-                    text: 'Cancel', onPress: async () => {
-                        await AsyncStorage.setItem("userAnswerToLocationDialog", "false");
-                    }, style: 'cancel'
-                },
-                {
-                    text: 'OK', onPress: async () => {
-                        await this.handlePermissions();
-                        await AsyncStorage.setItem("userAnswerToLocationDialog", "true");
-                    }
-                },
-            ],
-            {cancelable: false}
-        );
+        await this.handlePermissions();
     }
 
     handlePermissions = async () => {
