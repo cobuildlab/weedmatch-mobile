@@ -283,7 +283,7 @@ export default class PublicProfile extends Component {
                         <Text style={styles.textNameDetails}>{rowData.first_name}, {rowData.age} </Text>
                     </View>
                     <View>
-                        {country &&
+                        {!!country &&
                         <Text style={styles.textCountry}>{country.name} </Text>
                         }
                         <Text style={styles.textDistance}>{rowData.distance} </Text>

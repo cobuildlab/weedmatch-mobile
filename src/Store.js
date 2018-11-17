@@ -358,15 +358,21 @@ class Store {
             if (!state) return;
             me.state.chats = state.chats;
         });
-        this.CHATMSG_READ_EVENT = new Subject();
-        this.CHATMSG_READ_EVENT.subscribe(state => {
+        this.CHAT_READ_EVENT = new Subject();
+        this.CHAT_READ_EVENT.subscribe(state => {
             if (!state) return;
-            console.log(state);
-            /*const index = (me.state.chats || []).findIndex(chat => chat.id === state.id);
-            me.state.chats = Object.assign(
-                [...(me.state.chats || [])],
-                { [index]: Object.assign({}, (me.state.chats || [])[index], { read: true }) }
-            )*/
+            const index = (me.state.chats || []).findIndex(chat => chat.id === state.chat);
+            me.state.chats = [
+                ...me.state.chats.slice(0, index),
+                {
+                    ...me.state.chats[index],
+                    last_message: {
+                        ...me.state.chats[index].last_message,
+                        status: state.status,
+                    }
+                },
+                ...me.state.chats.slice(index + 1)
+            ];
         });
 
         this.SUPER_EVENT = new Subject();

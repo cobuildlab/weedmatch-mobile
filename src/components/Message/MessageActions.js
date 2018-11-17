@@ -19,9 +19,8 @@ function touchChatMessage(id) {
     userService.touchChatMessage(APP_STORE.getToken(), id)
         .then(async response => {
             const json = await response.json();
-            console.warn('touchChatMessage', json);
             if (response.ok) {
-                APP_STORE.CHATMSG_READ_EVENT.next({ message: json });
+                APP_STORE.CHAT_READ_EVENT.next(json);
                 return;
             }
 

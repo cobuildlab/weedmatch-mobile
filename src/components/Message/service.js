@@ -20,11 +20,8 @@ function chatService(token) {
 }
 
 function touchChatMessage(token, id) {
-    return fetch(`${URL}messages/${id}/`, {
-        method: 'PUT',
-        headers: authHeader(token),
-        body: JSON.stringify({
-            status: 'READ'
-        })
+    return fetch(`${URL}messages/${id}/read/`, {
+        method: 'POST',
+        headers: authHeader(token)
     });
 }

@@ -59,8 +59,10 @@ export default class Message extends Component {
         this.chatsVar.unsubscribe();
     }
 
-    showChat(id, user, other, imgProfile) {
-        touchChatMessage(id);
+    showChat(id, user, other, imgProfile, lastMessage) {
+        if (lastMessage.status && lastMessage.status !== 're') {
+            touchChatMessage(lastMessage.id);
+        }
         this.props.navigation.navigate('Chat', {
             chat_id: id,
             otherUser: other,
@@ -100,7 +102,8 @@ export default class Message extends Component {
                                 item.id,
                                 item.id_user,
                                 item.user,
-                                item.image_profile
+                                item.image_profile,
+                                item.last_message
                             )
                         }
                     >
@@ -112,8 +115,8 @@ export default class Message extends Component {
                             <View style={styles.viewTexts}>
                                 <Text style={styles.textUser}>{item.user}</Text>
                                 <Text style={styles.textChat}>
-                                    {item.message
-                                        ? item.message
+                                    {(item.last_message.message)
+                                        ? item.last_message.message
                                         : strings('chat.write')}
                                 </Text>
                             </View>
