@@ -1,4 +1,3 @@
-// @ts-check
 import React, {Component} from 'react';
 import {Container, Tab, Tabs, TabHeading} from 'native-base';
 import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
@@ -17,6 +16,14 @@ import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 import GeoLocationProvider from "../geolocation/GeoLocationProvider";
 import {strings} from "../../i18n";
 
+import AuthStore,
+    { events as authStoreEvents } from '../../modules/auth/AuthStore'
+/**
+ * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
+ * 
+ */    
+
+import logToServer from 'log-to-server'
 
 export default class TopBar extends Component {
 
@@ -24,13 +31,32 @@ export default class TopBar extends Component {
 
     constructor() {
         super();
+
+        /**
+         * @type {UserObject}
+         */
+        const user = AuthStore.getState(authStoreEvents.USER)
+        logToServer(user)
+        let userImageURL = null
+        
+            
+        if (user != null) {
+            if (typeof user.image_profile == 'string') {
+                userImageURL = user.image_profile
+            }
+        }
+
+        logToServer(userImageURL)
+
+
         this.state = {
             activePage: 0,
             notification: "false",
             like: "false",
             currentChatUsername: "",
             modalVisible: false,
-            matchData: {}
+            matchData: {},
+            userImageURL,
         };
     }
 
@@ -171,6 +197,36 @@ export default class TopBar extends Component {
         //     image_profile_match : "https://weedmatch-mobile.sfo2.digitaloceanspaces.com/mobile/users/profile/99/125/99-alacret_396-2018-10-08_213613.jpg",
         //     chat_id:1
         // });
+
+        // for the user pic
+        this.userSubscription =
+            AuthStore.subscribe(
+                authStoreEvents.USER,
+                (/** @type {UserObject} */user) => {
+                    logToServer(`subs: ${JSON.stringify(user)}`)
+                    const url = user.image_profile
+                    if (typeof url == 'string') {
+                        if (url.length > 0) {
+                            this.setState({
+                                userImageURL : url
+                            })
+                        }
+                    }
+            })
+        
+        AsyncStorage
+            .getItem(authStoreEvents.USER)
+            .then(userJSON => {
+                if (userJSON != null) {
+                    /**
+                     * @type {UserObject}
+                     */
+                    const user = JSON.parse(userJSON)
+                    this.setState({
+                        userImageURL: user.image_profile
+                    })
+                }
+            })
     }
 
     /**
@@ -216,6 +272,8 @@ export default class TopBar extends Component {
 
 
         AppState.removeEventListener('change', this._handleAppStateChange);
+        
+        this.userSubscription.unsubscribe();
     }
 
     getSwiperImage() {
@@ -259,7 +317,11 @@ export default class TopBar extends Component {
                 <Container style={styles.bgColor}>
 
                     <TouchableOpacity style={styles.buttomIconProfile} onPress={() => this.showProfile()}>
-                        <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
+                        {
+                            this.state.userImageURL == null
+                            ? <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/> 
+                            : <Image style={styles.imgIconProfile} source={{ uri: this.state.userImageURL}}/>
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttomIconMsg} onPress={() => this.showMessage()}>
                         <Image style={styles.imgIconMsg}
