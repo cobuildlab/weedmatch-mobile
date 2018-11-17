@@ -22,8 +22,8 @@ export default class GeoLocationProvider extends PureComponent {
         if (!this.permissionGranted)
             return;
 
-        navigator.geolocation.getCurrentPosition(()=> {
-            this.props.onLocation();
+        navigator.geolocation.getCurrentPosition(position => {
+            this.props.onLocation(position);
             if (this.intervalID)
                 clearInterval(this.intervalID);
         },

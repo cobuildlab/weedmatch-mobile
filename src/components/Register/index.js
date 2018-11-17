@@ -66,15 +66,6 @@ class RegisterPage extends Component {
 
     componentDidMount() {
         console.log("RegisterPage:componentDidMount");
-        AsyncStorage.getItem("libraryPermissionsHasBeenAsked").then(value => {
-            if (value !== null)
-                this.libraryPermissionsHasBeenAsked = true;
-        });
-        AsyncStorage.getItem("cameraPermissionsHasBeenAsked").then(value => {
-            if (value !== null)
-                this.cameraPermissionsHasBeenAsked = true;
-        });
-
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
             if (state.error) {
                 this.setState({isLoading: false});
@@ -336,23 +327,7 @@ class RegisterPage extends Component {
     };
 
     _getPhoto() {
-        if (this.libraryPermissionsHasBeenAsked)
-            this.getPhotoFromPicker();
-        else {
-            Alert.alert(
-                strings("ImagePicker.AlertTitle"),
-                strings("ImagePicker.AlertDescription"),
-                [
-                    {
-                        text: 'Cancel', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {text: 'OK', onPress: this.getPhotoFromPicker},
-                ],
-                {cancelable: false}
-            );
-            AsyncStorage.setItem("libraryPermissionsHasBeenAsked", "someValue");
-        }
+        this.getPhotoFromPicker();
     }
 
     takePhotoFromPicker = () => {
@@ -372,23 +347,7 @@ class RegisterPage extends Component {
     }
 
     _takePhoto() {
-        if (this.cameraPermissionsHasBeenAsked)
-            this.takePhotoFromPicker();
-        else {
-            Alert.alert(
-                strings("ImagePicker.AlertTitle"),
-                strings("ImagePicker.AlertDescription"),
-                [
-                    {
-                        text: 'Cancel', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {text: 'OK', onPress: this.takePhotoFromPicker},
-                ],
-                {cancelable: false}
-            );
-            AsyncStorage.setItem("cameraPermissionsHasBeenAsked", "someValue");
-        }
+        this.takePhotoFromPicker();
     }
 
     renderBy(body) {
