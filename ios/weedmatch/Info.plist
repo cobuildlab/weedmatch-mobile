@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.4</string>
+	<string>1.6.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>11</string>
 	<key>FacebookAppID</key>
 	<string>195159134438735</string>
 	<key>FacebookDisplayName</key>
@@ -56,13 +56,11 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Weedmatch requires access to your camera to take photos.</string>
+	<string>We require access to your Camera to allow you share moments and emotions with the members of our community</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Weedmatch will now only track your location when the screen is on and the app is displayed.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Weedmatch requires access to your camera to take videos.</string>
+	<string>We require access to your Location to show you nearby content, users and events that are more relevant to you</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Weedmatch requires access to your photo library to upload photos.</string>
+	<string>We require access to your Photo Library to allow you share moments and emotions with the members of our community</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

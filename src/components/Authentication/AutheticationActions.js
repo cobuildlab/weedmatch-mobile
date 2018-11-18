@@ -29,7 +29,7 @@ export function facebookAction(state) {
                 }
                 AccessToken.getCurrentAccessToken().then(data => {
                     // eslint-disable-next-line no-console
-                    console.log(data.accessToken.toString());
+                    console.log("facebookAction", data.accessToken.toString());
 
                     userService
                         .facebookHandle(data.accessToken.toString(), state)

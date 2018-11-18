@@ -20,9 +20,7 @@ function facebookHandle(token, state) {
             'Accept-Language': getLocale(),
         },
         body: JSON.stringify({
-            'access_token': token,
-            'latitud': state.latitud,
-            'longitud': state.longitud,
+            'access_token': token
         }),
     };
     return fetch(URL + 'login-facebook/', requestOptions);
