@@ -77,15 +77,6 @@ export default class HomePage extends Component {
     }
 
     componentDidMount() {
-        AsyncStorage.getItem("libraryPermissionsHasBeenAsked").then(value => {
-            if (value !== null)
-                this.libraryPermissionsHasBeenAsked = true;
-        });
-        AsyncStorage.getItem("cameraPermissionsHasBeenAsked").then(value => {
-            if (value !== null)
-                this.cameraPermissionsHasBeenAsked = true;
-        });
-
         this.feedData = APP_STORE.FEED_EVENT.subscribe(state => {
             console.log('Home420:componentDidMount:feedDataSuscription', state);
             if (state.feed) {
@@ -350,23 +341,7 @@ export default class HomePage extends Component {
     };
 
     _getPhoto() {
-        if (this.libraryPermissionsHasBeenAsked)
-            this.getPhotoFromPicker();
-        else {
-            Alert.alert(
-                strings("ImagePicker.AlertTitle"),
-                strings("ImagePicker.AlertDescription"),
-                [
-                    {
-                        text: 'Cancel', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {text: 'OK', onPress: this.getPhotoFromPicker},
-                ],
-                {cancelable: false}
-            );
-            AsyncStorage.setItem("libraryPermissionsHasBeenAsked", "someValue");
-        }
+        this.getPhotoFromPicker();
     }
 
     takePhotoFromPicker() {
@@ -389,23 +364,7 @@ export default class HomePage extends Component {
     }
 
     _takePhoto() {
-        if (this.cameraPermissionsHasBeenAsked)
-            this.takePhotoFromPicker();
-        else {
-            Alert.alert(
-                strings("ImagePicker.AlertTitle"),
-                strings("ImagePicker.AlertDescription"),
-                [
-                    {
-                        text: 'Cancel', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {text: 'OK', onPress: this.takePhotoFromPicker},
-                ],
-                {cancelable: false}
-            );
-            AsyncStorage.setItem("cameraPermissionsHasBeenAsked", "someValue");
-        }
+        this.takePhotoFromPicker();
     }
 
     showActivity() {

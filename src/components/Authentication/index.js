@@ -102,25 +102,9 @@ export default class Authentication extends Component {
         facebookAction(this.state);
     }
 
-    _showCurrentVersion() {
-        //TODO: react-native-version-check deprecated
-    }
-
-    onLocation = (position) => {
-        this.setState({
-            latitud: position.coords.latitude.toFixed(6),
-            longitud: position.coords.longitude.toFixed(6),
-        });
-
-    };
-
     render() {
         return (
             <ScrollView style={styles.scrollContainer}>
-                <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
-                                     active={true}
-                />
                 <View style={styles.headerLogin}>
                     <View style={styles.headerImageHolder}>
                         <View style={styles.imageStyle}>
@@ -132,10 +116,7 @@ export default class Authentication extends Component {
                     </View>
                 </View>
                 <View style={styles.contentLogin}>
-                    <Text
-                        style={styles.textLight}
-                        onPress={this._showCurrentVersion.bind(this)}
-                    >
+                    <Text style={styles.textLight}>
                         {strings('main.title')}
                     </Text>
                     <Text style={styles.textBold}>{strings('wmatch')}</Text>
