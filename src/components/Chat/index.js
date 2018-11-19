@@ -35,6 +35,9 @@ export default class Chat extends Component {
         urlPage: '',
     };
 
+
+    socket = null
+
     _handleAppStateChange = nextAppState => {
         // eslint-disable-next-line no-console
         console.log('TOPBAR:_handleAppStateChange', nextAppState);
@@ -47,6 +50,43 @@ export default class Chat extends Component {
             imgProfile: this.getImgProfile(),
             name: this.getOtherUser(),
         });
+
+        const chat_id = this.props.navigation.getParam('chat_id');
+        
+        if (typeof chat_id != 'number') {
+            // nothing to do here, just go back
+            this.handleAnyException()
+
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `Chat id route parameter not a number, instead got: ${typeof chat_id}`
+                )
+            }
+        }
+
+        const socketURL =
+            WS_URL +
+            '?' +
+            'id_user=' +
+            APP_STORE.getId() +
+            '&' +
+            'username=' +
+            APP_STORE.getUser() +
+            '&' +
+            'chat_id=' +
+            chat_id +
+            '&' +
+            'token=' +
+            APP_STORE.getToken();
+        
+
+        this.socket = new WebSocket(socketURL)
+
+        this.socket.onclose = this.onSocketClose
+        this.socket.onerror = this.onSocketError
+        this.socket.onmessage = this.onSocketMessage
+        this.socket.onopen = this.onSocketOpen
 
         APP_STORE.CHATNOTIF_EVENT.next({chatNotif: this.getOtherUser()});
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -118,6 +158,10 @@ export default class Chat extends Component {
         this.chatPage.unsubscribe();
         // this.close()
         AppState.removeEventListener('change', this._handleAppStateChange);
+        
+        this.socket.close()
+        // garbage collect socket
+        this.socket = null
     }
 
     getOtherUser() {
@@ -143,6 +187,73 @@ export default class Chat extends Component {
         } else {
             internet();
         }
+    }
+
+    /**
+     * @param {{ code: number }} e
+     */
+    onSocketClose = (e) => {
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('chat socket -> onClose')
+        }
+        // https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#Properties
+        
+        // 1000 = normal close
+        // 1001 = socket closed by server or by navigating away
+        
+        if (e.code > 1001) {
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `socket closed with code greater than 1001, got code: ${e.code}`
+                )
+            }
+            this.handleAnyException()
+        }
+    }
+
+    /**
+     * @param {{ message: string }} e
+     */
+    onSocketError = ({ message }) => {
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.warn(`socket error, e.message: ${message}`)
+        }
+        this.handleAnyException()
+    }
+
+    /**
+     * @param {{ data: any }} e
+     */
+    onSocketMessage = ({ data }) => {
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('onSocketMessage:', data);
+        }
+        try {
+            const json = JSON.parse(data);
+            
+            this.onReceive(json.message)
+        } catch (e) {
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn('onSocketMessage()::', e.message);
+            }
+            this.handleAnyException();
+        }
+    }
+
+    onSocketOpen = () => {
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('socket open');
+        }
+    }
+
+    handleAnyException = () => {
+        this.props.navigation.goBack()
     }
 
     onReceive(messages) {
@@ -172,7 +283,7 @@ export default class Chat extends Component {
             message: messages[0].text,
             user: APP_STORE.getUser(),
         };
-        this.WS.send(JSON.stringify(payload));
+        this.socket.send(JSON.stringify(payload));
         // this.setState(prevState => ({open: !prevState.open}))
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
@@ -220,62 +331,9 @@ export default class Chat extends Component {
                 </View>
             );
         }
-        const {navigation} = this.props;
-        const chat_id = navigation.getParam('chat_id', '0');
-        let queryString =
-            'id_user=' +
-            APP_STORE.getId() +
-            '&' +
-            'username=' +
-            APP_STORE.getUser() +
-            '&' +
-            'chat_id=' +
-            chat_id +
-            '&' +
-            'token=' +
-            APP_STORE.getToken();
-        const url = WS_URL + '?' + queryString;
-        const that = this;
 
         return (
             <View style={styles.root}>
-                <WS
-                    ref={ref => {
-                        this.ws = ref;
-                        that.WS = ref;
-                    }}
-                    url={url}
-                    onOpen={() => {
-                        // eslint-disable-next-line no-console
-                        console.log('Open!');
-                        // const payload = {
-                        //     "message": "HOLA",
-                        //     "user": APP_STORE.getUser(),
-                        //     "id_user_send": that.getOtherID(),
-                        //     "chat_id": that.getChatID(),
-                        // }
-                        // this.ws.send(JSON.stringify(payload));
-                    }}
-                    onMessage={data => {
-                        // eslint-disable-next-line no-console
-                        console.log(
-                            'CHAT:_handleWebSocketSetup:onmesage',
-                            data
-                        );
-                        // eslint-disable-next-line no-console
-                        console.log(
-                            'CHAT:_handleWebSocketSetup:onmesage',
-                            data.data
-                        );
-                        const json = JSON.parse(data.data);
-                        that.onReceive(json.message);
-                    }}
-                    // eslint-disable-next-line no-console
-                    onError={console.error}
-                    // eslint-disable-next-line no-console
-                    onClose={console.log}
-                    reconnect // Will try to reconnect onClose
-                />
                 <GiftedChat
                     renderAvatar={null}
                     loadEarlier={this.state.morePages}
