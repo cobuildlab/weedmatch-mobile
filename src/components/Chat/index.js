@@ -12,21 +12,6 @@ import ChatTitle from '../../modules/chat/ChatTitle';
 import {WHITE} from '../../styles/colors';
 
 export default class Chat extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            connected: false,
-            isLoading: true,
-            messages: [],
-            morePages: false,
-            numPage: 0,
-            open: false,
-            refreshing: true,
-            urlPage: '',
-        };
-    }
-
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
         const {name, imgProfile, otherID} = params;
@@ -37,6 +22,17 @@ export default class Chat extends Component {
             }
             }/>,
         };
+    };
+
+    state = {
+        connected: false,
+        isLoading: true,
+        messages: [],
+        morePages: false,
+        numPage: 0,
+        open: false,
+        refreshing: true,
+        urlPage: '',
     };
 
     _handleAppStateChange = nextAppState => {
