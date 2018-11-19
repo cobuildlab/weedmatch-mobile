@@ -42,14 +42,12 @@ export default class Chat extends Component {
         if (nextAppState == 'active') this.getEarlyMessages();
     };
 
-    UNSAFE_componentWillMount() {
-        this.props.navigation.setParams({
-            name: this.getOtherUser(),
-            imgProfile: this.getImgProfile(),
-        });
-    }
-
     componentDidMount() {
+        this.props.navigation.setParams({
+            imgProfile: this.getImgProfile(),
+            name: this.getOtherUser(),
+        });
+
         APP_STORE.CHATNOTIF_EVENT.next({chatNotif: this.getOtherUser()});
         AppState.addEventListener('change', this._handleAppStateChange);
 
