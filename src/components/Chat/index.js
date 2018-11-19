@@ -25,8 +25,6 @@ export default class Chat extends Component {
             refreshing: true,
             urlPage: '',
         };
-
-        this.reconnect = true;
     }
 
     static navigationOptions = ({navigation}) => {
@@ -126,11 +124,6 @@ export default class Chat extends Component {
         this.chatPage.unsubscribe();
         // this.close()
         AppState.removeEventListener('change', this._handleAppStateChange);
-    }
-
-    close() {
-        this.reconnect = false;
-        this.socket.close();
     }
 
     getOtherUser() {
