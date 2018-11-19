@@ -7,7 +7,6 @@ import {internet, checkConectivity, toastMsg} from '../../utils';
 import styles from './style';
 import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
 import {chatAction, appendData} from './ChatActions';
-import WS from 'react-native-websocket';
 import ChatTitle from '../../modules/chat/ChatTitle';
 import {WHITE} from '../../styles/colors';
 
