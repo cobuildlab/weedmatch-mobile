@@ -32,6 +32,7 @@ export default class Chat extends Component {
             morePages: false,
             numPage: 0,
             refreshing: true,
+            socketOpen: false,
             urlPage: '',
         };
 
@@ -244,6 +245,10 @@ export default class Chat extends Component {
      * @returns {void}
      */
     onSocketClose = (e) => {
+        this.setState({
+            socketOpen: false,
+        })
+
         if (__DEV__) {
             // eslint-disable-next-line no-console
             console.log(`Chat::onSocketClose, code:${e.code}`)
@@ -304,6 +309,10 @@ export default class Chat extends Component {
             // eslint-disable-next-line no-console
             console.log('Chat::onSocketOpen');
         }
+
+        this.setState({
+            socketOpen: true,
+        })
     }
 
     handleAnyException = () => {
@@ -401,7 +410,9 @@ export default class Chat extends Component {
     }
 
     render() {
-        if (this.state.refreshing) {
+        const socketStillNotOpen = !this.state.socketOpen
+
+        if (this.state.refreshing || socketStillNotOpen) {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
                     <ActivityIndicator size="large" color="#9605CC"/>
