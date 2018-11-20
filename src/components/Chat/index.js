@@ -82,8 +82,10 @@ export default class Chat extends Component {
 
         // For receiving the latest messagues or if the user scrolls up in history
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
-            // eslint-disable-next-line no-console
-            console.log('Chat:componentDidMount:CHATMSG_EVENT');
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.log('Chat::componentDidMount::CHATMSG_EVENT', state);
+            }
 
             if (state.error) {
                 toastMsg(state.error);
@@ -115,7 +117,7 @@ export default class Chat extends Component {
 
         this.chatPage = APP_STORE.CHATPAGE.subscribe(state => {
             // eslint-disable-next-line no-console
-            console.log('Chat:componentDidMount:CHATPAGE');
+            console.log('Chat::componentDidMount::CHATPAGE:', state);
 
             if (state.chatMsgPage) {
                 this.setState({

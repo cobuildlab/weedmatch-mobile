@@ -3,23 +3,39 @@ import { APP_STORE } from '../../Store';
 import { URL } from '../../utils';
 
 export function getChatMessages(pageUrl) {
-    // console.log(`getChatMessagesAction: ${pageUrl}`);
+    if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log('Chat::ChatActions::getChatMessages', pageUrl);
+    }
 
     userService.chats(pageUrl).then(async response => {
-        // console.log(`getChatMessagesAction: ${pageUrl}`, response);
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('Chat::ChatActions::getChatMessages::response', response);
+        }
+
         const json = await response.json();
-        // console.log(`getChatMessagesAction:JSON:`, json);
+
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('Chat::ChatActions::getChatMessages::json', json);
+        }
+
         if (response.ok) {
             APP_STORE.CHATMSG_EVENT.next({ chatMsg: json.results });
             APP_STORE.CHATPAGE.next({ chatMsgPage: json.next });
             return;
         }
+
         APP_STORE.APP_EVENT.next({ error: json.detail });
     });
 }
 
 export function chatAction(state, chatID) {
-    // console.log(`CHATMSG: ${state}, ${chatID}`);
+    if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log('Chat::ChatActions::chatAction', state, chatID);
+    }
 
     var pagUrl = '';
 
@@ -34,6 +50,15 @@ export function chatAction(state, chatID) {
 
 export function appendData(oldData, newData, id) {
     // oldData.slice();
+    if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(
+            'ChatActions::appendData::CHATMSG_EVENT',
+            oldData,
+            newData,
+            id
+        );
+    }
 
     newData.map(data => {
         // console.log(data)
@@ -66,6 +91,9 @@ export function appendData(oldData, newData, id) {
 
         oldData.push(message);
     });
-    console.log(oldData);
+    if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.log(oldData);
+    }
     return oldData;
 }
