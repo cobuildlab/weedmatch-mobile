@@ -194,7 +194,7 @@ export default class Chat extends Component {
     onSocketClose = (e) => {
         if (__DEV__) {
             // eslint-disable-next-line no-console
-            console.log('chat socket -> onClose')
+            console.log(`Chat::onSocketClose, code:${e.code}`)
         }
         // https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#Properties
         
@@ -218,7 +218,7 @@ export default class Chat extends Component {
     onSocketError = ({ message }) => {
         if (__DEV__) {
             // eslint-disable-next-line no-console
-            console.warn(`socket error, e.message: ${message}`)
+            console.warn('Chat::onSocketError, message:', message)
         }
         this.handleAnyException()
     }
@@ -229,7 +229,7 @@ export default class Chat extends Component {
     onSocketMessage = ({ data }) => {
         if (__DEV__) {
             // eslint-disable-next-line no-console
-            console.log('onSocketMessage:', data);
+            console.log('Chat::onSocketMessage, data: ', data);
         }
         try {
             const json = JSON.parse(data);
@@ -238,7 +238,7 @@ export default class Chat extends Component {
         } catch (e) {
             if (__DEV__) {
                 // eslint-disable-next-line no-console
-                console.warn('onSocketMessage()::', e.message);
+                console.warn('Chat::onSocketMessage::error, message: ', e.message);
             }
             this.handleAnyException();
         }
@@ -247,7 +247,7 @@ export default class Chat extends Component {
     onSocketOpen = () => {
         if (__DEV__) {
             // eslint-disable-next-line no-console
-            console.log('socket open');
+            console.log('Chat::onSocketOpen');
         }
     }
 
@@ -256,6 +256,10 @@ export default class Chat extends Component {
     }
 
     onReceive(messages) {
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('Chat::onReceive:', messages);
+        }
         const message = {
             _id: Math.round(Math.random() * 1000000),
             createdAt: new Date(),
@@ -273,8 +277,10 @@ export default class Chat extends Component {
     }
 
     onSend(messages = []) {
-        // eslint-disable-next-line no-console
-        console.log('onSend:SOCKET CONNECTED');
+        if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.log('Chat::onSend:', messages)
+        }
 
         const payload = {
             chat_id: this.getChatID(),
@@ -282,8 +288,11 @@ export default class Chat extends Component {
             message: messages[0].text,
             user: APP_STORE.getUser(),
         };
+
         this.socket.send(JSON.stringify(payload));
+
         // this.setState(prevState => ({open: !prevState.open}))
+
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }));
