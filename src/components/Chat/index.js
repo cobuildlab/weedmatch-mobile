@@ -9,7 +9,37 @@ import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
 import {chatAction, appendData} from './ChatActions';
 import ChatTitle from '../../modules/chat/ChatTitle';
 import {WHITE} from '../../styles/colors';
+/**
+ * @typedef {import('../../definitions').NavigationScreenProp<ChatParams>} NavigationScreenProp
+ */
 
+/**
+ * @typedef {object} ChatParams
+ * @prop {number} chat_id
+ * @prop {string} imgProfile
+ * @prop {string} otherID
+ * @prop {string} otherUser Screen name of the other user
+ */
+
+/**
+ * @typedef {object} ChatProps
+ * @prop {NavigationScreenProp} navigation
+ */
+
+/**
+ * @typedef {object} ChatState
+ * @prop {boolean} isLoading
+ * @prop {Array<any>} messages
+ * @prop {boolean} morePages
+ * @prop {number} numPage
+ * @prop {boolean} refreshing
+ * @prop {boolean} socketOpen
+ * @prop {string} urlPage
+ */
+
+/**
+ * @augments Component<ChatProps, ChatState>
+ */
 export default class Chat extends Component {
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
