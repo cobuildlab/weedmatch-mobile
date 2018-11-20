@@ -19,11 +19,25 @@ export default styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
+    imgProfileBox: {
+        width: 35,
+        height: 35,
+        borderRadius: 35/2,
+    },
     imgProfileItem:{
       width: 35,
       height: 35,
       borderRadius: 35/2,
       resizeMode: 'cover',
+    },
+    statusIndicator: {
+        width: 8,
+        height: 8,
+        borderRadius: 8/2,
+        backgroundColor: '#9605CC',
+        position: 'absolute',
+        right: 0,
+        bottom: 0
     },
     containers: {
       flex: 1,

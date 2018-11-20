@@ -59,8 +59,13 @@ export default class Message extends Component {
         this.chatsVar.unsubscribe();
     }
 
+    isLastMessageUntouched = (lastMessage) =>
+        (lastMessage.status && lastMessage.status !== 're')
+        && (APP_STORE.getId() !== lastMessage.user_id);
+
     showChat(id, user, other, imgProfile, lastMessage) {
-        if (lastMessage.status && lastMessage.status !== 're') {
+        console.log(lastMessage);
+        if (this.isLastMessageUntouched(lastMessage)) {
             touchChatMessage(lastMessage.id);
         }
         this.props.navigation.navigate('Chat', {
@@ -108,10 +113,15 @@ export default class Message extends Component {
                         }
                     >
                         <View style={styles.viewMsg}>
-                            <Image
-                                style={styles.imgProfileItem}
-                                source={{ uri: item.image_profile }}
-                            />
+                            <View style={styles.imgProfileBox}>
+                                <Image
+                                    style={styles.imgProfileItem}
+                                    source={{ uri: item.image_profile }}
+                                />
+                                {this.isLastMessageUntouched(item.last_message) && (
+                                    <View style={styles.statusIndicator}/>
+                                )}
+                            </View>
                             <View style={styles.viewTexts}>
                                 <Text style={styles.textUser}>{item.user}</Text>
                                 <Text style={styles.textChat}>
