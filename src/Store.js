@@ -367,11 +367,17 @@ class Store {
             if (!state) return;
             me.state.likeAction = state.likeAction;
         });
+        /**
+         * This event is only consumed by the Chat route/module
+         */
         this.CHATMSG_EVENT = new Subject();
         this.CHATMSG_EVENT.subscribe(state => {
             if (!state) return;
             me.state.chatMsg = state.chatMsg;
         });
+        /**
+         * This event is only consumed by the Chat route/module
+         */
         this.CHATPAGE = new Subject();
         this.CHATPAGE.subscribe(state => {
             if (!state) return;
@@ -392,6 +398,9 @@ class Store {
             if (!state) return;
             me.state.upload = state.upload;
         });
+        /**
+         * This event is only consumed by TopBar
+         */
         this.CHATNOTIF_EVENT = new Subject();
         this.CHATNOTIF_EVENT.subscribe(state => {
             if (!state) return;
