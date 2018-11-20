@@ -1,3 +1,4 @@
+// @ts-check
 import React, {Component} from 'react';
 import {ActivityIndicator, View, Image, AppState} from 'react-native';
 import {WS_URL} from '../../utils';
@@ -41,15 +42,24 @@ import {WHITE} from '../../styles/colors';
  * @augments Component<ChatProps, ChatState>
  */
 export default class Chat extends Component {
+    /**
+     * @param {{ navigation: NavigationScreenProp }} args
+     */
     static navigationOptions = ({navigation}) => {
         const {params} = navigation.state;
-        const {name, imgProfile, otherID} = params;
 
-        return {
-            headerTitle: <ChatTitle src={imgProfile} name={name} onPress={() => {
+        const {otherUser, imgProfile, otherID} = params || {};
+
+        const otherUserName = typeof otherUser != 'string' ? 'Chat' : otherUser
+
+        const onPress = otherID
+            ? () => {
                 navigation.navigate('PublicProfile', {userId: otherID});
             }
-            }/>,
+            : () => {}
+
+        return {
+            headerTitle: <ChatTitle src={imgProfile} name={otherUserName} onPress={onPress}/>,
         };
     };
 
@@ -99,6 +109,7 @@ export default class Chat extends Component {
             'token=' +
             APP_STORE.getToken();
 
+        // @ts-ignore TODO: Fix WebSocket not being defined globally
         this.socket = new WebSocket(socketURL)
 
         this.socket.onclose = this.onSocketClose
@@ -175,7 +186,9 @@ export default class Chat extends Component {
         console.log('Chat:componentWillUmmount');
 
         APP_STORE.CHATNOTIF_EVENT.next({chatNotif: ''});
+        // @ts-ignore not undefined
         this.chatMsg.unsubscribe();
+        // @ts-ignore not undefined
         this.chatPage.unsubscribe();
         // this.close()
         AppState.removeEventListener('change', this._handleAppStateChange);
@@ -406,6 +419,9 @@ export default class Chat extends Component {
         }));
     }
 
+    /**
+     * @param {object} props
+     */
     renderBubble(props) {
         return (
             <Bubble
@@ -426,11 +442,15 @@ export default class Chat extends Component {
         return null;
     }
 
+    /**
+     * @param {object} props
+     */
     renderSend(props) {
         return (
             <Send {...props}>
                 <View style={styles.sendInnerView}>
                     <Image
+                        // @ts-ignore
                         source={require('../../assets/img/send.png')}
                         resizeMode={'center'}
                     />
