@@ -27,12 +27,10 @@ export default class Chat extends Component {
         super(props);
 
         this.state = {
-            connected: false,
             isLoading: true,
             messages: [],
             morePages: false,
             numPage: 0,
-            open: false,
             refreshing: true,
             urlPage: '',
         };
