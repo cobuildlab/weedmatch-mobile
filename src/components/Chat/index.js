@@ -46,9 +46,11 @@ export default class Chat extends Component {
      * @param {{ navigation: NavigationScreenProp }} args
      */
     static navigationOptions = ({navigation}) => {
-        const {params} = navigation.state;
-
-        const {otherUser, imgProfile, otherID} = params || {};
+        const {otherUser, imgProfile, otherID} = {
+            imgProfile: navigation.getParam('imgProfile'),
+            otherID: navigation.getParam('otherUser'),
+            otherUser: navigation.getParam('otherUser'),
+        };
 
         const otherUserName = typeof otherUser != 'string' ? 'Chat' : otherUser
 
@@ -63,6 +65,9 @@ export default class Chat extends Component {
         };
     };
 
+    /**
+     * @param {ChatProps} props
+     */
     constructor(props) {
         super(props);
 
@@ -79,9 +84,12 @@ export default class Chat extends Component {
         this.socket = null
     }
 
+    /**
+     * @param {any} nextAppState
+     */
     _handleAppStateChange = nextAppState => {
         // eslint-disable-next-line no-console
-        console.log('TOPBAR:_handleAppStateChange', nextAppState);
+        console.log('CHAT::_handleAppStateChange', nextAppState);
 
         if (nextAppState == 'active') this.getEarlyMessages();
     };
@@ -89,7 +97,6 @@ export default class Chat extends Component {
     componentDidMount() {
         this.props.navigation.setParams({
             imgProfile: this.getImgProfile(),
-            name: this.getOtherUser(),
         });
 
         const chat_id = this.getChatID()
@@ -136,7 +143,10 @@ export default class Chat extends Component {
             if (!state.chatMsg)
                 return;
 
-            const newState = {
+            /**
+             * @type {Partial<ChatState>}
+             */
+            let newState = {
                 isLoading: false,
             };
 
@@ -153,7 +163,7 @@ export default class Chat extends Component {
                 newState['refreshing'] = false;
             }
 
-            this.setState(newState);
+            this.setState(/** @type {ChatState} */ (newState));
         });
 
         this.chatPage = APP_STORE.CHATPAGE.subscribe(state => {
