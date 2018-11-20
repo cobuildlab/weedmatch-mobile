@@ -87,6 +87,7 @@ export default class Chat extends Component {
 
             if (state.error) {
                 toastMsg(state.error);
+                this.handleAnyException();
                 return;
             }
 
