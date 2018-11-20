@@ -14,20 +14,24 @@ export function getChatMessages(pageUrl) {
             console.log('Chat::ChatActions::getChatMessages::response', response);
         }
 
-        const json = await response.json();
+        try {
+            const json = await response.json();
 
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log('Chat::ChatActions::getChatMessages::json', json);
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.log('Chat::ChatActions::getChatMessages::json', json);
+            }
+    
+            if (response.ok) {
+                APP_STORE.CHATMSG_EVENT.next({ chatMsg: json.results });
+                APP_STORE.CHATPAGE.next({ chatMsgPage: json.next });
+            } else {
+                throw new Error(json.detail)
+            }
+    
+        } catch (e) {
+            APP_STORE.APP_EVENT.next(e.message);
         }
-
-        if (response.ok) {
-            APP_STORE.CHATMSG_EVENT.next({ chatMsg: json.results });
-            APP_STORE.CHATPAGE.next({ chatMsgPage: json.next });
-            return;
-        }
-
-        APP_STORE.APP_EVENT.next({ error: json.detail });
     });
 }
 
