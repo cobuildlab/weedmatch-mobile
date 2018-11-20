@@ -23,19 +23,22 @@ export default class Chat extends Component {
         };
     };
 
-    state = {
-        connected: false,
-        isLoading: true,
-        messages: [],
-        morePages: false,
-        numPage: 0,
-        open: false,
-        refreshing: true,
-        urlPage: '',
-    };
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            connected: false,
+            isLoading: true,
+            messages: [],
+            morePages: false,
+            numPage: 0,
+            open: false,
+            refreshing: true,
+            urlPage: '',
+        };
 
-    socket = null
+        this.socket = null
+    }
 
     _handleAppStateChange = nextAppState => {
         // eslint-disable-next-line no-console
@@ -50,19 +53,7 @@ export default class Chat extends Component {
             name: this.getOtherUser(),
         });
 
-        const chat_id = this.props.navigation.getParam('chat_id');
-        
-        if (typeof chat_id != 'number') {
-            // nothing to do here, just go back
-            this.handleAnyException()
-
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    `Chat id route parameter not a number, instead got: ${typeof chat_id}`
-                )
-            }
-        }
+        const chat_id = this.getChatID()
 
         const socketURL =
             WS_URL +
@@ -78,7 +69,6 @@ export default class Chat extends Component {
             '&' +
             'token=' +
             APP_STORE.getToken();
-        
 
         this.socket = new WebSocket(socketURL)
 
@@ -163,20 +153,80 @@ export default class Chat extends Component {
         this.socket = null
     }
 
+    /**
+     * @returns {string}
+     */
     getOtherUser() {
-        return this.props.navigation.getParam('otherUser', '0');
+        const otherUser = this.props.navigation.getParam('otherUser');
+
+        if (typeof otherUser != 'string') {
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `Chat::getOtherUser, expected otherUser navigation parameter to be string, but got: ${typeof otherUser}`
+                )
+            }
+            this.handleAnyException();
+        }
+
+        return otherUser
     }
 
+    /**
+     * @returns {string}
+     */
     getImgProfile() {
-        return this.props.navigation.getParam('imgProfile', '');
+        const imgProfile = this.props.navigation.getParam('imgProfile');
+
+        if (typeof imgProfile != 'string') {
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `Chat::getOtherUser, expected imgProfile navigation parameter to be string, but got: ${typeof imgProfile}`
+                )
+            }
+            this.handleAnyException();
+        }
+
+        return imgProfile
     }
 
+    /**
+     * @returns {string}
+     */
     getOtherID() {
-        return this.props.navigation.getParam('otherID', '0');
+        const otherID = this.props.navigation.getParam('otherID');
+
+        if (typeof otherID != 'string') {
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `Chat::getOtherUser, expected otherID navigation parameter to be string, but got: ${typeof otherID}`
+                )
+            }
+            this.handleAnyException();
+        }
+
+        return otherID
     }
 
+    /**
+     * @returns {number}
+     */
     getChatID() {
-        return this.props.navigation.getParam('chat_id', '0');
+        const chatID = this.props.navigation.getParam('chat_id');
+
+        if (typeof chatID != 'number') {
+            if (__DEV__) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `Chat::getOtherUser, expected chatID navigation parameter to be string, but got: ${typeof chatID}`
+                )
+            }
+            this.handleAnyException();
+        }
+
+        return chatID
     }
 
     getEarlyMessages() {
@@ -190,6 +240,7 @@ export default class Chat extends Component {
 
     /**
      * @param {{ code: number }} e
+     * @returns {void}
      */
     onSocketClose = (e) => {
         if (__DEV__) {
@@ -224,7 +275,7 @@ export default class Chat extends Component {
     }
 
     /**
-     * @param {{ data: any }} e
+     * @param {{ data: string }} e
      */
     onSocketMessage = ({ data }) => {
         if (__DEV__) {
@@ -232,6 +283,9 @@ export default class Chat extends Component {
             console.log('Chat::onSocketMessage, data: ', data);
         }
         try {
+            /**
+             * @type {{ message: string }}
+             */
             const json = JSON.parse(data);
             
             this.onReceive(json.message)
@@ -255,19 +309,26 @@ export default class Chat extends Component {
         this.props.navigation.goBack()
     }
 
-    onReceive(messages) {
+    /**
+     * @param {string} messageText
+     */
+    onReceive(messageText) {
         if (__DEV__) {
             // eslint-disable-next-line no-console
-            console.log('Chat::onReceive:', messages);
+            console.log('Chat::onReceive:', messageText);
         }
+
+        if (messageText.length === 0) return;
+
         const message = {
+            // todo: Either receive the ID from the server or use an UUID
             _id: Math.round(Math.random() * 1000000),
             createdAt: new Date(),
-            text: messages,
+            text: messageText,
             user: {
                 _id: this.getOtherID(),
                 avatar: '',
-                name: 'React Native',
+                name: this.getOtherUser(),
             },
         };
 
@@ -276,11 +337,18 @@ export default class Chat extends Component {
         }));
     }
 
-    onSend(messages = []) {
+    /**
+     * @param {Array<object>} messages
+     */
+    onSend = (messages = []) => {
         if (__DEV__) {
             // eslint-disable-next-line no-console
             console.log('Chat::onSend:', messages)
         }
+
+        if (messages.length < 1) return;
+        // if empty string dont send
+        if (!messages[0].text.length) return;
 
         const payload = {
             chat_id: this.getChatID(),
@@ -351,7 +419,7 @@ export default class Chat extends Component {
                     isLoadingEarlier={this.state.isLoading}
                     renderSend={this.renderSend}
                     messages={this.state.messages}
-                    onSend={messages => this.onSend(messages)}
+                    onSend={this.onSend}
                     user={{
                         _id: APP_STORE.getId(),
                     }}
