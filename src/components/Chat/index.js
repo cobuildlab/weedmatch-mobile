@@ -284,7 +284,7 @@ export default class Chat extends Component {
         return chatID
     }
 
-    getEarlyMessages() {
+    getEarlyMessages = () => {
         if (checkConectivity()) {
             this.setState({isLoading: true});
             chatAction(this.state, this.getChatID());
@@ -325,10 +325,10 @@ export default class Chat extends Component {
     /**
      * @param {{ message: string }} e
      */
-    onSocketError = ({ message }) => {
+    onSocketError = (e) => {
         if (__DEV__) {
             // eslint-disable-next-line no-console
-            console.warn('Chat::onSocketError, message:', message)
+            console.warn('Chat::onSocketError:', e)
         }
         this.handleAnyException()
     }
@@ -487,7 +487,7 @@ export default class Chat extends Component {
                     loadEarlier={this.state.morePages}
                     // renderTime={this.renderTime}
                     renderBubble={this.renderBubble}
-                    onLoadEarlier={() => this.getEarlyMessages()}
+                    onLoadEarlier={this.getEarlyMessages}
                     isLoadingEarlier={this.state.isLoading}
                     renderSend={this.renderSend}
                     messages={this.state.messages}
