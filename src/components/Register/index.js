@@ -586,7 +586,7 @@ class RegisterPage extends Component {
                         returnKeyType={"next"}
                         ref='username'
                         onSubmitEditing={() => {
-                            this.passwordInput.focus();
+                            this._nextStep();
                         }}
                         blurOnSubmit={false}
                         value={this.state.username}
