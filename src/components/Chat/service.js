@@ -5,7 +5,7 @@ import { APP_STORE } from '../../Store';
  * @param {string} pagUrl
  */
 function chats(pagUrl) {
-    iif (__DEV__) {
+    if (__DEV__) {
         // eslint-disable-next-line no-console
         console.log('Chat::ChatServices::chats', pagUrl);
     }
