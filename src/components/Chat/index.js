@@ -82,6 +82,14 @@ export default class Chat extends Component {
         };
 
         this.socket = null
+        /**
+         * The object representing the local user, "us".
+         */
+        this.localUser = {
+            _id: APP_STORE.getId(),
+            avatar: '',
+            name: APP_STORE.getUser(),
+        }
     }
 
     /**
@@ -98,6 +106,7 @@ export default class Chat extends Component {
         this.props.navigation.setParams({
             imgProfile: this.getImgProfile(),
         });
+
 
         const chat_id = this.getChatID()
 
@@ -492,9 +501,7 @@ export default class Chat extends Component {
                     renderSend={this.renderSend}
                     messages={this.state.messages}
                     onSend={this.onSend}
-                    user={{
-                        _id: APP_STORE.getId(),
-                    }}
+                    user={this.localUser}
                 />
             </View>
         );
