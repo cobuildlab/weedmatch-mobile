@@ -12,6 +12,7 @@ module.exports = {
         'react-native/react-native': true,
     },
     rules: {
+        'no-console': 0,
         'sort-keys': 2,
     },
     settings: {
