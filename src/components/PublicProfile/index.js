@@ -328,89 +328,84 @@ export default class PublicProfile extends Component {
     };
 
     render() {
-
         const {rowData, country, isLoading, isDetail, public420} = this.state;
-        if (isLoading) {
 
-            if (isDetail) {
-                return (
-                    <View style={styles.viewFlex}>
-                        <FlatList
-                            horizontal={false}
-                            numColumns={3}
-                            bounces={false}
-                            onEndReachedThreshold={0.5}
-                            onMomentumScrollBegin={() => {
-                                this.onEndReachedCalledDuringMomentum = false;
-                            }}
-                            data={getImages(public420)}
-                            style={{flex: 1}}
-                            ListHeaderComponent={this.renderiza()}
-                            keyExtractor={(item, index) => index}
-                            onEndReached={() => this.onEndReached()}
-                            renderItem={({item, index}) =>
-                                <View
-                                    style={[{width: (width) / 3}, {height: (width) / 3}, {marginBottom: 2}, index % 3 !== 0 ? {paddingLeft: 2} : {paddingLeft: 0}]}>
-                                    <Image style={styles.imageView}
-                                           source={{uri: getImages(public420)[index]}}>
-                                    </Image>
-                                </View>
-                            }
-                        />
-                    </View>
-                );
-            } else {
-
-                return (
-
-                    <Container>
-                        <Content>
-                            <Image
-                                source={{uri: rowData.image_profile}}
-                                style={styles.media}
-                            />
-
-                            <View style={styles.dataAndReportButton}>
-
-                                <View style={styles.viewFlex}>
-                                    <Text style={styles.textName}>
-                                        {rowData.first_name}, {rowData.age}
-                                    </Text>
-                                    {country &&
-                                    <Text style={styles.textCountry}>{country.name}</Text>
-                                    }
-                                    <Text style={styles.textDistance}>{rowData.distance}</Text>
-                                </View>
-
-                                <TouchableOpacity
-                                    onPress={this.onPressReport}
-                                    style={styles.reportButtonContainer}
-                                >
-                                    <Image style={styles.reportButtonImage}
-                                           source={require('../../assets/img/report.png')}/>
-                                    <Text
-                                        style={styles.reportButtonText}>{strings('PublicProfile.reportButtonText')}</Text>
-                                </TouchableOpacity>
-
-                            </View>
-
-                            <Text style={styles.textDescription}>
-                                {rowData.description}
-                            </Text>
-
-                        </Content>
-                        {
-                            // absolutely positioned
-                            this.showButtons()
-                        }
-                    </Container>
-                )
-            }
-        } else {
+        if (!isLoading)
             return (
                 <View style={[styles.containers, styles.horizontal]}>
                     <ActivityIndicator size="large" color="#9605CC"/>
                 </View>
+            )
+
+
+        if (isDetail) {
+            return (
+                <View style={styles.viewFlex}>
+                    <FlatList
+                        horizontal={false}
+                        numColumns={3}
+                        bounces={false}
+                        onEndReachedThreshold={0.5}
+                        onMomentumScrollBegin={() => {
+                            this.onEndReachedCalledDuringMomentum = false;
+                        }}
+                        data={getImages(public420)}
+                        style={{flex: 1}}
+                        ListHeaderComponent={this.renderiza()}
+                        keyExtractor={(item, index) => index}
+                        onEndReached={() => this.onEndReached()}
+                        renderItem={({item, index}) =>
+                            <View
+                                style={[{width: (width) / 3}, {height: (width) / 3}, {marginBottom: 2}, index % 3 !== 0 ? {paddingLeft: 2} : {paddingLeft: 0}]}>
+                                <Image style={styles.imageView}
+                                       source={{uri: getImages(public420)[index]}}>
+                                </Image>
+                            </View>
+                        }
+                    />
+                </View>
+            );
+        } else {
+            return (
+                <Container>
+                    <Content>
+                        <Image
+                            source={{uri: rowData.image_profile}}
+                            style={styles.media}
+                        />
+                        <View style={styles.dataAndReportButton}>
+                            <View style={styles.viewFlex}>
+                                <Text style={styles.textName}>
+                                    {rowData.first_name}, {rowData.age}
+                                </Text>
+                                {(country && country.name) ?
+                                <Text style={styles.textCountry}>{country.name}</Text>
+                                : null}
+                                <Text style={styles.textDistance}>{rowData.distance}</Text>
+                            </View>
+
+                            <TouchableOpacity
+                                onPress={this.onPressReport}
+                                style={styles.reportButtonContainer}
+                            >
+                                <Image style={styles.reportButtonImage}
+                                       source={require('../../assets/img/report.png')}/>
+                                <Text
+                                    style={styles.reportButtonText}>{strings('PublicProfile.reportButtonText')}</Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+                        <Text style={styles.textDescription}>
+                            {rowData.description}
+                        </Text>
+
+                    </Content>
+                    {
+                        // absolutely positioned
+                        this.showButtons()
+                    }
+                </Container>
             )
         }
     }
