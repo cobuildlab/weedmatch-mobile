@@ -60,7 +60,7 @@ export function appendData(oldData, newData, id) {
                 createdAt: data.created,
                 text: data.text,
                 user: {
-                    _id: APP_STORE.getId(),
+                    _id: Number(APP_STORE.getId()),
                     avatar: '',
                     name: APP_STORE.getUser(),
                 },
@@ -71,7 +71,7 @@ export function appendData(oldData, newData, id) {
                 createdAt: data.created,
                 text: data.text,
                 user: {
-                    _id: id,
+                    _id: Number(id),
                     avatar: '',
                     name: data.user,
                 },
