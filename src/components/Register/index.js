@@ -343,7 +343,7 @@ class RegisterPage extends Component {
                 image: image.path
             });
 
-        }).catch(e => alert(e));
+        }).catch(e => { console.warn(e) });
     }
 
     _takePhoto() {
