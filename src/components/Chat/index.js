@@ -86,7 +86,7 @@ export default class Chat extends Component {
          * The object representing the local user, "us".
          */
         this.localUser = {
-            _id: APP_STORE.getId(),
+            _id: Number(APP_STORE.getId()),
             avatar: '',
             name: APP_STORE.getUser(),
         }
