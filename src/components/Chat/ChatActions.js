@@ -3,24 +3,15 @@ import { APP_STORE } from '../../Store';
 import { URL } from '../../utils';
 
 export function getChatMessages(pageUrl) {
-    if (__DEV__) {
-        // eslint-disable-next-line no-console
-        console.log('Chat::ChatActions::getChatMessages', pageUrl);
-    }
+    console.log('Chat::ChatActions::getChatMessages', pageUrl);
 
     userService.chats(pageUrl).then(async response => {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log('Chat::ChatActions::getChatMessages::response', response);
-        }
+        console.log('Chat::ChatActions::getChatMessages::response', response);
 
         try {
             const json = await response.json();
 
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.log('Chat::ChatActions::getChatMessages::json', json);
-            }
+            console.log('Chat::ChatActions::getChatMessages::json', json);
     
             if (response.ok) {
                 APP_STORE.CHATMSG_EVENT.next({ chatMsg: json.results });
@@ -36,10 +27,7 @@ export function getChatMessages(pageUrl) {
 }
 
 export function chatAction(state, chatID) {
-    if (__DEV__) {
-        // eslint-disable-next-line no-console
-        console.log('Chat::ChatActions::chatAction', state, chatID);
-    }
+    console.log('Chat::ChatActions::chatAction', state, chatID);
 
     var pagUrl = '';
 
@@ -54,15 +42,12 @@ export function chatAction(state, chatID) {
 
 export function appendData(oldData, newData, id) {
     // oldData.slice();
-    if (__DEV__) {
-        // eslint-disable-next-line no-console
-        console.log(
-            'ChatActions::appendData::CHATMSG_EVENT',
-            oldData,
-            newData,
-            id
-        );
-    }
+    console.log(
+        'ChatActions::appendData::CHATMSG_EVENT',
+        oldData,
+        newData,
+        id
+    );
 
     newData.map(data => {
         // console.log(data)
@@ -95,9 +80,8 @@ export function appendData(oldData, newData, id) {
 
         oldData.push(message);
     });
-    if (__DEV__) {
-        // eslint-disable-next-line no-console
-        console.log(oldData);
-    }
+
+    console.log(oldData);
+
     return oldData;
 }

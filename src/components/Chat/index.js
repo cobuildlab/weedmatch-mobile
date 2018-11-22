@@ -138,10 +138,10 @@ export default class Chat extends Component {
 
         // For receiving the latest messagues or if the user scrolls up in history
         this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.log('Chat::componentDidMount::CHATMSG_EVENT', state);
-            }
+
+            // eslint-disable-next-line no-console
+            console.log('Chat::componentDidMount::CHATMSG_EVENT', state);
+
 
             if (state.error) {
                 toastMsg(state.error);
@@ -224,12 +224,10 @@ export default class Chat extends Component {
         const otherUser = this.props.navigation.getParam('otherUser');
 
         if (typeof otherUser != 'string') {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    `Chat::getOtherUser, expected otherUser navigation parameter to be string, but got: ${typeof otherUser}`
-                )
-            }
+            console.warn(
+                `Chat::getOtherUser, expected otherUser navigation parameter to be string, but got: ${typeof otherUser}`
+            )
+
             this.handleAnyException();
         }
 
@@ -243,12 +241,12 @@ export default class Chat extends Component {
         const imgProfile = this.props.navigation.getParam('imgProfile');
 
         if (typeof imgProfile != 'string') {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    `Chat::getOtherUser, expected imgProfile navigation parameter to be string, but got: ${typeof imgProfile}`
-                )
-            }
+
+
+            console.warn(
+                `Chat::getOtherUser, expected imgProfile navigation parameter to be string, but got: ${typeof imgProfile}`
+            )
+
             this.handleAnyException();
         }
 
@@ -262,12 +260,12 @@ export default class Chat extends Component {
         const otherID = this.props.navigation.getParam('otherID');
 
         if (typeof otherID != 'string') {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    `Chat::getOtherUser, expected otherID navigation parameter to be string, but got: ${typeof otherID}`
-                )
-            }
+
+
+            console.warn(
+                `Chat::getOtherUser, expected otherID navigation parameter to be string, but got: ${typeof otherID}`
+            )
+
             this.handleAnyException();
         }
 
@@ -281,12 +279,10 @@ export default class Chat extends Component {
         const chatID = this.props.navigation.getParam('chat_id');
 
         if (typeof chatID != 'number') {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    `Chat::getOtherUser, expected chatID navigation parameter to be string, but got: ${typeof chatID}`
-                )
-            }
+            console.warn(
+                `Chat::getOtherUser, expected chatID navigation parameter to be string, but got: ${typeof chatID}`
+            )
+
             this.handleAnyException();
         }
 
@@ -311,22 +307,18 @@ export default class Chat extends Component {
             socketOpen: false,
         })
 
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log(`Chat::onSocketClose, code:${e.code}`)
-        }
+        console.log(`Chat::onSocketClose, code:${e.code}`)
+
         // https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#Properties
         
         // 1000 = normal close
         // 1001 = socket closed by server or by navigating away
         
         if (e.code > 1001) {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    `socket closed with code greater than 1001, got code: ${e.code}`
-                )
-            }
+            console.warn(
+                `socket closed with code greater than 1001, got code: ${e.code}`
+            )
+
             this.handleAnyException()
         }
     }
@@ -335,10 +327,8 @@ export default class Chat extends Component {
      * @param {{ message: string }} e
      */
     onSocketError = (e) => {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn('Chat::onSocketError:', e)
-        }
+        console.warn('Chat::onSocketError:', e)
+
         this.handleAnyException()
     }
 
@@ -346,10 +336,8 @@ export default class Chat extends Component {
      * @param {{ data: string }} e
      */
     onSocketMessage = ({ data }) => {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log('Chat::onSocketMessage, data: ', data);
-        }
+        console.log('Chat::onSocketMessage, data: ', data);
+
         try {
             /**
              * @type {{ message: string }}
@@ -358,19 +346,15 @@ export default class Chat extends Component {
             
             this.onReceive(json.message)
         } catch (e) {
-            if (__DEV__) {
-                // eslint-disable-next-line no-console
-                console.warn('Chat::onSocketMessage::error, message: ', e.message);
-            }
+            console.warn('Chat::onSocketMessage::error, message: ', e.message);
+
             this.handleAnyException();
         }
     }
 
     onSocketOpen = () => {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log('Chat::onSocketOpen');
-        }
+        console.log('Chat::onSocketOpen');
+
 
         this.setState({
             socketOpen: true,
@@ -385,10 +369,8 @@ export default class Chat extends Component {
      * @param {string} messageText
      */
     onReceive(messageText) {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log('Chat::onReceive:', messageText);
-        }
+        console.log('Chat::onReceive:', messageText);
+
 
         if (messageText.length === 0) return;
 
@@ -413,10 +395,7 @@ export default class Chat extends Component {
      * @param {Array<object>} messages
      */
     onSend = (messages = []) => {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.log('Chat::onSend:', messages)
-        }
+        console.log('Chat::onSend:', messages)
 
         if (messages.length < 1) return;
         // if empty string dont send
