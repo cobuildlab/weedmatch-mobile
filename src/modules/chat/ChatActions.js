@@ -23,11 +23,8 @@ export const fetchChat = () => {
 
     const errorCallback = e => {
         dispatchEvent(CHAT_ERROR_EVENT, e.message);
-
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn(e.message);
-        }
+        // eslint-disable-next-line no-console
+        console.warn(e.message);
     };
 
     try {
@@ -35,10 +32,8 @@ export const fetchChat = () => {
             .then(successCallback)
             .catch(errorCallback);
     } catch (e) {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn(e.message);
-        }
+        // eslint-disable-next-line no-console
+        console.warn(e.message);
         // catch synchronous errors
         errorCallback(e);
     }
@@ -61,11 +56,7 @@ export const touchChatMessage = messageId => {
 
     const errorCallback = e => {
         dispatchEvent(CHAT_ERROR_EVENT, e.message);
-
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn(e.message);
-        }
+        console.warn(e.message);
     };
 
     try {
@@ -73,10 +64,8 @@ export const touchChatMessage = messageId => {
             .then(successCallback)
             .catch(errorCallback);
     } catch (e) {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn(e.message);
-        }
+        console.warn(e.message);
+
         // catch synchronous errors
         errorCallback(e);
     }
