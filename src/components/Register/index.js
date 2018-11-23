@@ -472,6 +472,61 @@ class RegisterPage extends Component {
         })
     }
 
+    onBlurFullName = () => {
+        this.setState(({full_name}: { full_name: string }) => ({
+            full_name: full_name.trim()
+        }))
+    }
+
+    /**
+     * We turn any combinations of words from:
+     * 'hELLo    wOrld'
+     * to:
+     * 'Hello World"
+     * No leading or trailling whitespace is trimmed, this is done on
+     * `onBlurFullName`
+     * However, no two consecutive spaces are allowed
+     * @param text
+     */
+    onChangeFullName = (text: string) => {
+        const isLetter = (char: string): boolean => {
+            if (char.length !== 1) {
+                throw new TypeError(
+                    'Register::onChangeFullName::isLetter: Called with string instead of char'
+                )
+            }
+            const charCode = char.charCodeAt(0)
+
+            return (charCode >= 65 && charCode <= 90)
+                || (charCode >= 97 && charCode <= 122)
+        }
+
+        const filtered = text
+            .split('')
+            .filter(char => isLetter(char) || char === ' ')
+            .join('')
+
+        const withoutConsecutiveWhiteSpaces = filtered.replace(/\s+/g, ' ')
+
+        const asLowercaseWords = withoutConsecutiveWhiteSpaces
+            .split(' ') // to words
+            .map(eachWord => eachWord.toLowerCase())
+            // ['hello', 'world'] => [["h", "e", "l", "l", "o"], ["w", "o", "r", "l", "d"]]
+            .map(eachWord => eachWord.split(''))
+            .map(eachWordChars => eachWordChars
+                    .map((char, i) => i == 0
+                        ? char.toUpperCase()
+                        : char)
+                    .join('')
+                )
+            .join(' ')
+
+        
+        this.setState({
+            full_name: asLowercaseWords,
+        })
+    }
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
@@ -489,7 +544,8 @@ class RegisterPage extends Component {
                         style={styles.inputStyle}
                         editable={true}
                         underlineColorAndroid='transparent'
-                        onChangeText={(full_name) => this.setState({full_name})}
+                        onBlur={this.onBlurFullName}
+                        onChangeText={this.onChangeFullName}
                         placeholder={strings("register.fullName")}
                         returnKeyType={"next"}
                         maxLength={30}
