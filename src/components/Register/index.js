@@ -231,7 +231,7 @@ class RegisterPage extends Component {
         const passwordError = validate('password', this.state.password);
 
         if (full_nameError) {
-            toastMsg(full_nameError);
+            toastMsg(strings('register.errorFullName'))
             return false
         }
         if (emailError) {

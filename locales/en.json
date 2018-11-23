@@ -32,7 +32,7 @@
         "all": "Everyone",
         "other": "Other",
         "allInputs": "All inputs required",
-        "errorFullName": "Invalid full name",
+        "errorFullName": "Your full name must be at least 3 letters long",
         "errorEmail": "Invalid email",
         "errorPassword": "Invalid password",
         "errorUsername": "Invalid username",
