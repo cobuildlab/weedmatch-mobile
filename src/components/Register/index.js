@@ -24,7 +24,8 @@ import {APP_STORE} from "../../Store";
 import styles from './style';
 import loginStyles from '../Login/style';
 import {connection, generateUsernameFromFullName, toastMsg,
-        charIsLetter} from "../../utils";
+        charIsLetter,
+        charIsNumber} from "../../utils";
 import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -516,6 +517,29 @@ class RegisterPage extends Component {
         })
     }
 
+    /**
+     * Allow only usernames with letters, numbers, `-`, `.` and `_`.
+     * Allow only from length 6 to 30
+     * @param text The text from the username input
+     */
+    onChangeUsername = (text: string) => {
+        const chars = text.split('')
+
+        const filtered = chars
+            .filter(char =>
+                    charIsLetter(char) ||
+                    charIsNumber(char) ||
+                    char == '-' ||
+                    char == '_' ||
+                    char == '.'
+            )
+            .join('')
+        
+        this.setState({
+            username: filtered,
+        })
+    }
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
@@ -626,7 +650,7 @@ class RegisterPage extends Component {
                         style={loginStyles.inputStyle}
                         underlineColorAndroid='transparent'
                         editable={true}
-                        onChangeText={(username) => this.setState({username})}
+                        onChangeText={this.onChangeUsername}
                         placeholder={strings('register.username')}
                         returnKeyType={"next"}
                         ref='username'
@@ -635,6 +659,7 @@ class RegisterPage extends Component {
                         }}
                         blurOnSubmit={false}
                         value={this.state.username}
+                        maxLength={30}
                     />
 
                 </View>
