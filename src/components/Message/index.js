@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 import { Image as RNImage } from 'react-native';
 import styles from './style';
-import { getChat, touchChatMessage } from './MessageActions';
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
-import { connection, toastMsg } from '../../utils';
+import { toastMsg } from '../../utils';
 import FastImage from 'react-native-fast-image';
+import ChatStore from '../../modules/chat/ChatStore';
+import { fetchChat, touchChatMessage } from '../../modules/chat/ChatActions';
 
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
@@ -21,34 +22,36 @@ export default class Message extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            refreshing: false,
             chats: [],
             isLoading: true,
+            refreshing: false,
         };
     }
 
     componentDidMount() {
+        console.log('DID MOUNT');
         this.showChatNotif();
 
-        this.chatsVar = APP_STORE.CHAT_EVENT.subscribe(state => {
-            console.log('Messages:componentDidMount:chatsVar', state);
-            if (state.chats) {
-                this.setState({
-                    chats: state.chats,
-                    isLoading: false,
-                });
-                return;
-            }
-
-            if (state.error) {
-                toastMsg(state.error);
-            }
+        this.chatListSubscription = ChatStore.subscribe('ChatList', (chats) => {
+            this.setState({
+                chats,
+                isLoading: false
+            })
         });
-        getChat();
+
+        this.chatReadSubscription = ChatStore.subscribe('ChatRead', (chats) => {
+            this.setState({
+                chats,
+                isLoading: false
+            })
+        });
+
+        this.chatErrorSubscription = ChatStore.subscribe('ChatError', error => toastMsg(error));
+
     }
 
     showChatNotif() {
-        getChat();
+        fetchChat();
         if (this.props.navigation.getParam('data', undefined) != null) {
             const data = this.props.navigation.getParam('data', undefined);
             this.showChat(data.chat_id, data.id_match, data.username_match);
@@ -56,7 +59,9 @@ export default class Message extends Component {
     }
 
     componentWillUnmount() {
-        this.chatsVar.unsubscribe();
+        this.chatListSubscription.unsubscribe();
+        this.chatReadSubscription.unsubscribe();
+        this.chatErrorSubscription.unsubscribe();
     }
 
     isLastMessageUntouched = (lastMessage) =>
@@ -64,7 +69,6 @@ export default class Message extends Component {
         && (APP_STORE.getId() !== lastMessage.user_id);
 
     showChat(id, user, other, imgProfile, lastMessage) {
-        console.log(lastMessage);
         if (this.isLastMessageUntouched(lastMessage)) {
             touchChatMessage(lastMessage.id);
         }
