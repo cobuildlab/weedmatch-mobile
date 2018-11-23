@@ -1,9 +1,10 @@
 import {FluxStore} from '../../utils/flux-state';
 
-export const CHAT_LIST_EVENT = "ChatListEvent";
+export const CHAT_LIST_EVENT = "ChatList";
 export const CHAT_ERROR_EVENT = "ChatError";
 export const CHAT_USERNAME_EVENT = "ChatUsername";
 export const CHAT_MESSAGES_EVENT = "ChatMessages";
+export const CHAT_MESSAGE_READ_EVENT = "ChatMessageReadEvent";
 
 /**
  * Store for the Chat Data
@@ -20,8 +21,8 @@ class ChatStore extends FluxStore {
         // Chat messages
         this.addEvent(CHAT_MESSAGES_EVENT);
 
-        this.addEvent('ChatRead', (state) => {
-            const prevState = this.getState('ChatList');
+        this.addEvent(CHAT_MESSAGE_READ_EVENT, (state) => {
+            const prevState = this.getState(CHAT_LIST_EVENT);
             const index = (prevState || []).findIndex(chat => chat.id === state.chat);
 
             return [

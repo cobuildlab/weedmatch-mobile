@@ -16,16 +16,24 @@ const Image = Platform.OS === 'ios' ? RNImage : FastImage;
  * A component to represent the Item on the ChatList
  *
  * @param item
- * @param index
  * @param onPress
+ * @param isUntouched
  * @return {*}
  * @constructor
  */
-const ChatListItem = ({item, index, onPress}) => {
+const ChatListItem = ({item, onPress, isUntouched}) => {
     return (
-        <TouchableOpacity key={index} onPress={() => onPress(item, index)} >
+        <TouchableOpacity onPress={() => onPress(item)} >
             <View style={styles.viewMsg}>
-                <Image style={styles.imgProfileItem} source={{uri: item.image_profile}} />
+                <View style={styles.imgProfileBox}>
+                    <Image
+                        style={styles.imgProfileItem}
+                        source={{ uri: item.image_profile }}
+                    />
+                    {isUntouched(item.last_message) && (
+                        <View style={styles.statusIndicator}/>
+                    )}
+                </View>
                 <View style={styles.viewTexts}>
                     <Text style={styles.textUser}>{item.user}</Text>
                     <Text style={styles.textChat}>
@@ -38,7 +46,7 @@ const ChatListItem = ({item, index, onPress}) => {
 };
 
 ChatListItem.propTypes = {
-    index: PropTypes.number.isRequired,
+    isUntouched: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired,
     onPress: PropTypes.func.isRequired
 };

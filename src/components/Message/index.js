@@ -13,8 +13,13 @@ import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { toastMsg } from '../../utils';
 import FastImage from 'react-native-fast-image';
-import ChatStore from '../../modules/chat/ChatStore';
+import ChatStore, {
+    CHAT_LIST_EVENT,
+    CHAT_MESSAGE_READ_EVENT,
+    CHAT_ERROR_EVENT
+} from '../../modules/chat/ChatStore';
 import { fetchChat, touchChatMessage } from '../../modules/chat/ChatActions';
+import ChatListItem from '../../modules/chat/ChatListItem';
 
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
@@ -31,14 +36,14 @@ export default class Message extends Component {
     componentDidMount() {
         this.showChatNotif();
 
-        this.chatListSubscription = ChatStore.subscribe('ChatList', (chats) => {
+        this.chatListSubscription = ChatStore.subscribe(CHAT_LIST_EVENT, (chats) => {
             this.setState({
                 chats,
                 isLoading: false
             })
         });
 
-        this.chatReadSubscription = ChatStore.subscribe('ChatRead', (chats) => {
+        this.chatReadSubscription = ChatStore.subscribe(CHAT_MESSAGE_READ_EVENT, (chats) => {
             this.setState({
                 chats,
                 isLoading: false
@@ -47,7 +52,7 @@ export default class Message extends Component {
 
         this.props.navigation.addListener('didFocus', () => fetchChat());
 
-        this.chatErrorSubscription = ChatStore.subscribe('ChatError', error => toastMsg(error));
+        this.chatErrorSubscription = ChatStore.subscribe(CHAT_ERROR_EVENT, error => toastMsg(error));
     }
 
     showChatNotif() {
@@ -104,9 +109,10 @@ export default class Message extends Component {
                 keyboardShouldPersistTaps={'always'}
             >
                 {this.state.chats.map((item, i) => (
-                    <TouchableOpacity
+                    <ChatListItem
                         key={i}
-                        onPress={() =>
+                        item={item}
+                        onPress={item => {
                             this.showChat(
                                 item.id,
                                 item.id_user,
@@ -114,28 +120,9 @@ export default class Message extends Component {
                                 item.image_profile,
                                 item.last_message
                             )
-                        }
-                    >
-                        <View style={styles.viewMsg}>
-                            <View style={styles.imgProfileBox}>
-                                <Image
-                                    style={styles.imgProfileItem}
-                                    source={{ uri: item.image_profile }}
-                                />
-                                {this.isLastMessageUntouched(item.last_message) && (
-                                    <View style={styles.statusIndicator}/>
-                                )}
-                            </View>
-                            <View style={styles.viewTexts}>
-                                <Text style={styles.textUser}>{item.user}</Text>
-                                <Text style={styles.textChat}>
-                                    {(item.last_message.message)
-                                        ? item.last_message.message
-                                        : strings('chat.write')}
-                                </Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                        }}
+                        isUntouched={this.isLastMessageUntouched}
+                    />
                 ))}
             </ScrollView>
         );
