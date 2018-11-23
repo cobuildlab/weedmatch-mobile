@@ -29,7 +29,6 @@ export default class Message extends Component {
     }
 
     componentDidMount() {
-        console.log('DID MOUNT');
         this.showChatNotif();
 
         this.chatListSubscription = ChatStore.subscribe('ChatList', (chats) => {
