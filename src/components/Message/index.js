@@ -59,7 +59,8 @@ export default class Message extends Component {
         fetchChat();
         if (this.props.navigation.getParam('data', undefined) != null) {
             const data = this.props.navigation.getParam('data', undefined);
-            this.showChat(data.chat_id, data.id_match, data.username_match);
+            console.log(data);
+            this.showChat(data.chat_id, data.id, data.username);
         }
     }
 
@@ -74,7 +75,7 @@ export default class Message extends Component {
         && (APP_STORE.getId() !== lastMessage.user_id);
 
     showChat(id, user, other, imgProfile, lastMessage) {
-        if (this.isLastMessageUntouched(lastMessage)) {
+        if (lastMessage && this.isLastMessageUntouched(lastMessage)) {
             touchChatMessage(lastMessage.id);
         }
         this.props.navigation.navigate('Chat', {
