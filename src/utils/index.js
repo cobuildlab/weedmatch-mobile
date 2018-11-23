@@ -107,6 +107,15 @@ export const charIsNumber = (char: string): boolean => {
 }
 
 /**
+ * Returns true if the char provided is an acute vowel, e.g.: á é í ó ú
+ * @param token 
+ */
+export const charIsAcuteVowel = (char: string): boolean =>
+    'áéíóú'
+        .split('')
+        .includes(char)
+
+/**
  * Headers for Authorization
  * LENGUAGE this cellphone
  * @param {string} token The token to be used
