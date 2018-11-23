@@ -90,6 +90,23 @@ export const charIsLetter = (char: string): boolean => {
 }
 
 /**
+ * Returns true if an string is of length one and is a number
+ * @param char The char to be tested
+ * @throws {TypeError} If the string provided isn't exactly of length 1
+ */
+export const charIsNumber = (char: string): boolean => {
+    if (char.length !== 1) {
+        throw new TypeError(
+            'charIsNumber() called with string instead of char'
+        )
+    }
+
+    const charCode = char.charCodeAt(0)
+
+    return charCode >= 48 && charCode <= 57
+}
+
+/**
  * Headers for Authorization
  * LENGUAGE this cellphone
  * @param {string} token The token to be used
