@@ -36,10 +36,7 @@ export const reportAction = report => {
     const errorCallback = e => {
         dispatchEvent('ReportError', e.message);
 
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn(e.message);
-        }
+        console.warn(e.message);
     };
 
     try {
@@ -47,10 +44,7 @@ export const reportAction = report => {
             .then(successCallback)
             .catch(errorCallback);
     } catch (e) {
-        if (__DEV__) {
-            // eslint-disable-next-line no-console
-            console.warn(e.message);
-        }
+        console.warn(e.message);
         // catch synchronous errors
         errorCallback(e);
     }

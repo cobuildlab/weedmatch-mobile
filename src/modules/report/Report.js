@@ -119,10 +119,7 @@ export default class Report extends Component {
             (/** @type {string} */ error) => {
                 toastMsg(error);
 
-                if (__DEV__) {
-                    // eslint-disable-next-line no-console
-                    console.warn(error)
-                }
+                console.warn(error)
         });
     }
 

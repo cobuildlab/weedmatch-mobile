@@ -1,10 +1,24 @@
-import { dispatchEvent, FluxStore } from '../../utils/flux-state';
+import {FluxStore} from '../../utils/flux-state';
 
+export const CHAT_LIST_EVENT = "ChatListEvent";
+export const CHAT_ERROR_EVENT = "ChatError";
+export const CHAT_USERNAME_EVENT = "ChatUsername";
+export const CHAT_MESSAGES_EVENT = "ChatMessages";
+
+/**
+ * Store for the Chat Data
+ */
 class ChatStore extends FluxStore {
     constructor() {
         super();
-
-        this.addEvent('ChatList');
+        // List of chats
+        this.addEvent(CHAT_LIST_EVENT);
+        // Error in chats Store
+        this.addEvent(CHAT_ERROR_EVENT);
+        // Name of active chat user, backwards compatibility
+        this.addEvent(CHAT_USERNAME_EVENT);
+        // Chat messages
+        this.addEvent(CHAT_MESSAGES_EVENT);
 
         this.addEvent('ChatRead', (state) => {
             const prevState = this.getState('ChatList');
@@ -22,8 +36,6 @@ class ChatStore extends FluxStore {
                 ...prevState.slice(index + 1)
             ];
         });
-
-        this.addEvent('ChatError');
     }
 }
 
