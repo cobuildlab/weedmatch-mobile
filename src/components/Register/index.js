@@ -23,7 +23,8 @@ import {
 import {APP_STORE} from "../../Store";
 import styles from './style';
 import loginStyles from '../Login/style';
-import {connection, generateUsernameFromFullName, toastMsg} from "../../utils";
+import {connection, generateUsernameFromFullName, toastMsg,
+        charIsLetter} from "../../utils";
 import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -488,22 +489,10 @@ class RegisterPage extends Component {
      * However, no two consecutive spaces are allowed
      * @param text
      */
-    onChangeFullName = (text: string) => {
-        const isLetter = (char: string): boolean => {
-            if (char.length !== 1) {
-                throw new TypeError(
-                    'Register::onChangeFullName::isLetter: Called with string instead of char'
-                )
-            }
-            const charCode = char.charCodeAt(0)
-
-            return (charCode >= 65 && charCode <= 90)
-                || (charCode >= 97 && charCode <= 122)
-        }
-
+    onChangeFullName = (text: string) => {        
         const filtered = text
             .split('')
-            .filter(char => isLetter(char) || char === ' ')
+            .filter(char => charIsLetter(char) || char === ' ')
             .join('')
 
         const withoutConsecutiveWhiteSpaces = filtered.replace(/\s+/g, ' ')
