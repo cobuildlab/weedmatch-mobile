@@ -45,8 +45,9 @@ export default class Message extends Component {
             })
         });
 
-        this.chatErrorSubscription = ChatStore.subscribe('ChatError', error => toastMsg(error));
+        this.props.navigation.addListener('didFocus', () => fetchChat());
 
+        this.chatErrorSubscription = ChatStore.subscribe('ChatError', error => toastMsg(error));
     }
 
     showChatNotif() {
