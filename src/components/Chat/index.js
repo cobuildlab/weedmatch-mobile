@@ -1,15 +1,17 @@
 // @ts-check
 import React, {Component} from 'react';
-import {ActivityIndicator, View, Image, AppState} from 'react-native';
-import {WS_URL} from '../../utils';
+import {AppState, Image, View} from 'react-native';
+import {toastMsg, WS_URL} from '../../utils';
 
 import {APP_STORE} from '../../Store';
-import {internet, checkConectivity, toastMsg} from '../../utils';
 import styles from './style';
-import {GiftedChat, Bubble, Send} from 'react-native-gifted-chat';
-import {chatAction, appendData} from './ChatActions';
+import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
+import {prepareData, chatAction} from './ChatActions';
 import ChatTitle from '../../modules/chat/ChatTitle';
 import {WHITE} from '../../styles/colors';
+import {CHAT_ERROR_EVENT, CHAT_MESSAGES_EVENT, CHAT_USERNAME_EVENT} from "../../modules/chat/ChatStore";
+import {dispatchEvent} from "../../utils/flux-state";
+import store from '../../modules/chat/ChatStore';
 /**
  * @typedef {import('../../definitions').NavigationScreenProp<ChatParams>} NavigationScreenProp
  */
@@ -32,10 +34,7 @@ import {WHITE} from '../../styles/colors';
  * @prop {boolean} isLoading
  * @prop {Array<any>} messages
  * @prop {boolean} morePages
- * @prop {number} numPage
- * @prop {boolean} refreshing
  * @prop {boolean} socketOpen
- * @prop {string} urlPage
  */
 
 /**
@@ -52,13 +51,14 @@ export default class Chat extends Component {
             otherUser: navigation.getParam('otherUser'),
         };
 
-        const otherUserName = typeof otherUser != 'string' ? 'Chat' : otherUser
+        const otherUserName = typeof otherUser != 'string' ? 'Chat' : otherUser;
 
         const onPress = otherID
             ? () => {
                 navigation.navigate('PublicProfile', {userId: otherID});
             }
-            : () => {}
+            : () => {
+            };
 
         return {
             headerTitle: <ChatTitle src={imgProfile} name={otherUserName} onPress={onPress}/>,
@@ -75,13 +75,11 @@ export default class Chat extends Component {
             isLoading: true,
             messages: [],
             morePages: false,
-            numPage: 0,
-            refreshing: true,
             socketOpen: false,
-            urlPage: '',
         };
-
-        this.socket = null
+        this.numPage = 0;
+        this.urlNextPage = '';
+        this.socket = null;
         /**
          * The object representing the local user, "us".
          */
@@ -89,7 +87,8 @@ export default class Chat extends Component {
             _id: Number(APP_STORE.getId()),
             avatar: '',
             name: APP_STORE.getUser(),
-        }
+        };
+        console.log("Chat:this.localUser", this.localUser);
     }
 
     /**
@@ -102,14 +101,8 @@ export default class Chat extends Component {
         if (nextAppState == 'active') this.getEarlyMessages();
     };
 
-    componentDidMount() {
-        this.props.navigation.setParams({
-            imgProfile: this.getImgProfile(),
-        });
-
-
-        const chat_id = this.getChatID()
-
+    connect = () => {
+        const chat_id = this.getChatID();
         const socketURL =
             WS_URL +
             '?' +
@@ -126,93 +119,53 @@ export default class Chat extends Component {
             APP_STORE.getToken();
 
         // @ts-ignore TODO: Fix WebSocket not being defined globally
-        this.socket = new WebSocket(socketURL)
+        this.socket = new WebSocket(socketURL);
 
-        this.socket.onclose = this.onSocketClose
-        this.socket.onerror = this.onSocketError
-        this.socket.onmessage = this.onSocketMessage
-        this.socket.onopen = this.onSocketOpen
+        // this.socket.onclose = this.onSocketClose;
+        this.socket.onerror = this.onSocketError;
+        this.socket.onmessage = this.onSocketMessage;
+        this.socket.onopen = this.onSocketOpen;
+    };
 
-        APP_STORE.CHATNOTIF_EVENT.next({chatNotif: this.getOtherUser()});
+    componentDidMount() {
+        dispatchEvent(CHAT_USERNAME_EVENT, this.getOtherUser());
         AppState.addEventListener('change', this._handleAppStateChange);
 
+        this.chatErrorSubscription = store.subscribe(CHAT_ERROR_EVENT, err => toastMsg(err));
+
         // For receiving the latest messagues or if the user scrolls up in history
-        this.chatMsg = APP_STORE.CHATMSG_EVENT.subscribe(state => {
-
+        this.chatMessagesSubscription = store.subscribe(CHAT_MESSAGES_EVENT, chat => {
             // eslint-disable-next-line no-console
-            console.log('Chat::componentDidMount::CHATMSG_EVENT', state);
+            console.log('Chat::componentDidMount::chatMessagesSubscription', chat);
 
+            const newMessages = prepareData(chat.results);
 
-            if (state.error) {
-                toastMsg(state.error);
-                this.handleAnyException();
-                return;
+            let morePages = false;
+            if (chat.next) {
+                morePages = true;
+                this.numPage = this.numPage + 1;
+                this.urlNextPage = chat.next;
             }
 
-            if (!state.chatMsg)
-                return;
-
-            /**
-             * @type {Partial<ChatState>}
-             */
-            let newState = {
+            this.setState({
                 isLoading: false,
-            };
-
-            const fullChat = appendData(
-                this.state.messages,
-                state.chatMsg,
-                this.getOtherID()
-            );
-
-            if (this.state.numPage > 0) {
-                newState['messages'] = GiftedChat.prepend([], fullChat);
-            } else {
-                newState['messages'] = GiftedChat.append([], fullChat);
-                newState['refreshing'] = false;
-            }
-
-            this.setState(/** @type {ChatState} */ (newState));
-        });
-
-        this.chatPage = APP_STORE.CHATPAGE.subscribe(state => {
-            // eslint-disable-next-line no-console
-            console.log('Chat::componentDidMount::CHATPAGE:', state);
-
-            if (state.chatMsgPage) {
-                this.setState({
-                    morePages: true,
-                    numPage: this.state.numPage + 1,
-                    urlPage: state.chatMsgPage,
-                });
-                return;
-            } else {
-                this.setState({
-                    morePages: false,
-                    urlPage: '',
-                });
-            }
-            if (state.error) {
-                toastMsg(state.error);
-            }
+                messages: GiftedChat.prepend(this.state.messages, newMessages),
+                morePages,
+            });
         });
 
         this.getEarlyMessages();
+        this.connect();
     }
 
     componentWillUnmount() {
         // eslint-disable-next-line no-console
         console.log('Chat:componentWillUmmount');
-
-        APP_STORE.CHATNOTIF_EVENT.next({chatNotif: ''});
-        // @ts-ignore not undefined
-        this.chatMsg.unsubscribe();
-        // @ts-ignore not undefined
-        this.chatPage.unsubscribe();
-        // this.close()
+        this.chatMessagesSubscription.unsubscribe();
+        this.chatErrorSubscription.unsubscribe();
+        dispatchEvent(CHAT_USERNAME_EVENT, null);
         AppState.removeEventListener('change', this._handleAppStateChange);
-        
-        this.socket.close()
+        this.socket.close();
         // garbage collect socket
         this.socket = null
     }
@@ -232,25 +185,6 @@ export default class Chat extends Component {
         }
 
         return otherUser
-    }
-
-    /**
-     * @returns {string}
-     */
-    getImgProfile() {
-        const imgProfile = this.props.navigation.getParam('imgProfile');
-
-        if (typeof imgProfile != 'string') {
-
-
-            console.warn(
-                `Chat::getOtherUser, expected imgProfile navigation parameter to be string, but got: ${typeof imgProfile}`
-            )
-
-            this.handleAnyException();
-        }
-
-        return imgProfile
     }
 
     /**
@@ -276,66 +210,42 @@ export default class Chat extends Component {
      * @returns {number}
      */
     getChatID() {
+
         const chatID = this.props.navigation.getParam('chat_id');
 
         if (typeof chatID != 'number') {
             console.warn(
                 `Chat::getOtherUser, expected chatID navigation parameter to be string, but got: ${typeof chatID}`
-            )
+            );
 
             this.handleAnyException();
         }
 
-        return chatID
+        return chatID;
     }
 
     getEarlyMessages = () => {
-        if (checkConectivity()) {
-            this.setState({isLoading: true});
-            chatAction(this.state, this.getChatID());
-        } else {
-            internet();
-        }
-    }
+        this.setState({isLoading: true});
+        chatAction(this.state, this.getChatID(), this.urlNextPage, this.numPage);
+    };
 
     /**
      * @param {{ code: number }} e
      * @returns {void}
      */
-    onSocketClose = (e) => {
+    onSocketError = (e) => {
+        console.log(`Chat::onSocketClose, code:${e.code}`, e);
         this.setState({
             socketOpen: false,
-        })
-
-        console.log(`Chat::onSocketClose, code:${e.code}`)
-
+        });
         // https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#Properties
-        
-        // 1000 = normal close
-        // 1001 = socket closed by server or by navigating away
-        
-        if (e.code > 1001) {
-            console.warn(
-                `socket closed with code greater than 1001, got code: ${e.code}`
-            )
-
-            this.handleAnyException()
-        }
-    }
-
-    /**
-     * @param {{ message: string }} e
-     */
-    onSocketError = (e) => {
-        console.warn('Chat::onSocketError:', e)
-
-        this.handleAnyException()
-    }
+        this.connect();
+    };
 
     /**
      * @param {{ data: string }} e
      */
-    onSocketMessage = ({ data }) => {
+    onSocketMessage = ({data}) => {
         console.log('Chat::onSocketMessage, data: ', data);
 
         try {
@@ -343,7 +253,7 @@ export default class Chat extends Component {
              * @type {{ message: string }}
              */
             const json = JSON.parse(data);
-            
+
             this.onReceive(json.message)
         } catch (e) {
             console.warn('Chat::onSocketMessage::error, message: ', e.message);
@@ -370,8 +280,6 @@ export default class Chat extends Component {
      */
     onReceive(messageText) {
         console.log('Chat::onReceive:', messageText);
-
-
         if (messageText.length === 0) return;
 
         const message = {
@@ -395,7 +303,7 @@ export default class Chat extends Component {
      * @param {Array<object>} messages
      */
     onSend = (messages = []) => {
-        console.log('Chat::onSend:', messages)
+        console.log('Chat::onSend:', messages);
 
         if (messages.length < 1) return;
         // if empty string dont send
@@ -443,7 +351,11 @@ export default class Chat extends Component {
     /**
      * @param {object} props
      */
-    renderSend(props) {
+    renderSend = (props) => {
+        let imgUrl = '../../assets/img/send.png';
+        if (this.state.isLoading || !this.state.socketOpen)
+            imgUrl = '../../assets/img/send.png';
+
         return (
             <Send {...props}>
                 <View style={styles.sendInnerView}>
@@ -455,25 +367,14 @@ export default class Chat extends Component {
                 </View>
             </Send>
         );
-    }
+    };
 
     render() {
-        const socketStillNotOpen = !this.state.socketOpen
-
-        if (this.state.refreshing || socketStillNotOpen) {
-            return (
-                <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC"/>
-                </View>
-            );
-        }
-
         return (
             <View style={styles.root}>
                 <GiftedChat
                     renderAvatar={null}
                     loadEarlier={this.state.morePages}
-                    // renderTime={this.renderTime}
                     renderBubble={this.renderBubble}
                     onLoadEarlier={this.getEarlyMessages}
                     isLoadingEarlier={this.state.isLoading}

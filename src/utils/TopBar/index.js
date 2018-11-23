@@ -18,6 +18,7 @@ import {strings} from "../../i18n";
 
 import AuthStore,
 {events as authStoreEvents} from '../../modules/auth/AuthStore'
+import store, {CHAT_USERNAME_EVENT} from '../../modules/chat/ChatStore';
 
 /**
  * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
@@ -36,7 +37,7 @@ export default class TopBar extends Component {
          * @type {UserObject}
          */
         const user = AuthStore.getState(authStoreEvents.USER)
-        let userImageURL = null
+        let userImageURL = null;
 
 
         if (user != null) {
@@ -49,11 +50,11 @@ export default class TopBar extends Component {
             activePage: 0,
             notification: "false",
             like: "false",
-            currentChatUsername: "",
             modalVisible: false,
             matchData: {},
             userImageURL,
         };
+        this.currentChatUsername = null;
     }
 
     popNoti() {
@@ -83,9 +84,8 @@ export default class TopBar extends Component {
         firebase.notifications().removeAllDeliveredNotifications().then(some => console.log("TopBar:componentDidMount", some));
 
         // this event gets trigger when the user open a chats
-        this.chatUser = APP_STORE.CHATNOTIF_EVENT.subscribe(state => {
-            this.setState({currentChatUsername: state.chatNotif})
-        });
+        this.chatUsernameSubscription = store.subscribe(CHAT_USERNAME_EVENT, username => this.currentChatUsername = username);
+
 
         // This is when a notification arrives
         this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
@@ -145,9 +145,9 @@ export default class TopBar extends Component {
                     .android.setPriority(firebase.notifications.Android.Priority.High);
 
             }
-
+            console.log("ANGELLLLL", this.props.navigation.getParam('otherUser', null));
             // if i'm talking with this guy, don't show it
-            if (this.state.currentChatUsername === notification.data.username) {
+            if (this.currentChatUsername === notification.data.username) {
                 return;
             }
 
@@ -242,7 +242,7 @@ export default class TopBar extends Component {
 
             case "AC": // Accept I love
                 Alert(`ACCEPT I LOVE IT: ${JSON.stringify(data)}`);
-                if (this.state.currentChatUsername != data.username) { // Match Notification
+                if (this.currentChatUsername != data.username) { // Match Notification
                     this.setState({modalVisible: true, matchData: data});
                     break;
                 }
@@ -261,10 +261,8 @@ export default class TopBar extends Component {
         this.onTokenRefreshListener();
         this.noti.unsubscribe();
         this.chatUser.unsubscribe();
-
-
+        this.chatUsernameSubscription.unsubscribe();
         AppState.removeEventListener('change', this._handleAppStateChange);
-
         this.userSubscription.unsubscribe();
     }
 

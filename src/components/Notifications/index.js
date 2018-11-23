@@ -63,7 +63,7 @@ export default class Notifications extends Component {
                 >
                     <Tab heading={<TabHeading style={styles.tabContainer}><Text
                         style={styles.textTab}>{strings('main.message')}</Text></TabHeading>}>
-                        <Chats navigation={this.props.navigation}/>
+                        <Chats navigation={this.props.navigation} />
                     </Tab>
                     <Tab heading={<TabHeading style={styles.tabContainer}><Text style={styles.textTab}>Me encanta</Text></TabHeading>}>
                         <ILikedNotifications navigation={this.props.navigation}/>

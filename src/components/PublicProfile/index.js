@@ -36,7 +36,7 @@ import geoStore from "../../utils/geolocation/GeoStore";
  * @typedef {import('../../modules/report/Report').ReportRouteParams} ReportRouteParams
  */
 
-var {width} = Dimensions.get('window');
+
 
 export default class PublicProfile extends Component {
     constructor(props) {
@@ -56,7 +56,7 @@ export default class PublicProfile extends Component {
             disLike: false,
             super: false,
         };
-
+        this.width = Dimensions.get('window');
         this.like = false;
         this.dislike = false;
         this.superLike = false;
@@ -253,7 +253,7 @@ export default class PublicProfile extends Component {
                 <View style={styles.viewBackground}>
                     <ImageSlider
                         images={getImages(rowData.profile_images)}
-                        customSlide={({index, item, style, width}) => (
+                        customSlide={({index, item, style}) => (
                             <View key={index} style={[style, styles.customSlide]}>
                                 <Image source={{uri: item}} style={styles.media}/>
                             </View>
@@ -356,7 +356,7 @@ export default class PublicProfile extends Component {
                         onEndReached={() => this.onEndReached()}
                         renderItem={({item, index}) =>
                             <View
-                                style={[{width: (width) / 3}, {height: (width) / 3}, {marginBottom: 2}, index % 3 !== 0 ? {paddingLeft: 2} : {paddingLeft: 0}]}>
+                                style={[{width: (this.width) / 3}, {height: (this.width) / 3}, {marginBottom: 2}, index % 3 !== 0 ? {paddingLeft: 2} : {paddingLeft: 0}]}>
                                 <Image style={styles.imageView}
                                        source={{uri: getImages(public420)[index]}}>
                                 </Image>
@@ -379,8 +379,8 @@ export default class PublicProfile extends Component {
                                     {rowData.first_name}, {rowData.age}
                                 </Text>
                                 {(country && country.name) ?
-                                <Text style={styles.textCountry}>{country.name}</Text>
-                                : null}
+                                    <Text style={styles.textCountry}>{country.name}</Text>
+                                    : null}
                                 <Text style={styles.textDistance}>{rowData.distance}</Text>
                             </View>
 

@@ -1,87 +1,64 @@
-import { userService } from './service';
-import { APP_STORE } from '../../Store';
-import { URL } from '../../utils';
+import {userService} from './service';
+import {APP_STORE} from '../../Store';
+import {URL} from '../../utils';
+import {CHAT_ERROR_EVENT, CHAT_MESSAGES_EVENT} from "../../modules/chat/ChatStore";
+import {dispatchEvent} from "../../utils/flux-state";
 
-export function getChatMessages(pageUrl) {
+const getChatMessages = (pageUrl) => {
     console.log('Chat::ChatActions::getChatMessages', pageUrl);
-
+    if (pageUrl.indexOf("https") === -1)
+        pageUrl = pageUrl.replace('http', 'https');
     userService.chats(pageUrl).then(async response => {
         console.log('Chat::ChatActions::getChatMessages::response', response);
-
         try {
             const json = await response.json();
-
-            console.log('Chat::ChatActions::getChatMessages::json', json);
-    
             if (response.ok) {
-                APP_STORE.CHATMSG_EVENT.next({ chatMsg: json.results });
-                APP_STORE.CHATPAGE.next({ chatMsgPage: json.next });
+                return dispatchEvent(CHAT_MESSAGES_EVENT, json);
+                // APP_STORE.CHATMSG_EVENT.next({chatMsg: json.results});
+                // APP_STORE.CHATPAGE.next({chatMsgPage: json.next});
             } else {
-                throw new Error(json.detail)
+                return dispatchEvent(CHAT_ERROR_EVENT, json.detail);
             }
-    
+
         } catch (e) {
-            APP_STORE.APP_EVENT.next(e.message);
+            return dispatchEvent(CHAT_ERROR_EVENT, e.message);
         }
-    });
+    }).catch(e => dispatchEvent(CHAT_ERROR_EVENT, e.message));
 }
 
-export function chatAction(state, chatID) {
-    console.log('Chat::ChatActions::chatAction', state, chatID);
+/**
+ * Retrieve the chat message
+ * @param state
+ * @param chatID
+ */
+export const chatAction = (state, chatID, urlNextPage, numPage) => {
+    console.log('Chat::ChatActions::chatAction', [state, chatID, urlNextPage, numPage]);
 
-    var pagUrl = '';
-
-    if (state.urlPage != '' && state.numPage > 0) {
-        pagUrl = state.urlPage;
-        getChatMessages(pagUrl);
-    } else if (state.numPage == 0) {
-        pagUrl = URL + 'messages/?chat=' + chatID;
-        getChatMessages(pagUrl);
+    if (urlNextPage !== null && numPage > 0) {
+        getChatMessages(urlNextPage);
+    } else if (numPage == 0) {
+        getChatMessages(URL + 'messages/?chat=' + chatID);
     }
-}
+};
 
-export function appendData(oldData, newData, id) {
-    // oldData.slice();
-    console.log(
-        'ChatActions::appendData::CHATMSG_EVENT',
-        oldData,
-        newData,
-        id
-    );
-
-    newData.map(data => {
-        // console.log(data)
-
-        var message = null;
-
-        if (data.user == APP_STORE.getUser()) {
-            message = {
-                _id: data.id,
-                createdAt: data.created,
-                text: data.text,
-                user: {
-                    _id: Number(APP_STORE.getId()),
-                    avatar: '',
-                    name: APP_STORE.getUser(),
-                },
-            };
-        } else {
-            message = {
-                _id: data.id,
-                createdAt: data.created,
-                text: data.text,
-                user: {
-                    _id: Number(id),
-                    avatar: '',
-                    name: data.user,
-                },
-            };
+/**
+ * Transform the data for the Gifted Chat
+ * @param data
+ * @return {Array}
+ */
+export function prepareData(data) {
+    console.log('ChatActions::prepareData:', data);
+    const newData = data.map(data => {
+        return {
+            _id: data.id,
+            text: data.text,
+            createdAt: data.created,
+            user: {
+                _id: Number(data.id_user),
+                name: data.user,
+            },
         }
-
-        oldData.push(message);
     });
-
-    console.log(oldData);
-
-    return oldData;
+    console.log('ChatActions::prepareData::', newData);
+    return newData;
 }
