@@ -25,7 +25,8 @@ import styles from './style';
 import loginStyles from '../Login/style';
 import {connection, generateUsernameFromFullName, toastMsg,
         charIsLetter,
-        charIsNumber} from "../../utils";
+        charIsNumber,
+        charIsAcuteVowel} from "../../utils";
 import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -493,7 +494,11 @@ class RegisterPage extends Component {
     onChangeFullName = (text: string) => {        
         const filtered = text
             .split('')
-            .filter(char => charIsLetter(char) || char === ' ')
+            .filter(char =>
+                    charIsLetter(char) ||
+                    char === ' ' ||
+                    charIsAcuteVowel(char)
+            )
             .join('')
 
         const withoutConsecutiveWhiteSpaces = filtered.replace(/\s+/g, ' ')
