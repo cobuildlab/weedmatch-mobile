@@ -32,6 +32,8 @@ import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
+import { DatePicker } from 'native-base'
+import moment from 'moment'
 
 import TermsModal from './TermsModal'
 
@@ -545,6 +547,14 @@ class RegisterPage extends Component {
         })
     }
 
+    onDateChange = (date: Date) => {
+        const formatted = moment(date).format('DD/M/YYYY')
+
+        this.setState({
+            age: formatted,
+        })
+    }
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
@@ -635,16 +645,18 @@ class RegisterPage extends Component {
                     <View style={styles.inputStyleFecha}>
                         <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
                             <View style={styles.viewButtonStyleFecha}>
-                                {this.state.age == '' &&
-                                <Text style={styles.textButtonStyleFecha}>
-                                    {strings("register.age")}
-                                </Text>
-                                }
-                                {this.state.age !== '' &&
-                                <Text>
-                                    {this.state.age}
-                                </Text>
-                                }
+                                <DatePicker
+                                    androidMode="default"
+                                    animationType="slide"
+                                    defaultDate={new Date(2018, 4, 4)}
+                                    formatChosenDate={undefined}
+                                    timeZoneOffsetInMinutes={undefined}
+                                    onDateChange={this.onDateChange}
+                                    placeHolderText={strings("register.age")}
+                                    locale="es"
+                                    textStyle={{ color: '#ccc' }}
+                                    placeHolderTextStyle={{ color: '#ccc' }}
+                                />
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
