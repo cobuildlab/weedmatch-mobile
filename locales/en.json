@@ -32,7 +32,7 @@
         "all": "Everyone",
         "other": "Other",
         "allInputs": "All inputs required",
-        "errorFullName": "Your full name must be at least 3 letters long",
+        "errorFullName": "Your full name must be at least 3 letters long and can only contain lowercase, uppercase letters and also accute vowels (áéíóúÁÉÍÓÚ)",
         "errorEmail": "Invalid email",
         "errorPassword": "Invalid password",
         "errorUsername": "Invalid username",
