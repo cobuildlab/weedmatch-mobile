@@ -633,17 +633,22 @@ class RegisterPage extends Component {
                             style={this.state.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.female")} </Text>
                     </TouchableOpacity>
                     <View style={styles.inputStyleFecha}>
-                        <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                        <TouchableWithoutFeedback
+                            onPress={this._showDatePicker}
+                        >
                             <View style={styles.viewButtonStyleFecha}>
-                                {this.state.age == '' &&
-                                <Text style={styles.textButtonStyleFecha}>
-                                    {strings("register.age")}
-                                </Text>
-                                }
-                                {this.state.age !== '' &&
-                                <Text>
-                                    {this.state.age}
-                                </Text>
+                                {
+                                    this.state.age === ''
+                                    ? (
+                                        <Text
+                                            style={styles.textButtonStyleFecha}
+                                        >
+                                            {strings("register.age")}
+                                        </Text>
+                                    )
+                                    : (
+                                        <Text>{this.state.age}</Text>
+                                    )
                                 }
                             </View>
                         </TouchableWithoutFeedback>
