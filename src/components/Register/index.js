@@ -23,7 +23,10 @@ import {
 import {APP_STORE} from "../../Store";
 import styles from './style';
 import loginStyles from '../Login/style';
-import {connection, generateUsernameFromFullName, toastMsg} from "../../utils";
+import {connection, generateUsernameFromFullName, toastMsg,
+        charIsLetter,
+        charIsNumber,
+        charIsAcuteVowel} from "../../utils";
 import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -229,7 +232,7 @@ class RegisterPage extends Component {
         const passwordError = validate('password', this.state.password);
 
         if (full_nameError) {
-            toastMsg(full_nameError);
+            toastMsg(strings('register.errorFullName'))
             return false
         }
         if (emailError) {
@@ -343,7 +346,7 @@ class RegisterPage extends Component {
                 image: image.path
             });
 
-        }).catch(e => alert(e));
+        }).catch(e => { console.warn(e) });
     }
 
     _takePhoto() {
@@ -472,6 +475,76 @@ class RegisterPage extends Component {
         })
     }
 
+    onBlurFullName = () => {
+        this.setState(({full_name}: { full_name: string }) => ({
+            full_name: full_name.trim()
+        }))
+    }
+
+    /**
+     * We turn any combinations of words from:
+     * 'hELLo    wOrld'
+     * to:
+     * 'Hello World"
+     * No leading or trailling whitespace is trimmed, this is done on
+     * `onBlurFullName`
+     * However, no two consecutive spaces are allowed
+     * @param text
+     */
+    onChangeFullName = (text: string) => {        
+        const filtered = text
+            .split('')
+            .filter(char =>
+                    charIsLetter(char) ||
+                    char === ' ' ||
+                    charIsAcuteVowel(char)
+            )
+            .join('')
+
+        const withoutConsecutiveWhiteSpaces = filtered.replace(/\s+/g, ' ')
+
+        const asLowercaseWords = withoutConsecutiveWhiteSpaces
+            .split(' ') // to words
+            .map(eachWord => eachWord.toLowerCase())
+            // ['hello', 'world'] => [["h", "e", "l", "l", "o"], ["w", "o", "r", "l", "d"]]
+            .map(eachWord => eachWord.split(''))
+            .map(eachWordChars => eachWordChars
+                    .map((char, i) => i == 0
+                        ? char.toUpperCase()
+                        : char)
+                    .join('')
+                )
+            .join(' ')
+
+        
+        this.setState({
+            full_name: asLowercaseWords,
+        })
+    }
+
+    /**
+     * Allow only usernames with letters, numbers, `-`, `.` and `_`.
+     * Allow only from length 6 to 30
+     * @param text The text from the username input
+     */
+    onChangeUsername = (text: string) => {
+        const chars = text.split('')
+
+        const filtered = chars
+            .filter(char =>
+                    charIsLetter(char) ||
+                    charIsNumber(char) ||
+                    char == '-' ||
+                    char == '_' ||
+                    char == '.'
+            )
+            .join('')
+        
+        this.setState({
+            username: filtered,
+        })
+    }
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
@@ -489,7 +562,8 @@ class RegisterPage extends Component {
                         style={styles.inputStyle}
                         editable={true}
                         underlineColorAndroid='transparent'
-                        onChangeText={(full_name) => this.setState({full_name})}
+                        onBlur={this.onBlurFullName}
+                        onChangeText={this.onChangeFullName}
                         placeholder={strings("register.fullName")}
                         returnKeyType={"next"}
                         maxLength={30}
@@ -581,7 +655,7 @@ class RegisterPage extends Component {
                         style={loginStyles.inputStyle}
                         underlineColorAndroid='transparent'
                         editable={true}
-                        onChangeText={(username) => this.setState({username})}
+                        onChangeText={this.onChangeUsername}
                         placeholder={strings('register.username')}
                         returnKeyType={"next"}
                         ref='username'
@@ -590,6 +664,7 @@ class RegisterPage extends Component {
                         }}
                         blurOnSubmit={false}
                         value={this.state.username}
+                        maxLength={30}
                     />
 
                 </View>

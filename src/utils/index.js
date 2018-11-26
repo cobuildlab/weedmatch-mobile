@@ -74,6 +74,55 @@ function isValidText(text) {
 }
 
 /**
+ * Returns true if an string is of length one and is in the range of a-z || A-Z
+ * @param char The char to be tested
+ */
+export const charIsLetter = (char: string): boolean => {
+    if (char.length !== 1) {
+        throw new TypeError(
+            'charIsLetter() called with string instead of char'
+        )
+    }
+    const charCode = char.charCodeAt(0)
+
+    return (charCode >= 65 && charCode <= 90)
+        || (charCode >= 97 && charCode <= 122)
+}
+
+/**
+ * Returns true if an string is of length one and is a number
+ * @param char The char to be tested
+ * @throws {TypeError} If the string provided isn't exactly of length 1
+ */
+export const charIsNumber = (char: string): boolean => {
+    if (char.length !== 1) {
+        throw new TypeError(
+            'charIsNumber() called with string instead of char'
+        )
+    }
+
+    const charCode = char.charCodeAt(0)
+
+    return charCode >= 48 && charCode <= 57
+}
+
+/**
+ * Returns true if the char provided is an acute vowel, e.g.: á é í ó ú
+ * @param char
+ */
+export const charIsAcuteVowel = (char: string): boolean => {
+    if (char.length !== 1) {
+        throw new TypeError(
+            'charIsAcuteVowel() called with string of length not 1'
+        )
+    }
+
+    return 'áéíóúÁÉÍÓÚ'
+        .split('')
+        .includes(char)
+}
+
+/**
  * Headers for Authorization
  * LENGUAGE this cellphone
  * @param {string} token The token to be used

@@ -22,7 +22,7 @@
         "silence": "Silenciar notificaciones Me Encanta",
         "ownGen": "Tu genero",
         "fullName": "Nombre completo",
-        "errorFullName": "Nombre completo inválido",
+        "errorFullName": "Tu nombre debe tener mínimo 3 letras y solo puede contener letras y vocales con acento (áéíóúÁÉÍÓÚ)",
         "password": "Contraseña",
         "username": "Nombre de usuario",
         "username_or_email": "Usuario o Correo",

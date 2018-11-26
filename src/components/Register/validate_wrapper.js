@@ -1,4 +1,5 @@
 import validation from 'validate.js';
+import { strings } from '../../i18n';
 
 export default function validate(fieldName, value) {
     let constraints = {
@@ -26,7 +27,7 @@ export default function validate(fieldName, value) {
             length: {
                 minimum: 3,
                 maximum: 30,
-                message: 'Invalid Full Name',
+                message: strings('register.errorFullName'),
             },
         },
     };
