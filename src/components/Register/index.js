@@ -32,6 +32,8 @@ import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
+import { DatePicker } from 'native-base'
+import moment from 'moment'
 
 import TermsModal from './TermsModal'
 
@@ -47,6 +49,11 @@ class RegisterPage extends Component {
             password: '',
             latitud: '',
             longitud: '',
+            /**
+             * This age string is not the one being displayed anymore (after
+             * changing to native-base's DatePicker), however it's the one we
+             * send to registerAction()
+             */
             age: '',
             sex: 'Hombre',
             image: '',
@@ -545,6 +552,15 @@ class RegisterPage extends Component {
         })
     }
 
+    onDateChange = (date: Date) => {
+        // the format expected by registerAction()
+        const formatted = moment(date).format('YYYY/MM/DD')
+
+        this.setState({
+            age: formatted,
+        })
+    }
+
     render() {
         const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
@@ -633,18 +649,20 @@ class RegisterPage extends Component {
                             style={this.state.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.female")} </Text>
                     </TouchableOpacity>
                     <View style={styles.inputStyleFecha}>
-                        <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                        <TouchableWithoutFeedback>
                             <View style={styles.viewButtonStyleFecha}>
-                                {this.state.age == '' &&
-                                <Text style={styles.textButtonStyleFecha}>
-                                    {strings("register.age")}
-                                </Text>
-                                }
-                                {this.state.age !== '' &&
-                                <Text>
-                                    {this.state.age}
-                                </Text>
-                                }
+                                <DatePicker
+                                    androidMode="default"
+                                    animationType="slide"
+                                    defaultDate={new Date(2018, 4, 4)}
+                                    formatChosenDate={undefined}
+                                    timeZoneOffsetInMinutes={undefined}
+                                    onDateChange={this.onDateChange}
+                                    placeHolderText={strings("register.age")}
+                                    locale="es"
+                                    textStyle={{ color: '#ccc' }}
+                                    placeHolderTextStyle={{ color: '#ccc' }}
+                                />
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
