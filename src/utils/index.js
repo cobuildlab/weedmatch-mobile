@@ -108,12 +108,19 @@ export const charIsNumber = (char: string): boolean => {
 
 /**
  * Returns true if the char provided is an acute vowel, e.g.: á é í ó ú
- * @param token 
+ * @param char
  */
-export const charIsAcuteVowel = (char: string): boolean =>
-    'áéíóú'
+export const charIsAcuteVowel = (char: string): boolean => {
+    if (char.length !== 1) {
+        throw new TypeError(
+            'charIsAcuteVowel() called with string of length not 1'
+        )
+    }
+
+    return 'áéíóúÁÉÍÓÚ'
         .split('')
         .includes(char)
+}
 
 /**
  * Headers for Authorization
