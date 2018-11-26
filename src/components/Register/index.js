@@ -649,7 +649,7 @@ class RegisterPage extends Component {
                             style={this.state.sex === 'Mujer' ? styles.buttonTextOn : styles.buttonTextOff}> {strings("register.female")} </Text>
                     </TouchableOpacity>
                     <View style={styles.inputStyleFecha}>
-                        <TouchableWithoutFeedback onPress={this._showDatePicker.bind(this)}>
+                        <TouchableWithoutFeedback>
                             <View style={styles.viewButtonStyleFecha}>
                                 <DatePicker
                                     androidMode="default"
