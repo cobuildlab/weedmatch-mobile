@@ -49,6 +49,11 @@ class RegisterPage extends Component {
             password: '',
             latitud: '',
             longitud: '',
+            /**
+             * This age string is not the one being displayed anymore (after
+             * changing to native-base's DatePicker), however it's the one we
+             * send to registerAction()
+             */
             age: '',
             sex: 'Hombre',
             image: '',
@@ -548,7 +553,8 @@ class RegisterPage extends Component {
     }
 
     onDateChange = (date: Date) => {
-        const formatted = moment(date).format('DD/M/YYYY')
+        // the format expected by registerAction()
+        const formatted = moment(date).format('YYYY/MM/DD')
 
         this.setState({
             age: formatted,
