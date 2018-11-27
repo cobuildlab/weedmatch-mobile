@@ -10,10 +10,11 @@ import {
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from '../../utils';
 import {APP_STORE} from '../../Store';
-import styles from './styles';
+import styles, { MAGENTA } from './styles';
 import {facebookAction, firebaseAction} from './AutheticationActions';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
+import { Spinner } from 'native-base';
 
 /**
  * MatchUsersScreen Screen
@@ -22,8 +23,8 @@ export default class Authentication extends Component {
     constructor() {
         super();
         this.state = {
-            loadingFBLogin: false,
             latitud: '',
+            loadingFBLogin: false,
             longitud: '',
         };
     }
@@ -116,40 +117,52 @@ export default class Authentication extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={styles.contentLogin}>
-                    <Text style={styles.textLight}>
-                        {strings('main.title')}
-                    </Text>
-                    <Text style={styles.textBold}>{strings('wmatch')}</Text>
-                    <TouchableOpacity
-                        style={styles.buttomFacebookStyle}
-                        onPress={this._facebookLogin.bind(this)}
-                    >
-                        <Image
-                            style={styles.logoFacebook}
-                            source={require('../../assets/img/facebook-app-logo.png')}
-                        />
-                        <Text style={styles.buttonTextFacebook}>
-                            {strings('login.facebook')}
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.buttomLoginStyle}
-                        onPress={this.userRegister.bind(this)}
-                    >
-                        <Text style={styles.buttonText}>
-                            {strings('login.register')}
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.buttomRegister}
-                        onPress={this.userLoginPage.bind(this)}
-                    >
-                        <Text style={styles.buttomTextRegister}>
-                            {strings('login.signup_button')}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                {
+                    this.state.loadingFBLogin
+                    ? (
+                        <View style={styles.deadCenter}>
+                            <Spinner color={MAGENTA} />
+                            <Text>
+                                {strings('register.loggingInWithFacebook')}
+                            </Text>
+                        </View>
+                    ) : (
+                        <View style={styles.contentLogin}>
+                            <Text style={styles.textLight}>
+                                {strings('main.title')}
+                            </Text>
+                            <Text style={styles.textBold}>{strings('wmatch')}</Text>
+                            <TouchableOpacity
+                                style={styles.buttomFacebookStyle}
+                                onPress={this._facebookLogin.bind(this)}
+                            >
+                                <Image
+                                    style={styles.logoFacebook}
+                                    source={require('../../assets/img/facebook-app-logo.png')}
+                                />
+                                <Text style={styles.buttonTextFacebook}>
+                                    {strings('login.facebook')}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttomLoginStyle}
+                                onPress={this.userRegister.bind(this)}
+                            >
+                                <Text style={styles.buttonText}>
+                                    {strings('login.register')}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttomRegister}
+                                onPress={this.userLoginPage.bind(this)}
+                            >
+                                <Text style={styles.buttomTextRegister}>
+                                    {strings('login.signup_button')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
             </ScrollView>
         );
     }

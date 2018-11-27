@@ -11,6 +11,7 @@
         "required_fields_error": "El usuario y la clave son necesarios"
     },
     "register": {
+        "loggingInWithFacebook": "Accediendo con facebook...",
         "paso1": "Continuar",
         "facebook": "Continuar con Facebook",
         "textFacebook": "No publicamos nada en tu FB",

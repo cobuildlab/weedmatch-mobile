@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 const BLUE = '#3B5998';
-const MAGENTA = '#9605CC';
+export const MAGENTA = '#9605CC';
 const PLEASANT_TEXT_BLACK = '#333333';
 const WHITE = '#FFFFFF';
 
@@ -136,6 +136,12 @@ const styleSheet = StyleSheet.create({
         color: MAGENTA,
         fontSize: 20,
     },
+    deadCenter: {
+        alignContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
+    }
 });
 
 export default styleSheet;
