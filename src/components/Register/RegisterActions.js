@@ -26,8 +26,6 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(image)[1];
 
-    const birth = age.split('/').join('-');
-
     data.append('first_name', firstName);
     data.append('email', email.toLowerCase());
     data.append('password', password);
@@ -36,7 +34,7 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
     if (lon)
         data.append('longitud', lon);
     data.append('sex', sex);
-    data.append('age', birth);
+    data.append('age', age);
     data.append('username', username);
     data.append('image', {
         uri: image,

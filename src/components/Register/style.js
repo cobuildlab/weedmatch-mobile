@@ -1,6 +1,9 @@
 import { StyleSheet, Platform  } from 'react-native';
 import {WHITE} from '../../styles/colors';
 
+
+export const dateTextStyle = { color: '#ccc' }
+
 export default styles = StyleSheet.create({
     container: {
         width: '80%',

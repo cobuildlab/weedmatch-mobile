@@ -21,7 +21,7 @@ import {
     validateUsernameAction
 } from "./RegisterActions";
 import {APP_STORE} from "../../Store";
-import styles from './style';
+import styles, { dateTextStyle } from './style';
 import loginStyles from '../Login/style';
 import {connection, generateUsernameFromFullName, toastMsg,
         charIsLetter,
@@ -38,6 +38,31 @@ import moment from 'moment'
 import TermsModal from './TermsModal'
 
 class RegisterPage extends Component {
+
+    /**
+     * Today - 18 years
+     */
+    static MAX_DATE: Date = (() => {
+        const rightNow = new Date();
+        const day = rightNow.getDate();
+        const monthIndex = rightNow.getMonth();
+        const year = rightNow.getFullYear();
+
+        const eighteenYearsAgo = new Date(year - 18, monthIndex, day);
+
+        return eighteenYearsAgo;
+    })();
+
+    static MIN_DATE: Date = (() => {
+        const rightNow = new Date();
+        const day = rightNow.getDate();
+        const monthIndex = rightNow.getMonth();
+        const year = rightNow.getFullYear();
+
+        const aHundredYearsAgo = new Date(year - 100, monthIndex, day)
+
+        return aHundredYearsAgo;
+    })();
 
     constructor(props) {
         super(props);
@@ -178,42 +203,6 @@ class RegisterPage extends Component {
             registerAction(this.state.full_name, this.state.email, this.state.password, latitude,
                 longitude, this.state.sex, this.state.age, this.state.image, this.state.username);
         })
-    }
-
-    _showDatePicker() {
-        Picker.init({
-            pickerData: createDateData(),
-            pickerFontColor: [153, 0, 204, 1],
-            pickerToolBarBg: [232, 232, 232, 1],
-            pickerTitleText: '',
-            pickerConfirmBtnColor: [153, 0, 204, 1],
-            pickerCancelBtnColor: [153, 0, 204, 1],
-            pickerBg: [255, 255, 255, 1],
-            onPickerConfirm: (pickedValue, pickedIndex) => {
-                var month = '';
-                var day = '';
-                if (pickedValue[1] <= 9) {
-                    month = '0' + pickedValue[1].toString();
-                } else {
-                    month = pickedValue[1];
-                }
-                if (pickedValue[2] <= 9) {
-                    day = '0' + pickedValue[2].toString();
-                } else {
-                    day = pickedValue[2];
-                }
-                let dateAge = pickedValue[0] + '/' + month + '/' + day
-                this.setState({age: dateAge})
-            },
-            onPickerCancel: (pickedValue, pickedIndex) => {
-                console.log('date', pickedValue, pickedIndex);
-            },
-            onPickerSelect: (pickedValue, pickedIndex) => {
-                this.setState({year: pickedValue[0]});
-                console.log('date3', pickedValue, pickedIndex);
-            }
-        });
-        Picker.show();
     }
 
     _registerCancel() {
@@ -553,8 +542,8 @@ class RegisterPage extends Component {
     }
 
     onDateChange = (date: Date) => {
-        // the format expected by registerAction()
-        const formatted = moment(date).format('YYYY/MM/DD')
+        // the format expected by registerAction() and the API itself
+        const formatted = moment(date).format('YYYY-MM-DD')
 
         this.setState({
             age: formatted,
@@ -652,7 +641,10 @@ class RegisterPage extends Component {
                         <TouchableWithoutFeedback>
                             <View style={styles.viewButtonStyleFecha}>
                                 <DatePicker
-                                    androidMode="default"
+                                    // use spinner, calendar mode has a bug
+                                    // where you can select a date greater than
+                                    // the max allowed one
+                                    androidMode="spinner"
                                     animationType="slide"
                                     defaultDate={new Date(2018, 4, 4)}
                                     formatChosenDate={undefined}
@@ -660,8 +652,10 @@ class RegisterPage extends Component {
                                     onDateChange={this.onDateChange}
                                     placeHolderText={strings("register.age")}
                                     locale="es"
-                                    textStyle={{ color: '#ccc' }}
-                                    placeHolderTextStyle={{ color: '#ccc' }}
+                                    textStyle={dateTextStyle}
+                                    placeHolderTextStyle={dateTextStyle}
+                                    maximumDate={RegisterPage.MAX_DATE}
+                                    minimumDate={RegisterPage.MIN_DATE}
                                 />
                             </View>
                         </TouchableWithoutFeedback>
