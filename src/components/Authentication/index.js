@@ -22,6 +22,7 @@ export default class Authentication extends Component {
     constructor() {
         super();
         this.state = {
+            loadingFBLogin: false,
             latitud: '',
             longitud: '',
         };
