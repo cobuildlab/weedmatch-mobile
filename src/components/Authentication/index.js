@@ -14,9 +14,10 @@ import styles from './styles';
 import {facebookAction, firebaseAction} from './AutheticationActions';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
 
 /**
- * MatchUsersScreen Screen
+ * Authentication Screen
  */
 export default class Authentication extends Component {
     constructor() {
@@ -25,6 +26,7 @@ export default class Authentication extends Component {
             latitud: '',
             longitud: '',
         };
+        LoginManager.logOut();
     }
 
     subscription() {
@@ -45,7 +47,7 @@ export default class Authentication extends Component {
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
             console.log(
-                'MatchUsersScreen:componentDidMount:appSubscription',
+                'Authentication:componentDidMount:appSubscription',
                 state
             );
 
@@ -55,7 +57,7 @@ export default class Authentication extends Component {
         this.firebaseSubscription = APP_STORE.FIRE_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
             console.log(
-                'MatchUsersScreen:componentDidMount:firebaseSubscription',
+                'Authentication:componentDidMount:firebaseSubscription',
                 state
             );
 
@@ -65,7 +67,7 @@ export default class Authentication extends Component {
         this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
             console.log(
-                'MatchUsersScreen:componentDidMount:idSubscription',
+                'Authentication:componentDidMount:idSubscription',
                 state
             );
             if (isValidText(state.id)) {

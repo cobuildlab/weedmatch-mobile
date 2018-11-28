@@ -41,8 +41,7 @@ export default class SwiperView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = SwiperView.getInitialState()
-
+        this.state = SwiperView.getInitialState();
         this.cardIndex = 0;
     }
 

@@ -102,6 +102,7 @@ class RegisterPage extends Component {
     componentDidMount() {
         console.log("RegisterPage:componentDidMount");
         this.event = APP_STORE.APP_EVENT.subscribe(state => {
+            console.log("RegisterPage:componentDidMount:APP_STORE.APP_EVENT", state);
             if (state.error) {
                 this.setState({isLoading: false});
                 if (state.error.detail) {
@@ -487,7 +488,7 @@ class RegisterPage extends Component {
      * However, no two consecutive spaces are allowed
      * @param text
      */
-    onChangeFullName = (text: string) => {        
+    onChangeFullName = (text: string) => {
         const filtered = text
             .split('')
             .filter(char =>
@@ -512,7 +513,7 @@ class RegisterPage extends Component {
                 )
             .join(' ')
 
-        
+
         this.setState({
             full_name: asLowercaseWords,
         })
@@ -535,7 +536,7 @@ class RegisterPage extends Component {
                     char == '.'
             )
             .join('')
-        
+
         this.setState({
             username: filtered,
         })

@@ -47,7 +47,7 @@ export default class Chat extends Component {
     static navigationOptions = ({navigation}) => {
         const {otherUser, imgProfile, otherID} = {
             imgProfile: navigation.getParam('imgProfile'),
-            otherID: navigation.getParam('otherUser'),
+            otherID: navigation.getParam('otherID'),
             otherUser: navigation.getParam('otherUser'),
         };
 

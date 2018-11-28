@@ -55,16 +55,20 @@ const styleSheet = StyleSheet.create({
         paddingBottom: 10,
         paddingTop: 10,
         width: '100%',
+        color:'black',
+        height:39,
     },
     buttomEditSexOn: {
         alignItems: 'center',
         borderColor: MAGENTA,
         borderRadius: 50,
         borderWidth: 1,
+        height:39,
+        color:'black',
         marginBottom: 10,
         paddingBottom: 10,
         paddingTop: 10,
-        width: '100%',
+        width: '100%'
     },
     buttomPassStyle: {
         alignItems: 'center',

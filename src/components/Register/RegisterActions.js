@@ -150,7 +150,7 @@ function facebookAction(state) {
         (data) => {
             if (data) {
                 LoginManager.logOut();
-                return
+                return;
             }
             LoginManager.logInWithReadPermissions(["public_profile", "email", "user_birthday", "user_gender"]).then(
                 function (result) {
@@ -159,7 +159,7 @@ function facebookAction(state) {
                     }
                     AccessToken.getCurrentAccessToken().then(
                         (data) => {
-                            console.log(data.accessToken.toString())
+                            console.log("facebookAction:", data.accessToken.toString());
 
                             userService.facebookHandle(data.accessToken.toString(), state)
                                 .then(async (response) => {
