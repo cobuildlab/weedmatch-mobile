@@ -7,7 +7,7 @@
         "register": "Crear cuenta",
         "redes": "Iniciar sesión con redes sociales",
         "facebook": "Iniciar sesión con Facebook",
-        "forgot": "",
+        "forgot": "Recuperar Contraseña",
         "required_fields_error": "El usuario y la clave son necesarios"
     },
     "register": {
@@ -64,7 +64,7 @@
         "message": "Chats",
         "like": "Me encanta",
         "login": "Iniciar Sesión",
-        "recover": "",
+        "recover": "Recuperar Contraseña",
         "internet": "No hay conexión a Internet",
         "password": "Cambiar contraseña",
         "pro": "Comprar version pro",
