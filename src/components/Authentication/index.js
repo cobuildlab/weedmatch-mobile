@@ -26,6 +26,7 @@ export default class Authentication extends Component {
             latitud: '',
             longitud: '',
         };
+        // we force logout of the Facebook SDK in case that the normal Logout of the App fail or was erased
         LoginManager.logOut();
     }
 
