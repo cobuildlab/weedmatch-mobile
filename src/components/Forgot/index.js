@@ -109,6 +109,10 @@ class ForgotPage extends ValidationComponent {
         }
     }
 
+    onPressSendEmail = () => {
+        toastMsg('No disponible');
+    }
+
     render() {
         const {isLoading, step} = this.state;
         if (isLoading) {
@@ -147,12 +151,12 @@ class ForgotPage extends ValidationComponent {
                                 placeholder={strings('register.email')}
                                 ref='email'
                                 returnKeyType = {"next"}
-                                onSubmitEditing={() => { this._forgotPassword(); }}
+                                onSubmitEditing={this.onPressSendEmail}
                                 value={this.state.email}
                             />
                             <TouchableOpacity
                                 style={styles.buttomLoginStyle}
-                                onPress={this._forgotPassword.bind(this)}>
+                                onPress={this.onPressSendEmail}>
                                 <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
