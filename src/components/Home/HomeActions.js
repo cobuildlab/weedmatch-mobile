@@ -35,8 +35,6 @@ function getFeed(token, state, pagUrl) {
                 APP_STORE.FEED_EVENT.next({"feed": json.results});
                 APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
                 return;
-            } else if (response.status === 401) {
-                logOut()
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         })

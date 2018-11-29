@@ -2,8 +2,8 @@
  * @prettier
  */
 // @ts-check
-import { FluxStore } from '../../utils/flux-state/index';
-import { AsyncStorage } from 'react-native';
+import {FluxStore} from '../../utils/flux-state/index';
+import {AsyncStorage} from 'react-native';
 
 /**
  * @typedef {object} UserObject
@@ -17,6 +17,11 @@ export const events = {
     // dispatched from components/login/actions
     ERROR: 'authStore/error',
     /**
+     * The profile Image
+     *
+     */
+    PROFILE_IMAGE: 'authStore/profile-image',
+    /**
      * An object of the shape UserObject
      * @see UserObject
      */
@@ -29,13 +34,12 @@ export const events = {
 class AuthStore extends FluxStore {
     constructor() {
         super();
-
-        Object.values(events).forEach(eventName => {
-            this.addEvent(eventName, (/** @type {unknown} */ value) => {
-                AsyncStorage.setItem(eventName, JSON.stringify(value));
-                return value;
-            });
+        this.addEvent(events.USER, (/** @type {unknown} */ value) => {
+            AsyncStorage.setItem(events.USER, JSON.stringify(value));
+            return value;
         });
+        this.addEvent(events.ERROR);
+        this.addEvent(events.PROFILE_IMAGE);
     }
 }
 

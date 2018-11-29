@@ -75,8 +75,6 @@ function getSwiper(token, pagUrl) {
                 APP_STORE.SWIPER_EVENT.next({"swiper": json.results});
                 APP_STORE.SWIPERPAGE_EVENT.next({"swiperPage": json.next});
                 return;
-            } else if (response.status === 401 || response.status === 403) {
-                logOut()
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         })
