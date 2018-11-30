@@ -34,34 +34,37 @@ export function facebookAction(state) {
                     userService
                         .facebookHandle(data.accessToken.toString(), state)
                         .then(async response => {
-                            // eslint-disable-next-line no-console
-                            console.log(
-                                `facebookAction: ${data.accessToken.toString()}`,
-                                response
-                            );
+                            try {
+                                console.log(
+                                    `facebookAction: ${data.accessToken.toString()}`,
+                                    response
+                                );
 
-                            const json = await response.json();
+                                const json = await response.json();
 
-                            // eslint-disable-next-line no-console
-                            console.log(`facebookAction:JSON:`, json);
+                                // eslint-disable-next-line no-console
+                                console.log(`facebookAction:JSON:`, json);
 
-                            /**
-                             * @type {UserObject}
-                             */
-                            const user = json
+                                /**
+                                 * @type {UserObject}
+                                 */
+                                const user = json
 
-                            dispatchEvent(authStoreEvents.USER, user)
+                                dispatchEvent(authStoreEvents.USER, user)
 
-                            if (response.ok) {
-                                APP_STORE.TOKEN_EVENT.next({
-                                    token: json.token,
-                                });
-                                APP_STORE.ID_EVENT.next({
-                                    id: json.id.toString(),
-                                });
-                                return;
+                                if (response.ok) {
+                                    APP_STORE.TOKEN_EVENT.next({
+                                        token: json.token,
+                                    });
+                                    APP_STORE.ID_EVENT.next({
+                                        id: json.id.toString(),
+                                    });
+                                } else {
+                                    throw new Error(json.detail)
+                                }
+                            } catch (e) {
+                                APP_STORE.APP_EVENT.next({ error: e.message });
                             }
-                            APP_STORE.APP_EVENT.next({ error: json.detail });
                         });
                 });
             },
