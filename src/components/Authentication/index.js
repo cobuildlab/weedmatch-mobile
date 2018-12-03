@@ -11,7 +11,7 @@ import {strings} from '../../i18n';
 import {isValidText, toastMsg} from '../../utils';
 import {APP_STORE} from '../../Store';
 import styles, { MAGENTA } from './styles';
-import {facebookAction, firebaseAction} from './AutheticationActions';
+import {facebookAction, firebaseAction} from './AuthenticationActions';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
 import { Spinner } from 'native-base';
