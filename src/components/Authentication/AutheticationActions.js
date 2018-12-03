@@ -26,52 +26,54 @@ export function facebookAction(state) {
             function(result) {
                 if (result.isCancelled) {
                     APP_STORE.FACE_EVENT.next({ face: true });
-                }
-                AccessToken.getCurrentAccessToken().then(data => {
-                    // eslint-disable-next-line no-console
-                    console.log("facebookAction", data.accessToken.toString());
-
-                    userService
-                        .facebookHandle(data.accessToken.toString(), state)
-                        .then(async response => {
-                            try {
-                                console.log(
-                                    `facebookAction: ${data.accessToken.toString()}`,
-                                    response
-                                );
-
-                                const json = await response.json();
-
-                                // eslint-disable-next-line no-console
-                                console.log(`facebookAction:JSON:`, json);
-
-                                /**
-                                 * @type {UserObject}
-                                 */
-                                const user = json
-
-                                dispatchEvent(authStoreEvents.USER, user)
-
-                                if (response.ok) {
-                                    APP_STORE.TOKEN_EVENT.next({
-                                        token: json.token,
-                                    });
-                                    APP_STORE.ID_EVENT.next({
-                                        id: json.id.toString(),
-                                    });
-                                } else {
-                                    throw new Error(json.detail)
+                } else {
+                    AccessToken.getCurrentAccessToken().then(data => {
+                        // eslint-disable-next-line no-console
+                        console.log("facebookAction", data.accessToken.toString());
+    
+                        userService
+                            .facebookHandle(data.accessToken.toString(), state)
+                            .then(async response => {
+                                try {
+                                    console.log(
+                                        `facebookAction: ${data.accessToken.toString()}`,
+                                        response
+                                    );
+    
+                                    const json = await response.json();
+    
+                                    // eslint-disable-next-line no-console
+                                    console.log(`facebookAction:JSON:`, json);
+    
+                                    /**
+                                     * @type {UserObject}
+                                     */
+                                    const user = json
+    
+                                    dispatchEvent(authStoreEvents.USER, user)
+    
+                                    if (response.ok) {
+                                        APP_STORE.TOKEN_EVENT.next({
+                                            token: json.token,
+                                        });
+                                        APP_STORE.ID_EVENT.next({
+                                            id: json.id.toString(),
+                                        });
+                                    } else {
+                                        throw new Error(json.detail)
+                                    }
+                                } catch (e) {
+                                    APP_STORE.APP_EVENT.next({ error: e.message });
                                 }
-                            } catch (e) {
-                                APP_STORE.APP_EVENT.next({ error: e.message });
-                            }
-                        });
-                });
-            },
-            function(error) {
-                alert('Login fail with error: ' + error);
+                            });
+                    });
+                }
+                
             }
-        );
+            
+        ).catch(function(error) {
+            alert('Login fail with error: ' + error);
+        });
     });
 }
 
