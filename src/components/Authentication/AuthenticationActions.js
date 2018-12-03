@@ -3,6 +3,7 @@ import { userService } from './service';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { events as authStoreEvents } from '../../modules/auth/AuthStore'
 import { dispatchEvent } from '../../utils/flux-state'
+import { events as authEvents } from '../../modules/auth/AuthStore'
 /**
  * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
  */
@@ -31,6 +32,8 @@ export function facebookAction(state) {
                         // eslint-disable-next-line no-console
                         console.log("facebookAction", data.accessToken.toString());
     
+                        // this gets set to false inside firebaseAction()
+                        dispatchEvent(authStoreEvents.FB_LOGGING_IN, true)
                         userService
                             .facebookHandle(data.accessToken.toString(), state)
                             .then(async response => {
@@ -44,18 +47,20 @@ export function facebookAction(state) {
     
                                     // eslint-disable-next-line no-console
                                     console.log(`facebookAction:JSON:`, json);
-    
-                                    /**
-                                     * @type {UserObject}
-                                     */
-                                    const user = json
-    
-                                    dispatchEvent(authStoreEvents.USER, user)
-    
+
                                     if (response.ok) {
+                                       /**
+                                        * @type {UserObject}
+                                        */
+                                        const user = json
+    
+                                        dispatchEvent(authStoreEvents.USER, user)
+                                        
+
                                         APP_STORE.TOKEN_EVENT.next({
                                             token: json.token,
                                         });
+
                                         APP_STORE.ID_EVENT.next({
                                             id: json.id.toString(),
                                         });
@@ -82,6 +87,7 @@ export function firebaseAction(token) {
     console.log(`firebaseAction: ${token}`);
 
     userService.tokenFB(token).then(async response => {
+        
         // eslint-disable-next-line no-console
         console.log(`firebaseAction: ${token}`, response);
 
@@ -92,6 +98,7 @@ export function firebaseAction(token) {
 
         if (response.ok) {
             APP_STORE.FIRE_EVENT.next({ tokenFB: json.id.toString() });
+            dispatchEvent(authEvents.FB_LOGGING_IN, false)
             return;
         }
         APP_STORE.APP_EVENT.next({ error: json.detail });

@@ -15,6 +15,9 @@ import {facebookAction, firebaseAction} from './AuthenticationActions';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
 import { Spinner } from 'native-base';
+import authStore, { events as authEvents } from '../../modules/auth/AuthStore'
+import { dispatchEvent } from '../../utils/flux-state';
+
 
 /**
  * MatchUsersScreen Screen
@@ -29,21 +32,7 @@ export default class Authentication extends Component {
         };
     }
 
-    subscription() {
-        this.face = APP_STORE.FACE_EVENT.subscribe(state => {
-            // eslint-disable-next-line no-console
-            console.log(
-                'Public Profile:componentDidMount:PUBLICPROFILE_EVENT',
-                state
-            );
-
-            if (state.face) {
-                this.appSubscription.unsubscribe();
-                this.firebaseSubscription.unsubscribe();
-                this.idSubscription.unsubscribe();
-            }
-        });
-
+    componentDidMount() {
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
             console.log(
@@ -70,6 +59,7 @@ export default class Authentication extends Component {
                 'MatchUsersScreen:componentDidMount:idSubscription',
                 state
             );
+
             if (isValidText(state.id)) {
                 if (firebase.messaging().hasPermission()) {
                     try {
@@ -78,7 +68,8 @@ export default class Authentication extends Component {
                         alert('Failed to grant permission');
                     }
                 }
-
+                // workaround while firebase login gets merged with the fb login
+                
                 firebase
                     .messaging()
                     .getToken()
@@ -87,6 +78,22 @@ export default class Authentication extends Component {
                     });
             }
         });
+
+        this.authStoreSubscription = authStore.subscribe(
+            authEvents.FB_LOGGING_IN,
+            (loadingFBLogin: boolean) =>
+        {
+            this.setState({
+                loadingFBLogin,
+            })
+        });
+    }
+
+    componentWillUnmount() {
+        this.appSubscription.unsubscribe();
+        this.firebaseSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
+        this.authStoreSubscription.unsubscribe();
     }
 
     static navigationOptions = {header: null};
@@ -100,7 +107,6 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        this.subscription();
         facebookAction(this.state);
     }
 
