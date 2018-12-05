@@ -174,12 +174,31 @@ function toastMsg(msg) {
  * @param {any} username
  */
 const generateUsernameFromFullName = (username, addNumber = false) => {
+    const map = {
+        'á': 'a',
+        'é': 'e',
+        'í': 'i',
+        'ó': 'o',
+        'ú': 'u',
+        'Á': 'A',
+        'É': 'E',
+        'Í': 'I',
+        'Ó': 'O',
+        'Ú': 'U',
+    }
+
     const newUsername = new String(username)
         .replace(/ /g, '')
         .toLocaleLowerCase();
-    if (!addNumber) return newUsername;
+    
+    const intermediate = newUsername
+        .split('').map(char => map[char] || char).join('')
+    
+    if (!addNumber) return intermediate;
     const randonNumber = Math.floor(Math.random() * 1000 + 1);
-    return [newUsername, randonNumber].join('_');
+    const final = [intermediate, randonNumber].join('_');
+
+    return final
 };
 
 export {

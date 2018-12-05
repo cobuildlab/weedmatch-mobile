@@ -23,12 +23,20 @@ const swiperAction = async (token, action, id) => {
     userService.swiperAction(token, action, id, moment().format())
         .then(async (response) => {
             console.log(`SwiperActions:swiperAction:`, response);
-            const json = await response.json();
-            if (response.ok) {
-                APP_STORE.SWIPERACTION_EVENT.next({"swiperAction": json.detail});
-                return;
+            try {
+                const json = await response.json();
+                if (response.ok) {
+                    APP_STORE.SWIPERACTION_EVENT.next({"swiperAction": json.detail});
+                    return;
+                } else {
+                    throw new Error(json.detail)
+                }
+            } catch (e) {
+                console.warn(e.message)
+                APP_STORE.APP_EVENT.next({"error": e.message});    
             }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
+            
+            
         });
 };
 
@@ -68,15 +76,23 @@ function getSwiper(token, pagUrl) {
     userService.swiper(token, pagUrl)
         .then(async (response) => {
             console.log(`SwiperAction: ${token}, ${pagUrl}`, response);
-            const json = await response.json();
-            console.log(`SwiperAction:JSON:`, json);
-            if (response.ok) {
-                console.log(json.results);
-                APP_STORE.SWIPER_EVENT.next({"swiper": json.results});
-                APP_STORE.SWIPERPAGE_EVENT.next({"swiperPage": json.next});
-                return;
+            try {
+                const json = await response.json();
+                console.log(`SwiperAction:JSON:`, json);
+                if (response.ok) {
+                    console.log(json.results);
+                    APP_STORE.SWIPER_EVENT.next({"swiper": json.results});
+                    APP_STORE.SWIPERPAGE_EVENT.next({"swiperPage": json.next});
+                    return;
+                } else if (response.status === 401 || response.status === 403) {
+                    logOut()
+                } else {
+                    throw new Error(json.detail)
+                }
+            } catch (e) {
+                console.warn(e.message)
+                APP_STORE.APP_EVENT.next({"error": e.message});
             }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
         })
 }
 
