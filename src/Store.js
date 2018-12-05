@@ -1,6 +1,6 @@
-import { Subject } from 'rxjs/Subject';
-import { AsyncStorage } from 'react-native';
-import { isValidText } from './utils';
+import {Subject} from 'rxjs/Subject';
+import {AsyncStorage} from 'react-native';
+import {isValidText} from './utils';
 
 /**
  * Asynchronously save the token
@@ -166,43 +166,47 @@ async function popNoti(state) {
         console.error('AsyncStorage error: ' + error.message);
         return undefined;
     }
-}
+};
+
+const getInitialState = () => {
+    return {
+        bad: undefined,
+        chatMsg: undefined,
+        chatMsgPage: undefined,
+        chatNotif: undefined,
+        chats: undefined,
+        email: undefined,
+        error: undefined,
+        face: undefined,
+        feed: undefined,
+        id: undefined,
+        like: undefined,
+        likeAction: undefined,
+        likeNotif: undefined,
+        noti: undefined,
+        page: undefined,
+        profile: undefined,
+        profileImages420: undefined,
+        profileImages420Page: undefined,
+        publicImages420: undefined,
+        publicImages420Page: undefined,
+        publicProfile: undefined,
+        saveProfile: undefined,
+        success: undefined,
+        super: undefined,
+        swiper: undefined,
+        swiperAction: undefined,
+        swiperPage: undefined,
+        token: undefined,
+        tokenFB: undefined,
+        upload: undefined,
+        username: undefined,
+    }
+};
 
 class Store {
     constructor() {
-        this.state = {
-            bad: undefined,
-            chatMsg: undefined,
-            chatMsgPage: undefined,
-            chatNotif: undefined,
-            chats: undefined,
-            email: undefined,
-            error: undefined,
-            face: undefined,
-            feed: undefined,
-            id: undefined,
-            like: undefined,
-            likeAction: undefined,
-            likeNotif: undefined,
-            noti: undefined,
-            page: undefined,
-            profile: undefined,
-            profileImages420: undefined,
-            profileImages420Page: undefined,
-            publicImages420: undefined,
-            publicImages420Page: undefined,
-            publicProfile: undefined,
-            saveProfile: undefined,
-            success: undefined,
-            super: undefined,
-            swiper: undefined,
-            swiperAction: undefined,
-            swiperPage: undefined,
-            token: undefined,
-            tokenFB: undefined,
-            upload: undefined,
-            username: undefined,
-        };
+        this.state = getInitialState();
         popToken(this.state);
         popId(this.state);
         popIdFB(this.state);
@@ -432,8 +436,15 @@ class Store {
     getUser() {
         return this.state.username;
     }
+
+    resetStore(){
+        this.state = getInitialState();
+    }
 }
+
 
 const store = new Store();
 
-export { store as APP_STORE };
+
+
+export {store as APP_STORE};

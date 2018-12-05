@@ -16,133 +16,129 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import { getSuper,calculateTime,likeAction } from './LikeActions';
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
+import { getSuper, calculateTime, likeAction } from './LikeActions';
+import { APP_STORE } from '../../Store';
+import { strings } from '../../i18n';
 import { internet, checkConectivity, toastMsg } from '../../utils';
 
 var { height, width } = Dimensions.get('window');
 
 export default class Like extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-          refreshing:false,
-          super: [],
-          isLoading: false,
-        };
-    }
-
-    static navigationOptions = ({ navigation }) => {
-      const {params} = navigation.state;
-
-      return {
-        title: 'Me encanta',
-      };
+    this.state = {
+      refreshing: false,
+      super: [],
+      isLoading: false,
     };
+  }
 
-    componentWillUnmount() {
-      // APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "false"});
-    }
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
 
-    componentDidMount(){
-
-      // APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "true"});
-
-      this.superVar = APP_STORE.SUPER_EVENT.subscribe(state => {
-        console.log("Like:componentDidMount:superVar", state);
-        if (state.super) {
-
-          this.setState({
-            super: state.super,
-            isLoading: true,
-            refreshing: false
-          })
-          return;
-        }
-        
-        if (state.error) {
-          toastMsg(state.error);
-        }
-      });
-
-      this.like = APP_STORE.LIKEACTION_EVENT.subscribe(state => {
-        console.log("Like:componentDidMount:like", state);
-        if (state.likeAction) {
-          this._onRefresh()
-          Alert.alert(state.likeAction);
-          return;
-        }
-        if (state.error) {
-          this._onRefresh()
-          Alert.alert(state.error);
-        }
-      });
-
-      getSuper()
-    }
-
-    _onRefresh() {
-      this.setState({
-        super: [],
-        refreshing: true,
-      },() => { 
-        getSuper();
-      })
-    }
-
-    tap(id) {
-      this.props.navigation.navigate('LikeProfile', {id})
+    return {
+      title: 'Me encanta',
     };
+  };
 
-    componentWillUnmount() {
-      this.superVar.unsubscribe();
-      this.like.unsubscribe();
-    }
+  componentDidMount() {
 
-    likeTap(action,id) {
-      if (checkConectivity()) {
-        likeAction(action,id)
-      } else {
-        internet();
+    // APP_STORE.LIKENOTIF_EVENT.next({"likeNotif": "true"});
+
+    this.superVar = APP_STORE.SUPER_EVENT.subscribe(state => {
+      console.log("Like:componentDidMount:superVar", state);
+      if (state.super) {
+
+        this.setState({
+          super: state.super,
+          isLoading: true,
+          refreshing: false
+        })
+        return;
       }
-    }
 
-    render() {
-      if(this.state.isLoading) {
-        if (this.state.super.length > 0) {
-          return (
-            <View style={styles.viewContainer}>
+      if (state.error) {
+        toastMsg(state.error);
+      }
+    });
+
+    this.like = APP_STORE.LIKEACTION_EVENT.subscribe(state => {
+      console.log("Like:componentDidMount:like", state);
+      if (state.likeAction) {
+        this._onRefresh()
+        Alert.alert(state.likeAction);
+        return;
+      }
+      if (state.error) {
+        this._onRefresh()
+        Alert.alert(state.error);
+      }
+    });
+
+    getSuper()
+  }
+
+  _onRefresh() {
+    this.setState({
+      super: [],
+      refreshing: true,
+    }, () => {
+      getSuper();
+    })
+  }
+
+  tap(id) {
+    this.props.navigation.navigate('LikeProfile', { id })
+  };
+
+  componentWillUnmount() {
+    this.superVar.unsubscribe();
+    this.like.unsubscribe();
+  }
+
+  likeTap(action, id) {
+    if (checkConectivity()) {
+      likeAction(action, id)
+    } else {
+      internet();
+    }
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      if (this.state.super.length > 0) {
+        return (
+          <View style={styles.viewContainer}>
             <FlatList
               horizontal={false}
-              keyExtractor={( item , index ) => index.toString() }
+              keyExtractor={(item, index) => index.toString()}
               data={this.state.super}
-              renderItem={({item}) =>
+              renderItem={({ item }) =>
                 <TouchableOpacity onPress={() => this.tap(item.id_user)}>
-                <View style={styles.viewMsg}>
-                <Image style={styles.imgProfileItem}
-                  source={{uri: item.image_profile}}
-                />
-                <View style={styles.viewTexts}>
+                  <View style={styles.viewMsg}>
+                    <Image style={styles.imgProfileItem}
+                      source={{ uri: item.image_profile }}
+                    />
+                    <View style={styles.viewTexts}>
                       <Text style={styles.textUser}>{item.username} quiere contactar</Text>
-                    <Text style={styles.textUser}>contigo</Text>
-                  <Text style={styles.textTime}>Hace {calculateTime(item.time)}</Text>
-                  </View>
-                  <View style={styles.viewOption}>
-                    <View style={styles.viewButtom}>
-                      <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("True",item.id)}>
-                        <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
-                      </TouchableOpacity>
+                      <Text style={styles.textUser}>contigo</Text>
+                      <Text style={styles.textTime}>Hace {calculateTime(item.time)}</Text>
                     </View>
-                    <View style={styles.viewButtom}>
-                      <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("False",item.id)}>
-                        <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
-                      </TouchableOpacity>
+                    <View style={styles.viewOption}>
+                      <View style={styles.viewButtom}>
+                        <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("True", item.id)}>
+                          <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.viewButtom}>
+                        <TouchableOpacity style={styles.Buttom} onPress={() => this.likeTap("False", item.id)}>
+                          <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
               }
               refreshControl={
                 <RefreshControl
@@ -151,21 +147,21 @@ export default class Like extends Component {
                 />
               }
             />
-            </View>
-          );
-        } else {
-          return(
-            <View style={styles.containerLoader}>
-              <Text>{strings("chat.noLike")}</Text>
-            </View>
-          );
-        }
+          </View>
+        );
       } else {
-          return (
-              <View style={[styles.containers, styles.horizontal]}>
-                  <ActivityIndicator size="large" color="#9605CC" />
-              </View>
-          )
+        return (
+          <View style={styles.containerLoader}>
+            <Text>{strings("chat.noLike")}</Text>
+          </View>
+        );
       }
+    } else {
+      return (
+        <View style={[styles.containers, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#9605CC" />
+        </View>
+      )
     }
+  }
 }

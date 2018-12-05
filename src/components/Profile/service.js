@@ -1,11 +1,12 @@
-import {authHeader, authHeaderLogout , URL} from '../../utils';
+import {authHeader, authHeaderLogout, URL} from '../../utils';
 import {APP_STORE} from "../../Store";
 
 export const userService = {
     publicProfile,
     publicImages420,
     tokenFB,
-    privateProfile
+    privateProfile,
+    deleteFirebaseToken
 };
 
 /**
@@ -44,7 +45,7 @@ function privateProfile(token, id) {
  * @param pageUrl The Url of the page to fetch
  * @returns {Promise<any>}
  */
-function publicImages420(token,pageUrl) {
+function publicImages420(token, pageUrl) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token)
@@ -60,8 +61,23 @@ function publicImages420(token,pageUrl) {
 function tokenFB() {
 
     const requestOptions = {
-        method: 'DELETE',
         headers: authHeaderLogout(),
+        method: 'DELETE',
     };
     return fetch(URL + 'device/' + APP_STORE.getIdFB() + '/', requestOptions);
 }
+
+
+/**
+ * Delete the Firebase token
+ * @param token The token of firebase
+ * @returns {Promise<any>}
+ */
+function deleteFirebaseToken (token) {
+    console.log("service:deleteFirebaseToken");
+    const requestOptions = {
+        headers: authHeaderLogout(),
+        method: 'DELETE',
+    };
+    return fetch(URL + `device/${token}/`, requestOptions);
+};

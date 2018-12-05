@@ -6,6 +6,7 @@ import {AsyncStorage} from 'react-native';
 import {authHeader, catchErrorAndPropagate, URL, LENGUAGE} from '../../utils';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
+import authStore from './../../modules/auth/AuthStore';
 
 function publicProfileAction(token, id) {
     console.log(`publicProfileAction: ${token}, ${id}`);
@@ -18,8 +19,6 @@ function publicProfileAction(token, id) {
             if (response.ok) {
                 APP_STORE.PROFILE_EVENT.next({"profile": json});
                 return;
-            } else if (response.status === 401) {
-                logOut()
             }
             APP_STORE.APP_EVENT.next({"error": json.detail});
         });
@@ -86,45 +85,60 @@ function appendData(oldData, newData) {
     return oldData;
 }
 
-function logOut() {
+/**
+ * Logout the session
+ */
+const logOut = async () => {
     console.log(`ProfileActions:logOut`);
-    AccessToken.getCurrentAccessToken().then(
-        (data) => {
-            console.log(`ProfileActions:logOut`, data);
-            if (data) {
-                LoginManager.logOut();
-            }
-        }
-    ).catch(err => console.log(`ProfileActions:logOut:AccessToken`, JSON.stringify(err)));
+    try {
+        const data = await AccessToken.getCurrentAccessToken();
+        console.log(`ProfileActions:logOut:deleteFacebookToken:`, data);
+        if (data)
+            LoginManager.logOut();
+    } catch (err) {
+        console.log(`ProfileActions:logOut:AccessToken`, JSON.stringify(err))
+    }
+    ;
 
-    console.log(`ProfileActions:logOut: Trying to obtain Firebase Token`);
-    firebase.messaging().getToken().then(async (token) => {
-        console.log("1")
-        if (token) {
-            console.log("2")
-            const response = await userService.tokenFB();
-            console.log(`ProfileActions:logOut:firebase.messaging:response${response}`);
-            const json = await response.json();
-            console.log(`ProfileActions:logOut:firebase.messaging:responseJSON${JSON.stringify(json)}`);
-        }
-        console.log("3")
-        _cleanStorage();
-        // Tell the system there is no more notifications
-        APP_STORE.NOTI_EVENT.next({"noti": false});
-    }).catch(err => {
-        console.log(`ProfileActions:logOut:firebase.messaging:error`, JSON.stringify(err));
-        _cleanStorage();
-        // Tell the system there is no more notifications
-        APP_STORE.NOTI_EVENT.next({"noti": false});
-    });
-}
+    console.log(`ProfileActions:logOut:deletefirebaseToken`);
+    let token;
 
-const _cleanStorage = () => {
-    AsyncStorage.removeItem('token');
-    AsyncStorage.removeItem('id');
-    AsyncStorage.removeItem('day');
-    AsyncStorage.removeItem('idFB');
-}
+    try {
+        token = await firebase.messaging().getToken();
+    } catch (e) {
+        console.log(`ProfileActions:logOut:firebase.messaging:error`, e);
+    }
+
+    console.log(`ProfileActions:logOut:deletefirebaseToken:`, token);
+    console.log(`ProfileActions:logOut:deletefirebaseToken:`, APP_STORE.getIdFB());
+    if (token) {
+        const response = await userService.deleteFirebaseToken(APP_STORE.getIdFB());
+        console.log(`ProfileActions:logOut:firebase.messaging:response:`, response);
+    }
+
+    try {
+        await _cleanStorage();
+    } catch (e) {
+        console.log(`ProfileActions:logOut:cleanStorageError`, e);
+    }
+
+    APP_STORE.NOTI_EVENT.next({"noti": false});
+};
+
+/**
+ * Removes the data from the storage
+ * @return {Promise<void>}
+ * @private
+ */
+const _cleanStorage = async () => {
+    authStore.clearState();
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('id');
+    await AsyncStorage.removeItem('day');
+    await AsyncStorage.removeItem('idFB');
+    await AsyncStorage.removeItem('username');
+    APP_STORE.resetStore();
+};
 
 function getImages(data) {
 

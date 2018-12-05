@@ -129,7 +129,7 @@ export const charIsAcuteVowel = (char: string): boolean => {
  */
 function authHeader(token) {
     return {
-        'Accept-Language': LENGUAGE,
+        'Accept-Language': getLocale(),
         Authorization: 'Token ' + token,
         'Content-Type': 'application/json',
     };
@@ -137,7 +137,7 @@ function authHeader(token) {
 
 function authHeaderLogout() {
     return {
-        'Accept-Language': LENGUAGE,
+        'Accept-Language': getLocale(),
         'Content-Type': 'application/json',
     };
 }
@@ -149,7 +149,7 @@ function authHeaderLogout() {
  */
 function authHeaderForm(token) {
     return {
-        'Accept-Language': LENGUAGE,
+        'Accept-Language': getLocale(),
         Authorization: 'Token ' + token,
         'Content-Type': 'multipart/form-data',
     };

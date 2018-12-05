@@ -19,6 +19,8 @@ import {strings} from "../../i18n";
 import AuthStore,
 {events as authStoreEvents} from '../../modules/auth/AuthStore'
 import store, {CHAT_USERNAME_EVENT} from '../../modules/chat/ChatStore';
+import {getProfileImages} from "../../modules/auth/authActions";
+import {publicProfileAction} from "../../components/Profile/ProfileActions";
 
 /**
  * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
@@ -33,26 +35,13 @@ export default class TopBar extends Component {
     constructor() {
         super();
 
-        /**
-         * @type {UserObject}
-         */
-        const user = AuthStore.getState(authStoreEvents.USER)
-        let userImageURL = null;
-
-
-        if (user != null) {
-            if (typeof user.image_profile == 'string') {
-                userImageURL = user.image_profile
-            }
-        }
-
         this.state = {
             activePage: 0,
-            notification: "false",
             like: "false",
-            modalVisible: false,
             matchData: {},
-            userImageURL,
+            modalVisible: false,
+            notification: "false",
+            userImageURL: null,
         };
         this.currentChatUsername = null;
     }
@@ -73,7 +62,7 @@ export default class TopBar extends Component {
             firebase.notifications().removeAllDeliveredNotifications();
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         // check if there is unread messages
         this.popNoti();
 
@@ -87,7 +76,7 @@ export default class TopBar extends Component {
         this.chatUsernameSubscription = store.subscribe(CHAT_USERNAME_EVENT, username => this.currentChatUsername = username);
 
 
-        // This is when a notification arrives
+        // This is when a notification arrives to check the purple dot in the UI
         this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
             this.setState({notification: state.noti})
         });
@@ -186,42 +175,19 @@ export default class TopBar extends Component {
         //     // console.log("TopBar:componentDidMount:onNotificationDisplayed", notification);
         // });
 
-        // this.notifHandler({
-        //     type_notification:"IL",
-        //     image_profile : "https://weedmatch-mobile.sfo2.digitaloceanspaces.com/mobile/users/profile/99/125/99-alacret_396-2018-10-08_213613.jpg",
-        //     username_match : "alacret_test",
-        //     image_profile_match : "https://weedmatch-mobile.sfo2.digitaloceanspaces.com/mobile/users/profile/99/125/99-alacret_396-2018-10-08_213613.jpg",
-        //     chat_id:1
-        // });
-
         // for the user pic
-        this.userSubscription =
-            AuthStore.subscribe(
-                authStoreEvents.USER,
-                (/** @type {UserObject} */user) => {
-                    const url = user.image_profile
-                    if (typeof url == 'string') {
-                        if (url.length > 0) {
-                            this.setState({
-                                userImageURL: url
-                            })
-                        }
+        this.userSubscription = AuthStore.subscribe(authStoreEvents.PROFILE_IMAGE,
+            (/** @type {UserObject} */imgProfile) => {
+                if (typeof imgProfile === 'string') {
+                    if (imgProfile.length > 0) {
+                        this.setState({
+                            userImageURL: imgProfile
+                        })
                     }
-                })
-
-        AsyncStorage
-            .getItem(authStoreEvents.USER)
-            .then(userJSON => {
-                if (userJSON != null) {
-                    /**
-                     * @type {UserObject}
-                     */
-                    const user = JSON.parse(userJSON)
-                    this.setState({
-                        userImageURL: user.image_profile
-                    })
                 }
-            })
+            });
+
+        await getProfileImages(APP_STORE.getToken(), APP_STORE.getId());
     }
 
     /**
@@ -233,19 +199,19 @@ export default class TopBar extends Component {
             case "ME": // I like it Notification
                 if (this.state.like == "false") { // Like notification
                     this.props.navigation.navigate('Notifications', {tabIndex: 1});
-                    break;
                 }
+                break;
             case "MC": // Match notification
                 firebase.analytics().logEvent("user_match");
                 this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
                 break;
-
             case "AC": // Accept I love
                 Alert(`ACCEPT I LOVE IT: ${JSON.stringify(data)}`);
                 if (this.currentChatUsername != data.username) { // Match Notification
                     this.setState({modalVisible: true, matchData: data});
                     break;
                 }
+                break;
             default:
                 console.warn("UNHANDLED NOTIFICATION TYPE:", JSON.stringify(data));
         }
