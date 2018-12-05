@@ -16,7 +16,7 @@ import {AccessToken, LoginManager} from 'react-native-fbsdk';
  * @param age
  */
 function registerAction(firstName, email, password, lat, lon, sex, age, image, username) {
-    console.log(`registerAction:`, this.arguments);
+    console.warn(`registerAction:`, arguments);
     if (!checkConectivity()) {
         APP_STORE.APP_EVENT.next({error: strings('main.internet')});
         return;

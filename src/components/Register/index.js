@@ -160,7 +160,7 @@ class RegisterPage extends Component {
             if (state.error) {
                 this.setState({isLoading: false});
                 toastMsg(state.error);
-                me.setState({username: generateUsernameFromFullName(this.state.full_name, true)});
+                this.onChangeUsername(generateUsernameFromFullName(this.state.full_name, true))
                 return;
             }
             if (state.success) {
@@ -221,6 +221,7 @@ class RegisterPage extends Component {
         })
     }
 
+
     _nextStep() {
         console.log("Register:_nextStep", this.state);
         const emailError = validate('email', this.state.email);
@@ -247,9 +248,12 @@ class RegisterPage extends Component {
                 })
                 return false
             }
+            this.setState({
+                isLoading: true,
+            })
 
-            this.state.username = generateUsernameFromFullName(this.state.full_name);
-            this.setState({isLoading: true});
+            this.onChangeUsername(generateUsernameFromFullName(this.state.full_name))
+
             validateEmailAction({"email": this.state.email});
             return false
         }
@@ -263,6 +267,12 @@ class RegisterPage extends Component {
                 toastMsg(strings("register.sexRequired"));
                 return false
             }
+
+            if (this.state.username.length < 6) {
+                toastMsg('El nombre de usuario debe tener al menos 6 caracteres')
+                return false
+            }
+
             this.setState({isLoading: true});
 
             // throws if invalid
