@@ -10,11 +10,15 @@ import {
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from '../../utils';
 import {APP_STORE} from '../../Store';
-import styles from './styles';
-import {facebookAction, firebaseAction} from './AutheticationActions';
+import styles, { MAGENTA } from './styles';
+import {facebookAction, firebaseAction} from './AuthenticationActions';
 import firebase from 'react-native-firebase';
 import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import { Spinner } from 'native-base';
+import authStore, { events as authEvents } from '../../modules/auth/AuthStore'
+import { dispatchEvent } from '../../utils/flux-state';
+
 
 /**
  * Authentication Screen
@@ -24,27 +28,14 @@ export default class Authentication extends Component {
         super();
         this.state = {
             latitud: '',
+            loadingFBLogin: false,
             longitud: '',
         };
         // we force logout of the Facebook SDK in case that the normal Logout of the App fail or was erased
         LoginManager.logOut();
     }
 
-    subscription() {
-        this.face = APP_STORE.FACE_EVENT.subscribe(state => {
-            // eslint-disable-next-line no-console
-            console.log(
-                'Public Profile:componentDidMount:PUBLICPROFILE_EVENT',
-                state
-            );
-
-            if (state.face) {
-                this.appSubscription.unsubscribe();
-                this.firebaseSubscription.unsubscribe();
-                this.idSubscription.unsubscribe();
-            }
-        });
-
+    componentDidMount() {
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             // eslint-disable-next-line no-console
             console.log(
@@ -71,6 +62,7 @@ export default class Authentication extends Component {
                 'Authentication:componentDidMount:idSubscription',
                 state
             );
+
             if (isValidText(state.id)) {
                 if (firebase.messaging().hasPermission()) {
                     try {
@@ -79,7 +71,8 @@ export default class Authentication extends Component {
                         alert('Failed to grant permission');
                     }
                 }
-
+                // workaround while firebase login gets merged with the fb login
+                
                 firebase
                     .messaging()
                     .getToken()
@@ -88,6 +81,22 @@ export default class Authentication extends Component {
                     });
             }
         });
+
+        this.authStoreSubscription = authStore.subscribe(
+            authEvents.FB_LOGGING_IN,
+            (loadingFBLogin: boolean) =>
+        {
+            this.setState({
+                loadingFBLogin,
+            })
+        });
+    }
+
+    componentWillUnmount() {
+        this.appSubscription.unsubscribe();
+        this.firebaseSubscription.unsubscribe();
+        this.idSubscription.unsubscribe();
+        this.authStoreSubscription.unsubscribe();
     }
 
     static navigationOptions = {header: null};
@@ -101,7 +110,6 @@ export default class Authentication extends Component {
     }
 
     _facebookLogin() {
-        this.subscription();
         facebookAction(this.state);
     }
 
@@ -118,40 +126,52 @@ export default class Authentication extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={styles.contentLogin}>
-                    <Text style={styles.textLight}>
-                        {strings('main.title')}
-                    </Text>
-                    <Text style={styles.textBold}>{strings('wmatch')}</Text>
-                    <TouchableOpacity
-                        style={styles.buttomFacebookStyle}
-                        onPress={this._facebookLogin.bind(this)}
-                    >
-                        <Image
-                            style={styles.logoFacebook}
-                            source={require('../../assets/img/facebook-app-logo.png')}
-                        />
-                        <Text style={styles.buttonTextFacebook}>
-                            {strings('login.facebook')}
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.buttomLoginStyle}
-                        onPress={this.userRegister.bind(this)}
-                    >
-                        <Text style={styles.buttonText}>
-                            {strings('login.register')}
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.buttomRegister}
-                        onPress={this.userLoginPage.bind(this)}
-                    >
-                        <Text style={styles.buttomTextRegister}>
-                            {strings('login.signup_button')}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                {
+                    this.state.loadingFBLogin
+                    ? (
+                        <View style={styles.deadCenter}>
+                            <Spinner color={MAGENTA} />
+                            <Text>
+                                {strings('register.loggingInWithFacebook')}
+                            </Text>
+                        </View>
+                    ) : (
+                        <View style={styles.contentLogin}>
+                            <Text style={styles.textLight}>
+                                {strings('main.title')}
+                            </Text>
+                            <Text style={styles.textBold}>{strings('wmatch')}</Text>
+                            <TouchableOpacity
+                                style={styles.buttomFacebookStyle}
+                                onPress={this._facebookLogin.bind(this)}
+                            >
+                                <Image
+                                    style={styles.logoFacebook}
+                                    source={require('../../assets/img/facebook-app-logo.png')}
+                                />
+                                <Text style={styles.buttonTextFacebook}>
+                                    {strings('login.facebook')}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttomLoginStyle}
+                                onPress={this.userRegister.bind(this)}
+                            >
+                                <Text style={styles.buttonText}>
+                                    {strings('login.register')}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttomRegister}
+                                onPress={this.userLoginPage.bind(this)}
+                            >
+                                <Text style={styles.buttomTextRegister}>
+                                    {strings('login.signup_button')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
             </ScrollView>
         );
     }
