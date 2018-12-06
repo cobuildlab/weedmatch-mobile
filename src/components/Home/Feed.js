@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
     ListView,
     RefreshControl,
@@ -29,5 +30,11 @@ const Feed = ({style, dataSource, renderRow, onEndReached, onMomentumScrollBegin
         />
     );
 }
+
+Feed.propTypes = {
+    dataSource: PropTypes.array.isRequired,
+    renderRow: PropTypes.element.isRequired,
+    style: PropTypes.object,
+};
 
 export default Feed;

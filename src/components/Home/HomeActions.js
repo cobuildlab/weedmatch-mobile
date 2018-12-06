@@ -1,30 +1,28 @@
-import {APP_STORE} from '../../Store';
-import {userService} from './service';
+import { APP_STORE } from '../../Store';
+import { userService } from './service';
 import moment from 'moment';
 import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
-import {logOut} from '../Profile/ProfileActions';
-import {URL} from '../../utils';
+import { logOut } from '../Profile/ProfileActions';
+import { URL } from '../../utils';
+import { dispatchEvent } from '../../utils/flux-state';
+import { events } from '../../modules/feed/FeedStore';
 
 const DOUBLE_PRESS_DELAY = 300;
 
-function feedAction(token, state) {
+function feedAction(state, nextUrl = null, numPage = 0) {
+    console.log(`feedAction:`, [state, nextUrl, numPage]);
 
-    console.log(`homeAction: ${token}, ${state}`);
-
-    var pagUrl = '';
-
-    if (state.urlPage != '' && state.numPage > 0) {
-        pagUrl = state.urlPage;
-        getFeed(token, state, pagUrl);
-
-    } else if (state.numPage == 0) {
-        pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
-        getFeed(token, state, pagUrl);
+    if (nextUrl !== null && numPage > 0) {
+        getFeed(state, nextUrl);
+    } else if (numPage === 0) {
+        const pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
+        getFeed(state, pagUrl);
     }
 }
 
-function getFeed(token, state, pagUrl) {
+function getFeed(state, pagUrl) {
+    const token = APP_STORE.getToken();
     userService.feed(token, state, pagUrl)
         .then(async (response) => {
             console.log(`homeAction: ${token}, ${state}`, response);
@@ -32,11 +30,10 @@ function getFeed(token, state, pagUrl) {
             console.log(`homeAction:JSON:`, json);
             if (response.ok) {
                 console.log(json.results);
-                APP_STORE.FEED_EVENT.next({"feed": json.results});
-                APP_STORE.FEEDPAGE_EVENT.next({"page": json.next});
+                dispatchEvent(events.ON_FEED, json);
                 return;
             }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
+            dispatchEvent(events.ON_FEED_ERROR, json.detail);
         })
 }
 
@@ -64,10 +61,10 @@ function uploadAction(token, state) {
             const json = await response.json();
             console.log(`uploadAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.UPLOAD_EVENT.next({"upload": json.detail});
+                dispatchEvent(events.ON_UPLOAD_PHOTO, json);
                 return;
             }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
+            dispatchEvent(events.ON_FEED_ERROR, json.detail);
         });
 }
 
@@ -80,13 +77,13 @@ function likeAction(id, id_user, like, row) {
             const json = await response.json();
             console.log(`likeAction:JSON:`, json);
             if (response.ok) {
-                APP_STORE.LIKE_EVENT.next({row});
+                APP_STORE.LIKE_EVENT.next({ row });
                 return;
             }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
+            APP_STORE.APP_EVENT.next({ "error": json.detail });
         }).catch(err => {
-        APP_STORE.APP_EVENT.next({"error": err.message});
-    });
+            APP_STORE.APP_EVENT.next({ "error": err.message });
+        });
 }
 
 
@@ -116,4 +113,4 @@ function calculateTime(rowData) {
 
 }
 
-export {feedAction, uploadAction, likeAction, calculateTime, appendData};
+export { feedAction, uploadAction, likeAction, calculateTime, appendData };
