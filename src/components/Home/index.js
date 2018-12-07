@@ -52,23 +52,18 @@ export default class HomePage extends Component {
     constructor(props) {
         super(props);
 
-        this.ds1 = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2,
-        });
-
         this.state = {
-            feedData: this.ds1.cloneWithRows([]),
-            dataSource: [],
-            loading: true,
-            refreshing: false,
-            image: '',
-            time: '',
             comment: '',
-            modalVisible: false,
+            dataSource: [],
+            image: '',
             isLoaded: false,
             isLoadingPhoto: false,
             latitud: undefined,
+            loading: true,
             longitud: undefined,
+            modalVisible: false,
+            refreshing: false,
+            time: '',
         };
         this.nextUrl = null;
         this.numPage = 0;
@@ -80,26 +75,23 @@ export default class HomePage extends Component {
         this.feedSubscription = feedStore.subscribe(events.ON_FEED, state => {
             console.log('Feed:componentDidMount:ON_FEED', state);
             const newState = {
-                dataSource: [],
-                feedData: this.ds1.cloneWithRows(state.results),
                 isLoaded: true,
                 loading: false,
-                refreshing: false,
+                refreshing: false
             };
 
-            // If the component is refreshing it means that
-            // we hace to concatenate the data
-            if (!this.state.refreshing) {
+            // refreshing means Pull Down
+            if (this.state.refreshing) {
+                newState.dataSource = state.results;
+            } else {
                 newState.dataSource = this.state.dataSource.concat(state.results);
-                newState.feedData = this.ds1.cloneWithRows(newState.dataSource);
-            }
+            };
             this.setState(newState);
 
+            this.nextUrl = null;
             if (state.next) {
                 this.nextUrl = state.next;
                 this.numPage++;
-            } else {
-                this.nextUrl = '';
             }
 
         });
@@ -123,18 +115,17 @@ export default class HomePage extends Component {
                 time: new Date(),
                 username: APP_STORE.getUser()
             };
-
             const dataSource = [fakePhotoFromServer].concat(this.state.dataSource);
-            const feedData = this.ds1.cloneWithRows(dataSource);
-
             this.setState(
                 {
                     comment: '',
-                    dataSource,
-                    feedData,
+                    dataSource: [],
+                    isLoaded: true,
                     isLoadingPhoto: false,
+                    loading: false,
                     modalVisible: false,
-                }
+                    refreshing: false,
+                }, () => this.setState({dataSource})
             );
         });
 
@@ -145,8 +136,7 @@ export default class HomePage extends Component {
                 Alert.alert(state.error);
                 return;
             }
-            if (state.row) {
-                // const newDs = this.state.feedData._dataBlob.s1.slice();
+            if (state.row !== undefined) {
                 const newDs = this.state.dataSource.concat();
                 const row = newDs[state.row];
                 console.log("APP_STORE.LIKE_EVENT.subscribe", row);
@@ -154,7 +144,7 @@ export default class HomePage extends Component {
                 row.like = row.band == true ? row.like + 1 : row.like - 1;
                 console.log("APP_STORE.LIKE_EVENT.subscribe", row);
                 this.setState({
-                    feedData: this.ds1.cloneWithRows(newDs),
+                    dataSource: newDs,
                 });
             }
         });
@@ -233,13 +223,12 @@ export default class HomePage extends Component {
     };
 
     _onRefresh() {
-        console.log(this.state);
         this.nextUrl = null;
         this.numPage = 0;
         // Clean the feed and bring new data
         this.setState(
             {
-                feedData: this.ds1.cloneWithRows([]),
+                dataSource: [],
                 refreshing: true,
             },
             () => {
@@ -262,7 +251,6 @@ export default class HomePage extends Component {
         );
     }
 
-
     _likeHandlePress(idImage, id_user, like, row) {
         const now = new Date().getTime();
 
@@ -281,7 +269,7 @@ export default class HomePage extends Component {
 
         this.setState(
             {
-                feedData: this.ds1.cloneWithRows(newDs),
+                dataSource: newDs
             },
             () => {
                 setTimeout(() => {
@@ -295,7 +283,7 @@ export default class HomePage extends Component {
         const newDs = this.state.feedData._dataBlob.s1.slice();
         newDs[row].flag = newDs[row].flag == true ? false : true;
         this.setState({
-            feedData: this.ds1.cloneWithRows(newDs),
+            dataSource: newDs
         });
     }
 
@@ -405,12 +393,13 @@ export default class HomePage extends Component {
             <View style={styles.containerFlex}>
                 <Feed
                     style={styles.listView}
-                    dataSource={this.state.feedData}
-                    renderRow={this._renderRow}
+                    dataSource={this.state.dataSource}
+                    renderItem={this._renderRow}
                     onEndReached={this.onEndReached.bind(this)}
                     onMomentumScrollBegin={() => {
                         this.onEndReachedCalledDuringMomentum = false;
                     }}
+                    extraData={this.state}
                     isRefreshing={this.state.refreshing}
                     onRefresh={this._onRefresh.bind(this)}
                 />
@@ -445,9 +434,10 @@ export default class HomePage extends Component {
         return <Image style={styles.picture} source={{ uri: photo }} />;
     }
 
-    _renderRow = (rowData, sectionID, rowID) => {
+    _renderRow = ({ item, index }) => {
+        console.log("FEED:renderRow", [item, index]);
         return (
-            <FeedRow navigation={this.props.navigation} rowData={rowData} sectionID={sectionID} rowID={rowID} />
+            <FeedRow key={index} navigation={this.props.navigation} rowData={item} rowID={index} />
         );
     };
 

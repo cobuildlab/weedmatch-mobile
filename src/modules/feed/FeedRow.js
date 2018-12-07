@@ -20,9 +20,6 @@ export class FeedRow extends React.Component {
         super(props);
 
         this.state = {
-            rowData: this.props.rowData,
-            rowID: this.props.rowID,
-            sectionID: this.props.sectionID,
             showBigHeart: false
         };
         // for handling double touch
@@ -31,11 +28,11 @@ export class FeedRow extends React.Component {
     }
 
     onPressProfile = () => {
-        if (this.state.rowData.id_user == APP_STORE.getId()) {
+        if (this.props.rowData.id_user == APP_STORE.getId()) {
             this.props.navigation.navigate('Profile');
         } else {
             this.props.navigation.navigate('PublicProfile', {
-                userId: this.state.rowData.id_user,
+                userId: this.props.rowData.id_user,
             });
         }
     };
@@ -65,7 +62,7 @@ export class FeedRow extends React.Component {
     };
 
     like = () => {
-        const {rowData, rowID} = this.state;
+        const {rowData, rowID} = this.props;
         const like = !rowData.band;
         const id_user = rowData.id_user;
         const idImage = rowData.id;
@@ -82,7 +79,7 @@ export class FeedRow extends React.Component {
      */
     onPressReport = () => {
         const {navigation} = this.props;
-        const {rowData} = this.state;
+        const {rowData} = this.props;
         const userName = rowData.username;
         const userID = rowData.id_user;
         const idImage = rowData.id;
@@ -102,9 +99,7 @@ export class FeedRow extends React.Component {
 
 
     render() {
-        console.log("FEEDROW:render", this.state);
-        const {rowData} = this.state;
-
+        const {rowData} = this.props;
         return (
             <View style={styles.containerView}>
                 {/*HEADER*/}
@@ -163,5 +158,4 @@ FeedRow.propTypes = {
     navigation: PropTypes.object.isRequired,
     rowData: PropTypes.object.isRequired,
     rowID: PropTypes.number.isRequired,
-    sectionID: PropTypes.any.isRequired,
 };
