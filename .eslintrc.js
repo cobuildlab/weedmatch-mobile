@@ -14,6 +14,7 @@ module.exports = {
     rules: {
         'no-console': 0,
         'sort-keys': 2,
+        'react/prop-types': 0
     },
     settings: {
         react: {
