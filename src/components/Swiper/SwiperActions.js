@@ -1,10 +1,10 @@
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
-import {userService} from './service';
-import {authHeader, URL, LENGUAGE} from '../../utils';
-import {logOut} from '../Profile/ProfileActions';
+import { APP_STORE } from '../../Store';
+import { strings } from '../../i18n';
+import { userService } from './service';
+import { authHeader, URL, LENGUAGE } from '../../utils';
+import { logOut } from '../Profile/ProfileActions';
 import moment from 'moment';
-import {AsyncStorage, NetInfo} from 'react-native'
+import { AsyncStorage, NetInfo } from 'react-native'
 
 /**
  * Action to send a swipper Action to the server. Ex, "like", "not-like", "love"
@@ -26,17 +26,15 @@ const swiperAction = async (token, action, id) => {
             try {
                 const json = await response.json();
                 if (response.ok) {
-                    APP_STORE.SWIPERACTION_EVENT.next({"swiperAction": json.detail});
+                    APP_STORE.SWIPERACTION_EVENT.next({ "swiperAction": json.detail });
                     return;
                 } else {
                     throw new Error(json.detail)
                 }
             } catch (e) {
                 console.warn(e.message)
-                APP_STORE.APP_EVENT.next({"error": e.message});    
+                APP_STORE.APP_EVENT.next({ "error": e.message });
             }
-            
-            
         });
 };
 
@@ -73,6 +71,9 @@ function swiper(token, state) {
 }
 
 function getSwiper(token, pagUrl) {
+    if (pagUrl.indexOf("https") === -1)
+        pagUrl = pagUrl.replace('http', 'https');
+
     userService.swiper(token, pagUrl)
         .then(async (response) => {
             console.log(`SwiperAction: ${token}, ${pagUrl}`, response);
@@ -81,8 +82,8 @@ function getSwiper(token, pagUrl) {
                 console.log(`SwiperAction:JSON:`, json);
                 if (response.ok) {
                     console.log(json.results);
-                    APP_STORE.SWIPER_EVENT.next({"swiper": json.results});
-                    APP_STORE.SWIPERPAGE_EVENT.next({"swiperPage": json.next});
+                    APP_STORE.SWIPER_EVENT.next({ "swiper": json.results });
+                    APP_STORE.SWIPERPAGE_EVENT.next({ "swiperPage": json.next });
                     return;
                 } else if (response.status === 401 || response.status === 403) {
                     logOut()
@@ -91,7 +92,7 @@ function getSwiper(token, pagUrl) {
                 }
             } catch (e) {
                 console.warn(e.message)
-                APP_STORE.APP_EVENT.next({"error": e.message});
+                APP_STORE.APP_EVENT.next({ "error": e.message });
             }
         })
 }
@@ -107,4 +108,4 @@ function appendData(oldData, newData) {
 }
 
 
-export {swiperAction, appendData, swiper, swiperListAction};
+export { swiperAction, appendData, swiper, swiperListAction };

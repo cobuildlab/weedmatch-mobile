@@ -22,10 +22,14 @@ function feedAction(state, nextUrl = null, numPage = 0) {
 }
 
 function getFeed(state, pagUrl) {
+    console.log(`getFeed:`, [state, pagUrl]);
     const token = APP_STORE.getToken();
+    if (pagUrl.indexOf("https") === -1)
+        pagUrl = pagUrl.replace('http', 'https');
+        
     userService.feed(token, state, pagUrl)
         .then(async (response) => {
-            console.log(`homeAction: ${token}, ${state}`, response);
+            console.log(`getFeed:response`, response);
             const json = await response.json();
             console.log(`homeAction:JSON:`, json);
             if (response.ok) {
@@ -34,7 +38,7 @@ function getFeed(state, pagUrl) {
                 return;
             }
             dispatchEvent(events.ON_FEED_ERROR, json.detail);
-        })
+        }).catch(e => dispatchEvent(events.ON_FEED_ERROR, e.message))
 }
 
 function appendData(oldData, newData) {
