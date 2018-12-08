@@ -67,6 +67,7 @@ export default class HomePage extends Component {
         };
         this.nextUrl = null;
         this.numPage = 0;
+        this.feed = null;
         this.libraryPermissionsHasBeenAsked = false;
         this.cameraPermissionsHasBeenAsked = false;
     }
@@ -125,10 +126,11 @@ export default class HomePage extends Component {
                     loading: false,
                     modalVisible: false,
                     refreshing: false,
-                }, () => this.setState({dataSource})
+                }, () => {
+                    this.setState({dataSource}, ()=> this.feed.scrollToTop());
+                }
             );
         });
-
 
         this.likeEvent = APP_STORE.LIKE_EVENT.subscribe(state => {
             console.log("APP_STORE.LIKE_EVENT.subscribe", state);
@@ -402,6 +404,7 @@ export default class HomePage extends Component {
                     extraData={this.state}
                     isRefreshing={this.state.refreshing}
                     onRefresh={this._onRefresh.bind(this)}
+                    ref={ref => this.feed = ref}
                 />
             </View>
         );
