@@ -3,11 +3,12 @@
  */
 import React from 'react';
 import * as ReactNative from 'react-native';
-const { Image, Text, TouchableOpacity, View } = ReactNative;
+const { Image, Text, View } = ReactNative;
 
 import { strings } from '../../../i18n';
+import P from '../../../styles/palette';
 
-import styles from '../style';
+import styles from './styles';
 
 interface CardProps {
     age: number;
@@ -47,27 +48,36 @@ export default class Card extends React.PureComponent<CardProps> {
         } = this.props;
 
         return (
-            <View style={[styles.card]}>
-                <View style={[styles.viewFlex]}>
-                    <View style={[styles.viewBackground]}>
-                        <Image style={styles.media} source={imageSource} />
+            <View
+                style={[
+                    P.flex,
+                    P.center,
+                    P.crossStretch,
+                    styles.card,
+                    styles.borderRadius,
+                ]}
+            >
+                <Image
+                    style={[styles.image, styles.borderRadius]}
+                    source={imageSource}
+                />
+                <View
+                    style={[
+                        P.flex,
+                        P.row,
+                        P.spaceBetween,
+                        P.crossCenter,
+                        styles.textsContainer,
+                    ]}
+                >
+                    <View style={[P.flex, P.center]}>
+                        <Text style={styles.nameText}>
+                            {firstName}, {age}
+                        </Text>
+                        <Text style={styles.text}>{distanceString} </Text>
                     </View>
-                    <View style={styles.cardBottomHalf}>
-                        <View style={[styles.viewContainer]}>
-                            <Text style={styles.textName}>
-                                {firstName}, {age}
-                            </Text>
-                            <Text style={styles.textContainer}>
-                                {countryName}
-                            </Text>
-                            <Text style={styles.textContainer}>
-                                {distanceString}{' '}
-                            </Text>
-                        </View>
-                        <TouchableOpacity onPress={this.onPressBlock}>
-                            <Text>{strings('swiper.BLOCK_OR_REPORT')}</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Text style={styles.textContainer}>{countryName}</Text>
+                    <Text>{strings('swiper.BLOCK_OR_REPORT')}</Text>
                 </View>
             </View>
         );
