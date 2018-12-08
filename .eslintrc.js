@@ -13,7 +13,7 @@ module.exports = {
     },
     rules: {
         'no-console': 0,
-        'sort-keys': 2,
+        'sort-keys': 0,
         'react/prop-types': 0
     },
     settings: {
