@@ -26,6 +26,7 @@ import GeoStore from "../../utils/geolocation/GeoStore";
 import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
 import ReportStore from '../../modules/report/ReportStore'
 
+import Card from './Card'
 
 export default class SwiperView extends Component {
     static getInitialState() {
@@ -190,31 +191,19 @@ export default class SwiperView extends Component {
     }
 
     renderCard = card => {
+        console.log(card)
         return (
-            <View style={[styles.card]}>
-                <View style={[styles.viewFlex]}>
-                    <View style={[styles.viewBackground]}>
-                        <Image style={styles.media} source={{uri: card.image_profile}}/>
-                    </View>
-                    <View style={styles.cardBottomHalf}>
-                        <View style={[styles.viewContainer]}>
-                            <Text style={styles.textName}>{card.first_name}, {card.age}</Text>
-                            <Text style={styles.textContainer}>{card.country.name}</Text>
-                            <Text style={styles.textContainer}>{card.distance} </Text>
-                        </View>
-                        <TouchableOpacity
-                            onPress={this.onPressBlock.bind(
-                                this,
-                                card.profile_images[0].id,
-                                card.id_user,
-                                card.username
-                            )}
-                        >
-                            <Text>{strings('swiper.BLOCK_OR_REPORT')}</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
+            <Card
+                age={card.age}
+                countryName={card.country.name}
+                distanceString={card.distance}
+                firstName={card.first_name}
+                imageID={card.profile_images[0].id}
+                imageSource={{ uri: card.image_profile }}
+                onPressBlock={this.onPressBlock}
+                userID={card.id_user}
+                userName={card.username}
+            />
         )
     };
 
