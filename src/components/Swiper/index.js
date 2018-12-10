@@ -199,7 +199,7 @@ export default class SwiperView extends Component {
                 distanceString={card.distance}
                 firstName={card.first_name}
                 imageID={card.profile_images[0].id}
-                imageSource={{ uri: card.image_profile }}
+                imageSource={{ uri: card.profile_images[0].image_3x }}
                 onPressBlock={this.onPressBlock}
                 userID={card.id_user}
                 userName={card.username}
