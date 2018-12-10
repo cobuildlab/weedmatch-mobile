@@ -126,7 +126,7 @@ export class FeedRow extends React.Component {
                 {/*IMAGE*/}
                 <TouchableWithoutFeedback onPress={this.onPressPicture}>
                     <View>
-                        <Image style={styles.media} source={{uri: rowData.image}}/>
+                        <Image style={styles.media} source={{uri: rowData.image_3x}}/>
                         {this.state.showBigHeart && <BigHeart/>}
                     </View>
                 </TouchableWithoutFeedback>
