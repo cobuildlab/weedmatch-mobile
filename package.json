@@ -21,7 +21,7 @@
         "immutable": "^3.8.2",
         "moment": "^2.22.0",
         "moment-timezone": "^0.5.14",
-        "native-base": "^2.7.0",
+        "native-base": "^2.8.0",
         "prop-types": "^15.6.1",
         "react": "16.4.1",
         "react-native": "^0.57.4",
