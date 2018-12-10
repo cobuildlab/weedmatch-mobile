@@ -27,7 +27,6 @@ export const events = {
      * @see UserObject
      */
     USER: 'authStore/user',
-
 };
 
 /**

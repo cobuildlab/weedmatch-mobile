@@ -1,3 +1,6 @@
+/**
+ * @prettier
+ */
 import React, { Component } from 'react';
 import {
     Text,
@@ -13,7 +16,7 @@ import {
     Platform,
     Linking,
     Alert,
-    SafeAreaView
+    SafeAreaView,
 } from 'react-native';
 import { Button as NativeBaseButton } from 'native-base';
 import moment from 'moment';
@@ -23,25 +26,22 @@ import { internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import { strings } from '../../i18n';
 import { APP_STORE } from '../../Store';
-import {
-    feedAction,
-    uploadAction,
-    likeAction,
-} from './HomeActions';
+import { feedAction, uploadAction, likeAction } from './HomeActions';
 import firebase from 'react-native-firebase';
-import AuthStore,
-{ events as authStoreEvents } from '../../modules/auth/AuthStore';
+import AuthStore, {
+    events as authStoreEvents,
+} from '../../modules/auth/AuthStore';
 
 import REPORT_ROUTE_KEY from '../../modules/report/index';
 /**
  * @typedef {import('../report').ReportRouteParams} ReportRouteParams
  */
 import { PLACE_ENUM } from '../../modules/report/index';
-import Feed from "./Feed";
-import GeoStore from "../../utils/geolocation/GeoStore";
-import buttonStyles from "../../styles/buttons";
-import textStyles from "../../styles/text";
-import { FeedRow } from "../../modules/feed/FeedRow";
+import Feed from './Feed';
+import GeoStore from '../../utils/geolocation/GeoStore';
+import buttonStyles from '../../styles/buttons';
+import textStyles from '../../styles/text';
+import { FeedRow } from '../../modules/feed/FeedRow';
 import UploadPhotoModal from '../../modules/feed/UploadPhotoModal';
 import feedStore, { events } from '../../modules/feed/FeedStore';
 
@@ -78,15 +78,17 @@ export default class HomePage extends Component {
             const newState = {
                 isLoaded: true,
                 loading: false,
-                refreshing: false
+                refreshing: false,
             };
 
             // refreshing means Pull Down
             if (this.state.refreshing) {
                 newState.dataSource = state.results;
             } else {
-                newState.dataSource = this.state.dataSource.concat(state.results);
-            };
+                newState.dataSource = this.state.dataSource.concat(
+                    state.results
+                );
+            }
             this.setState(newState);
 
             this.nextUrl = null;
@@ -94,46 +96,57 @@ export default class HomePage extends Component {
                 this.nextUrl = state.next;
                 this.numPage++;
             }
-
         });
-        this.feedErrorSubscription = feedStore.subscribe(events.ON_FEED_ERROR, state => {
-            console.log('Feed:componentDidMount:ON_FEED_ERROR', state);
-            Alert.alert(state);
-        });
+        this.feedErrorSubscription = feedStore.subscribe(
+            events.ON_FEED_ERROR,
+            state => {
+                console.log('Feed:componentDidMount:ON_FEED_ERROR', state);
+                Alert.alert(state);
+            }
+        );
 
-
-        this.uploadPhotoSubscription = feedStore.subscribe(events.ON_UPLOAD_PHOTO, state => {
-            console.log('Feed:componentDidMount:ON_UPLOAD_PHOTO', state);
-            const fakePhotoFromServer = {
-                ...state,
-                band: false,
-                distance: strings('home.near'),
-                flag: false,
-                id_image: state.id,
-                id_user: APP_STORE.getId(),
-                image_profile: AuthStore.getState(authStoreEvents.PROFILE_IMAGE),
-                like: 0,
-                time: new Date(),
-                username: APP_STORE.getUser()
-            };
-            const dataSource = [fakePhotoFromServer].concat(this.state.dataSource);
-            this.setState(
-                {
-                    comment: '',
-                    dataSource: [],
-                    isLoaded: true,
-                    isLoadingPhoto: false,
-                    loading: false,
-                    modalVisible: false,
-                    refreshing: false,
-                }, () => {
-                    this.setState({dataSource}, ()=> this.feed.scrollToTop());
-                }
-            );
-        });
+        this.uploadPhotoSubscription = feedStore.subscribe(
+            events.ON_UPLOAD_PHOTO,
+            state => {
+                console.log('Feed:componentDidMount:ON_UPLOAD_PHOTO', state);
+                const fakePhotoFromServer = {
+                    ...state,
+                    band: false,
+                    distance: strings('home.near'),
+                    flag: false,
+                    id_image: state.id,
+                    id_user: APP_STORE.getId(),
+                    image_profile: AuthStore.getState(
+                        authStoreEvents.PROFILE_IMAGE
+                    ),
+                    like: 0,
+                    time: new Date(),
+                    username: APP_STORE.getUser(),
+                };
+                const dataSource = [fakePhotoFromServer].concat(
+                    this.state.dataSource
+                );
+                this.setState(
+                    {
+                        comment: '',
+                        dataSource: [],
+                        isLoaded: true,
+                        isLoadingPhoto: false,
+                        loading: false,
+                        modalVisible: false,
+                        refreshing: false,
+                    },
+                    () => {
+                        this.setState({ dataSource }, () =>
+                            this.feed.scrollToTop()
+                        );
+                    }
+                );
+            }
+        );
 
         this.likeEvent = APP_STORE.LIKE_EVENT.subscribe(state => {
-            console.log("APP_STORE.LIKE_EVENT.subscribe", state);
+            console.log('APP_STORE.LIKE_EVENT.subscribe', state);
             if (state.error) {
                 Alert.alert(state.error);
                 return;
@@ -141,10 +154,10 @@ export default class HomePage extends Component {
             if (state.row !== undefined) {
                 const newDs = this.state.dataSource.concat();
                 const row = newDs[state.row];
-                console.log("APP_STORE.LIKE_EVENT.subscribe", row);
+                console.log('APP_STORE.LIKE_EVENT.subscribe', row);
                 row.band = !row.band;
                 row.like = row.band == true ? row.like + 1 : row.like - 1;
-                console.log("APP_STORE.LIKE_EVENT.subscribe", row);
+                console.log('APP_STORE.LIKE_EVENT.subscribe', row);
                 this.setState({
                     dataSource: newDs,
                 });
@@ -158,14 +171,13 @@ export default class HomePage extends Component {
             }
         });
 
-        this.geoDatasubscription = GeoStore.subscribe("GeoData", position => {
-            console.log("HOME:componentDidMount:geoDatasubscription", position);
-            if (!position.coords)
-                return;
+        this.geoDatasubscription = GeoStore.subscribe('GeoData', position => {
+            console.log('HOME:componentDidMount:geoDatasubscription', position);
+            if (!position.coords) return;
 
             this.setState({
                 latitud: position.coords.latitude,
-                longitud: position.coords.longitude
+                longitud: position.coords.longitude,
             });
         });
 
@@ -174,9 +186,8 @@ export default class HomePage extends Component {
     }
 
     updatePositionIfExists() {
-        const position = GeoStore.getState("GeoData");
-        if (!position || !position.coords)
-            return;
+        const position = GeoStore.getState('GeoData');
+        if (!position || !position.coords) return;
 
         this.state.latitud = position.coords.latitude;
         this.state.longitud = position.coords.longitude;
@@ -193,7 +204,7 @@ export default class HomePage extends Component {
     }
 
     onEndReached = () => {
-        console.log("Feed:onEndReached", this.numPage);
+        console.log('Feed:onEndReached', this.numPage);
         if (!this.onEndReachedCalledDuringMomentum && this.numPage > 0) {
             feedAction(this.state, this.nextUrl, this.numPage);
             this.onEndReachedCalledDuringMomentum = true;
@@ -251,7 +262,7 @@ export default class HomePage extends Component {
                 uploadAction(APP_STORE.getToken(), this.state);
             }
         );
-    }
+    };
 
     _likeHandlePress(idImage, id_user, like, row) {
         const now = new Date().getTime();
@@ -271,7 +282,7 @@ export default class HomePage extends Component {
 
         this.setState(
             {
-                dataSource: newDs
+                dataSource: newDs,
             },
             () => {
                 setTimeout(() => {
@@ -285,7 +296,7 @@ export default class HomePage extends Component {
         const newDs = this.state.feedData._dataBlob.s1.slice();
         newDs[row].flag = newDs[row].flag == true ? false : true;
         this.setState({
-            dataSource: newDs
+            dataSource: newDs,
         });
     }
 
@@ -303,13 +314,15 @@ export default class HomePage extends Component {
             height: 500,
             includeExif: true,
             width: 500,
-        }).then(image => {
-            console.log('received image', image.path);
-            this.setState({
-                image: image.path
-            });
-            this.toggleModal();
-        }).catch(e => console.log(e));
+        })
+            .then(image => {
+                console.log('received image', image.path);
+                this.setState({
+                    image: image.path,
+                });
+                this.toggleModal();
+            })
+            .catch(e => console.log(e));
     };
 
     _getPhoto() {
@@ -386,7 +399,7 @@ export default class HomePage extends Component {
     toggleModal = () => {
         this.setState({
             isLoadingPhoto: false,
-            modalVisible: !this.state.modalVisible
+            modalVisible: !this.state.modalVisible,
         });
     };
 
@@ -404,7 +417,7 @@ export default class HomePage extends Component {
                     extraData={this.state}
                     isRefreshing={this.state.refreshing}
                     onRefresh={this._onRefresh.bind(this)}
-                    ref={ref => this.feed = ref}
+                    ref={ref => (this.feed = ref)}
                 />
             </View>
         );
@@ -438,9 +451,14 @@ export default class HomePage extends Component {
     }
 
     _renderRow = ({ item, index }) => {
-        console.log("FEED:renderRow", [item, index]);
+        console.log('FEED:renderRow', [item, index]);
         return (
-            <FeedRow key={index} navigation={this.props.navigation} rowData={item} rowID={index} />
+            <FeedRow
+                key={index}
+                navigation={this.props.navigation}
+                rowData={item}
+                rowID={index}
+            />
         );
     };
 
@@ -453,22 +471,38 @@ export default class HomePage extends Component {
     render() {
         const { isLoaded, image, isLoadingPhoto } = this.state;
 
-        if (this.state.longitud === undefined || this.state.latitud === undefined) {
+        if (
+            this.state.longitud === undefined ||
+            this.state.latitud === undefined
+        ) {
             return (
-                <View style={[{
-                    justifyContent: "center",
-                    alignItems: "center"
-                }, styles.containerFlex]}>
+                <View
+                    style={[
+                        {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        },
+                        styles.containerFlex,
+                    ]}
+                >
                     <Text style={[{ marginBottom: 20 }]}>
-                        {strings("feed.InactiveGeolocation")}
+                        {strings('feed.InactiveGeolocation')}
                     </Text>
-                    {(Platform.OS == 'ios') ?
-                        <NativeBaseButton block onPress={this.goToSettings} rounded
-                            style={[{ alignSelf: "center", width: 200 }, buttonStyles.purpleButton]}>
-                            <Text style={[textStyles.whiteText]}>{strings("feed.GoToLocationServices")}</Text>
+                    {Platform.OS == 'ios' ? (
+                        <NativeBaseButton
+                            block
+                            onPress={this.goToSettings}
+                            rounded
+                            style={[
+                                { alignSelf: 'center', width: 200 },
+                                buttonStyles.purpleButton,
+                            ]}
+                        >
+                            <Text style={[textStyles.whiteText]}>
+                                {strings('feed.GoToLocationServices')}
+                            </Text>
                         </NativeBaseButton>
-                        :
-                        null}
+                    ) : null}
                 </View>
             );
         }
@@ -483,15 +517,14 @@ export default class HomePage extends Component {
             );
         }
 
-
-
         return (
             <View style={styles.containerFlex}>
                 {this.renderFeed()}
                 {this.showButton()}
                 {this.showActivity()}
                 {/*This is the Modal for the steps of loading a new picture*/}
-                <UploadPhotoModal visible={this.state.modalVisible}
+                <UploadPhotoModal
+                    visible={this.state.modalVisible}
                     onRequestClose={() => console.log('closed')}
                     onClosePress={this.toggleModal}
                     isLoading={isLoadingPhoto}

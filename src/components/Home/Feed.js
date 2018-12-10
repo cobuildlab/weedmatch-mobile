@@ -1,10 +1,9 @@
+/**
+ * @prettier
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    ListView,
-    FlatList,
-    RefreshControl,
-} from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 
 /**
  * The Feed Component
@@ -17,10 +16,18 @@ class Feed extends React.Component {
 
     scrollToTop = () => {
         this.ref.scrollToIndex({ animated: true, index: 0 });
-    }
+    };
 
     render() {
-        const { style, dataSource, renderItem, extraData, onEndReached, onMomentumScrollBegin, isRefreshing, onRefresh } = this.props;
+        const {
+            style,
+            dataSource,
+            renderItem,
+            onEndReached,
+            onMomentumScrollBegin,
+            isRefreshing,
+            onRefresh,
+        } = this.props;
         return (
             <FlatList
                 style={[style]}
@@ -39,13 +46,11 @@ class Feed extends React.Component {
                         onRefresh={onRefresh}
                     />
                 }
-                ref={ref => this.ref = ref}
+                ref={ref => (this.ref = ref)}
             />
         );
     }
-
 }
-
 
 Feed.propTypes = {
     dataSource: PropTypes.array.isRequired,
