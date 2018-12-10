@@ -30,9 +30,14 @@ function publicProfileAction(token, id, state) {
             if (response.ok) {
                 APP_STORE.PUBLICPROFILE_EVENT.next({"publicProfile": json});
                 return;
+            } else {
+                throw new Error(`publicProfileAction: ${json.detail}`)
             }
-            APP_STORE.APP_EVENT.next({"error": json.detail});
-        });
+        })
+        .catch(e => {
+            console.warn(`publicProfileActionCatch: ${e.message|| e}`)
+            APP_STORE.APP_EVENT.next({"error": e.message});
+        })
 }
 
 function publicImages420Action(token, pageUrl) {
