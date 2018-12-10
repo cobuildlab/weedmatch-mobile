@@ -3,19 +3,7 @@
  */
 import React from 'react';
 
-import {
-    Spinner,
-    Button,
-    Container,
-    Header,
-    Left,
-    Body,
-    Title,
-    Content,
-    Right,
-    Text,
-    H1,
-} from 'native-base';
+import { Spinner, Button, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import {
     TextInput,
@@ -25,7 +13,6 @@ import {
     Image,
     TouchableOpacity,
     SafeAreaView,
-    ActivityIndicator,
 } from 'react-native';
 import { strings } from '../../i18n';
 import styles from './../../components/Home/styles';

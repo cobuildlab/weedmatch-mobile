@@ -5,24 +5,17 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
-    ListView,
-    ScrollView,
     Image,
     ActivityIndicator,
     TouchableOpacity,
-    Modal,
-    Button,
-    TextInput,
     Platform,
     Linking,
     Alert,
-    SafeAreaView,
 } from 'react-native';
 import { Button as NativeBaseButton } from 'native-base';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
-import { internet, checkConectivity } from '../../utils';
 import styles from './styles';
 import { strings } from '../../i18n';
 import { APP_STORE } from '../../Store';

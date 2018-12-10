@@ -3,9 +3,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Alert,
     ScrollView,
-    Image, SafeAreaView,
+    Image,
 } from 'react-native';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from '../../utils';
@@ -16,7 +15,6 @@ import firebase from 'react-native-firebase';
 import {LoginManager} from 'react-native-fbsdk';
 import { Spinner } from 'native-base';
 import authStore, { events as authEvents } from '../../modules/auth/AuthStore'
-import { dispatchEvent } from '../../utils/flux-state';
 
 
 /**

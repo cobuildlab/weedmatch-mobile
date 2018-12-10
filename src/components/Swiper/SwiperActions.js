@@ -4,10 +4,10 @@
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { userService } from './service';
-import { authHeader, URL, LENGUAGE } from '../../utils';
+import { URL } from '../../utils';
 import { logOut } from '../Profile/ProfileActions';
 import moment from 'moment';
-import { AsyncStorage, NetInfo } from 'react-native';
+import { NetInfo } from 'react-native';
 
 /**
  * Action to send a swipper Action to the server. Ex, "like", "not-like", "love"

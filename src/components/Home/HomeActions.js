@@ -1,14 +1,11 @@
 import { APP_STORE } from '../../Store';
 import { userService } from './service';
 import moment from 'moment';
-import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
-import { logOut } from '../Profile/ProfileActions';
 import { URL } from '../../utils';
 import { dispatchEvent } from '../../utils/flux-state';
 import { events } from '../../modules/feed/FeedStore';
 
-const DOUBLE_PRESS_DELAY = 300;
 
 function feedAction(state, nextUrl = null, numPage = 0) {
     console.log(`feedAction:`, [state, nextUrl, numPage]);
