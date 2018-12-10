@@ -194,7 +194,7 @@ export default class SwiperView extends Component {
             <View style={[styles.card]}>
                 <View style={[styles.viewFlex]}>
                     <View style={[styles.viewBackground]}>
-                        <Image style={styles.media} source={{uri: card.image_profile}}/>
+                        <Image style={styles.media} source={{uri: card.profile_images[0].image_3x}}/>
                     </View>
                     <View style={styles.cardBottomHalf}>
                         <View style={[styles.viewContainer]}>
