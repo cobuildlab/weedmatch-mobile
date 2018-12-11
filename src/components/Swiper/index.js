@@ -21,7 +21,7 @@ import textStyles from "../../styles/text";
 import GeoStore from "../../utils/geolocation/GeoStore";
 import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
 import ReportStore from '../../modules/report/ReportStore'
-import Card from './Card';
+import Card from '../../modules/swiper/Card';
 
 
 export default class SwiperView extends Component {

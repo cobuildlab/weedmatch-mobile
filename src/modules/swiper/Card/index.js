@@ -1,9 +1,4 @@
-/**
- * @prettier
- */
 import React from 'react';
-import * as ReactNative from 'react-native';
-const { Text, View } = ReactNative;
 import { strings } from '../../../i18n';
 import P from '../../../styles/palette';
 import styles from './styles';
@@ -11,39 +6,37 @@ import styles from './styles';
 // import { Platform } from 'react-native';
 // import { Image as RNImage } from 'react-native';
 // const Image = Platform.OS === 'ios' ? RNImage : FastImage;
-import { Image } from 'react-native';
+import { Image, Text, View } from 'react-native';
+import * as PropTypes from 'prop-types';
+import ImageSourcePropType from '../../../utils/ImageSourcePropType';
 
-interface CardProps {
-    age: number;
-    countryName: string;
-    distanceString: string;
-    firstName: string;
-    /**
-     * Used for onPressBlock
-     */
-    imageID: string;
-    imageSource: ReactNative.ImageSourcePropType;
-    onPressBlock: (imageID: string, userID: string, userName: string) => void;
-    /**
-     * Used for onPressBlock
-     */
-    userID: string;
-    /**
-     * Used for onPressBlock
-     */
-    userName: string;
-}
-
-export default class Card extends React.PureComponent<CardProps> {
+export default class Card extends React.PureComponent {
     onPressBlock = () => {
         const { imageID, onPressBlock, userID, userName } = this.props;
         onPressBlock(imageID, userID, userName);
     };
 
+    static PropTypes = {
+        age: PropTypes.number.isRequired,
+        countryName: PropTypes.string.isRequired,
+        distanceString: PropTypes.string.isRequired,
+        firstName: PropTypes.string.isRequired,
+        imageID: PropTypes.string.isRequired,
+        imageSource: ImageSourcePropType.isRequired,
+        onPressBlock: PropTypes.func.isRequired,
+        userID: PropTypes.string.isRequired,
+        userName: PropTypes.string.isRequired,
+    };
+
     render() {
-        const { age, countryName, distanceString,
-            firstName, imageSource, } = this.props;
-        
+        const {
+            age,
+            countryName,
+            distanceString,
+            firstName,
+            imageSource,
+        } = this.props;
+
         return (
             <View
                 style={[
@@ -51,7 +44,7 @@ export default class Card extends React.PureComponent<CardProps> {
                     P.center,
                     P.crossStretch,
                     styles.card,
-                    styles.borderRadius
+                    styles.borderRadius,
                 ]}
             >
                 <Image
