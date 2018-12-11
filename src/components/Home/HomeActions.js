@@ -1,6 +1,8 @@
 import { APP_STORE } from '../../Store';
 import { userService } from './service';
 import moment from 'moment';
+// eslint-disable-next-line no-unused-vars
+import moment_timezone from 'moment-timezone';
 import DeviceInfo from 'react-native-device-info';
 import { URL } from '../../utils';
 import { dispatchEvent } from '../../utils/flux-state';
@@ -13,7 +15,7 @@ function feedAction(state, nextUrl = null, numPage = 0) {
     if (nextUrl !== null && numPage > 0) {
         getFeed(state, nextUrl);
     } else if (numPage === 0) {
-        const pagUrl = URL + 'public-feed/?latitud=' + state.latitud + '&longitud=' + state.longitud;
+        const pagUrl = URL + 'public-feed/?latitud=' + state.latitude + '&longitud=' + state.longitude;
         getFeed(state, pagUrl);
     }
 }

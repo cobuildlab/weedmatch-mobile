@@ -44,6 +44,28 @@ function publicProfileAction(token, id, state) {
         }).catch(err => APP_STORE.APP_EVENT.next({"error": err.message}));
 }
 
+/**
+ * Get the Public profile detail
+ * @param token
+ * @param id
+ * @param state
+ */
+const publicProfileActionV2 = (token, id, latitud, longitud) => {
+    console.log(`publicProfileAction:`, [token, id]);
+
+    userService.publicProfile(token, id, {latitud, longitud})
+        .then(async (response) => {
+            console.log(`publicProfileAction: ${token}, ${id}`, response);
+            const json = await response.json();
+            console.log(`publicProfileAction:JSON:`, json);
+            if (response.ok) {
+                APP_STORE.PUBLICPROFILE_EVENT.next({"publicProfile": json});
+                return;
+            }
+            APP_STORE.APP_EVENT.next({"error": json.detail});
+        }).catch(err => APP_STORE.APP_EVENT.next({"error": err.message}));
+}
+
 function publicImages420Action(token, pageUrl) {
     console.log(`publicImages420Action: ${token}, ${pageUrl}`);
 
@@ -134,4 +156,4 @@ async function saveHour(id) {
     }
 }
 
-export {publicProfileAction, getImages, publicImages420Action, appendData, Action420, swiperAction, saveHour};
+export {publicProfileActionV2, publicProfileAction, getImages, publicImages420Action, appendData, Action420, swiperAction, saveHour};

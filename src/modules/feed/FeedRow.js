@@ -1,15 +1,21 @@
-import {Image, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import { Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import styles from "../../components/Home/styles";
-import {calculateTime, likeAction} from "../../components/Home/HomeActions";
+import { calculateTime, likeAction } from "../../components/Home/HomeActions";
 import React from "react";
 import * as PropTypes from 'prop-types';
-import {APP_STORE} from "../../Store";
+import { APP_STORE } from "../../Store";
 import firebase from "react-native-firebase";
-import {BigHeart} from "./BigHeart";
-import {Heart} from "./Heart";
-import {PLACE_ENUM} from "../report";
+import { BigHeart } from "./BigHeart";
+import { Heart } from "./Heart";
+import { PLACE_ENUM } from "../report";
 import REPORT_ROUTE_KEY from "../report";
-import {EMPTY_PROFILE_PICTURE} from "./index";
+import { EMPTY_PROFILE_PICTURE } from "./index";
+
+// import FastImage from 'react-native-fast-image';
+// import { Platform } from 'react-native';
+import { Image } from 'react-native';
+// import { Image as RNImage } from 'react-native';
+// const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 /**
  * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
@@ -18,7 +24,6 @@ import {EMPTY_PROFILE_PICTURE} from "./index";
 export class FeedRow extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             showBigHeart: false
         };
@@ -52,17 +57,17 @@ export class FeedRow extends React.Component {
 
     showBigHeart = () => {
         const that = this;
-        this.setState({showBigHeart: true},
+        this.setState({ showBigHeart: true },
             () => {
                 setTimeout(() => {
-                    that.setState({showBigHeart: false});
+                    that.setState({ showBigHeart: false });
                 }, 500);
             }
         );
     };
 
     like = () => {
-        const {rowData, rowID} = this.props;
+        const { rowData, rowID } = this.props;
         const like = !rowData.band;
         const id_user = rowData.id_user;
         const idImage = rowData.id;
@@ -78,8 +83,8 @@ export class FeedRow extends React.Component {
      * @returns {void}
      */
     onPressReport = () => {
-        const {navigation} = this.props;
-        const {rowData} = this.props;
+        const { navigation } = this.props;
+        const { rowData } = this.props;
         const userName = rowData.username;
         const userID = rowData.id_user;
         const idImage = rowData.id;
@@ -99,14 +104,29 @@ export class FeedRow extends React.Component {
 
 
     render() {
-        const {rowData} = this.props;
+        const { rowData } = this.props;
+        console.log("FEEDROW", rowData);
+
+        if (!rowData)
+            return null
+
+        // this day we switch the Image transformation functions
+        // So from now on, image_1x it's an optimized version 
+        // of the images   
+        // const swithDay = moment('2018-12-11');
+        // const time = moment(rowData.time);
+        let imageUrl = rowData.image_1x;
+        // if (time.isBefore(swithDay))
+        //     imageUrl = rowData.image;
+
+
         return (
             <View style={styles.containerView}>
                 {/*HEADER*/}
                 <View style={styles.mediaUser}>
                     <TouchableOpacity onPress={this.onPressProfile}>
                         <Image style={styles.picture}
-                               source={{uri: rowData.image_profile == '' ? EMPTY_PROFILE_PICTURE : rowData.image_profile}}/>
+                            source={{ uri: rowData.image_profile == '' ? EMPTY_PROFILE_PICTURE : rowData.image_profile }} />
                     </TouchableOpacity>
                     <View style={styles.userContainer}>
                         <TouchableOpacity onPress={this.onPressProfile}>
@@ -121,14 +141,14 @@ export class FeedRow extends React.Component {
                 {/*IMAGE*/}
                 <TouchableWithoutFeedback onPress={this.onPressPicture}>
                     <View>
-                        <Image style={styles.media} source={{uri: rowData.image_3x}}/>
-                        {this.state.showBigHeart && <BigHeart/>}
+                        <Image style={styles.media} source={{ uri: imageUrl }} />
+                        {this.state.showBigHeart && <BigHeart />}
                     </View>
                 </TouchableWithoutFeedback>
                 {/*FOOTER*/}
                 <View style={styles.containerLikes}>
                     <TouchableOpacity onPress={this.like} style={styles.heartAndTextContainer}>
-                        <Heart fill={rowData.band}/>
+                        <Heart fill={rowData.band} />
                         <Text style={[styles.time, styles.likesNumber]}>
                             {rowData.like}
                         </Text>
@@ -147,7 +167,7 @@ export class FeedRow extends React.Component {
                 </View>
                 <View style={styles.containerViewHorizontal}>
                     <Text style={styles.description}>{rowData.comment}</Text>
-                    <View style={styles.containerViewSpace}/>
+                    <View style={styles.containerViewSpace} />
                 </View>
             </View>
         );

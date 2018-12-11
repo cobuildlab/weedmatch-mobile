@@ -51,9 +51,9 @@ export default class HomePage extends Component {
             image: '',
             isLoaded: false,
             isLoadingPhoto: false,
-            latitud: undefined,
+            latitude: 0,
             loading: true,
-            longitud: undefined,
+            longitude: 0,
             modalVisible: false,
             refreshing: false,
             time: '',
@@ -169,21 +169,24 @@ export default class HomePage extends Component {
             if (!position.coords) return;
 
             this.setState({
-                latitud: position.coords.latitude,
+                latitude: position.coords.latitude,
                 longitud: position.coords.longitude,
-            });
+            }, () => feedAction(this.state, this.nextUrl, this.numPage));
         });
 
-        this.updatePositionIfExists();
-        feedAction(this.state, this.nextUrl, this.numPage);
+        setTimeout(() => {
+            this.updatePositionIfExists();
+        }, 1000);
     }
 
     updatePositionIfExists() {
         const position = GeoStore.getState('GeoData');
         if (!position || !position.coords) return;
 
-        this.state.latitud = position.coords.latitude;
-        this.state.longitud = position.coords.longitude;
+        this.setState({
+            latitud: position.coords.latitude,
+            longitud: position.coords.longitude,
+        }, () => feedAction(this.state, this.nextUrl, this.numPage));
     }
 
     componentWillUnmount() {
@@ -444,7 +447,6 @@ export default class HomePage extends Component {
     }
 
     _renderRow = ({ item, index }) => {
-        console.log('FEED:renderRow', [item, index]);
         return (
             <FeedRow
                 key={index}

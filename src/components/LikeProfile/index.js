@@ -12,24 +12,21 @@ import {
 
 import styles from './style';
 import {
-    publicProfileAction,
     getImages,
     appendData,
     Action420,
     swiperAction
 } from './PublicProfileActions';
-import { internet, checkConectivity } from '../../utils';
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
-import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
-
-var { width } = Dimensions.get('window');
+import geoStore from "../../utils/geolocation/GeoStore";
+import { publicProfileActionV2 } from '../PublicProfile/PublicProfileActions';
+var {  width } = Dimensions.get('window');
 
 export default class PublicProfile extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             latitud: '',
             longitud: '',
@@ -41,7 +38,8 @@ export default class PublicProfile extends Component {
             urlPage: '',
             numPage: 0,
         };
-        console.log('PublicProfile');
+        this.latitude = null;
+        this.longitude = null;
     }
 
     static navigationOptions = {
@@ -49,9 +47,17 @@ export default class PublicProfile extends Component {
     };
 
     componentDidMount() {
+        this.geoDataSubscription = geoStore.subscribe("GeoData", position => {
+            console.log("LikeProfile:componentDidMount:geoDataSubscription:", position);
+            if (!position)
+                return;
+            // Forced to have the value updated
+            this.latitude = position.coords.latitude.toFixed(6);
+            this.longitude = position.coords.longitude.toFixed(6);
 
+        }, true);
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+            console.log("LikeProfile:componentDidMount:PUBLICPROFILE_EVENT", state);
             if (state.publicProfile) {
                 this.setState({
                     rowData: state.publicProfile,
@@ -79,14 +85,11 @@ export default class PublicProfile extends Component {
         this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
             console.log("Public Profile:componentDidMount:images420Suscription", state);
             if (state.publicImages420) {
-
                 this.setState(prevState => ({
                     public420: appendData(prevState.public420, state.publicImages420),
                     isLoading: true,
                 }))
-
                 console.log(getImages(this.state.public420));
-
                 return;
             }
             if (state.error) {
@@ -131,19 +134,13 @@ export default class PublicProfile extends Component {
     _publicProfile() {
         const { params } = this.props.navigation.state;
         const userId = params ? params.id : null;
-
-        publicProfileAction(APP_STORE.getToken(), userId, this.state)
+        publicProfileActionV2(APP_STORE.getToken(), userId, this.latitude, this.longitude)
     }
 
     _get420Images() {
         const { params } = this.props.navigation.state;
         const userId = params ? params.id : null;
-
-        if (checkConectivity()) {
-            Action420(APP_STORE.getToken(), this.state, userId);
-        } else {
-            internet();
-        }
+        Action420(APP_STORE.getToken(), this.state, userId);
     }
 
     _changeView = () => {
@@ -175,6 +172,7 @@ export default class PublicProfile extends Component {
     }
 
     renderiza() {
+        console.log("DEBUG,", this.state);
         const { rowData, country } = this.state;
 
         return (
@@ -182,7 +180,7 @@ export default class PublicProfile extends Component {
                 <View style={styles.viewBackground}>
                     <ImageSlider
                         images={getImages(rowData.profile_images)}
-                        customSlide={({ index, item, style, width }) => (
+                        customSlide={({ index, item, style }) => (
                             <View key={index} style={[style, styles.customSlide]}>
                                 <Image source={{ uri: item }} style={styles.media} />
                             </View>
@@ -232,25 +230,22 @@ export default class PublicProfile extends Component {
         }
     };
 
-    onLocation = (position) => {
-        this.setState({
-            latitud: position.coords.latitude.toFixed(6),
-            longitud: position.coords.longitude.toFixed(6)
-        })
-    };
-
     render() {
-
+        console.log("DEBUG,", this.state);
         const { rowData, country, isLoading, isDetail, public420 } = this.state;
+
+        if (!isLoading) {
+            return (
+                <View style={[styles.containers, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#9605CC" />
+                </View>
+            )
+        }
         if (isLoading) {
 
             if (isDetail) {
                 return (
                     <View style={styles.viewFlex}>
-                        <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                            dialogTitle={strings('register.locationTitle')}
-                            onLocation={this.onLocation}
-                            active={true} />
                         <FlatList
                             horizontal={false}
                             numColumns={3}
@@ -264,7 +259,7 @@ export default class PublicProfile extends Component {
                             ListHeaderComponent={this.renderiza()}
                             keyExtractor={(item, index) => index}
                             onEndReached={() => this.onEndReached()}
-                            renderItem={({ item, index }) =>
+                            renderItem={({ index }) =>
                                 <View
                                     style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                                     <Image style={styles.imageView}
@@ -286,9 +281,9 @@ export default class PublicProfile extends Component {
                                 <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
                             </View>
                             <View style={styles.viewContainer}>
-                                {country &&
+                                {(country && country.name) ?
                                     <Text style={styles.textContainer}>{country.name} </Text>
-                                }
+                                    : null}
                                 {
                                     public420.length > 0 &&
                                     <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle}
@@ -307,12 +302,6 @@ export default class PublicProfile extends Component {
                     </View>
                 );
             }
-        } else {
-            return (
-                <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC" />
-                </View>
-            )
         }
     }
 }

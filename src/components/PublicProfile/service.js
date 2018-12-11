@@ -12,13 +12,13 @@ export const userService = {
  * @param id The id of the user
  * @returns {Promise<any>}
  */
-function publicProfile(token, id, state) {
+function publicProfile(token, id, data) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(token)
     };
 
-    return fetch(URL + 'public-profile/' + id + '/?latitud=' + state.latitud + '&longitud=' + state.longitud, requestOptions);
+    return fetch(URL + 'public-profile/' + id + '/?latitud=' + data.latitud + '&longitud=' + data.longitud, requestOptions);
 }
 
 /**

@@ -40,8 +40,8 @@ class AuthStore extends FluxStore {
             return value;
         });
         this.addEvent(events.ERROR);
-        this.addEvent(events.FB_LOGGING_IN);
         this.addEvent(events.PROFILE_IMAGE);
+        this.addEvent(events.FB_LOGGING_IN);
     }
 }
 

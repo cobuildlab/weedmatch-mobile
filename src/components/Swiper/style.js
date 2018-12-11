@@ -1,28 +1,12 @@
-import {StyleSheet, Platform, Dimensions} from 'react-native';
-import {WHITE} from '../../styles/colors';
+import {StyleSheet, Dimensions} from 'react-native';
 
 var width = Dimensions.get('window').width;
 
-export default styles = StyleSheet.create({
+export default StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'flex-start',
-    },
-    card: {
-        flex: 1,
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor: '#E8E8E8',
-        justifyContent: 'center',
-        backgroundColor: WHITE,
-        paddingBottom: 10,
-        marginBottom: 30,
-        ...Platform.select({
-            ios: {
-                marginBottom: 62,
-            },
-        }),
     },
     text: {
         textAlign: 'center',
@@ -30,7 +14,6 @@ export default styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     swiper: {
-        flex: 10,
         backgroundColor: '#fff',
     },
     buttonViewContainer: {
