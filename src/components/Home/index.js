@@ -166,11 +166,17 @@ export default class HomePage extends Component {
 
         this.geoDatasubscription = GeoStore.subscribe('GeoData', position => {
             console.log('HOME:componentDidMount:geoDatasubscription', position);
-            if (!position.coords) return;
+            if (!position.coords) {
+                this.setState({
+                    isLoaded: true
+                });
+                return;
+            }
 
             this.setState({
                 latitude: position.coords.latitude,
-                longitud: position.coords.longitude,
+                longitude: position.coords.longitude,
+                isLoaded: true
             }, () => feedAction(this.state, this.nextUrl, this.numPage));
         });
 
@@ -181,11 +187,17 @@ export default class HomePage extends Component {
 
     updatePositionIfExists() {
         const position = GeoStore.getState('GeoData');
-        if (!position || !position.coords) return;
+        if (!position || !position.coords) {
+            this.setState({
+                isLoaded: true
+            });
+            return;
+        }
 
         this.setState({
-            latitud: position.coords.latitude,
-            longitud: position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            isLoaded: true
         }, () => feedAction(this.state, this.nextUrl, this.numPage));
     }
 
@@ -465,21 +477,11 @@ export default class HomePage extends Component {
 
     render() {
         const { isLoaded, image, isLoadingPhoto } = this.state;
+        const hasPosition = this.state.longitude !== 0 && this.state.latitude !== 0;
 
-        if (
-            this.state.longitud === undefined ||
-            this.state.latitud === undefined
-        ) {
+        if (!hasPosition && isLoaded === true) {
             return (
-                <View
-                    style={[
-                        {
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        },
-                        styles.containerFlex,
-                    ]}
-                >
+                <View style={[{ justifyContent: 'center', alignItems: 'center', }, styles.containerFlex,]} >
                     <Text style={[{ marginBottom: 20 }]}>
                         {strings('feed.InactiveGeolocation')}
                     </Text>
@@ -502,33 +504,35 @@ export default class HomePage extends Component {
             );
         }
 
-        if (!isLoaded) {
+        if (isLoaded === true) {
             return (
                 <View style={styles.containerFlex}>
-                    <View style={[styles.container, styles.horizontal]}>
-                        <ActivityIndicator size="large" color="#9605CC" />
-                    </View>
+                    {this.renderFeed()}
+                    {this.showButton()}
+                    {this.showActivity()}
+                    {/*This is the Modal for the steps of loading a new picture*/}
+                    <UploadPhotoModal
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => console.log('closed')}
+                        onClosePress={this.toggleModal}
+                        isLoading={isLoadingPhoto}
+                        image={image}
+                        onChangeText={this._onChangeComment}
+                        comment={this.state.comment}
+                        onUploadPress={this._uploadPhoto}
+                    />
                 </View>
             );
         }
 
         return (
             <View style={styles.containerFlex}>
-                {this.renderFeed()}
-                {this.showButton()}
-                {this.showActivity()}
-                {/*This is the Modal for the steps of loading a new picture*/}
-                <UploadPhotoModal
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => console.log('closed')}
-                    onClosePress={this.toggleModal}
-                    isLoading={isLoadingPhoto}
-                    image={image}
-                    onChangeText={this._onChangeComment}
-                    comment={this.state.comment}
-                    onUploadPress={this._uploadPhoto}
-                />
+                <View style={[styles.container, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#9605CC" />
+                </View>
             </View>
         );
+
+
     }
 }

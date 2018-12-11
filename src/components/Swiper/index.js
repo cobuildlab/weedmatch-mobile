@@ -112,7 +112,8 @@ export default class SwiperView extends Component {
                 return;
             this.setState({
                 latitude: position.coords.latitude,
-                longitude: position.coords.longitude
+                longitude: position.coords.longitude,
+                isLoaded: true
             }, () => this._swiperData());
         });
 
@@ -129,11 +130,16 @@ export default class SwiperView extends Component {
 
     updatePositionIfExists() {
         const position = GeoStore.getState("GeoData");
-        if (!position || !position.coords)
+        if (!position || !position.coords) {
+            this.setState({
+                isLoaded: true
+            });
             return;
+        }
         this.setState({
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
+            isLoaded: true
         }, () => this._swiperData());
     }
 
@@ -286,7 +292,9 @@ export default class SwiperView extends Component {
     };
 
     render() {
-        if (this.state.longitude === 0 || this.state.latitude === 0) {
+        const hasPosition = this.state.longitude !== 0 && this.state.latitude !== 0;
+
+        if (!hasPosition && this.state.isLoaded === true) {
             return (
                 <View style={[{ justifyContent: "center", alignItems: "center" }, styles.containerFlex]}>
                     <Text style={[{ marginBottom: 20 }]}>
@@ -301,9 +309,9 @@ export default class SwiperView extends Component {
                         null}
                 </View>
             );
-        }
+        };
 
-        if (this.state.isLoaded && this.state.cards.length > 0) {
+        if (this.state.cards.length > 0) {
             return (
                 <View style={styles.container}>
                     <Swiper
@@ -395,14 +403,15 @@ export default class SwiperView extends Component {
                     </View>
                 </View>
             );
-        } else {
-            return (
-                <View style={styles.containerLoader}>
-                    <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'} />
-                    <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
-                    <Text>{strings("swiper.searching")}</Text>
-                </View>
-            );
         }
+
+        return (
+            <View style={styles.containerLoader}>
+                <Spinner isVisible={true} size={250} type={'Pulse'} color={'#9605CC'} />
+                <Image source={require('../../assets/img/mariOn.png')} style={styles.containerLoaderImage} />
+                <Text>{strings("swiper.searching")}</Text>
+            </View>
+        );
+
     }
 }
