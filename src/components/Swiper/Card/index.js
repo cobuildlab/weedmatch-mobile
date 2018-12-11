@@ -7,7 +7,6 @@ const { Text, View } = ReactNative;
 import { strings } from '../../../i18n';
 import P from '../../../styles/palette';
 import styles from './styles';
-
 import FastImage from 'react-native-fast-image';
 import { Platform } from 'react-native';
 import { Image as RNImage } from 'react-native';
@@ -37,19 +36,13 @@ interface CardProps {
 export default class Card extends React.PureComponent<CardProps> {
     onPressBlock = () => {
         const { imageID, onPressBlock, userID, userName } = this.props;
-
         onPressBlock(imageID, userID, userName);
     };
 
     render() {
-        const {
-            age,
-            countryName,
-            distanceString,
-            firstName,
-            imageSource,
-        } = this.props;
-
+        const { age, countryName, distanceString,
+            firstName, imageSource, } = this.props;
+        
         return (
             <View
                 style={[

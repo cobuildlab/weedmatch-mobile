@@ -22,7 +22,7 @@ import { strings } from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
 import geoStore from "../../utils/geolocation/GeoStore";
 import { publicProfileActionV2 } from '../PublicProfile/PublicProfileActions';
-var { height, width } = Dimensions.get('window');
+var {  width } = Dimensions.get('window');
 
 export default class PublicProfile extends Component {
     constructor(props) {
@@ -85,14 +85,11 @@ export default class PublicProfile extends Component {
         this.images420 = APP_STORE.PUBLICIMAGES420_EVENT.subscribe(state => {
             console.log("Public Profile:componentDidMount:images420Suscription", state);
             if (state.publicImages420) {
-
                 this.setState(prevState => ({
                     public420: appendData(prevState.public420, state.publicImages420),
                     isLoading: true,
                 }))
-
                 console.log(getImages(this.state.public420));
-
                 return;
             }
             if (state.error) {
@@ -137,7 +134,6 @@ export default class PublicProfile extends Component {
     _publicProfile() {
         const { params } = this.props.navigation.state;
         const userId = params ? params.id : null;
-
         publicProfileActionV2(APP_STORE.getToken(), userId, this.latitude, this.longitude)
     }
 
@@ -176,6 +172,7 @@ export default class PublicProfile extends Component {
     }
 
     renderiza() {
+        console.log("DEBUG,", this.state);
         const { rowData, country } = this.state;
 
         return (
@@ -183,7 +180,7 @@ export default class PublicProfile extends Component {
                 <View style={styles.viewBackground}>
                     <ImageSlider
                         images={getImages(rowData.profile_images)}
-                        customSlide={({ index, item, style, width }) => (
+                        customSlide={({ index, item, style }) => (
                             <View key={index} style={[style, styles.customSlide]}>
                                 <Image source={{ uri: item }} style={styles.media} />
                             </View>
@@ -234,8 +231,16 @@ export default class PublicProfile extends Component {
     };
 
     render() {
-
+        console.log("DEBUG,", this.state);
         const { rowData, country, isLoading, isDetail, public420 } = this.state;
+
+        if (!isLoading) {
+            return (
+                <View style={[styles.containers, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#9605CC" />
+                </View>
+            )
+        }
         if (isLoading) {
 
             if (isDetail) {
@@ -254,7 +259,7 @@ export default class PublicProfile extends Component {
                             ListHeaderComponent={this.renderiza()}
                             keyExtractor={(item, index) => index}
                             onEndReached={() => this.onEndReached()}
-                            renderItem={({ item, index }) =>
+                            renderItem={({ index }) =>
                                 <View
                                     style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                                     <Image style={styles.imageView}
@@ -276,9 +281,9 @@ export default class PublicProfile extends Component {
                                 <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
                             </View>
                             <View style={styles.viewContainer}>
-                                {country &&
+                                {(country && country.name) ?
                                     <Text style={styles.textContainer}>{country.name} </Text>
-                                }
+                                    : null}
                                 {
                                     public420.length > 0 &&
                                     <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle}
@@ -297,12 +302,6 @@ export default class PublicProfile extends Component {
                     </View>
                 );
             }
-        } else {
-            return (
-                <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC" />
-                </View>
-            )
         }
     }
 }

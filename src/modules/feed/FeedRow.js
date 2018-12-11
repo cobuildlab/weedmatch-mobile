@@ -15,6 +15,7 @@ import FastImage from 'react-native-fast-image';
 import { Platform } from 'react-native';
 import { Image as RNImage } from 'react-native';
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
+import moment from 'moment';
 
 /**
  * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
@@ -23,11 +24,7 @@ const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 export class FeedRow extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            rowData: this.props.rowData,
-            rowID: this.props.rowID,
-            sectionID: this.props.sectionID,
             showBigHeart: false
         };
         // for handling double touch
@@ -36,11 +33,11 @@ export class FeedRow extends React.Component {
     }
 
     onPressProfile = () => {
-        if (this.state.rowData.id_user == APP_STORE.getId()) {
+        if (this.props.rowData.id_user == APP_STORE.getId()) {
             this.props.navigation.navigate('Profile');
         } else {
             this.props.navigation.navigate('PublicProfile', {
-                userId: this.state.rowData.id_user,
+                userId: this.props.rowData.id_user,
             });
         }
     };
@@ -70,7 +67,7 @@ export class FeedRow extends React.Component {
     };
 
     like = () => {
-        const { rowData, rowID } = this.state;
+        const { rowData, rowID } = this.props;
         const like = !rowData.band;
         const id_user = rowData.id_user;
         const idImage = rowData.id;
@@ -87,7 +84,7 @@ export class FeedRow extends React.Component {
      */
     onPressReport = () => {
         const { navigation } = this.props;
-        const { rowData } = this.state;
+        const { rowData } = this.props;
         const userName = rowData.username;
         const userID = rowData.id_user;
         const idImage = rowData.id;
@@ -107,8 +104,21 @@ export class FeedRow extends React.Component {
 
 
     render() {
-        console.log("FEEDROW:render", this.state);
-        const { rowData } = this.state;
+        const { rowData } = this.props;
+        console.log("FEEDROW", rowData);
+
+        if (!rowData)
+            return null
+
+        // this day we switch the Image transformation functions
+        // So from now on, image_1x it's an optimized version 
+        // of the images   
+        const swithDay = moment('2018-12-11');
+        const time = moment(rowData.time);
+        let imageUrl = rowData.image_1x;
+        if (time.isBefore(swithDay))
+            imageUrl = rowData.image;
+
 
         return (
             <View style={styles.containerView}>
@@ -131,7 +141,7 @@ export class FeedRow extends React.Component {
                 {/*IMAGE*/}
                 <TouchableWithoutFeedback onPress={this.onPressPicture}>
                     <View>
-                        <Image style={styles.media} source={{ uri: rowData.image_1x }} />
+                        <Image style={styles.media} source={{ uri: imageUrl }} />
                         {this.state.showBigHeart && <BigHeart />}
                     </View>
                 </TouchableWithoutFeedback>
@@ -168,5 +178,4 @@ FeedRow.propTypes = {
     navigation: PropTypes.object.isRequired,
     rowData: PropTypes.object.isRequired,
     rowID: PropTypes.number.isRequired,
-    sectionID: PropTypes.any.isRequired,
 };

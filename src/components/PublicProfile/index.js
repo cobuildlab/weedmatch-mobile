@@ -204,7 +204,6 @@ export default class PublicProfile extends Component {
     }
 
     showButtons() {
-        console.log(this.state);
         return (
             <View style={styles.buttonViewContainer}>
                 <TouchableOpacity onPress={() => this.actionSwiper(1)} disabled={this.state.disLike}
@@ -227,6 +226,7 @@ export default class PublicProfile extends Component {
     }
 
     renderiza() {
+        console.log("DEBUG,", this.state);
         const { rowData, country } = this.state;
 
         return (
@@ -309,6 +309,7 @@ export default class PublicProfile extends Component {
     };
 
     render() {
+        console.log("DEBUG,", this.state);
         const { rowData, country, isLoading, isDetail, public420 } = this.state;
 
         if (!isLoading)
@@ -334,7 +335,7 @@ export default class PublicProfile extends Component {
                         ListHeaderComponent={this.renderiza()}
                         keyExtractor={(item, index) => index}
                         onEndReached={() => this.onEndReached()}
-                        renderItem={({ item, index }) =>
+                        renderItem={({ index }) =>
                             <View
                                 style={[{ width: (this.width) / 3 }, { height: (this.width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                                 <Image style={styles.imageView}

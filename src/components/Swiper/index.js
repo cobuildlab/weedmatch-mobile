@@ -1,21 +1,18 @@
 import React, { Component } from 'react'
 import Swiper from 'react-native-deck-swiper'
 import {
-    Button,
-    AsyncStorage,
     Text,
     View,
     Alert,
     TouchableOpacity,
     Image,
-    ActivityIndicator, Linking, Platform,
+    Linking, Platform,
 }
     from 'react-native'
 import styles from './style';
-import { internet, checkConectivity } from '../../utils';
 import { strings } from '../../i18n';
 import { APP_STORE } from '../../Store'
-import { swiperAction, appendData, swiper, swiperListAction } from './SwiperActions'
+import { swiperAction, appendData, swiperListAction } from './SwiperActions'
 import Spinner from 'react-native-spinkit';
 import firebase from "react-native-firebase";
 import { Button as NativeBaseButton } from "native-base";
@@ -25,6 +22,7 @@ import GeoStore from "../../utils/geolocation/GeoStore";
 import REPORT_ROUTE_KEY, { PLACE_ENUM } from '../../modules/report'
 import ReportStore from '../../modules/report/ReportStore'
 import Card from './Card';
+
 
 export default class SwiperView extends Component {
     static navigationOptions = { header: null };
@@ -141,8 +139,10 @@ export default class SwiperView extends Component {
             });
             return;
         }
-        this.state.latitude = position.coords.latitude;
-        this.state.longitude = position.coords.longitude;
+        this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        });
     }
 
     componentWillUnmount() {
@@ -244,12 +244,11 @@ export default class SwiperView extends Component {
     };
 
     swipeTap = () => {
-        this.props.navigation.navigate('LikeProfile', { id:this.state.cards[this.swiper.state.firstCardIndex].id_user })
-        // this.props.navigation.navigate('PublicProfile', {
-        //     userId: this.state.cards[this.swiper.state.firstCardIndex].id_user,
-        //     root: 'Swiper',
-        //     updateData: this.getData
-        // })
+        this.props.navigation.navigate('PublicProfile', {
+            userId: this.state.cards[this.swiper.state.firstCardIndex].id_user,
+            root: 'Swiper',
+            updateData: this.getData
+        })
     };
 
     getData = (data) => {
@@ -295,7 +294,7 @@ export default class SwiperView extends Component {
     };
 
     render() {
-        if (this.state.longitude === undefined || this.state.latitude === undefined) {
+        if (this.state.longitude === 0 || this.state.latitude === 0) {
             return (
                 <View style={[{ justifyContent: "center", alignItems: "center" }, styles.containerFlex]}>
                     <Text style={[{ marginBottom: 20 }]}>
@@ -323,10 +322,10 @@ export default class SwiperView extends Component {
                         // goBackToPreviousCardOnSwipeBottom={true}
                         disableBottomSwipe={true}
                         onTapCard={this.swipeTap}
-                        onSwiped={(cardIndex) => this.onSwipe()}
-                        onSwipedLeft={(cardIndex) => this.swipeLeft(false)}
-                        onSwipedRight={(cardIndex) => this.swipeRight(false)}
-                        onSwipedTop={(cardIndex) => this.swipeTop(false)}
+                        onSwiped={() => this.onSwipe()}
+                        onSwipedLeft={() => this.swipeLeft(false)}
+                        onSwipedRight={() => this.swipeRight(false)}
+                        onSwipedTop={() => this.swipeTop(false)}
                         cards={this.state.cards}
                         cardIndex={this.cardIndex}
                         marginTop={-140}

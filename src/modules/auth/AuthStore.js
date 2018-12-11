@@ -16,11 +16,7 @@ import { AsyncStorage } from 'react-native';
 export const events = {
     // dispatched from components/login/actions
     ERROR: 'authStore/error',
-
-    /**
-     * True when in the process of logging in with facebook
-     */
-    FB_LOGGING_IN: 'authStore/FBLogginIn',
+    FB_LOGGING_IN: 'authStore/facebook-login',
     /**
      * The profile Image
      *
