@@ -110,39 +110,31 @@ export default class SwiperView extends Component {
             console.log("HOME:componentDidMount:geoDatasubscription", position);
             if (!position.coords)
                 return;
-
             this.setState({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
-            });
+            }, () => this._swiperData());
         });
-
-        setTimeout(() => {
-            this.updatePositionIfExists();
-            this._swiperData();
-        }, 2000);
 
         this.reportSubscription = ReportStore.subscribe("Reported", () => {
             // reload component
             this.setState(SwiperView.getInitialState())
-            this._swiperData()
-        })
+            this._swiperData();
+        });
+
+        setTimeout(() => {
+            this.updatePositionIfExists();
+        }, 1000);
     }
 
     updatePositionIfExists() {
         const position = GeoStore.getState("GeoData");
-
-        if (!position || !position.coords) {
-            this.setState({
-                latitude: undefined,
-                longitude: undefined
-            });
+        if (!position || !position.coords)
             return;
-        }
         this.setState({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
-        });
+        }, () => this._swiperData());
     }
 
     componentWillUnmount() {

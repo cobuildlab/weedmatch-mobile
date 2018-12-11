@@ -11,11 +11,11 @@ import { PLACE_ENUM } from "../report";
 import REPORT_ROUTE_KEY from "../report";
 import { EMPTY_PROFILE_PICTURE } from "./index";
 
-import FastImage from 'react-native-fast-image';
-import { Platform } from 'react-native';
-import { Image as RNImage } from 'react-native';
-const Image = Platform.OS === 'ios' ? RNImage : FastImage;
-import moment from 'moment';
+// import FastImage from 'react-native-fast-image';
+// import { Platform } from 'react-native';
+import { Image } from 'react-native';
+// import { Image as RNImage } from 'react-native';
+// const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 /**
  * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
@@ -113,11 +113,11 @@ export class FeedRow extends React.Component {
         // this day we switch the Image transformation functions
         // So from now on, image_1x it's an optimized version 
         // of the images   
-        const swithDay = moment('2018-12-11');
-        const time = moment(rowData.time);
+        // const swithDay = moment('2018-12-11');
+        // const time = moment(rowData.time);
         let imageUrl = rowData.image_1x;
-        if (time.isBefore(swithDay))
-            imageUrl = rowData.image;
+        // if (time.isBefore(swithDay))
+        //     imageUrl = rowData.image;
 
 
         return (

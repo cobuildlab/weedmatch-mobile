@@ -50,11 +50,7 @@ const swiperAction = async (token, action, id) => {
  * @param state
  */
 const swiperListAction = (token, state) => {
-    console.log(
-        `SwiperActions:swiper ${token}, ${state.urlPage}, ${state.numPage}`,
-        state
-    );
-
+    console.log(`swiperListAction:swiper`, state);
     let pageUrl =
         URL +
         'swiper/?latitud=' +
@@ -63,7 +59,6 @@ const swiperListAction = (token, state) => {
         state.longitude;
 
     if (state.numPage > 0) pageUrl = state.urlPage;
-
     getSwiper(token, pageUrl);
 };
 

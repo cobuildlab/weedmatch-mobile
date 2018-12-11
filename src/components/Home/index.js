@@ -51,9 +51,9 @@ export default class HomePage extends Component {
             image: '',
             isLoaded: false,
             isLoadingPhoto: false,
-            latitud: undefined,
+            latitude: 0,
             loading: true,
-            longitud: undefined,
+            longitude: 0,
             modalVisible: false,
             refreshing: false,
             time: '',
@@ -169,13 +169,14 @@ export default class HomePage extends Component {
             if (!position.coords) return;
 
             this.setState({
-                latitud: position.coords.latitude,
+                latitude: position.coords.latitude,
                 longitud: position.coords.longitude,
-            });
+            }, () => feedAction(this.state, this.nextUrl, this.numPage));
         });
 
-        this.updatePositionIfExists();
-        feedAction(this.state, this.nextUrl, this.numPage);
+        setTimeout(() => {
+            this.updatePositionIfExists();
+        }, 1000);
     }
 
     updatePositionIfExists() {
@@ -185,7 +186,7 @@ export default class HomePage extends Component {
         this.setState({
             latitud: position.coords.latitude,
             longitud: position.coords.longitude,
-        });
+        }, () => feedAction(this.state, this.nextUrl, this.numPage));
     }
 
     componentWillUnmount() {
