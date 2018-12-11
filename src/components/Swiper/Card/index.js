@@ -3,12 +3,15 @@
  */
 import React from 'react';
 import * as ReactNative from 'react-native';
-const { Image, Text, View } = ReactNative;
-
+const { Text, View } = ReactNative;
 import { strings } from '../../../i18n';
 import P from '../../../styles/palette';
-
 import styles from './styles';
+
+import FastImage from 'react-native-fast-image';
+import { Platform } from 'react-native';
+import { Image as RNImage } from 'react-native';
+const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 interface CardProps {
     age: number;
@@ -54,7 +57,7 @@ export default class Card extends React.PureComponent<CardProps> {
                     P.center,
                     P.crossStretch,
                     styles.card,
-                    styles.borderRadius,
+                    styles.borderRadius
                 ]}
             >
                 <Image

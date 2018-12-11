@@ -1,41 +1,32 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-    AppRegistry,
     Text,
     View,
     Image,
-    AsyncStorage,
     TouchableOpacity,
     ActivityIndicator,
     Alert,
-    SafeAreaView,
-    TouchableHighlight,
     Dimensions,
     FlatList,
-    ScrollView
 } from 'react-native';
 
 import styles from './style';
 import {
-    publicProfileAction,
     getImages,
-    publicImages420Action,
     appendData,
     Action420,
     swiperAction
 } from './PublicProfileActions';
-import {connection, internet, checkConectivity} from '../../utils';
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
+import { APP_STORE } from '../../Store';
+import { strings } from '../../i18n';
 import ImageSlider from 'react-native-image-slider';
-import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
-
-var {height, width} = Dimensions.get('window');
+import geoStore from "../../utils/geolocation/GeoStore";
+import { publicProfileActionV2 } from '../PublicProfile/PublicProfileActions';
+var { height, width } = Dimensions.get('window');
 
 export default class PublicProfile extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             latitud: '',
             longitud: '',
@@ -47,7 +38,8 @@ export default class PublicProfile extends Component {
             urlPage: '',
             numPage: 0,
         };
-        console.log('PublicProfile');
+        this.latitude = null;
+        this.longitude = null;
     }
 
     static navigationOptions = {
@@ -55,9 +47,17 @@ export default class PublicProfile extends Component {
     };
 
     componentDidMount() {
+        this.geoDataSubscription = geoStore.subscribe("GeoData", position => {
+            console.log("LikeProfile:componentDidMount:geoDataSubscription:", position);
+            if (!position)
+                return;
+            // Forced to have the value updated
+            this.latitude = position.coords.latitude.toFixed(6);
+            this.longitude = position.coords.longitude.toFixed(6);
 
+        }, true);
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
-            console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
+            console.log("LikeProfile:componentDidMount:PUBLICPROFILE_EVENT", state);
             if (state.publicProfile) {
                 this.setState({
                     rowData: state.publicProfile,
@@ -135,25 +135,16 @@ export default class PublicProfile extends Component {
     }
 
     _publicProfile() {
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
         const userId = params ? params.id : null;
 
-        if (checkConectivity()) {
-            publicProfileAction(APP_STORE.getToken(), userId, this.state)
-        } else {
-            internet();
-        }
+        publicProfileActionV2(APP_STORE.getToken(), userId, this.latitude, this.longitude)
     }
 
     _get420Images() {
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
         const userId = params ? params.id : null;
-
-        if (checkConectivity()) {
-            Action420(APP_STORE.getToken(), this.state, userId);
-        } else {
-            internet();
-        }
+        Action420(APP_STORE.getToken(), this.state, userId);
     }
 
     _changeView = () => {
@@ -185,16 +176,16 @@ export default class PublicProfile extends Component {
     }
 
     renderiza() {
-        const {rowData, country} = this.state;
+        const { rowData, country } = this.state;
 
         return (
             <View>
                 <View style={styles.viewBackground}>
                     <ImageSlider
                         images={getImages(rowData.profile_images)}
-                        customSlide={({index, item, style, width}) => (
+                        customSlide={({ index, item, style, width }) => (
                             <View key={index} style={[style, styles.customSlide]}>
-                                <Image source={{uri: item}} style={styles.media}/>
+                                <Image source={{ uri: item }} style={styles.media} />
                             </View>
                         )}
                         customButtons={(position, move) => (
@@ -221,14 +212,14 @@ export default class PublicProfile extends Component {
                     <View style={styles.viewContainerPlus}>
                         <Text style={styles.textName}>{rowData.first_name}, {rowData.age} </Text>
                         {country &&
-                        <Text style={styles.textContainer}>{country.name} </Text>
+                            <Text style={styles.textContainer}>{country.name} </Text>
                         }
                         <Text style={styles.textContainer}>{rowData.distance} </Text>
                         <Text style={styles.textContainer}>{rowData.description} </Text>
                     </View>
                     <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle}
-                                      onPress={this._changeView}>
-                        <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic}/>
+                        onPress={this._changeView}>
+                        <Image source={require('../../assets/img/down.png')} style={styles.ShowPublic} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -242,25 +233,14 @@ export default class PublicProfile extends Component {
         }
     };
 
-    onLocation = (position) => {
-        this.setState({
-            latitud: position.coords.latitude.toFixed(6),
-            longitud: position.coords.longitude.toFixed(6)
-        })
-    };
-
     render() {
 
-        const {rowData, country, isLoading, isDetail, public420} = this.state;
+        const { rowData, country, isLoading, isDetail, public420 } = this.state;
         if (isLoading) {
 
             if (isDetail) {
                 return (
                     <View style={styles.viewFlex}>
-                        <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                                             dialogTitle={strings('register.locationTitle')}
-                                             onLocation={this.onLocation}
-                                             active={true}/>
                         <FlatList
                             horizontal={false}
                             numColumns={3}
@@ -270,15 +250,15 @@ export default class PublicProfile extends Component {
                                 this.onEndReachedCalledDuringMomentum = false;
                             }}
                             data={getImages(public420)}
-                            style={{flex: 1}}
+                            style={{ flex: 1 }}
                             ListHeaderComponent={this.renderiza()}
                             keyExtractor={(item, index) => index}
                             onEndReached={() => this.onEndReached()}
-                            renderItem={({item, index}) =>
+                            renderItem={({ item, index }) =>
                                 <View
-                                    style={[{width: (width) / 3}, {height: (width) / 3}, {marginBottom: 2}, index % 3 !== 0 ? {paddingLeft: 2} : {paddingLeft: 0}]}>
+                                    style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                                     <Image style={styles.imageView}
-                                           source={{uri: getImages(public420)[index]}}>
+                                        source={{ uri: getImages(public420)[index] }}>
                                     </Image>
                                 </View>
                             }
@@ -289,7 +269,7 @@ export default class PublicProfile extends Component {
                 return (
                     <View style={styles.viewFlex}>
                         <View style={styles.viewBackground}>
-                            <Image style={styles.media} source={{uri: rowData.image_profile}}/>
+                            <Image style={styles.media} source={{ uri: rowData.image_profile }} />
                         </View>
                         <View style={styles.viewContainer}>
                             <View style={styles.viewContainer}>
@@ -297,13 +277,13 @@ export default class PublicProfile extends Component {
                             </View>
                             <View style={styles.viewContainer}>
                                 {country &&
-                                <Text style={styles.textContainer}>{country.name} </Text>
+                                    <Text style={styles.textContainer}>{country.name} </Text>
                                 }
                                 {
                                     public420.length > 0 &&
                                     <TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacityStyle}
-                                                      onPress={this._changeView}>
-                                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail}/>
+                                        onPress={this._changeView}>
+                                        <Image source={require('../../assets/img/plus.png')} style={styles.ShowDetail} />
                                     </TouchableOpacity>
                                 }
                             </View>
@@ -320,7 +300,7 @@ export default class PublicProfile extends Component {
         } else {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC"/>
+                    <ActivityIndicator size="large" color="#9605CC" />
                 </View>
             )
         }

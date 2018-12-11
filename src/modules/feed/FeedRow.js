@@ -1,15 +1,20 @@
-import {Image, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import { Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import styles from "../../components/Home/styles";
-import {calculateTime, likeAction} from "../../components/Home/HomeActions";
+import { calculateTime, likeAction } from "../../components/Home/HomeActions";
 import React from "react";
 import * as PropTypes from 'prop-types';
-import {APP_STORE} from "../../Store";
+import { APP_STORE } from "../../Store";
 import firebase from "react-native-firebase";
-import {BigHeart} from "./BigHeart";
-import {Heart} from "./Heart";
-import {PLACE_ENUM} from "../report";
+import { BigHeart } from "./BigHeart";
+import { Heart } from "./Heart";
+import { PLACE_ENUM } from "../report";
 import REPORT_ROUTE_KEY from "../report";
-import {EMPTY_PROFILE_PICTURE} from "./index";
+import { EMPTY_PROFILE_PICTURE } from "./index";
+
+import FastImage from 'react-native-fast-image';
+import { Platform } from 'react-native';
+import { Image as RNImage } from 'react-native';
+const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
 /**
  * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
@@ -55,17 +60,17 @@ export class FeedRow extends React.Component {
 
     showBigHeart = () => {
         const that = this;
-        this.setState({showBigHeart: true},
+        this.setState({ showBigHeart: true },
             () => {
                 setTimeout(() => {
-                    that.setState({showBigHeart: false});
+                    that.setState({ showBigHeart: false });
                 }, 500);
             }
         );
     };
 
     like = () => {
-        const {rowData, rowID} = this.state;
+        const { rowData, rowID } = this.state;
         const like = !rowData.band;
         const id_user = rowData.id_user;
         const idImage = rowData.id;
@@ -81,8 +86,8 @@ export class FeedRow extends React.Component {
      * @returns {void}
      */
     onPressReport = () => {
-        const {navigation} = this.props;
-        const {rowData} = this.state;
+        const { navigation } = this.props;
+        const { rowData } = this.state;
         const userName = rowData.username;
         const userID = rowData.id_user;
         const idImage = rowData.id;
@@ -103,7 +108,7 @@ export class FeedRow extends React.Component {
 
     render() {
         console.log("FEEDROW:render", this.state);
-        const {rowData} = this.state;
+        const { rowData } = this.state;
 
         return (
             <View style={styles.containerView}>
@@ -111,7 +116,7 @@ export class FeedRow extends React.Component {
                 <View style={styles.mediaUser}>
                     <TouchableOpacity onPress={this.onPressProfile}>
                         <Image style={styles.picture}
-                               source={{uri: rowData.image_profile == '' ? EMPTY_PROFILE_PICTURE : rowData.image_profile}}/>
+                            source={{ uri: rowData.image_profile == '' ? EMPTY_PROFILE_PICTURE : rowData.image_profile }} />
                     </TouchableOpacity>
                     <View style={styles.userContainer}>
                         <TouchableOpacity onPress={this.onPressProfile}>
@@ -126,14 +131,14 @@ export class FeedRow extends React.Component {
                 {/*IMAGE*/}
                 <TouchableWithoutFeedback onPress={this.onPressPicture}>
                     <View>
-                        <Image style={styles.media} source={{uri: rowData.image}}/>
-                        {this.state.showBigHeart && <BigHeart/>}
+                        <Image style={styles.media} source={{ uri: rowData.image_1x }} />
+                        {this.state.showBigHeart && <BigHeart />}
                     </View>
                 </TouchableWithoutFeedback>
                 {/*FOOTER*/}
                 <View style={styles.containerLikes}>
                     <TouchableOpacity onPress={this.like} style={styles.heartAndTextContainer}>
-                        <Heart fill={rowData.band}/>
+                        <Heart fill={rowData.band} />
                         <Text style={[styles.time, styles.likesNumber]}>
                             {rowData.like}
                         </Text>
@@ -152,7 +157,7 @@ export class FeedRow extends React.Component {
                 </View>
                 <View style={styles.containerViewHorizontal}>
                     <Text style={styles.description}>{rowData.comment}</Text>
-                    <View style={styles.containerViewSpace}/>
+                    <View style={styles.containerViewSpace} />
                 </View>
             </View>
         );
