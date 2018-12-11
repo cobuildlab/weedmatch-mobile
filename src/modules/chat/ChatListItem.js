@@ -4,11 +4,11 @@
 // Optional: Flow type
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {Text, View, Platform, TouchableOpacity} from 'react-native';
-import {Image as RNImage} from 'react-native';
+import { Text, View, Platform, TouchableOpacity } from 'react-native';
+import { Image as RNImage } from 'react-native';
 import styles from '../../components/Message/style';
 import FastImage from 'react-native-fast-image';
-import {strings} from "../../i18n";
+import { strings } from '../../i18n';
 
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
@@ -21,11 +21,14 @@ const Image = Platform.OS === 'ios' ? RNImage : FastImage;
  * @return {*}
  * @constructor
  */
-const ChatListItem = ({item, index, onPress}) => {
+const ChatListItem = ({ item, index, onPress }) => {
     return (
-        <TouchableOpacity key={index} onPress={() => onPress(item, index)} >
+        <TouchableOpacity key={index} onPress={() => onPress(item, index)}>
             <View style={styles.viewMsg}>
-                <Image style={styles.imgProfileItem} source={{uri: item.image_profile}} />
+                <Image
+                    style={styles.imgProfileItem}
+                    source={{ uri: item.image_profile }}
+                />
                 <View style={styles.viewTexts}>
                     <Text style={styles.textUser}>{item.user}</Text>
                     <Text style={styles.textChat}>
@@ -40,7 +43,7 @@ const ChatListItem = ({item, index, onPress}) => {
 ChatListItem.propTypes = {
     index: PropTypes.number.isRequired,
     item: PropTypes.object.isRequired,
-    onPress: PropTypes.func.isRequired
+    onPress: PropTypes.func.isRequired,
 };
 
 export default ChatListItem;

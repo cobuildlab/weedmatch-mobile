@@ -3,9 +3,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Alert,
     ScrollView,
-    Image, SafeAreaView,
+    Image,
 } from 'react-native';
 import {strings} from '../../i18n';
 import {isValidText, toastMsg} from '../../utils';
@@ -13,11 +12,9 @@ import {APP_STORE} from '../../Store';
 import styles, { MAGENTA } from './styles';
 import {facebookAction, firebaseAction} from './AuthenticationActions';
 import firebase from 'react-native-firebase';
-import GeoLocationProvider from "../../utils/geolocation/GeoLocationProvider";
-import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import {LoginManager} from 'react-native-fbsdk';
 import { Spinner } from 'native-base';
 import authStore, { events as authEvents } from '../../modules/auth/AuthStore'
-import { dispatchEvent } from '../../utils/flux-state';
 
 
 /**

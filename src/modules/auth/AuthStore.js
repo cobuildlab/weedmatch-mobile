@@ -2,8 +2,8 @@
  * @prettier
  */
 // @ts-check
-import {FluxStore} from '../../utils/flux-state/index';
-import {AsyncStorage} from 'react-native';
+import { FluxStore } from '../../utils/flux-state/index';
+import { AsyncStorage } from 'react-native';
 
 /**
  * @typedef {object} UserObject
@@ -16,6 +16,7 @@ import {AsyncStorage} from 'react-native';
 export const events = {
     // dispatched from components/login/actions
     ERROR: 'authStore/error',
+    FB_LOGGING_IN: 'authStore/facebook-login',
     /**
      * The profile Image
      *
@@ -39,6 +40,7 @@ class AuthStore extends FluxStore {
             return value;
         });
         this.addEvent(events.ERROR);
+        this.addEvent(events.FB_LOGGING_IN);
         this.addEvent(events.PROFILE_IMAGE);
     }
 }

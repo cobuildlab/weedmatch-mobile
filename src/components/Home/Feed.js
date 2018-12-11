@@ -1,33 +1,61 @@
+/**
+ * @prettier
+ */
 import React from 'react';
-import {
-    ListView,
-    RefreshControl,
-} from 'react-native';
+import PropTypes from 'prop-types';
+import { FlatList, RefreshControl } from 'react-native';
 
 /**
  * The Feed Component
  */
-const Feed = ({style, dataSource, renderRow, onEndReached, onMomentumScrollBegin, isRefreshing, onRefresh}) => {
+class Feed extends React.Component {
+    constructor(props) {
+        super(props);
+        this.ref = null;
+    }
 
-    return (
-        <ListView
-            style={[style]}
-            initialListSize={13}
-            enableEmptySections={true}
-            dataSource={dataSource}
-            renderRow={renderRow}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.5}
-            onMomentumScrollBegin={onMomentumScrollBegin}
-            automaticallyAdjustContentInsets={false}
-            refreshControl={
-                <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={onRefresh}
-                />
-            }
-        />
-    );
+    scrollToTop = () => {
+        this.ref.scrollToIndex({ animated: true, index: 0 });
+    };
+
+    render() {
+        const {
+            style,
+            dataSource,
+            renderItem,
+            onEndReached,
+            onMomentumScrollBegin,
+            isRefreshing,
+            onRefresh,
+        } = this.props;
+        return (
+            <FlatList
+                style={[style]}
+                initialListSize={13}
+                enableEmptySections={true}
+                data={dataSource}
+                renderItem={renderItem}
+                onEndReached={onEndReached}
+                onEndReachedThreshold={0.5}
+                onMomentumScrollBegin={onMomentumScrollBegin}
+                automaticallyAdjustContentInsets={false}
+                extraData={this.state}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+                ref={ref => (this.ref = ref)}
+            />
+        );
+    }
 }
+
+Feed.propTypes = {
+    dataSource: PropTypes.array.isRequired,
+    renderItem: PropTypes.func.isRequired,
+    style: PropTypes.object,
+};
 
 export default Feed;

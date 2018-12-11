@@ -80,6 +80,8 @@
         "cancel": "Cancel",
         "alerta": "Alert",
         "upload": "Upload Image",
+        "close": "Close",
+        "near": "Less than a kilometer away",
         "comment": "Comment"
     },
     "forgot": {
