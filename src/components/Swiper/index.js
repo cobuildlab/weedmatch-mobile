@@ -315,7 +315,7 @@ export default class SwiperView extends Component {
             return (
                 <View style={styles.container}>
                     <Swiper
-                        containerStyle={[styles.swiper]}
+                        // containerStyle={[styles.swiper]}
                         ref={swiper => {
                             this.swiper = swiper
                         }}

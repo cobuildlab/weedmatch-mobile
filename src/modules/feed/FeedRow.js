@@ -21,7 +21,7 @@ import { Image } from 'react-native';
  * @typedef {import('../report/Report').ReportRouteParams} ReportRouteParams
  */
 
-export class FeedRow extends React.Component {
+export class FeedRow extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -71,7 +71,6 @@ export class FeedRow extends React.Component {
         const like = !rowData.band;
         const id_user = rowData.id_user;
         const idImage = rowData.id;
-
         firebase.analytics().logEvent('420hoy_like');
         likeAction(idImage, id_user, like, rowID);
     };
@@ -178,4 +177,5 @@ FeedRow.propTypes = {
     navigation: PropTypes.object.isRequired,
     rowData: PropTypes.object.isRequired,
     rowID: PropTypes.number.isRequired,
+    likes: PropTypes.number.isRequired,
 };

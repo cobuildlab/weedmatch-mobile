@@ -1,7 +1,7 @@
 /**
  * @prettier
  */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     Text,
     View,
@@ -11,6 +11,8 @@ import {
     Platform,
     Linking,
     Alert,
+    FlatList,
+    RefreshControl
 } from 'react-native';
 import { Button as NativeBaseButton } from 'native-base';
 import moment from 'moment';
@@ -30,7 +32,7 @@ import REPORT_ROUTE_KEY from '../../modules/report/index';
  * @typedef {import('../report').ReportRouteParams} ReportRouteParams
  */
 import { PLACE_ENUM } from '../../modules/report/index';
-import Feed from './Feed';
+// import Feed from './Feed';
 import GeoStore from '../../utils/geolocation/GeoStore';
 import buttonStyles from '../../styles/buttons';
 import textStyles from '../../styles/text';
@@ -41,7 +43,7 @@ import feedStore, { events } from '../../modules/feed/FeedStore';
 /**
  * View of the Photo Feed
  */
-export default class HomePage extends Component {
+export default class HomePage extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -411,10 +413,16 @@ export default class HomePage extends Component {
         });
     };
 
+    keyExtractor = (item) => item.id;
+
     renderFeed() {
+        
+        // If the amount of likes changes, then we redraw
+        const likes = this.state.dataSource.reduce((acc, photo) => acc + photo.like, 0);
+        console.log("RENDER FEED", this.state.dataSource, likes);
         return (
             <View style={styles.containerFlex}>
-                <Feed
+                {/* <Feed
                     style={styles.listView}
                     dataSource={this.state.dataSource}
                     renderItem={this._renderRow}
@@ -426,6 +434,29 @@ export default class HomePage extends Component {
                     isRefreshing={this.state.refreshing}
                     onRefresh={this._onRefresh.bind(this)}
                     ref={ref => (this.feed = ref)}
+                /> */}
+
+                <FlatList
+                    keyExtractor={this.keyExtractor}
+                    style={styles.listView}
+                    initialListSize={5}
+                    enableEmptySections={true}
+                    data={this.state.dataSource}
+                    renderItem={this._renderRow}
+                    onEndReached={this.onEndReached.bind(this)}
+                    onEndReachedThreshold={0.5}
+                    onMomentumScrollBegin={() => {
+                        this.onEndReachedCalledDuringMomentum = false;
+                    }}
+                    automaticallyAdjustContentInsets={false}
+                    extraData={{likes}}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
+                    ref={ref => (this.ref = ref)}
                 />
             </View>
         );
@@ -459,12 +490,15 @@ export default class HomePage extends Component {
     }
 
     _renderRow = ({ item, index }) => {
+        console.log("RENDER ROW", item, index);
         return (
             <FeedRow
                 key={index}
                 navigation={this.props.navigation}
                 rowData={item}
                 rowID={index}
+                // We send the likes to force redraw when someone likes/dislikes the picture
+                likes={item.like}
             />
         );
     };

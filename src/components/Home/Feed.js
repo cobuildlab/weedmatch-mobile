@@ -1,6 +1,3 @@
-/**
- * @prettier
- */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, RefreshControl } from 'react-native';
