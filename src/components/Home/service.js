@@ -27,8 +27,8 @@ function publicImage(token, state) {
         name: 'photo.' + ext,
     });
     data.append('time', state.time);
-    data.append('latitud', state.latitud);
-    data.append('longitud', state.longitud);
+    data.append('latitud', state.latitude);
+    data.append('longitud', state.longitude);
     data.append('comment', state.comment);
 
     const requestOptions = {

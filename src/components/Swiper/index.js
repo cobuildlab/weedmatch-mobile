@@ -199,6 +199,7 @@ export default class SwiperView extends Component {
 
     onSwipedAllCards() {
         this.setState({
+            cards:[],
             isLoaded: false,
         });
     }

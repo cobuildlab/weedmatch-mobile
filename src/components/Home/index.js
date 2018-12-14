@@ -133,7 +133,7 @@ export default class HomePage extends PureComponent {
                     },
                     () => {
                         this.setState({ dataSource }, () =>
-                            this.feed.scrollToTop()
+                            this.feed.scrollToIndex({ animated: true, index: 0 })
                         );
                     }
                 );
@@ -185,7 +185,7 @@ export default class HomePage extends PureComponent {
         setTimeout(() => {
             this.updatePositionIfExists();
         }, 1000);
-    }
+    };
 
     updatePositionIfExists() {
         const position = GeoStore.getState('GeoData');
@@ -267,7 +267,6 @@ export default class HomePage extends PureComponent {
                 time: moment().format(),
             },
             () => {
-                console.log(this.state.time);
                 firebase.analytics().logEvent('upload_photo');
                 uploadAction(APP_STORE.getToken(), this.state);
             }
@@ -413,10 +412,9 @@ export default class HomePage extends PureComponent {
         });
     };
 
-    keyExtractor = (item) => item.id;
+    keyExtractor = (item) => new String(item.id).toString();
 
     renderFeed() {
-        
         // If the amount of likes changes, then we redraw
         const likes = this.state.dataSource.reduce((acc, photo) => acc + photo.like, 0);
         console.log("RENDER FEED", this.state.dataSource, likes);
@@ -449,14 +447,14 @@ export default class HomePage extends PureComponent {
                         this.onEndReachedCalledDuringMomentum = false;
                     }}
                     automaticallyAdjustContentInsets={false}
-                    extraData={{likes}}
+                    extraData={{ likes }}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this._onRefresh.bind(this)}
                         />
                     }
-                    ref={ref => (this.ref = ref)}
+                    ref={ref => (this.feed = ref)}
                 />
             </View>
         );
@@ -490,7 +488,6 @@ export default class HomePage extends PureComponent {
     }
 
     _renderRow = ({ item, index }) => {
-        console.log("RENDER ROW", item, index);
         return (
             <FeedRow
                 key={index}
