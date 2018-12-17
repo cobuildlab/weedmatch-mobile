@@ -4,7 +4,6 @@ import Terms from './src/components/Terms';
 import Authentication from './src/components/Authentication/index';
 import LoginPage from './src/components/Login';
 import RegisterPage from './src/components/Register';
-import HomePage from './src/components/Home';
 import Profile from './src/components/Profile';
 import Message from './src/components/Message';
 import Chat from './src/components/Chat';
@@ -22,7 +21,6 @@ import REPORT_ROUTE_KEY from './src/modules/report/index';
 const AppStack = createStackNavigator(
     {
         Bar: Topbar,
-        Home: HomePage,
         Profile: Profile,
         EditProfile: EditProfile,
         PublicProfile: PublicProfile,

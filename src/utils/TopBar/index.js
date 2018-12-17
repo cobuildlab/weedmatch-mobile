@@ -1,26 +1,26 @@
-import React, {Component} from 'react';
-import {Container, Tab, Tabs, TabHeading} from 'native-base';
-import {Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView} from 'react-native';
-import {updatelocation, validateToken} from './TopBarActions'
+import React, { Component } from 'react';
+import { Container, Tab, Tabs, TabHeading } from 'native-base';
+import { Modal, Image, TouchableOpacity, AsyncStorage, Platform, Alert, AppState, SafeAreaView } from 'react-native';
+import { updatelocation, validateToken } from './TopBarActions'
 import firebase from 'react-native-firebase';
 import Home from '../../components/Home';
-import {APP_STORE} from '../../Store';
+import { APP_STORE } from '../../Store';
 import Swiper from '../../components/Swiper';
 import styles from './style';
 // Optional: Flow type
-import {Notification} from 'react-native-firebase';
+// import { Notification } from 'react-native-firebase';
+import ForceRerenderContainer from '../ForceRerenderContainer';
 /**
  * @typedef {import('react-native-firebase').RNFirebase.notifications.NotificationOpen} NotificationOpen
  */
 import MatchUsersScreen from "../../modules/swiper/MatchUsersScreen";
 import GeoLocationProvider from "../geolocation/GeoLocationProvider";
-import {strings} from "../../i18n";
+import { strings } from "../../i18n";
 
 import AuthStore,
-{events as authStoreEvents} from '../../modules/auth/AuthStore'
-import store, {CHAT_USERNAME_EVENT} from '../../modules/chat/ChatStore';
-import {getProfileImages} from "../../modules/auth/authActions";
-import {publicProfileAction} from "../../components/Profile/ProfileActions";
+{ events as authStoreEvents } from '../../modules/auth/AuthStore'
+import store, { CHAT_USERNAME_EVENT } from '../../modules/chat/ChatStore';
+import { getProfileImages } from "../../modules/auth/authActions";
 
 /**
  * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
@@ -30,7 +30,7 @@ import {publicProfileAction} from "../../components/Profile/ProfileActions";
 
 export default class TopBar extends Component {
 
-    static navigationOptions = {header: null};
+    static navigationOptions = { header: null };
 
     constructor() {
         super();
@@ -44,13 +44,15 @@ export default class TopBar extends Component {
             userImageURL: null,
         };
         this.currentChatUsername = null;
+        this.swiper = null;
+        this.feed = null;
     }
 
     popNoti() {
         AsyncStorage.getItem('noti').then((value) => {
             console.log("TopBar:popNotification:", value);
             value = (value === "true") ? true : false;
-            this.setState({notification: value})
+            this.setState({ notification: value })
         }).catch(err => {
             console.error("TopBar:popNotification:", err);
         });
@@ -78,7 +80,7 @@ export default class TopBar extends Component {
 
         // This is when a notification arrives to check the purple dot in the UI
         this.noti = APP_STORE.NOTI_EVENT.subscribe(state => {
-            this.setState({notification: state.noti})
+            this.setState({ notification: state.noti })
         });
 
         // This is for refreshing the token if FIREBASE dares to change it
@@ -117,11 +119,11 @@ export default class TopBar extends Component {
             let localNotification = notification;
             if (Platform.OS === 'android') {
                 localNotification = new
-                firebase.notifications.Notification({
-                    sound: 'default',
-                    icon: "ic_launcher",
-                    show_in_foreground: true,
-                })
+                    firebase.notifications.Notification({
+                        sound: 'default',
+                        icon: "ic_launcher",
+                        show_in_foreground: true,
+                    })
                     .setNotificationId(notification.notificationId)
                     .setTitle(notification.title)
                     .setSubtitle(notification.subtitle)
@@ -143,14 +145,14 @@ export default class TopBar extends Component {
             // If the notification is about a Match
             if (notification.data.type_notification === "MC") {
                 firebase.analytics().logEvent("user_match");
-                this.setState({modalVisible: true, matchData: notification.data});
+                this.setState({ modalVisible: true, matchData: notification.data });
                 return;
             }
 
             // Any other scenario, show the notification
             firebase.notifications().displayNotification(localNotification);
             // A signal to tell the APP there is a new notification
-            APP_STORE.NOTI_EVENT.next({"noti": true});
+            APP_STORE.NOTI_EVENT.next({ "noti": true });
             // console.log('onNotification:', notification)
 
             // If the App is open, clear the notifications tray
@@ -198,24 +200,24 @@ export default class TopBar extends Component {
         switch (data.type_notification) {
             case "ME": // I like it Notification
                 if (this.state.like == "false") { // Like notification
-                    this.props.navigation.navigate('Notifications', {tabIndex: 1});
+                    this.props.navigation.navigate('Notifications', { tabIndex: 1 });
                 }
                 break;
             case "MC": // Match notification
                 firebase.analytics().logEvent("user_match");
-                this.props.navigation.navigate('Notifications', {tabIndex: 0, data: data});
+                this.props.navigation.navigate('Notifications', { tabIndex: 0, data: data });
                 break;
             case "AC": // Accept I love
                 Alert(`ACCEPT I LOVE IT: ${JSON.stringify(data)}`);
                 if (this.currentChatUsername != data.username) { // Match Notification
-                    this.setState({modalVisible: true, matchData: data});
+                    this.setState({ modalVisible: true, matchData: data });
                     break;
                 }
                 break;
             default:
                 console.warn("UNHANDLED NOTIFICATION TYPE:", JSON.stringify(data));
         }
-        APP_STORE.NOTI_EVENT.next({"noti": false});
+        APP_STORE.NOTI_EVENT.next({ "noti": false });
     }
 
 
@@ -234,8 +236,8 @@ export default class TopBar extends Component {
 
     getSwiperImage() {
         const image = this.state.activePage == 0 ?
-            <Image source={require('../../assets/img/mariOn.png')} style={styles.imageContainerLeft}/> :
-            <Image source={require('../../assets/img/mari.png')} style={styles.imageContainerLeft}/>;
+            <Image source={require('../../assets/img/mariOn.png')} style={styles.imageContainerLeft} /> :
+            <Image source={require('../../assets/img/mari.png')} style={styles.imageContainerLeft} />;
         return (
             image
         )
@@ -243,8 +245,8 @@ export default class TopBar extends Component {
 
     getFeedImage() {
         const image = this.state.activePage == 1 ?
-            <Image source={require('../../assets/img/420On.png')} style={styles.imageContainerRight}/> :
-            <Image source={require('../../assets/img/420.png')} style={styles.imageContainerRight}/>;
+            <Image source={require('../../assets/img/420On.png')} style={styles.imageContainerRight} /> :
+            <Image source={require('../../assets/img/420.png')} style={styles.imageContainerRight} />;
         return (
             image
         )
@@ -263,12 +265,24 @@ export default class TopBar extends Component {
         updatelocation(position);
     };
 
+    onChangeTab = event => {
+        this.setState({ activePage: event.i });
+        if (event.i === 0) {// Swiper
+            this.swiper.forceRenderOfChilds();
+            this.feed.forceUnmountOfChilds();
+        }
+        if (event.i === 1) {// Feed
+            this.feed.forceRenderOfChilds();
+            this.swiper.forceUnmountOfChilds();
+        }
+    };
+
     render() {
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+            <SafeAreaView style={[styles.background]}>
                 <GeoLocationProvider dialogMessage={strings('register.locationMessage')}
-                                     dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
-                                     active={true}
+                    dialogTitle={strings('register.locationTitle')} onLocation={this.onLocation}
+                    active={true}
                 />
                 <Container style={styles.bgColor}>
 
@@ -276,29 +290,31 @@ export default class TopBar extends Component {
                         {
                             this.state.userImageURL == null
                                 ?
-                                <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')}/>
-                                : <Image style={styles.imgIconProfile} source={{uri: this.state.userImageURL}}/>
+                                <Image style={styles.imgIconProfile} source={require('../../assets/img/profile.png')} />
+                                : <Image style={styles.imgIconProfile} source={{ uri: this.state.userImageURL }} />
                         }
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttomIconMsg} onPress={() => this.showMessage()}>
                         <Image style={styles.imgIconMsg}
-                               source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')}/>
+                            source={this.state.notification ? require('../../assets/img/msjActi.png') : require('../../assets/img/msj.png')} />
                     </TouchableOpacity>
                     <Tabs
                         initialPage={0}
                         locked={true}
-                        onChangeTab={(event) => {
-                            this.setState({activePage: event.i})
-                        }}
+                        onChangeTab={this.onChangeTab}
                         tabBarUnderlineStyle={styles.containerColor}
                         tabContainerStyle={styles.tabContainerStyle}
                         edgeHitWidth={0}
                     >
                         <Tab heading={<TabHeading style={styles.tabContainer}>{this.getSwiperImage()}</TabHeading>}>
-                            <Swiper navigation={this.props.navigation}/>
+                            <ForceRerenderContainer ref={ref => this.swiper = ref} >
+                                <Swiper navigation={this.props.navigation} />
+                            </ForceRerenderContainer>
                         </Tab>
                         <Tab heading={<TabHeading style={styles.tabContainer}>{this.getFeedImage()}</TabHeading>}>
-                            <Home navigation={this.props.navigation}/>
+                            <ForceRerenderContainer ref={ref => this.feed = ref} >
+                                <Home navigation={this.props.navigation} />
+                            </ForceRerenderContainer>
                         </Tab>
                     </Tabs>
 
@@ -316,12 +332,12 @@ export default class TopBar extends Component {
                                     tabIndex: 0,
                                     data: this.state.matchData
                                 });
-                                this.setState({modalVisible: false});
+                                this.setState({ modalVisible: false });
                             }}
-                            onClose={() => this.setState({modalVisible: false})}/>
+                            onClose={() => this.setState({ modalVisible: false })} />
                     </Modal>
                 </Container>
-            </SafeAreaView>
+            </SafeAreaView >
 
         );
     }

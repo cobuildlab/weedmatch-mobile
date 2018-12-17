@@ -68,6 +68,7 @@ export default class HomePage extends PureComponent {
     }
 
     componentDidMount() {
+        console.log("Home/index.js: componentDidMount");
         this.feedSubscription = feedStore.subscribe(events.ON_FEED, state => {
             console.log('Feed:componentDidMount:ON_FEED', state);
             const newState = {
@@ -204,12 +205,11 @@ export default class HomePage extends PureComponent {
     }
 
     componentWillUnmount() {
-        console.log('Home420:componentWillUmmount');
-        this.feedData.unsubscribe();
-        this.event.unsubscribe();
+        console.log('Home/index.js:componentWillUmmount');
+        this.feedSubscription.unsubscribe();
+        this.feedErrorSubscription.unsubscribe();
+        this.uploadPhotoSubscription.unsubscribe();
         this.likeEvent.unsubscribe();
-        this.feedPage.unsubscribe();
-        this.geoDatasubscription.unsubscribe();
         this.appEvent.unsubscribe();
     }
 
@@ -438,6 +438,8 @@ export default class HomePage extends PureComponent {
                     keyExtractor={this.keyExtractor}
                     style={styles.listView}
                     initialListSize={5}
+                    maxToRenderPerBatch={5}
+                    removeClippedSubviews={true}
                     enableEmptySections={true}
                     data={this.state.dataSource}
                     renderItem={this._renderRow}
