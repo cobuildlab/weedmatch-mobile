@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colors } from '../../styles/colors';
+import {WHITE, TRANSPARENT, GRAY} from '../../styles/colors';
 
 const styles = StyleSheet.create({
 
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
     height: 27,
   },
   tabContainerStyle: {
-    backgroundColor: colors.WHITE,
-    borderColor: colors.TRANSPARENT,
+    backgroundColor: WHITE,
+    borderColor: TRANSPARENT,
     ...Platform.select({
       ios: {
         paddingTop: 35,
@@ -87,18 +87,18 @@ const styles = StyleSheet.create({
     }),
   },
   containerColor: {
-    backgroundColor: colors.WHITE
+    backgroundColor: WHITE
   },
   bgColor: {
-    backgroundColor: colors.WHITE
+    backgroundColor: WHITE
   },
   tabContainer: {
-    backgroundColor: colors.WHITE,
-    borderRightColor: colors.GRAY,
+    backgroundColor: WHITE,
+    borderRightColor: GRAY,
     borderRightWidth: 2,
   },
   background: {
-    flex: 1, backgroundColor: colors.WHITE
+    flex: 1, backgroundColor: WHITE
   }
 });
 
