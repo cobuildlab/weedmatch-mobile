@@ -123,7 +123,8 @@
         "success": "Reporte hecho exitosamente",
         "error": "No se pudo hacer el reporte",
         "messageWhenSending": "Su reporte se enviará",
-        "header": "Reportando al usuario"
+        "header": "Reportando al usuario",
+        "cancel": "Regresar"
     },
     "PublicProfile": {
         "reportButtonText": "Reportar"

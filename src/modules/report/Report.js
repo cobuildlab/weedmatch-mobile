@@ -12,6 +12,7 @@ import {
     Title,
     Header,
     Spinner,
+    View,
 } from 'native-base';
 import {
     SafeAreaView, Text
@@ -142,6 +143,10 @@ export default class Report extends Component {
         });
     };
 
+    onPressCancel = () => {
+        this.props.navigation.goBack();
+    }
+
     /**
      * @property
      * @private
@@ -264,6 +269,16 @@ export default class Report extends Component {
                                 <Spinner style={{ alignSelf: 'center'}}/>
                             )
                             : (
+                                <View>
+                                    <Button
+                                    block
+                                    onPress={this.onPressCancel}
+                                    styles={buttonStyles.transparentButton}
+                                >
+                                    <Text style={[textStyles.whiteButtonText]} >
+                                        {strings('report.cancel')}
+                                    </Text>
+                                </Button>
                                 <Button
                                     block
                                     onPress={this.onPressSend}
@@ -274,6 +289,7 @@ export default class Report extends Component {
                                         {strings('report.send')}
                                     </Text>
                                 </Button>
+                                </View>
                             )
                         }
                 </Container>
