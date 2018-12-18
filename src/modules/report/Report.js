@@ -271,24 +271,26 @@ export default class Report extends Component {
                             : (
                                 <View>
                                     <Button
-                                    block
-                                    onPress={this.onPressCancel}
-                                    styles={buttonStyles.transparentButton}
-                                >
-                                    <Text style={[textStyles.whiteButtonText]} >
-                                        {strings('report.cancel')}
-                                    </Text>
-                                </Button>
-                                <Button
-                                    block
-                                    onPress={this.onPressSend}
-                                    rounded
-                                    style={[buttonStyles.purpleButton]}
-                                >
-                                    <Text style={[textStyles.whiteText]} >
-                                        {strings('report.send')}
-                                    </Text>
-                                </Button>
+                                        block
+                                        onPress={this.onPressSend}
+                                        rounded
+                                        style={[buttonStyles.purpleButton]}
+                                    >
+                                        <Text style={[textStyles.whiteText]} >
+                                            {strings('report.send')}
+                                        </Text>
+                                    </Button>
+                                    <Button
+                                        block
+                                        onPress={this.onPressCancel}
+                                        styles={buttonStyles.transparentButton}
+                                    >
+                                        <Text
+                                            style={[textStyles.whiteButtonText]}
+                                        >
+                                            {strings('report.cancel')}
+                                        </Text>
+                                    </Button>
                                 </View>
                             )
                         }

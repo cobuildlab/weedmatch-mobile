@@ -119,7 +119,7 @@
             "SPAM": "Spam or Fraud",
             "VIOLENCE": "Violence or threat of violence"
         },
-        "send": "Send",
+        "send": "Report",
         "success": "Report made successfully",
         "error": "An error happened trying to make the report",
         "messageWhenSending": "Your report will be sent",

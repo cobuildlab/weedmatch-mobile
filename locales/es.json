@@ -119,12 +119,12 @@
             "SPAM": "Spam o Fraude",
             "VIOLENCE": "Violencia o amenazas"
         },
-        "send": "Enviar",
+        "send": "Reportar",
         "success": "Reporte hecho exitosamente",
         "error": "No se pudo hacer el reporte",
         "messageWhenSending": "Su reporte se enviará",
         "header": "Reportando al usuario",
-        "cancel": "Regresar"
+        "cancel": "Cancelar"
     },
     "PublicProfile": {
         "reportButtonText": "Reportar"
