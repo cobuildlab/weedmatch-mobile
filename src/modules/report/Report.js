@@ -283,7 +283,8 @@ export default class Report extends Component {
                                     <Button
                                         block
                                         onPress={this.onPressCancel}
-                                        styles={buttonStyles.transparentButton}
+                                        rounded
+                                        styles={buttonStyles.whiteButton}
                                     >
                                         <Text
                                             style={[textStyles.whiteButtonText]}

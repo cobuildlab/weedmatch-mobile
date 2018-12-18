@@ -21,5 +21,14 @@ export default styles = StyleSheet.create({
         color: WHITE,
         fontWeight: "600",
         paddingRight: 15,
-    }
+    },
+    whiteButton: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: 50,
+        color: purple,
+        paddingBottom: 10,
+        paddingTop: 10,
+        width: 250,
+    },
 });
