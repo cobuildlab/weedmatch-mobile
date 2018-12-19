@@ -1,7 +1,7 @@
 /**
  * @prettier
  */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     Text,
     View,
@@ -11,6 +11,8 @@ import {
     Platform,
     Linking,
     Alert,
+    FlatList,
+    RefreshControl
 } from 'react-native';
 import { Button as NativeBaseButton } from 'native-base';
 import moment from 'moment';
@@ -30,7 +32,7 @@ import REPORT_ROUTE_KEY from '../../modules/report/index';
  * @typedef {import('../report').ReportRouteParams} ReportRouteParams
  */
 import { PLACE_ENUM } from '../../modules/report/index';
-import Feed from './Feed';
+// import Feed from './Feed';
 import GeoStore from '../../utils/geolocation/GeoStore';
 import buttonStyles from '../../styles/buttons';
 import textStyles from '../../styles/text';
@@ -41,7 +43,7 @@ import feedStore, { events } from '../../modules/feed/FeedStore';
 /**
  * View of the Photo Feed
  */
-export default class HomePage extends Component {
+export default class HomePage extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -66,6 +68,7 @@ export default class HomePage extends Component {
     }
 
     componentDidMount() {
+        console.log("Home/index.js: componentDidMount");
         this.feedSubscription = feedStore.subscribe(events.ON_FEED, state => {
             console.log('Feed:componentDidMount:ON_FEED', state);
             const newState = {
@@ -131,7 +134,7 @@ export default class HomePage extends Component {
                     },
                     () => {
                         this.setState({ dataSource }, () =>
-                            this.feed.scrollToTop()
+                            this.feed.scrollToIndex({ animated: true, index: 0 })
                         );
                     }
                 );
@@ -166,36 +169,47 @@ export default class HomePage extends Component {
 
         this.geoDatasubscription = GeoStore.subscribe('GeoData', position => {
             console.log('HOME:componentDidMount:geoDatasubscription', position);
-            if (!position.coords) return;
+            if (!position.coords) {
+                this.setState({
+                    isLoaded: true
+                });
+                return;
+            }
 
             this.setState({
                 latitude: position.coords.latitude,
-                longitud: position.coords.longitude,
+                longitude: position.coords.longitude,
+                isLoaded: true
             }, () => feedAction(this.state, this.nextUrl, this.numPage));
         });
 
         setTimeout(() => {
             this.updatePositionIfExists();
         }, 1000);
-    }
+    };
 
     updatePositionIfExists() {
         const position = GeoStore.getState('GeoData');
-        if (!position || !position.coords) return;
+        if (!position || !position.coords) {
+            this.setState({
+                isLoaded: true
+            });
+            return;
+        }
 
         this.setState({
-            latitud: position.coords.latitude,
-            longitud: position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            isLoaded: true
         }, () => feedAction(this.state, this.nextUrl, this.numPage));
     }
 
     componentWillUnmount() {
-        console.log('Home420:componentWillUmmount');
-        this.feedData.unsubscribe();
-        this.event.unsubscribe();
+        console.log('Home/index.js:componentWillUmmount');
+        this.feedSubscription.unsubscribe();
+        this.feedErrorSubscription.unsubscribe();
+        this.uploadPhotoSubscription.unsubscribe();
         this.likeEvent.unsubscribe();
-        this.feedPage.unsubscribe();
-        this.geoDatasubscription.unsubscribe();
         this.appEvent.unsubscribe();
     }
 
@@ -253,7 +267,6 @@ export default class HomePage extends Component {
                 time: moment().format(),
             },
             () => {
-                console.log(this.state.time);
                 firebase.analytics().logEvent('upload_photo');
                 uploadAction(APP_STORE.getToken(), this.state);
             }
@@ -399,10 +412,15 @@ export default class HomePage extends Component {
         });
     };
 
+    keyExtractor = (item) => new String(item.id).toString();
+
     renderFeed() {
+        // If the amount of likes changes, then we redraw
+        const likes = this.state.dataSource.reduce((acc, photo) => acc + photo.like, 0);
+        console.log("RENDER FEED", this.state.dataSource, likes);
         return (
             <View style={styles.containerFlex}>
-                <Feed
+                {/* <Feed
                     style={styles.listView}
                     dataSource={this.state.dataSource}
                     renderItem={this._renderRow}
@@ -413,6 +431,31 @@ export default class HomePage extends Component {
                     extraData={this.state}
                     isRefreshing={this.state.refreshing}
                     onRefresh={this._onRefresh.bind(this)}
+                    ref={ref => (this.feed = ref)}
+                /> */}
+
+                <FlatList
+                    keyExtractor={this.keyExtractor}
+                    style={styles.listView}
+                    initialListSize={5}
+                    maxToRenderPerBatch={5}
+                    removeClippedSubviews={true}
+                    enableEmptySections={true}
+                    data={this.state.dataSource}
+                    renderItem={this._renderRow}
+                    onEndReached={this.onEndReached.bind(this)}
+                    onEndReachedThreshold={0.5}
+                    onMomentumScrollBegin={() => {
+                        this.onEndReachedCalledDuringMomentum = false;
+                    }}
+                    automaticallyAdjustContentInsets={false}
+                    extraData={{ likes }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                        />
+                    }
                     ref={ref => (this.feed = ref)}
                 />
             </View>
@@ -453,6 +496,8 @@ export default class HomePage extends Component {
                 navigation={this.props.navigation}
                 rowData={item}
                 rowID={index}
+                // We send the likes to force redraw when someone likes/dislikes the picture
+                likes={item.like}
             />
         );
     };
@@ -465,21 +510,11 @@ export default class HomePage extends Component {
 
     render() {
         const { isLoaded, image, isLoadingPhoto } = this.state;
+        const hasPosition = this.state.longitude !== 0 && this.state.latitude !== 0;
 
-        if (
-            this.state.longitud === undefined ||
-            this.state.latitud === undefined
-        ) {
+        if (!hasPosition && isLoaded === true) {
             return (
-                <View
-                    style={[
-                        {
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        },
-                        styles.containerFlex,
-                    ]}
-                >
+                <View style={[{ justifyContent: 'center', alignItems: 'center', }, styles.containerFlex,]} >
                     <Text style={[{ marginBottom: 20 }]}>
                         {strings('feed.InactiveGeolocation')}
                     </Text>
@@ -502,33 +537,35 @@ export default class HomePage extends Component {
             );
         }
 
-        if (!isLoaded) {
+        if (isLoaded === true) {
             return (
                 <View style={styles.containerFlex}>
-                    <View style={[styles.container, styles.horizontal]}>
-                        <ActivityIndicator size="large" color="#9605CC" />
-                    </View>
+                    {this.renderFeed()}
+                    {this.showButton()}
+                    {this.showActivity()}
+                    {/*This is the Modal for the steps of loading a new picture*/}
+                    <UploadPhotoModal
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => console.log('closed')}
+                        onClosePress={this.toggleModal}
+                        isLoading={isLoadingPhoto}
+                        image={image}
+                        onChangeText={this._onChangeComment}
+                        comment={this.state.comment}
+                        onUploadPress={this._uploadPhoto}
+                    />
                 </View>
             );
         }
 
         return (
             <View style={styles.containerFlex}>
-                {this.renderFeed()}
-                {this.showButton()}
-                {this.showActivity()}
-                {/*This is the Modal for the steps of loading a new picture*/}
-                <UploadPhotoModal
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => console.log('closed')}
-                    onClosePress={this.toggleModal}
-                    isLoading={isLoadingPhoto}
-                    image={image}
-                    onChangeText={this._onChangeComment}
-                    comment={this.state.comment}
-                    onUploadPress={this._uploadPhoto}
-                />
+                <View style={[styles.container, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#9605CC" />
+                </View>
             </View>
         );
+
+
     }
 }

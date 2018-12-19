@@ -16,7 +16,7 @@ export default class Card extends React.PureComponent {
         onPressBlock(imageID, userID, userName);
     };
 
-    static PropTypes = {
+    static propTypes = {
         age: PropTypes.number.isRequired,
         countryName: PropTypes.string.isRequired,
         distanceString: PropTypes.string.isRequired,
