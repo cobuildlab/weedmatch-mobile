@@ -119,26 +119,27 @@
             "SPAM": "Spam or Fraud",
             "VIOLENCE": "Violence or threat of violence"
         },
-        "send": "Send",
+        "send": "Report",
         "success": "Report made successfully",
         "error": "An error happened trying to make the report",
         "messageWhenSending": "Your report will be sent",
-        "header": "Reporting user"
+        "header": "Reporting user",
+        "cancel": "Go back"
     },
-    "feed":{
-        "InactiveGeolocation":"Must activate Locations Services to use this feature",
-        "GoToLocationServices":"Location Services",
-        "TryAgain":"Try Again"
+    "feed": {
+        "InactiveGeolocation": "Must activate Locations Services to use this feature",
+        "GoToLocationServices": "Location Services",
+        "TryAgain": "Try Again"
     },
     "PublicProfile": {
         "reportButtonText": "Report"
     },
 
-    "ImagePicker":{
+    "ImagePicker": {
         "AlertTitle": "Weedmatch require access to your photos",
         "AlertDescription": "We require access to your photos to allow you share moments and emotions with the members of our community"
     },
-    "GeoLocationProvider":{
+    "GeoLocationProvider": {
         "AlertTitle": "Weedmatch require access to your location",
         "AlertDescription": "We require access to your location to show you nearby content, users and events that are more relevant to your location"
     }

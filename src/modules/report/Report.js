@@ -12,6 +12,7 @@ import {
     Title,
     Header,
     Spinner,
+    View,
 } from 'native-base';
 import {
     SafeAreaView, Text
@@ -142,6 +143,10 @@ export default class Report extends Component {
         });
     };
 
+    onPressCancel = () => {
+        this.props.navigation.goBack();
+    }
+
     /**
      * @property
      * @private
@@ -264,16 +269,30 @@ export default class Report extends Component {
                                 <Spinner style={{ alignSelf: 'center'}}/>
                             )
                             : (
-                                <Button
-                                    block
-                                    onPress={this.onPressSend}
-                                    rounded
-                                    style={[buttonStyles.purpleButton]}
-                                >
-                                    <Text style={[textStyles.whiteText]} >
-                                        {strings('report.send')}
-                                    </Text>
-                                </Button>
+                                <View>
+                                    <Button
+                                        block
+                                        onPress={this.onPressSend}
+                                        rounded
+                                        style={[buttonStyles.purpleButton]}
+                                    >
+                                        <Text style={[textStyles.whiteText]} >
+                                            {strings('report.send')}
+                                        </Text>
+                                    </Button>
+                                    <Button
+                                        block
+                                        onPress={this.onPressCancel}
+                                        rounded
+                                        styles={buttonStyles.whiteButton}
+                                    >
+                                        <Text
+                                            style={[textStyles.whiteButtonText]}
+                                        >
+                                            {strings('report.cancel')}
+                                        </Text>
+                                    </Button>
+                                </View>
                             )
                         }
                 </Container>
