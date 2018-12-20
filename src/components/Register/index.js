@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    ActivityIndicator, Alert, AsyncStorage,
+    ActivityIndicator,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {strings} from "../../i18n";
 import {
-    createDateData,
     facebookAction,
     firebaseAction,
     registerAction,
@@ -23,7 +22,7 @@ import {
 import {APP_STORE} from "../../Store";
 import styles, { dateTextStyle } from './style';
 import loginStyles from '../Login/style';
-import {connection, generateUsernameFromFullName, toastMsg,
+import {generateUsernameFromFullName, toastMsg,
         charIsLetter,
         charIsNumber,
         charIsAcuteVowel} from "../../utils";
@@ -106,7 +105,7 @@ class RegisterPage extends Component {
             if (state.error) {
                 this.setState({isLoading: false});
                 if (state.error.detail) {
-                    Object.keys(state.error.detail).map(function (objectKey, index) {
+                    Object.keys(state.error.detail).map(function (objectKey) {
                         var value = state.error.detail[objectKey];
                         if (typeof value == 'object') {
                             value.forEach(function (msg) {
@@ -153,8 +152,6 @@ class RegisterPage extends Component {
                 });
             }
         });
-
-        const me = this;
 
         this.usernameSubscription = APP_STORE.USERNAME_EVENT.subscribe(state => {
             this.setState({isLoading: true});
@@ -370,7 +367,7 @@ class RegisterPage extends Component {
     }
 
     renderBy(body) {
-        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
+        const {step} = this.state;
         if (Platform.OS == 'android') {
             return (
                 <ScrollView
@@ -571,7 +568,7 @@ class RegisterPage extends Component {
     }
 
     render() {
-        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
+        const {isLoading, step, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
         if (!isLoading) {
             body = <View>

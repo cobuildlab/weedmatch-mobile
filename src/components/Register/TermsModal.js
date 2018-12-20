@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-import { Button, Container, Content, Text, H1 } from 'native-base';
+import { Container, Content, Text, H1 } from 'native-base';
 import * as PropTypes from 'prop-types';
 import { Modal, TouchableOpacity } from 'react-native';
 

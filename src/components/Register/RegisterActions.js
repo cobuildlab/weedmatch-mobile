@@ -74,8 +74,6 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
 function createDateData() {
 
     var today = new Date();
-    var _month = parseInt(today.getMonth() + 1);
-    var _today = parseInt(today.getDate());
 
     let date = [];
     for (var i = parseInt(today.getFullYear() - 18); i > 1930; i--) {

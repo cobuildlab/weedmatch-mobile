@@ -12,7 +12,7 @@ export const userService = {
  * @param state The state of the current screen
  * @return {Promise<any>}
  */
-function facebookHandle(token, state) {
+function facebookHandle(token) {
     const requestOptions = {
         method: 'POST',
         headers: {
