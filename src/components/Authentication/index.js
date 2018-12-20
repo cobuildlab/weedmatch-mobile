@@ -106,7 +106,7 @@ export default class Authentication extends Component {
         this.props.navigation.navigate('Login');
     }
 
-    _facebookLogin() {
+    _facebookLogin = () => {
         facebookAction(this.state);
     }
 
@@ -140,7 +140,7 @@ export default class Authentication extends Component {
                             <Text style={styles.textBold}>{strings('wmatch')}</Text>
                             <TouchableOpacity
                                 style={styles.buttomFacebookStyle}
-                                onPress={this._facebookLogin.bind(this)}
+                                onPress={this._facebookLogin}
                             >
                                 <Image
                                     style={styles.logoFacebook}

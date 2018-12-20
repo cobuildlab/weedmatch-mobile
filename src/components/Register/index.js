@@ -177,7 +177,7 @@ class RegisterPage extends Component {
         this.props.navigation.navigate('Terms');
     }
 
-    _facebookLogin() {
+    _facebookLogin = () => {
         this.setState({isLoading: true});
         facebookAction(this.state)
     }
@@ -385,7 +385,7 @@ class RegisterPage extends Component {
                             {step == 1 &&
                             <TouchableOpacity
                                 style={styles.buttomFacebookStyle}
-                                onPress={this._facebookLogin.bind(this)}
+                                onPress={this._facebookLogin}
                             >
                                 <Image
                                     style={styles.logoFacebook}
