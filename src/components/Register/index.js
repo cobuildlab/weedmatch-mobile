@@ -34,11 +34,11 @@ import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
 import { DatePicker } from 'native-base'
 import moment from 'moment'
+import authStore, { events as authEvents } from '../../modules/auth/AuthStore'
 
 import TermsModal from './TermsModal'
 
 class RegisterPage extends Component {
-
     /**
      * Today - 18 years
      */
@@ -82,7 +82,7 @@ class RegisterPage extends Component {
             age: '',
             sex: 'Hombre',
             image: '',
-            isLoading: false,
+            isLoading: authStore.getState(authEvents.FB_LOGGING_IN),
             year: '',
             step: 1,
             emailError: '',
@@ -171,6 +171,15 @@ class RegisterPage extends Component {
                 });
             }
         });
+
+        this.authStoreSubscription = authStore.subscribe(
+            authEvents.FB_LOGGING_IN,
+            (loadingFBLogin: boolean) =>
+        {
+            this.setState({
+                isLoading: loadingFBLogin,
+            })
+        });
     }
 
     userTerms() {
@@ -178,7 +187,6 @@ class RegisterPage extends Component {
     }
 
     _facebookLogin = () => {
-        this.setState({isLoading: true});
         facebookAction(this.state)
     }
 
@@ -189,6 +197,7 @@ class RegisterPage extends Component {
         this.email.unsubscribe();
         this.usernameSubscription.unsubscribe();
         this.firebaseSubscription.unsubscribe();
+        this.authStoreSubscription.unsubscribe();
     }
 
     /**
