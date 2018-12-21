@@ -4,7 +4,7 @@ import {WHITE} from '../../styles/colors';
 
 export const dateTextStyle = { color: '#ccc' }
 
-export default styles = StyleSheet.create({
+export default StyleSheet.create({
     container: {
         width: '80%',
         resizeMode: 'contain',
