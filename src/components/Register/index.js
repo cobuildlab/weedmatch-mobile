@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    ActivityIndicator, Alert, AsyncStorage,
+    ActivityIndicator,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {strings} from "../../i18n";
 import {
-    createDateData,
     facebookAction,
     firebaseAction,
     registerAction,
@@ -23,7 +22,7 @@ import {
 import {APP_STORE} from "../../Store";
 import styles, { dateTextStyle } from './style';
 import loginStyles from '../Login/style';
-import {connection, generateUsernameFromFullName, toastMsg,
+import {generateUsernameFromFullName, toastMsg,
         charIsLetter,
         charIsNumber,
         charIsAcuteVowel} from "../../utils";
@@ -34,11 +33,11 @@ import ActionSheet from 'react-native-actionsheet';
 import firebase from 'react-native-firebase';
 import { DatePicker } from 'native-base'
 import moment from 'moment'
+import authStore, { events as authEvents } from '../../modules/auth/AuthStore'
 
 import TermsModal from './TermsModal'
 
 class RegisterPage extends Component {
-
     /**
      * Today - 18 years
      */
@@ -82,7 +81,7 @@ class RegisterPage extends Component {
             age: '',
             sex: 'Hombre',
             image: '',
-            isLoading: false,
+            isLoading: authStore.getState(authEvents.FB_LOGGING_IN),
             year: '',
             step: 1,
             emailError: '',
@@ -106,7 +105,7 @@ class RegisterPage extends Component {
             if (state.error) {
                 this.setState({isLoading: false});
                 if (state.error.detail) {
-                    Object.keys(state.error.detail).map(function (objectKey, index) {
+                    Object.keys(state.error.detail).map(function (objectKey) {
                         var value = state.error.detail[objectKey];
                         if (typeof value == 'object') {
                             value.forEach(function (msg) {
@@ -154,8 +153,6 @@ class RegisterPage extends Component {
             }
         });
 
-        const me = this;
-
         this.usernameSubscription = APP_STORE.USERNAME_EVENT.subscribe(state => {
             this.setState({isLoading: true});
             if (state.error) {
@@ -171,14 +168,22 @@ class RegisterPage extends Component {
                 });
             }
         });
+
+        this.authStoreSubscription = authStore.subscribe(
+            authEvents.FB_LOGGING_IN,
+            (loadingFBLogin: boolean) =>
+        {
+            this.setState({
+                isLoading: loadingFBLogin,
+            })
+        });
     }
 
     userTerms() {
         this.props.navigation.navigate('Terms');
     }
 
-    _facebookLogin() {
-        this.setState({isLoading: true});
+    _facebookLogin = () => {
         facebookAction(this.state)
     }
 
@@ -189,6 +194,7 @@ class RegisterPage extends Component {
         this.email.unsubscribe();
         this.usernameSubscription.unsubscribe();
         this.firebaseSubscription.unsubscribe();
+        this.authStoreSubscription.unsubscribe();
     }
 
     /**
@@ -361,7 +367,7 @@ class RegisterPage extends Component {
     }
 
     renderBy(body) {
-        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
+        const {step} = this.state;
         if (Platform.OS == 'android') {
             return (
                 <ScrollView
@@ -385,7 +391,7 @@ class RegisterPage extends Component {
                             {step == 1 &&
                             <TouchableOpacity
                                 style={styles.buttomFacebookStyle}
-                                onPress={this._facebookLogin.bind(this)}
+                                onPress={this._facebookLogin}
                             >
                                 <Image
                                     style={styles.logoFacebook}
@@ -562,7 +568,7 @@ class RegisterPage extends Component {
     }
 
     render() {
-        const {isLoading, step, emailError, full_nameError, passwordError, image} = this.state;
+        const {isLoading, step, image} = this.state;
         let body = <ActivityIndicator size="large" color="#9605CC"/>;
         if (!isLoading) {
             body = <View>

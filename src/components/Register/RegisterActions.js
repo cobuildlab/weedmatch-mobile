@@ -3,6 +3,11 @@ import {strings} from '../../i18n';
 import {checkConectivity} from '../../utils/index'
 import {userService} from './service';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import { dispatchEvent } from '../../utils/flux-state';
+import { events as authStoreEvents } from '../../modules/auth/AuthStore';
+/**
+ * @typedef {import('../../modules/auth/AuthStore').UserObject} UserObject
+ */
 
 /**
  * Register a User
@@ -69,8 +74,6 @@ function registerAction(firstName, email, password, lat, lon, sex, age, image, u
 function createDateData() {
 
     var today = new Date();
-    var _month = parseInt(today.getMonth() + 1);
-    var _today = parseInt(today.getDate());
 
     let date = [];
     for (var i = parseInt(today.getFullYear() - 18); i > 1930; i--) {
@@ -145,43 +148,82 @@ const validateUsernameAction = (username) => {
         });
 };
 
-function facebookAction(state) {
-    AccessToken.getCurrentAccessToken().then(
-        (data) => {
-            if (data) {
-                LoginManager.logOut();
-                return;
-            }
-            LoginManager.logInWithReadPermissions(["public_profile", "email", "user_birthday", "user_gender"]).then(
-                function (result) {
-                    if (result.isCancelled) {
-                        return
-                    }
-                    AccessToken.getCurrentAccessToken().then(
-                        (data) => {
-                            console.log("facebookAction:", data.accessToken.toString());
-                            userService.facebookHandle(data.accessToken.toString(), state)
-                                .then(async (response) => {
-                                    console.log(`facebookAction: ${data.accessToken.toString()}`, response);
-                                    const json = await response.json();
-                                    console.log(`facebookAction:JSON:`, json);
-                                    if (response.ok) {
-                                        APP_STORE.APP_EVENT.next({"success": json.image_profile})
-                                        APP_STORE.TOKEN_EVENT.next({"token": json.token});
-                                        APP_STORE.ID_EVENT.next({"id": json.id.toString()});
-                                        return;
-                                    }
-                                    APP_STORE.APP_EVENT.next({"error": json.detail});
-                                });
-                        }
-                    )
-                },
-                function (error) {
-                    alert('Login fail with error: ' + error);
-                }
-            );
+export function facebookAction(state) {
+    // eslint-disable-next-line no-console
+    console.log(state);
+
+    AccessToken.getCurrentAccessToken().then(data => {
+        if (data) {
+            LoginManager.logOut();
+            return;
         }
-    )
+        LoginManager.logInWithReadPermissions([
+            'public_profile',
+            'email',
+            'user_birthday',
+            'user_gender',
+        ])
+            .then(function(result) {
+                if (result.isCancelled) {
+                    APP_STORE.FACE_EVENT.next({ face: true });
+                } else {
+                    AccessToken.getCurrentAccessToken().then(data => {
+                        // eslint-disable-next-line no-console
+                        console.log(
+                            'facebookAction',
+                            data.accessToken.toString()
+                        );
+
+                        // this gets set to false inside firebaseAction()
+                        dispatchEvent(authStoreEvents.FB_LOGGING_IN, true);
+                        userService
+                            .facebookHandle(data.accessToken.toString(), state)
+                            .then(async response => {
+                                try {
+                                    console.log(
+                                        `facebookAction: ${data.accessToken.toString()}`,
+                                        response
+                                    );
+
+                                    const json = await response.json();
+
+                                    // eslint-disable-next-line no-console
+                                    console.log(`facebookAction:JSON:`, json);
+
+                                    if (response.ok) {
+                                        /**
+                                         * @type {UserObject}
+                                         */
+                                        const user = json;
+
+                                        dispatchEvent(
+                                            authStoreEvents.USER,
+                                            user
+                                        );
+
+                                        APP_STORE.TOKEN_EVENT.next({
+                                            token: json.token,
+                                        });
+
+                                        APP_STORE.ID_EVENT.next({
+                                            id: json.id.toString(),
+                                        });
+                                    } else {
+                                        throw new Error(json.detail);
+                                    }
+                                } catch (e) {
+                                    APP_STORE.APP_EVENT.next({
+                                        error: e.message,
+                                    });
+                                }
+                            });
+                    });
+                }
+            })
+            .catch(function(error) {
+                alert('Login fail with error: ' + error);
+            });
+    });
 }
 
 function firebaseAction(token) {
@@ -200,4 +242,4 @@ function firebaseAction(token) {
         });
 }
 
-export {registerAction, createDateData, validateEmailAction, facebookAction, firebaseAction, validateUsernameAction};
+export {registerAction, createDateData, validateEmailAction, firebaseAction, validateUsernameAction};
