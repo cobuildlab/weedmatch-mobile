@@ -2,11 +2,11 @@ import React from 'react';
 import { strings } from '../../../i18n';
 import P from '../../../styles/palette';
 import styles from './styles';
-// import FastImage from 'react-native-fast-image';
-// import { Platform } from 'react-native';
-// import { Image as RNImage } from 'react-native';
-// const Image = Platform.OS === 'ios' ? RNImage : FastImage;
-import { Image, Text, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { Platform } from 'react-native';
+import { Image as RNImage } from 'react-native';
+const Image = Platform.OS === 'ios' ? RNImage : FastImage;
+import { Text, View } from 'react-native';
 import * as PropTypes from 'prop-types';
 import ImageSourcePropType from '../../../utils/ImageSourcePropType';
 

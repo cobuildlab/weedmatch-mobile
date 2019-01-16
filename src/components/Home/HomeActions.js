@@ -15,6 +15,8 @@ function feedAction(state, nextUrl = null, numPage = 0) {
     if (nextUrl !== null && numPage > 0) {
         getFeed(state, nextUrl);
     } else if (numPage === 0) {
+        // state.longitude = -70.6504492;
+        // state.latitude = -33.4532908;
         const pagUrl = URL + 'public-feed/?latitud=' + state.latitude + '&longitud=' + state.longitude;
         getFeed(state, pagUrl);
     }

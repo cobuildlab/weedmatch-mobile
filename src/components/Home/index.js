@@ -46,7 +46,6 @@ import feedStore, { events } from '../../modules/feed/FeedStore';
 export default class HomePage extends PureComponent {
     constructor(props) {
         super(props);
-
         this.state = {
             comment: '',
             dataSource: [],
@@ -437,8 +436,8 @@ export default class HomePage extends PureComponent {
                 <FlatList
                     keyExtractor={this.keyExtractor}
                     style={styles.listView}
-                    initialListSize={5}
-                    maxToRenderPerBatch={5}
+                    initialListSize={4}
+                    maxToRenderPerBatch={4}
                     removeClippedSubviews={true}
                     enableEmptySections={true}
                     data={this.state.dataSource}

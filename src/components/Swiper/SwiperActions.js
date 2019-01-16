@@ -16,7 +16,6 @@ import { NetInfo } from 'react-native';
  * @param id
  */
 const swiperAction = async (token, action, id) => {
-    console.log(`SwiperActions:swiperAction: ${token}, ${action}, ${id}`);
     let isConnected = await NetInfo.isConnected.fetch();
     if (isConnected === false) {
         APP_STORE.ERROR_EVENT.next(strings('main.internet'));
@@ -26,7 +25,6 @@ const swiperAction = async (token, action, id) => {
     userService
         .swiperAction(token, action, id, moment().format())
         .then(async response => {
-            console.log(`SwiperActions:swiperAction:`, response);
             try {
                 const json = await response.json();
                 if (response.ok) {
@@ -50,7 +48,9 @@ const swiperAction = async (token, action, id) => {
  * @param state
  */
 const swiperListAction = (token, state) => {
-    console.log(`swiperListAction:swiper`, state);
+    console.log("swiperListAction", token, state)
+    state.longitude = -70.6504492;
+    state.latitude = -33.4532908;
     let pageUrl =
         URL +
         'swiper/?latitud=' +
@@ -63,8 +63,6 @@ const swiperListAction = (token, state) => {
 };
 
 function swiper(token, state) {
-    console.log(`SwiperAction: ${token}, ${state.urlPage}, ${state.numPage}`);
-
     var pagUrl = '';
 
     if (state.urlPage != '' && state.numPage > 0) {
@@ -82,18 +80,17 @@ function swiper(token, state) {
 }
 
 function getSwiper(token, pagUrl) {
+    console.log("getSwiper", token, pagUrl)
     if (pagUrl.indexOf('https') === -1)
         pagUrl = pagUrl.replace('http', 'https');
 
     userService.swiper(token, pagUrl).then(async response => {
-        console.log(`SwiperAction: ${token}, ${pagUrl}`, response);
         try {
             const json = await response.json();
-            console.log(`SwiperAction:JSON:`, json);
             if (response.ok) {
-                console.log(json.results);
-                APP_STORE.SWIPER_EVENT.next({ swiper: json.results });
-                APP_STORE.SWIPERPAGE_EVENT.next({ swiperPage: json.next });
+                console.log("getSwiper:Response", response, json)
+                APP_STORE.SWIPER_EVENT.next({ swiper: json.results, swiperPage: json.next });
+                // APP_STORE.SWIPERPAGE_EVENT.next({ swiperPage: json.next });
                 return;
             } else if (response.status === 401 || response.status === 403) {
                 logOut();
@@ -101,7 +98,6 @@ function getSwiper(token, pagUrl) {
                 throw new Error(json.detail);
             }
         } catch (e) {
-            console.warn(e.message);
             APP_STORE.APP_EVENT.next({ error: e.message });
         }
     });
