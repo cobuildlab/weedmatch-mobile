@@ -14,6 +14,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: 15,
   },
+  chatLine: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   title: {
     flex: 1,
     flexDirection: 'row',
@@ -54,6 +59,10 @@ export default StyleSheet.create({
   textChat: {
     marginLeft: 12,
     fontSize: 14,
+  },
+  deleteChat: {
+    width: 25,
+    height: 25,
   },
 
 

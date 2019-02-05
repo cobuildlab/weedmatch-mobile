@@ -3,7 +3,7 @@ import { strings } from '../../../i18n';
 import P from '../../../styles/palette';
 import styles from './styles';
 import FastImage from 'react-native-fast-image';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
 import { Image as RNImage } from 'react-native';
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 import { Text, View } from 'react-native';
@@ -12,6 +12,7 @@ import ImageSourcePropType from '../../../utils/ImageSourcePropType';
 
 export default class Card extends React.PureComponent {
     onPressBlock = () => {
+        console.log("onPressBlock:2")
         const { imageID, onPressBlock, userID, userName } = this.props;
         onPressBlock(imageID, userID, userName);
     };
@@ -67,9 +68,11 @@ export default class Card extends React.PureComponent {
                         <Text style={styles.text}>{distanceString} </Text>
                     </View>
                     <Text style={styles.textContainer}>{countryName}</Text>
-                    <Text>{strings('swiper.BLOCK_OR_REPORT')}</Text>
+                    <TouchableOpacity onPress={this.onPressBlock}>
+                        <Text>{strings('swiper.BLOCK_OR_REPORT')}</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
+            </View >
         );
     }
 }

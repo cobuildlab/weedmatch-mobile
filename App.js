@@ -1,3 +1,4 @@
+import React from 'react';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import Splash from './src/components/Splash';
 import Terms from './src/components/Terms';
@@ -17,6 +18,7 @@ import Notifications from './src/components/Notifications';
 
 import Report from './src/modules/report/Report';
 import REPORT_ROUTE_KEY from './src/modules/report/index';
+import { Root } from 'native-base';
 
 const AppStack = createStackNavigator(
     {
@@ -48,7 +50,7 @@ const AuthStack = createStackNavigator({
 //
 // });
 
-export default createSwitchNavigator(
+const AppNavigator = createSwitchNavigator(
     {
         AuthLoading: Splash,
         App: AppStack,
@@ -58,3 +60,13 @@ export default createSwitchNavigator(
         initialRouteName: 'AuthLoading',
     }
 );
+
+const App = () => (
+    <Root>
+        <AppNavigator />
+    </Root>
+);
+
+export default App;
+
+

@@ -175,7 +175,9 @@ class ForgotPage extends ValidationComponent {
                                 <Text style={styles.textRecover}>
                                     {strings('main.recover')}
                                 </Text>
-
+                                <Text style={styles.textRecoverExplanation}>
+                                    {strings('register.recoverPassword')}
+                                </Text>
                             </View>
                             <TextInput
                                 style={styles.inputStyle}

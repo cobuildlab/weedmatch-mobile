@@ -49,6 +49,7 @@
         "locationMessage": "Weedmatch requiere tu ubicación para encontrar contenido y personas interesantes a tu alrededor",
         "locationTitle": "Weedmatch require acceso a tu ubicación",
         "editProfile": "Editar Perfil",
+        "recoverPassword": "Un código se seguridad ha sido enviado a tu correo para restaurar tu contraseña.",
         "termsPopup": {
             "accept": "Acepto",
             "reject": "No Acepto",
@@ -103,7 +104,13 @@
         "nomsg": "No tienes conversaciones activas",
         "noLike": "No tienes nuevas notificaciones",
         "reconnect": "Reconectando",
-        "write": "Sé el primero en escribir un mensaje"
+        "write": "Sé el primero en escribir un mensaje",
+        "confirmDeleteChat" : "¿Estas seguro de Eliminar tu conversación con {{name}}?",
+        "confirmDeleteMessage" : "¿Estas seguro de Eliminar los mensajes de la conversación con {{name}}?",
+        "options" : "Opciones",
+        "deleteChat" : "Borrar Chat",
+        "cancel" : "Cancelar",
+        "deleteMessages" : "Borrar Mensajes"
     },
     "report": {
         "commentInputPlaceholder": "Comentario (opcional)",

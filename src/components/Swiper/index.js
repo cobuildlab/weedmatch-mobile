@@ -149,6 +149,7 @@ export default class SwiperView extends Component {
      * @returns {void}
      */
     onPressBlock = (imageID, userID, userName) => {
+        console.log("onPressBlock:1")
         const { navigation } = this.props;
 
         const params = {
