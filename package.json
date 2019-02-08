@@ -25,7 +25,7 @@
         "prop-types": "^15.6.1",
         "react": "16.4.1",
         "react-native": "^0.57.4",
-        "react-native-actionsheet": "^2.4.0",
+        "react-native-actionsheet": "^2.4.1",
         "react-native-ci-tools": "^1.1.0",
         "react-native-deck-swiper": "^1.5.22",
         "react-native-device-info": "^0.22.6",
@@ -46,7 +46,7 @@
         "react-navigation": "^2.18.2",
         "rxjs": "^5.5.8",
         "scheduler": "^0.10.0",
-        "snyk": "^1.105.0",
+        "snyk": "^1.124.1",
         "validate.js": "^0.12.0"
     },
     "devDependencies": {
