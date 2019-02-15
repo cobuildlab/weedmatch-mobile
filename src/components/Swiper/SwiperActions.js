@@ -49,8 +49,8 @@ const swiperAction = async (token, action, id) => {
  */
 const swiperListAction = (token, state) => {
     console.log("swiperListAction", token, state)
-    state.longitude = -70.6504492;
-    state.latitude = -33.4532908;
+    // state.longitude = -70.6504492;
+    // state.latitude = -33.4532908;
     let pageUrl =
         URL +
         'swiper/?latitud=' +
