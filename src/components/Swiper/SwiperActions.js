@@ -58,7 +58,7 @@ const swiperListAction = (token, state) => {
         '&longitud=' +
         state.longitude;
 
-    if (state.numPage > 0) pageUrl = state.urlPage;
+    if (state.numPage > 0 && state.urlPage !== null) pageUrl = state.urlPage;
     getSwiper(token, pageUrl);
 };
 

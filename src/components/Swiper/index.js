@@ -33,7 +33,7 @@ export default class SwiperView extends Component {
             latitude: 0,
             longitude: 0,
             numPage: 0,
-            urlPage: '',
+            urlPage: null,
         }
     }
 
@@ -121,7 +121,8 @@ export default class SwiperView extends Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             isLoaded: true
-        }, () => this._swiperData());
+        },
+            () => this._swiperData());
     }
 
     componentWillUnmount() {

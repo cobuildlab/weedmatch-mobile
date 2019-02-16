@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Text,
     TextInput,
@@ -11,13 +11,16 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
-import {APP_STORE} from '../../Store';
-import {forgotAction, recoveryPassword, forgotPassword} from './ForgotActions';
+import { APP_STORE } from '../../Store';
+import { forgotAction, recoveryPassword, forgotPassword } from './ForgotActions';
 import styles from './style';
-import {strings} from '../../i18n';
-import {isValidText, toastMsg} from "../../utils";
+import { strings } from '../../i18n';
+import { isValidText, toastMsg } from "../../utils";
 import ValidationComponent from '../../utils/ValidationComponent';
 
+/**
+ * Forgot Password Views
+ */
 class ForgotPage extends ValidationComponent {
 
     constructor() {
@@ -37,15 +40,15 @@ class ForgotPage extends ValidationComponent {
         console.log("Forgot:componentDidMount");
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             console.log("Forgot:componentDidMount:appSubscription", state);
-            this.setState({isLoading: false});
-            if(state.success && this.state.step == 2){
+            this.setState({ isLoading: false });
+            if (state.success && this.state.step == 2) {
                 toastMsg(state.success);
                 this.appSubscription.unsubscribe();
                 this.props.navigation.popToTop();
             }
-            if(state.success){
+            if (state.success) {
                 toastMsg(state.success);
-                this.setState({step: 2});
+                this.setState({ step: 2 });
             }
             if (isValidText(state.error))
                 toastMsg(state.error);
@@ -57,28 +60,14 @@ class ForgotPage extends ValidationComponent {
         this.appSubscription.unsubscribe();
     }
 
-    static navigationOptions = {header: null};
+    static navigationOptions = { header: null };
 
     _forgotCancel() {
         this.props.navigation.goBack();
     }
 
-    _forgotPassword(email) {
-        /*
-        * Validating Form with rules
-        */
-        this.validate({
-            email: {required: true, email: true}
-        });
-        if (this.isFormValid()) {
-            this.setState({isLoading: true});
-            forgotAction(this.state.email.toString());
-        } else {
-            if (this.isFieldInError('email')) {
-                this.getErrorsInField('email').map((result) => toastMsg(result))
-                return
-            }
-        }
+    _forgotPassword = () => {
+        forgotAction(this.state.email.toString());
     }
 
     _forgotSendPassword() {
@@ -86,23 +75,23 @@ class ForgotPage extends ValidationComponent {
         * Validating Form with rules
         */
         this.validate({
-            code: {required: true, minlength:6, maxlength:20},
-            password: {required: true, minlength:6, maxlength:12},
-            confirmPassword: {required: true, minlength:6, maxlength:12}
+            code: { required: true, minlength: 6, maxlength: 20 },
+            password: { required: true, minlength: 6, maxlength: 12 },
+            confirmPassword: { required: true, minlength: 6, maxlength: 12 }
         });
-        if(this.isFormValid()){
-            this.setState({isLoading: true});
+        if (this.isFormValid()) {
+            this.setState({ isLoading: true });
             recoveryPassword(this.state.code, this.state.password);
-        }else{
-            if(this.isFieldInError('code')){
+        } else {
+            if (this.isFieldInError('code')) {
                 this.getErrorsInField('code').map((result) => toastMsg(result))
                 return
             }
-            if(this.isFieldInError('password')){
+            if (this.isFieldInError('password')) {
                 this.getErrorsInField('password').map((result) => toastMsg(result))
                 return
             }
-            if(this.isFieldInError('confirmPassword')){
+            if (this.isFieldInError('confirmPassword')) {
                 this.getErrorsInField('confirmPassword').map((result) => toastMsg(result))
                 return
             }
@@ -110,25 +99,25 @@ class ForgotPage extends ValidationComponent {
     }
 
     render() {
-        const {isLoading, step} = this.state;
+        const { isLoading, step } = this.state;
         if (isLoading) {
             return (
                 <View style={styles.teclado}>
-                <Image
-                    style={styles.container}
-                    source={require('../../assets/img/logo-b.png')}
-                    style={[{width: null, height: 300}]}
-                />
-              <Text style={styles.textRecover}>
-                    {strings('main.recover')}
-                </Text>
-                <ActivityIndicator size="large" color="#0000ff"/>
+                    <Image
+                        style={styles.container}
+                        source={require('../../assets/img/logo-b.png')}
+                        style={[{ width: null, height: 300 }]}
+                    />
+                    <Text style={styles.textRecover}>
+                        {strings('main.recover')}
+                    </Text>
+                    <ActivityIndicator size="large" color="#0000ff" />
                 </View>
             )
         } else {
-            if(step == 1){
+            if (step == 1) {
                 return (
-                    <ScrollView style={{backgroundColor: '#fff',}}>
+                    <ScrollView style={{ backgroundColor: '#fff', }}>
                         <View style={styles.teclado}>
                             <Image
                                 style={styles.container}
@@ -143,16 +132,15 @@ class ForgotPage extends ValidationComponent {
                                 style={styles.inputStyle}
                                 editable={true}
                                 underlineColorAndroid='transparent'
-                                onChangeText={(email) => this.setState({email})}
+                                onChangeText={(email) => this.setState({ email })}
                                 placeholder={strings('register.email')}
-                                ref='email'
-                                returnKeyType = {"next"}
-                                onSubmitEditing={() => { this._forgotPassword(); }}
+                                returnKeyType={"next"}
+                                onSubmitEditing={this._forgotPassword}
                                 value={this.state.email}
                             />
                             <TouchableOpacity
                                 style={styles.buttomLoginStyle}
-                                onPress={this._forgotPassword.bind(this)}>
+                                onPress={this._forgotPassword}>
                                 <Text style={styles.buttonText}>{strings('forgot.send')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -163,13 +151,13 @@ class ForgotPage extends ValidationComponent {
                         </View>
                     </ScrollView>
                 );
-            }else if(step == 2){
+            } else if (step == 2) {
                 return (
-                    <ScrollView style={{backgroundColor: '#fff',}}>
+                    <ScrollView style={{ backgroundColor: '#fff', }}>
                         <View style={styles.teclado}>
                             <Image
                                 style={styles.container}
-                                source={require('../../assets/img/logo-b.png')}/>
+                                source={require('../../assets/img/logo-b.png')} />
 
                             <View style={styles.contentLogin}>
                                 <Text style={styles.textRecover}>
@@ -183,11 +171,11 @@ class ForgotPage extends ValidationComponent {
                                 style={styles.inputStyle}
                                 editable={true}
                                 underlineColorAndroid='transparent'
-                                onChangeText={(code) => this.setState({code})}
+                                onChangeText={(code) => this.setState({ code })}
                                 placeholder={strings('forgot.code')}
                                 value={this.state.code}
                                 ref={(input) => { this.codeInput = input; }}
-                                returnKeyType = {"next"}
+                                returnKeyType={"next"}
                                 onSubmitEditing={() => { this.passwordInput.focus(); }}
                                 blurOnSubmit={false}
                             />
@@ -195,10 +183,10 @@ class ForgotPage extends ValidationComponent {
                                 style={styles.inputStyle}
                                 editable={true}
                                 underlineColorAndroid='transparent'
-                                onChangeText={(password) => this.setState({password})}
+                                onChangeText={(password) => this.setState({ password })}
                                 placeholder={strings('forgot.password')}
                                 ref={(input) => { this.passwordInput = input; }}
-                                returnKeyType = {"next"}
+                                returnKeyType={"next"}
                                 onSubmitEditing={() => { this.confirmInput.focus(); }}
                                 blurOnSubmit={false}
                                 value={this.state.password}
@@ -207,10 +195,10 @@ class ForgotPage extends ValidationComponent {
                                 style={styles.inputStyle}
                                 editable={true}
                                 underlineColorAndroid='transparent'
-                                onChangeText={(confirmPassword) => this.setState({confirmPassword})}
+                                onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
                                 placeholder={strings('forgot.confirmPassword')}
                                 ref={(input) => { this.confirmInput = input; }}
-                                returnKeyType = {"next"}
+                                returnKeyType={"next"}
                                 onSubmitEditing={() => { this._forgotSendPassword(); }}
                                 blurOnSubmit={false}
                                 value={this.state.confirmPassword}
