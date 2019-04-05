@@ -1,12 +1,13 @@
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
-import { isValidText, toastMsg } from "../../utils";
 import { userService } from './service';
-import Isemail from 'isemail';
+import EmailValidator from 'email-validator';
+import { isValidText } from '../../utils';
+
 
 function forgotAction(email) {
     console.log(`forgotAction: ${email}`);
-    if (!Isemail.validate(email))
+    if (!EmailValidator.validate(email))
         return APP_STORE.APP_EVENT.next({ 'error': strings('register.errorEmail') });
 
     userService.forgotPassword(email)
@@ -23,8 +24,20 @@ function forgotAction(email) {
         });
 }
 
-function recoveryPassword(code, password) {
+function recoveryPassword(code, password, confirmPassword) {
     console.log(`recoveryPassword: ${code} ${password}`);
+
+    if (!isValidText(code))
+        return APP_STORE.APP_EVENT.next({ 'error': strings('register.errorCode') });
+
+    if (!isValidText(password))
+        return APP_STORE.APP_EVENT.next({ 'error': strings('register.errorPassword') });
+
+    if (password.length > 12 || password.length < 6)
+        return APP_STORE.APP_EVENT.next({ 'error': strings('register.errorPassword') });
+
+    if (confirmPassword !== password)
+        return APP_STORE.APP_EVENT.next({ 'error': strings('register.errorPassword') });
 
     userService.recoveryPassword(code, password)
         .then(async (response) => {

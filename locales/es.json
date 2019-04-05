@@ -34,6 +34,7 @@
         "all": "Todos",
         "other": "Otro",
         "allInputs": "Todos los campos son requeridos",
+        "errorCode": "Código Inválido",
         "errorEmail": "Correo Inválido",
         "errorPassword": "Contraseña inválida",
         "errorUsername": "Usuario inválido",
@@ -88,8 +89,8 @@
     "forgot": {
         "send": "Enviar",
         "code": "Código",
-        "password": "Password",
-        "confirmPassword": "Confirmar Password"
+        "password": "Tu nueva contraseña",
+        "confirmPassword": "Confirma tu nueva contraseña"
     },
     "swiper": {
         "match": "¡{{name}} y tú hicieron MATCH!",
