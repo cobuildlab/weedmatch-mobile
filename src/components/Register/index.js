@@ -26,7 +26,6 @@ import {generateUsernameFromFullName, toastMsg,
         charIsLetter,
         charIsNumber,
         charIsAcuteVowel} from "../../utils";
-import Picker from 'react-native-picker';
 import validate from './validate_wrapper';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
@@ -189,7 +188,6 @@ class RegisterPage extends Component {
 
     componentWillUnmount() {
         console.log("RegisterPage:componentWillUmmount");
-        Picker.hide();
         this.event.unsubscribe();
         this.email.unsubscribe();
         this.usernameSubscription.unsubscribe();

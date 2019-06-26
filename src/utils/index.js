@@ -2,7 +2,7 @@ import { Platform, Alert } from 'react-native';
 import { strings } from '../i18n';
 import { APP_STATE } from '../Store'; // This module has no exported APP_STATE
 import I18n from 'react-native-i18n';
-import Toast from 'react-native-toast-native';
+import { Toast } from 'native-base';
 import { checkInternetConnection } from 'react-native-offline';
 
 /**
@@ -80,14 +80,14 @@ function isValidText(text) {
 export const charIsLetter = (char: string): boolean => {
     if (char.length !== 1) {
         throw new TypeError(
-            'charIsLetter() called with string instead of char'
-        )
+            'charIsLetter() called with string instead of char',
+        );
     }
-    const charCode = char.charCodeAt(0)
+    const charCode = char.charCodeAt(0);
 
     return (charCode >= 65 && charCode <= 90)
-        || (charCode >= 97 && charCode <= 122)
-}
+        || (charCode >= 97 && charCode <= 122);
+};
 
 /**
  * Returns true if an string is of length one and is a number
@@ -97,14 +97,14 @@ export const charIsLetter = (char: string): boolean => {
 export const charIsNumber = (char: string): boolean => {
     if (char.length !== 1) {
         throw new TypeError(
-            'charIsNumber() called with string instead of char'
-        )
+            'charIsNumber() called with string instead of char',
+        );
     }
 
-    const charCode = char.charCodeAt(0)
+    const charCode = char.charCodeAt(0);
 
-    return charCode >= 48 && charCode <= 57
-}
+    return charCode >= 48 && charCode <= 57;
+};
 
 /**
  * Returns true if the char provided is an acute vowel, e.g.: á é í ó ú
@@ -113,14 +113,14 @@ export const charIsNumber = (char: string): boolean => {
 export const charIsAcuteVowel = (char: string): boolean => {
     if (char.length !== 1) {
         throw new TypeError(
-            'charIsAcuteVowel() called with string of length not 1'
-        )
+            'charIsAcuteVowel() called with string of length not 1',
+        );
     }
 
     return 'áéíóúÁÉÍÓÚ'
         .split('')
-        .includes(char)
-}
+        .includes(char);
+};
 
 /**
  * Headers for Authorization
@@ -166,8 +166,12 @@ function catchErrorAndPropagate(err) {
 }
 
 function toastMsg(msg) {
-    Toast.show(msg, Toast.SHORT, Toast.BOTTOM, style);
+    Toast.show({
+        text: msg,
+        buttonText: 'Ok',
+    });
 }
+
 
 /**
  * Generates the username from the Full Name
@@ -185,20 +189,20 @@ const generateUsernameFromFullName = (username, addNumber = false) => {
         'Í': 'I',
         'Ó': 'O',
         'Ú': 'U',
-    }
+    };
 
     const newUsername = new String(username)
         .replace(/ /g, '')
         .toLocaleLowerCase();
-    
+
     const intermediate = newUsername
-        .split('').map(char => map[char] || char).join('')
-    
+        .split('').map(char => map[char] || char).join('');
+
     if (!addNumber) return intermediate;
     const randonNumber = Math.floor(Math.random() * 1000 + 1);
     const final = [intermediate, randonNumber].join('_');
 
-    return final
+    return final;
 };
 
 export {
