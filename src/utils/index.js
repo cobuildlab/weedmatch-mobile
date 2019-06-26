@@ -73,6 +73,30 @@ function isValidText(text) {
     return true;
 }
 
+
+
+
+/**
+ * Returns true if, and only if, the value provided is an valid Positive Integer.
+ * @param {any} num
+ * @returns {boolean}
+ */
+function isValidPositiveNumber(num) {
+    if (num == null) {
+        return false;
+    }
+    if (typeof num === 'undefined') {
+        return false;
+    }
+    if (typeof num !== 'number') {
+        return false;
+    }
+    if (num <= 0) {
+        return false;
+    }
+    return true;
+}
+
 /**
  * Returns true if an string is of length one and is in the range of a-z || A-Z
  * @param char The char to be tested
@@ -220,6 +244,7 @@ export {
     parseError,
     getLocale,
     generateUsernameFromFullName,
+    isValidPositiveNumber
 };
 
 const style = {

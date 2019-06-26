@@ -284,7 +284,7 @@ export default class Report extends Component {
                                         block
                                         onPress={this.onPressCancel}
                                         rounded
-                                        styles={buttonStyles.whiteButton}
+                                        style={buttonStyles.whiteButton}
                                     >
                                         <Text
                                             style={[textStyles.whiteButtonText]}

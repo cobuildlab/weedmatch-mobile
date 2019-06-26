@@ -33,7 +33,7 @@ export default class SwiperView extends Component {
             latitude: 0,
             longitude: 0,
             numPage: 0,
-            urlPage: '',
+            urlPage: null,
         }
     }
 
@@ -61,48 +61,29 @@ export default class SwiperView extends Component {
             }
         });
 
-        this.actionSubscription = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
-            console.log("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
-            if (state.swiperAction) {
-                if (this.swiper != null) {
-                    if (this.swiper.state.firstCardIndex == 0) {
-                        this.onSwipedAllCards()
-                    }
-                }
-            }
-        });
+        // this.actionSubscription = APP_STORE.SWIPERACTION_EVENT.subscribe(state => {
+        //     console.log("SwiperView:componentDidMount:SWIPERACTION_EVENT", state);
+        //     if (state.swiperAction) {
+        //         if (this.swiper != null) {
+        //             if (this.swiper.state.firstCardIndex == 0) {
+        //                 this.onSwipedAllCards()
+        //             }
+        //         }
+        //     }
+        // });
 
         this.swiperDataSubscription = APP_STORE.SWIPER_EVENT.subscribe(state => {
             console.log("SwiperView:componentDidMount:swipeDataSuscription", state);
-            if (state.swiper) {
-                this.setState(prevState => ({
-                    cards: appendData(prevState.cards, state.swiper),
-                    isLoaded: true
-                }));
-                return;
-            }
             if (state.error) {
-                Alert.alert(state.error);
+                return Alert.alert(state.error);
             }
-        });
-
-        this.swiperPageSubscription = APP_STORE.SWIPERPAGE_EVENT.subscribe(state => {
-            console.log("SwiperView:componentDidMount:swipePageSuscription", state);
-            if (state.swiperPage) {
+            if (state.swiper) {
                 this.setState({
+                    cards: appendData(this.state.cards, state.swiper),
+                    isLoaded: true,
                     urlPage: state.swiperPage,
                     numPage: this.state.numPage + 1
-                }, () => {
-                    this._swiperData();
                 });
-            } else {
-                this.setState({
-                    urlPage: '',
-                });
-                return;
-            }
-            if (state.error) {
-                Alert.alert(state.error);
             }
         });
 
@@ -140,23 +121,24 @@ export default class SwiperView extends Component {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             isLoaded: true
-        }, () => this._swiperData());
+        },
+            () => this._swiperData());
     }
 
     componentWillUnmount() {
-        console.log("SwiperView :componentWillUmmount");
         this.badSubscription.unsubscribe();
-        this.actionSubscription.unsubscribe();
+        // this.actionSubscription.unsubscribe();
         this.swiperDataSubscription.unsubscribe();
-        this.swiperPageSubscription.unsubscribe();
         this.errorSubscription.unsubscribe();
         this.geoDatasubscription.unsubscribe();
         this.reportSubscription.unsubscribe();
     }
 
 
-    _swiperData() {
-        swiperListAction(APP_STORE.getToken(), this.state);
+    _swiperData = () => {
+        console.log("_swiperData");
+        const state = { ...this.state };
+        swiperListAction(APP_STORE.getToken(), state);
     }
 
     /**
@@ -168,6 +150,7 @@ export default class SwiperView extends Component {
      * @returns {void}
      */
     onPressBlock = (imageID, userID, userName) => {
+        console.log("onPressBlock:1")
         const { navigation } = this.props;
 
         const params = {
@@ -181,7 +164,6 @@ export default class SwiperView extends Component {
     }
 
     renderCard = card => {
-        console.log("card", card)
         return (
             <Card
                 age={card.age}
@@ -197,11 +179,12 @@ export default class SwiperView extends Component {
         )
     };
 
-    onSwipedAllCards() {
+    onSwipedAllCards = () => {
+        console.log("onSwipedAllCards");
         this.setState({
-            cards:[],
+            cards: [],
             isLoaded: false,
-        });
+        }, () => this._swiperData());
     }
 
     onSwipe() {
@@ -244,6 +227,8 @@ export default class SwiperView extends Component {
 
     swipeTap = () => {
         this.props.navigation.navigate('PublicProfile', {
+            // userId: 4237, // @4geeks
+            // userId: 2079, // @gmail
             userId: this.state.cards[this.swiper.state.firstCardIndex].id_user,
             root: 'Swiper',
             updateData: this.getData
@@ -321,20 +306,27 @@ export default class SwiperView extends Component {
                             this.swiper = swiper
                         }}
                         // goBackToPreviousCardOnSwipeBottom={true}
-                        disableBottomSwipe={true}
-                        onTapCard={this.swipeTap}
+                        // onTapCard={this.swipeTap}
+                        onSwipedAll={this.onSwipedAllCards}
                         onSwiped={() => this.onSwipe()}
                         onSwipedLeft={() => this.swipeLeft(false)}
                         onSwipedRight={() => this.swipeRight(false)}
                         onSwipedTop={() => this.swipeTop(false)}
                         cards={this.state.cards}
-                        cardIndex={this.cardIndex}
+                        // cardIndex={this.cardIndex}
                         marginTop={-140}
                         cardVerticalMargin={160}
                         renderCard={this.renderCard}
                         stackSize={3}
                         backgroundColor={'#fff'}
+                        disableBottomSwipe={true}
+                        disableLeftSwipe={true}
+                        disableRightSwipe={true}
+                        disableTopSwipe={true}
                         stackSeparation={5}
+                        horizontalSwipe={false}
+                        swipeAnimationDuration={250}
+                        verticalSwipe={false}
                         overlayLabels={{
                             left: {
                                 title: 'NOPE',
@@ -386,8 +378,8 @@ export default class SwiperView extends Component {
                                 }
                             }
                         }}
-                        animateOverlayLabelsOpacity
-                        animateCardOpacity
+                    // animateOverlayLabelsOpacity
+                    // animateCardOpacity
                     >
                     </Swiper>
 
@@ -395,9 +387,14 @@ export default class SwiperView extends Component {
                         <TouchableOpacity onPress={() => this.swiper.swipeLeft()}>
                             <Image source={require('../../assets/img/actions/rejected.png')} style={styles.imageSize} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.swiper.swipeTop()}>
-                            <Image source={require('../../assets/img/actions/like.png')} style={styles.imageSize} />
-                        </TouchableOpacity>
+                        <View style={[styles.centeredButtons]}>
+                            <TouchableOpacity onPress={() => this.swiper.swipeTop()}>
+                                <Image source={require('../../assets/img/actions/like.png')} style={styles.imageSize} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.swipeTap}>
+                                <Image source={require('../../assets/img/actions/profile.png')} style={styles.imageSize} />
+                            </TouchableOpacity>
+                        </View>
                         <TouchableOpacity onPress={() => this.swiper.swipeRight()}>
                             <Image source={require('../../assets/img/actions/mach.png')} style={styles.imageSize} />
                         </TouchableOpacity>

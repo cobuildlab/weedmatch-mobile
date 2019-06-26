@@ -12,13 +12,15 @@ import {
     View,
 } from 'react-native';
 import {strings} from "../../i18n";
+import {isValidText} from '../../utils';
 import {
-    facebookAction,
     firebaseAction,
     registerAction,
     validateEmailAction,
     validateUsernameAction
 } from "./RegisterActions";
+import {facebookAction} from "../Authentication/AuthenticationActions";
+
 import {APP_STORE} from "../../Store";
 import styles, { dateTextStyle } from './style';
 import loginStyles from '../Login/style';
@@ -137,6 +139,31 @@ class RegisterPage extends Component {
             this.props.navigation.navigate('App');
         });
 
+        this.idSubscription = APP_STORE.ID_EVENT.subscribe(state => {
+            // eslint-disable-next-line no-console
+            console.log(
+                'RegisterPage:componentDidMount:idSubscription',
+                state
+            );
+
+            if (isValidText(state.id)) {
+                if (firebase.messaging().hasPermission()) {
+                    try {
+                        firebase.messaging().requestPermission();
+                    } catch (e) {
+                        alert('Failed to grant permission');
+                    }
+                }
+                // workaround while firebase login gets merged with the fb login
+                firebase
+                    .messaging()
+                    .getToken()
+                    .then(token => {
+                        firebaseAction(token);
+                    });
+            }
+        });
+
         this.email = APP_STORE.EMAIL_EVENT.subscribe(state => {
             this.setState({isLoading: true});
             if (state.error) {
@@ -189,6 +216,7 @@ class RegisterPage extends Component {
     componentWillUnmount() {
         console.log("RegisterPage:componentWillUmmount");
         this.event.unsubscribe();
+        this.idSubscription.unsubscribe();
         this.email.unsubscribe();
         this.usernameSubscription.unsubscribe();
         this.firebaseSubscription.unsubscribe();
@@ -685,7 +713,7 @@ class RegisterPage extends Component {
                         onChangeText={this.onChangeUsername}
                         placeholder={strings('register.username')}
                         returnKeyType={"next"}
-                        ref='username'
+                        // ref='username'
                         onSubmitEditing={() => {
                             this._nextStep();
                         }}

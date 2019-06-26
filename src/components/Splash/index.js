@@ -22,7 +22,7 @@ export default class Splash extends Component {
         try {
             token = await AsyncStorage.getItem('token');
             // token = await Promise.resolve(
-            //     '7e6052eeb671064e7822f0fa6a5ff465f052aa61'
+            //     'd86ac36bbf01f888e3b031765da7152f6cc454bc'
             // );
         } catch (error) {
             console.error('Splash:AsyncStorage:error: ' + error.message);

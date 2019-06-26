@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 var width = Dimensions.get('window').width;
 
@@ -17,15 +17,18 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
     },
     buttonViewContainer: {
-        position:"absolute",
-        bottom:10,
+        position: "absolute",
+        bottom: 10,
         backgroundColor: "#fff",
-        width:width,
+        width: width,
         padding: 15,
         paddingTop: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    centeredButtons: {
+        flexDirection: 'row',
     },
     containerFlex: {
         flex: 1,
@@ -102,6 +105,8 @@ export default StyleSheet.create({
         height: 25,
     },
     imageSize: {
+        marginLeft:5,
+        marginRight:5,
         width: 50,
         height: 50
     },
