@@ -4,6 +4,7 @@ export const CHAT_LIST_EVENT = "ChatListEvent";
 export const CHAT_ERROR_EVENT = "ChatError";
 export const CHAT_USERNAME_EVENT = "ChatUsername";
 export const CHAT_MESSAGES_EVENT = "ChatMessages";
+export const CHAT_DELETED_EVENT = "onChangeDeleted";
 
 /**
  * Store for the Chat Data
@@ -19,6 +20,8 @@ class ChatStore extends FluxStore {
         this.addEvent(CHAT_USERNAME_EVENT);
         // Chat messages
         this.addEvent(CHAT_MESSAGES_EVENT);
+        // Chat messages
+        this.addEvent(CHAT_DELETED_EVENT);
     }
 }
 

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {
     Text,
-    Platform
 } from 'react-native';
 
 import styles from './style';
@@ -19,11 +18,10 @@ export default class Notifications extends Component {
         };
     }
 
-    static navigationOptions = ({navigation}) => {
-        const {params} = navigation.state;
-
+    static navigationOptions = () => {
         return {
             title: strings('main.noti'),
+            headerBackTitle: null
         };
     };
 

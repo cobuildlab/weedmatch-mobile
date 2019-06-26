@@ -6,18 +6,24 @@ import {
     ActivityIndicator,
     ScrollView,
 } from 'react-native';
-
 import styles from './style';
 import { getChat } from './MessageActions';
 import { APP_STORE } from '../../Store';
 import { strings } from '../../i18n';
 import { toastMsg } from '../../utils';
-
+import chatStore, { CHAT_DELETED_EVENT, CHAT_ERROR_EVENT } from '../../modules/chat/ChatStore';
 import FastImage from 'react-native-fast-image';
 import { Platform } from 'react-native';
 import { Image as RNImage } from 'react-native';
+import { Alert } from 'react-native';
+import { ActionSheet } from 'native-base';
+const IMG_DELETE = require('../../assets/img/delete.png');
+import { deleteChatMessages, deleteChat } from '../../modules/chat/chat-actions';
 const Image = Platform.OS === 'ios' ? RNImage : FastImage;
 
+/**
+ * Components that shows the List of Chats
+ */
 export default class Message extends Component {
     constructor(props) {
         super(props);
@@ -46,6 +52,8 @@ export default class Message extends Component {
             }
         });
         getChat();
+        chatStore.subscribe(CHAT_DELETED_EVENT, () => getChat());
+        chatStore.subscribe(CHAT_ERROR_EVENT, (msg) => Alert.alert(msg));
     }
 
     showChatNotif() {
@@ -67,6 +75,32 @@ export default class Message extends Component {
             otherID: user,
             imgProfile,
         });
+    }
+
+    showOptions = (chatId, otherUserId, otherUsername) => {
+        ActionSheet.show(
+            {
+                options: [strings('chat.deleteChat'), strings('chat.cancel')],
+                cancelButtonIndex: 1,
+                title: strings('chat.options')
+            },
+            buttonIndex => {
+                if (buttonIndex === 1) return;
+                let text = strings('chat.confirmDeleteChat', { name: otherUsername });
+                let action = () => {
+                    deleteChat(chatId);
+                };
+                Alert.alert(
+                    strings('chat.options'),
+                    text,
+                    [
+                        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                        { text: 'OK', onPress: () => action() },
+                    ],
+                    { cancelable: false }
+                );
+            }
+        );
     }
 
     render() {
@@ -93,18 +127,19 @@ export default class Message extends Component {
                 keyboardShouldPersistTaps={'always'}
             >
                 {this.state.chats.map((item, i) => (
-                    <TouchableOpacity
-                        key={i}
-                        onPress={() =>
-                            this.showChat(
-                                item.id,
-                                item.id_user,
-                                item.user,
-                                item.image_profile
-                            )
-                        }
-                    >
-                        <View style={styles.viewMsg}>
+
+                    <View style={styles.viewMsg} key={i}>
+                        <TouchableOpacity
+                            style={styles.chatLine}
+                            onPress={() =>
+                                this.showChat(
+                                    item.id,
+                                    item.id_user,
+                                    item.user,
+                                    item.image_profile
+                                )
+                            }
+                        >
                             <Image
                                 style={styles.imgProfileItem}
                                 source={{ uri: item.image_profile }}
@@ -117,8 +152,23 @@ export default class Message extends Component {
                                         : strings('chat.write')}
                                 </Text>
                             </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                        style={[styles.deleteChat]}
+                            onPress={() =>
+                                this.showOptions(
+                                    item.id,
+                                    item.id_user,
+                                    item.user,
+                                )
+                            }
+                        >
+                            <RNImage
+                                source={IMG_DELETE}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
                 ))}
             </ScrollView>
         );

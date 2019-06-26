@@ -23,7 +23,7 @@ const Image = Platform.OS === 'ios' ? RNImage : FastImage;
  */
 const ChatTitle = ({ name, onPress, src }) => {
     return (
-        <View style={styles.viewMsg}>
+        <View style={styles.title}>
             <TouchableHighlight onPress={onPress}>
                 <Image
                     style={styles.imgProfileItem}

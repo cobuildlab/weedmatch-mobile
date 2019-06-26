@@ -34,6 +34,7 @@
         "other": "Other",
         "allInputs": "All inputs required",
         "errorFullName": "Your full name must be at least 3 letters long and can only contain lowercase, uppercase letters and also accute vowels (áéíóúÁÉÍÓÚ)",
+        "errorCode": "Invalid code",
         "errorEmail": "Invalid email",
         "errorPassword": "Invalid password",
         "errorUsername": "Invalid username",
@@ -45,10 +46,10 @@
         "sexRequired": "Invalid sex, is required",
         "imageRequired": "Image is required",
         "ageRequired": "Date of birth is required",
-        "editProfile": "Edit Profile",
         "locationMessage": "Weedmatch requires your location to find content and interesting people to meet around you",
         "locationTitle": "Weedmatch requires access to your location",
         "editProfile": "Edit Profile",
+        "recoverPassword": "A security code have been sent to your email to recover your Password.",
         "termsPopup": {
             "accept": "Accept",
             "reject": "Don't accept",
@@ -103,7 +104,13 @@
         "nomsg": "You do not have active conversations",
         "noLike": "You do not have new notifications",
         "reconnect": "Reconnecting",
-        "write": "Be the first to write a message"
+        "write": "Be the first to write a message",
+        "confirmDeleteChat" : "Are you sure you want to Delete the conversation with {{name}}?",
+        "confirmDeleteMessage" : "Are you sure you want to Delete the messages of the Conversation with {{name}}?",
+        "options" : "Options",
+        "deleteChat" : "Delete Chat",
+        "cancel" : "Cancel",
+        "deleteMessages" : "Delete Messages"
     },
     "report": {
         "commentInputPlaceholder": "Comment (optional)",

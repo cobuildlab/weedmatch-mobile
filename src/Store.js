@@ -212,9 +212,9 @@ class Store {
         popIdFB(this.state);
         popUser(this.state);
         popNoti(this.state);
-        // this.state.token = '7e6052eeb671064e7822f0fa6a5ff465f052aa61';
-        // this.state.id = 115;
-        // this.state.username = 'oscarlzcl';
+        // this.state.token = 'd86ac36bbf01f888e3b031765da7152f6cc454bc';
+        // this.state.id = 143;
+        // this.state.username = 'jose_azk_2019';
 
         const me = this;
         this.ERROR_EVENT = new Subject();

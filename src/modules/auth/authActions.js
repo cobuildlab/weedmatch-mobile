@@ -1,6 +1,6 @@
 import {authHeader, URL} from '../../utils';
 import AuthStore,
-{events as authStoreEvents} from '../../modules/auth/AuthStore'
+{events as authStoreEvents} from '../../modules/auth/AuthStore';
 
 import {dispatchEvent} from "../../utils/flux-state";
 

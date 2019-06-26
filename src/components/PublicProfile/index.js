@@ -26,6 +26,8 @@ import { Content, Container } from 'native-base';
 import REPORT_ROUTE_KEY from '../../modules/report/index';
 import geoStore from "../../utils/geolocation/GeoStore";
 
+const {width} = Dimensions.get('window');
+
 export default class PublicProfile extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +36,7 @@ export default class PublicProfile extends Component {
             refreshing: false,
             public420: [],
             isLoading: false,
-            isDetail: false,
+            isDetail: true,
             urlPage: '',
             numPage: 0,
             like: false,
@@ -62,13 +64,11 @@ export default class PublicProfile extends Component {
             // Forced to have the value updated
             this.latitude = position.coords.latitude.toFixed(6);
             this.longitude = position.coords.longitude.toFixed(6);
-
         }, true);
 
         this.public = APP_STORE.PUBLICPROFILE_EVENT.subscribe(state => {
             console.log("Public Profile:componentDidMount:PUBLICPROFILE_EVENT", state);
             if (state.publicProfile) {
-
                 switch (state.publicProfile.weed_action) {
                     case true || "SuperLike":
                         this.like = true
@@ -229,32 +229,19 @@ export default class PublicProfile extends Component {
         console.log("DEBUG,", this.state);
         const { rowData, country } = this.state;
 
+        const profileImages = rowData.profile_images.map(image => image.image_2x);
+        let countryName = "";
+        if (country && country.name)
+            countryName = country.name;
+
         return (
             <View style={styles.viewFlex}>
                 <View style={styles.viewBackground}>
                     <ImageSlider
-                        images={getImages(rowData.profile_images)}
+                        images={profileImages}
                         customSlide={({ index, item, style }) => (
                             <View key={index} style={[style, styles.customSlide]}>
                                 <Image source={{ uri: item }} style={styles.media} />
-                            </View>
-                        )}
-                        customButtons={(position, move) => (
-                            <View style={styles.buttons}>
-                                {getImages(rowData.profile_images).map((image, index) => {
-                                    return (
-                                        <TouchableOpacity
-                                            key={index}
-                                            underlayColor="#fff"
-                                            onPress={() => move(index)}
-                                            style={styles.button}
-                                        >
-                                            <Text style={position === index && styles.buttonSelected}>
-                                                -
-                                            </Text>
-                                        </TouchableOpacity>
-                                    );
-                                })}
                             </View>
                         )}
                     />
@@ -264,9 +251,7 @@ export default class PublicProfile extends Component {
                         <Text style={styles.textNameDetails}>{rowData.first_name}, {rowData.age} </Text>
                     </View>
                     <View>
-                        {country &&
-                            <Text style={styles.textCountry}>{country.name} </Text>
-                        }
+                        <Text style={styles.textCountry}>{countryName} </Text>
                         <Text style={styles.textDistance}>{rowData.distance} </Text>
                         <Text style={styles.textDescription}>{rowData.description} </Text>
                     </View>
@@ -309,8 +294,10 @@ export default class PublicProfile extends Component {
     };
 
     render() {
-        console.log("DEBUG,", this.state);
         const { rowData, country, isLoading, isDetail, public420 } = this.state;
+        let countryName = "";
+        if (country && country.name)
+            countryName = country.name;
 
         if (!isLoading)
             return (
@@ -320,6 +307,7 @@ export default class PublicProfile extends Component {
             )
 
         if (isDetail) {
+            console.log("DEBUG", public420)
             return (
                 <View style={styles.viewFlex}>
                     <FlatList
@@ -331,13 +319,12 @@ export default class PublicProfile extends Component {
                             this.onEndReachedCalledDuringMomentum = false;
                         }}
                         data={getImages(public420)}
-                        style={{ flex: 1 }}
                         ListHeaderComponent={this.renderiza()}
                         keyExtractor={(item, index) => index}
                         onEndReached={() => this.onEndReached()}
                         renderItem={({ index }) =>
                             <View
-                                style={[{ width: (this.width) / 3 }, { height: (this.width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
+                                style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                                 <Image style={styles.imageView}
                                     source={{ uri: getImages(public420)[index] }}>
                                 </Image>
@@ -359,9 +346,7 @@ export default class PublicProfile extends Component {
                                 <Text style={styles.textName}>
                                     {rowData.first_name}, {rowData.age}
                                 </Text>
-                                {(country && country.name) ?
-                                    <Text style={styles.textCountry}>{country.name}</Text>
-                                    : null}
+                                <Text style={styles.textCountry}>{countryName}</Text>
                                 <Text style={styles.textDistance}>{rowData.distance}</Text>
                             </View>
 

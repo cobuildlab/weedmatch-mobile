@@ -24,6 +24,9 @@ export default styles = StyleSheet.create({
     marginBottom: 35,
     color: '#9605CC',
   },
+  textRecoverExplanation: {
+    margin: 30
+  },
   textBold: {
     fontSize: 20,
     marginBottom: 35,

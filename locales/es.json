@@ -34,7 +34,8 @@
         "all": "Todos",
         "other": "Otro",
         "allInputs": "Todos los campos son requeridos",
-        "errorEmail": "Corre Inválido",
+        "errorCode": "Código Inválido",
+        "errorEmail": "Correo Inválido",
         "errorPassword": "Contraseña inválida",
         "errorUsername": "Usuario inválido",
         "errorSex": "Sexo inválido",
@@ -49,6 +50,7 @@
         "locationMessage": "Weedmatch requiere tu ubicación para encontrar contenido y personas interesantes a tu alrededor",
         "locationTitle": "Weedmatch require acceso a tu ubicación",
         "editProfile": "Editar Perfil",
+        "recoverPassword": "Un código se seguridad ha sido enviado a tu correo para restaurar tu contraseña.",
         "termsPopup": {
             "accept": "Acepto",
             "reject": "No Acepto",
@@ -87,8 +89,8 @@
     "forgot": {
         "send": "Enviar",
         "code": "Código",
-        "password": "Password",
-        "confirmPassword": "Confirmar Password"
+        "password": "Tu nueva contraseña",
+        "confirmPassword": "Confirma tu nueva contraseña"
     },
     "swiper": {
         "match": "¡{{name}} y tú hicieron MATCH!",
@@ -103,7 +105,13 @@
         "nomsg": "No tienes conversaciones activas",
         "noLike": "No tienes nuevas notificaciones",
         "reconnect": "Reconectando",
-        "write": "Sé el primero en escribir un mensaje"
+        "write": "Sé el primero en escribir un mensaje",
+        "confirmDeleteChat" : "¿Estas seguro de Eliminar tu conversación con {{name}}?",
+        "confirmDeleteMessage" : "¿Estas seguro de Eliminar los mensajes de la conversación con {{name}}?",
+        "options" : "Opciones",
+        "deleteChat" : "Borrar Chat",
+        "cancel" : "Cancelar",
+        "deleteMessages" : "Borrar Mensajes"
     },
     "report": {
         "commentInputPlaceholder": "Comentario (opcional)",

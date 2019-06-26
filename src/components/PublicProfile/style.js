@@ -1,15 +1,15 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 var width = Dimensions.get('window').width;
-import {WHITE} from '../../styles/colors';
+import { WHITE } from '../../styles/colors';
 
 const PADDING_LEFT = 20
 const PADDING_RIGHT = PADDING_LEFT
 
-export default styles = StyleSheet.create({
+export default StyleSheet.create({
 
     MainContainer: {
         justifyContent: 'center',
-        flex:1,
+        flex: 1,
         margin: 10
     },
     rowViewContainer: {
@@ -36,9 +36,9 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         right: 30,
         ...Platform.select({
-          ios: {
-            top: -50,
-          },
+            ios: {
+                top: -50,
+            },
         }),
     },
     ShowDetail: {
@@ -51,12 +51,12 @@ export default styles = StyleSheet.create({
         width: 50,
         height: 50,
     },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFF',
-    },
+    // container: {
+    //     flex: 1,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     backgroundColor: '#FFF',
+    // },
     actionButtonIcon: {
         fontSize: 20,
         height: 22,
@@ -73,19 +73,13 @@ export default styles = StyleSheet.create({
         marginBottom: 5,
     },
     listView: {
-        marginTop:0,
-        width:width,
-    },
-    picture: {
-        width:30,
-        height:30,
-        borderRadius:15,
+        marginTop: 0,
+        width: width,
     },
     media: {
         height: width,
         marginBottom: 2,
         width: width,
-
         // ...Platform.select({
         //   android: {
         //     width: width,
@@ -97,93 +91,77 @@ export default styles = StyleSheet.create({
         //   },
         // }),
     },
-
-    mediaUser: {
-        alignItems: 'center',
-        padding:10,
-        backgroundColor:'#FFF',
-        width:width,
-        flexDirection:'row',
-        borderWidth:1,
-        borderTopColor:'#fff',
-        borderLeftColor:'#fff',
-        borderRightColor:'#fff',
-        borderBottomColor:'#fff',
-    },
-    username: {
-        paddingLeft:10,
-    },
     mediaIcons: {
-        width:width-10,
-        flexDirection:'row',
-        height:30,
+        width: width - 10,
+        flexDirection: 'row',
+        height: 30,
     },
     icons: {
-        marginLeft:10,
-        marginTop:5,
-        width:30,
-        height:26
+        marginLeft: 10,
+        marginTop: 5,
+        width: 30,
+        height: 26
     },
     likes: {
-        flexDirection:'row',
-        width:width,
-        marginTop:10,
-        marginLeft:10,
-        marginBottom:10,
+        flexDirection: 'row',
+        width: width,
+        marginTop: 10,
+        marginLeft: 10,
+        marginBottom: 10,
     },
     comments: {
-        flexDirection:'row',
-        width:width,
-        marginLeft:10,
-        marginBottom:5
+        flexDirection: 'row',
+        width: width,
+        marginLeft: 10,
+        marginBottom: 5
     },
     user: {
-        fontWeight:'bold',
-        fontSize:10
+        fontWeight: 'bold',
+        fontSize: 10
     },
     comment: {
-        marginLeft:5,
-        fontSize:10
+        marginLeft: 5,
+        fontSize: 10
     },
     time: {
-        marginRight:20,
+        marginRight: 20,
         marginTop: 10,
-        fontSize:14,
-        color:'#777',
-        textAlign:'left'
+        fontSize: 14,
+        color: '#777',
+        textAlign: 'left'
     },
     topBar: {
-        backgroundColor:'blue'
+        backgroundColor: 'blue'
     },
     headerSection: {
-        backgroundColor:'blue',
-        height:40
+        backgroundColor: 'blue',
+        height: 40
     },
     mediaUser: {
         alignItems: 'center',
-        padding:10,
-        backgroundColor:'#FFF',
-        width:width,
-        flexDirection:'row',
-        borderWidth:1,
-        borderTopColor:'#fff',
-        borderLeftColor:'#fff',
-        borderRightColor:'#fff',
-        borderBottomColor:'#fff',
+        padding: 10,
+        backgroundColor: '#FFF',
+        width: width,
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderTopColor: '#fff',
+        borderLeftColor: '#fff',
+        borderRightColor: '#fff',
+        borderBottomColor: '#fff',
     },
     picture: {
-        width:30,
-        height:30,
-        borderRadius:15,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
     },
     username: {
-        paddingLeft:10,
+        paddingLeft: 10,
     },
     rowimage: {
-        width:width/3,
-        height:width/3,
-        borderWidth:.5,
-        borderColor:'#fff'
+        width: width / 3,
+        height: width / 3,
+        borderWidth: .5,
+        borderColor: '#fff'
     },
     containers: {
         flex: 1,
@@ -194,52 +172,52 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 10
     },
-    viewContainer: {
+    viewContainer: {
         flex: 1,
         flexDirection: 'column',
         marginTop: 25,
     },
-    viewContainerPlus: {
+    viewContainerPlus: {
         flex: 1,
         flexDirection: 'column',
         marginTop: -20,
     },
-    viewFlex: {
+    viewFlex: {
         flex: 1,
     },
-    viewFlexDirection: {
+    viewFlexDirection: {
         flexDirection: 'row'
     },
-    viewBackground: {
+    viewBackground: {
         backgroundColor: '#FFF',
-        flex:3
+        flex: 3
     },
-    textName: {
+    textName: {
         color: '#333',
         fontSize: 18,
     },
-    textNameDetails: {
+    textNameDetails: {
         marginTop: -32,
         marginBottom: 15,
         paddingLeft: 20,
         fontSize: 18,
         color: '#333',
     },
-    textContainer: {
+    textContainer: {
         marginTop: 15,
         paddingLeft: 20,
         fontSize: 15,
         color: '#777'
     },
-    textCountry: {
+    textCountry: {
         color: '#777',
         fontSize: 15,
     },
-    textDistance: {
+    textDistance: {
         color: '#777',
         fontSize: 15,
     },
-    textDescription: {
+    textDescription: {
         color: '#777',
         fontSize: 15,
         marginTop: 5,
@@ -249,26 +227,26 @@ export default styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F5FCFF',
-      },
-      slider: { backgroundColor: '#000', height: 350 },
-      content1: {
+    },
+    slider: { backgroundColor: '#000', height: 350 },
+    content1: {
         width: '100%',
         height: 50,
         marginBottom: 10,
         backgroundColor: '#000',
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      content2: {
+    },
+    content2: {
         width: '100%',
         height: 100,
         marginTop: 10,
         backgroundColor: '#000',
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      contentText: { color: '#fff' },
-      buttons: {
+    },
+    contentText: { color: '#fff' },
+    buttons: {
         zIndex: 1,
         height: 15,
         marginTop: -25,
@@ -276,42 +254,42 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-      },
-      button: {
+    },
+    button: {
         margin: 3,
         width: 15,
         height: 15,
         opacity: 0.9,
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      buttonSelected: {
+    },
+    buttonSelected: {
         opacity: 1,
         color: WHITE,
         fontSize: 40,
-      },
-      customSlide: {
+    },
+    customSlide: {
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      customImage: {
+    },
+    customImage: {
         width: 100,
         height: 100,
-      },
-      imageView: {
+    },
+    imageView: {
         flex: 1,
         alignSelf: 'stretch',
         width: undefined,
         height: undefined,
-      },
-      
-      activeButton: {
-          opacity: 1
-      },
-      disactiveButton: {
+    },
+
+    activeButton: {
+        opacity: 1
+    },
+    disactiveButton: {
         opacity: 0.5
     },
-    buttonViewContainer: {
+    buttonViewContainer: {
         alignContent: 'center',
         alignItems: 'center',
         bottom: 0, // comment this line to make it overlap the underlying text

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Text,
     View,
@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 
 import styles from './style';
-import {APP_STORE} from '../../Store';
-import {strings} from '../../i18n';
-import {internet, checkConectivity, toastMsg} from '../../utils';
+import { APP_STORE } from '../../Store';
+import { strings } from '../../i18n';
+import { internet, checkConectivity, toastMsg } from '../../utils';
 import {
     publicProfileAction,
     getImages,
@@ -23,7 +23,7 @@ import {
     privateProfileAction
 } from './ProfileActions';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default class Profile extends Component {
     constructor(props) {
@@ -40,25 +40,25 @@ export default class Profile extends Component {
         console.log('Profile');
     }
 
-    static navigationOptions = ({navigation}) => {
-        const {params} = navigation.state;
+    static navigationOptions = ({ navigation }) => {
+        const { params } = navigation.state;
 
         return {
             title: strings('main.profile'),
             headerRight: <TouchableOpacity style={styles.buttonRight}
-                                           onPress={() => params.logout && params.logout()}><Image
-                style={styles.navRight} source={require('../../assets/img/logout.png')}/></TouchableOpacity>
+                onPress={() => params.logout && params.logout()}><Image
+                    style={styles.navRight} source={require('../../assets/img/logout.png')} /></TouchableOpacity>
         };
     };
 
     componentDidMount() {
-        this.props.navigation.setParams({logout: () => this._logout()});
-        this.props.navigation.setParams({update: () => this.update()});
+        this.props.navigation.setParams({ logout: () => this._logout() });
+        this.props.navigation.setParams({ update: () => this.update() });
 
         this.appSubscription = APP_STORE.APP_EVENT.subscribe(state => {
             console.log("Profile:componentDidMount:appSubscription", state);
             if (state.error) {
-                this.setState({isLoading: true});
+                this.setState({ isLoading: true });
                 toastMsg(state.error);
                 return;
             }
@@ -146,7 +146,7 @@ export default class Profile extends Component {
     _logout = () => {
 
         if (checkConectivity()) {
-            this.setState({isLoading: false});
+            this.setState({ isLoading: false });
             logOut();
             this.props.navigation.navigate('Auth');
         } else {
@@ -172,16 +172,15 @@ export default class Profile extends Component {
 
     _editProfile() {
         this.appSubscription.unsubscribe();
-        this.props.navigation.navigate('EditProfile', {refresh: this.update});
+        this.props.navigation.navigate('EditProfile', { refresh: this.update });
     }
 
     renderiza() {
-        const {rowData, country} = this.state;
-        console.log("PROFILE:renderiza:", rowData);
+        const { rowData } = this.state;
         return (
             <View>
                 <View style={styles.viewBackground}>
-                    <Image style={styles.media} source={{uri: rowData.image_profile}}/>
+                    <Image style={styles.media} source={{ uri: rowData.image_profile }} />
                 </View>
                 <View style={styles.viewContainer}>
                     <View style={styles.viewContainerPlus}>
@@ -191,7 +190,7 @@ export default class Profile extends Component {
                         {/*<Text style={styles.textContainer}>{rowData.description} </Text>*/}
                     </View>
                     <TouchableOpacity style={styles.buttomCerrarStyle} onPress={this._editProfile.bind(this)}>
-                        <Image source={require('../../assets/img/edit.png')} style={styles.buttomOpt}/>
+                        <Image source={require('../../assets/img/edit.png')} style={styles.buttomOpt} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -206,8 +205,8 @@ export default class Profile extends Component {
     };
 
     render() {
-        const {rowData, country, isLoading, isDetail, public420} = this.state;
-
+        const { isLoading, public420 } = this.state;
+        const images420 = public420.map(image => image.image_1x);
         if (isLoading) {
             return (
                 <View style={styles.viewFlex}>
@@ -215,19 +214,19 @@ export default class Profile extends Component {
                         horizontal={false}
                         numColumns={3}
                         bounces={false}
-                        data={getImages(public420)}
-                        ListHeaderComponent={this.renderiza()}
-                        keyExtractor={(item, index) => index}
                         onEndReachedThreshold={0.5}
                         onMomentumScrollBegin={() => {
                             this.onEndReachedCalledDuringMomentum = false;
                         }}
+                        data={images420}
+                        ListHeaderComponent={this.renderiza()}
+                        keyExtractor={(item, index) => index}
                         onEndReached={() => this.onEndReached()}
-                        renderItem={({item, index}) =>
+                        renderItem={({ item , index }) =>
                             <View
-                                style={[{width: (width) / 3}, {height: (width) / 3}, {marginBottom: 2}, index % 3 !== 0 ? {paddingLeft: 2} : {paddingLeft: 0}]}>
+                                style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                                 <Image style={styles.imageView}
-                                       source={{uri: getImages(public420)[index]}}>
+                                    source={{ uri: item }}>
                                 </Image>
                             </View>
                         }
@@ -237,7 +236,7 @@ export default class Profile extends Component {
         } else {
             return (
                 <View style={[styles.containers, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#9605CC"/>
+                    <ActivityIndicator size="large" color="#9605CC" />
                 </View>
             )
         }

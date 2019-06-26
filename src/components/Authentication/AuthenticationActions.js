@@ -11,7 +11,7 @@ import { events as authEvents } from '../../modules/auth/AuthStore'
 
 export function facebookAction(state) {
     // eslint-disable-next-line no-console
-    console.log(state);
+    console.log("AuthenticationActions:facebookAction",state);
 
     AccessToken.getCurrentAccessToken().then(data => {
         if (data) {
@@ -30,7 +30,7 @@ export function facebookAction(state) {
                 } else {
                     AccessToken.getCurrentAccessToken().then(data => {
                         // eslint-disable-next-line no-console
-                        console.log("facebookAction", data.accessToken.toString());
+                        console.log("AuthenticationActions:facebookAction", data.accessToken.toString());
     
                         // this gets set to false inside firebaseAction()
                         dispatchEvent(authStoreEvents.FB_LOGGING_IN, true)
@@ -39,14 +39,14 @@ export function facebookAction(state) {
                             .then(async response => {
                                 try {
                                     console.log(
-                                        `facebookAction: ${data.accessToken.toString()}`,
+                                        `AuthenticationActions:facebookAction: ${data.accessToken.toString()}`,
                                         response
                                     );
     
                                     const json = await response.json();
     
                                     // eslint-disable-next-line no-console
-                                    console.log(`facebookAction:JSON:`, json);
+                                    console.log(`AuthenticationActions:facebookAction:JSON:`, json);
 
                                     if (response.ok) {
                                        /**
@@ -56,7 +56,6 @@ export function facebookAction(state) {
     
                                         dispatchEvent(authStoreEvents.USER, user)
                                         
-
                                         APP_STORE.TOKEN_EVENT.next({
                                             token: json.token,
                                         });
@@ -65,6 +64,7 @@ export function facebookAction(state) {
                                             id: json.id.toString(),
                                         });
                                     } else {
+                                        console.error(`AuthenticationActions:facebookAction:JSON:`, json);
                                         throw new Error(json.detail)
                                     }
                                 } catch (e) {

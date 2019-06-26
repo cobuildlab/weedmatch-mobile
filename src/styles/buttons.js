@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
-import {black, WHITE, gray, purple} from './colors';
+import {black, WHITE, purple} from './colors';
 
-export default styles = StyleSheet.create({
+export default StyleSheet.create({
     purpleButton: {
         backgroundColor: purple
     },
@@ -29,6 +29,6 @@ export default styles = StyleSheet.create({
         color: purple,
         paddingBottom: 10,
         paddingTop: 10,
-        width: 250,
+        width: null,
     },
 });

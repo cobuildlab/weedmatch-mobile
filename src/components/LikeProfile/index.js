@@ -24,7 +24,7 @@ import geoStore from "../../utils/geolocation/GeoStore";
 import { publicProfileActionV2 } from '../PublicProfile/PublicProfileActions';
 var {  width } = Dimensions.get('window');
 
-export default class PublicProfile extends Component {
+export default class LikeProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
